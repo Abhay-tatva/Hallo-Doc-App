@@ -23,11 +23,7 @@
   .auth {
     height: 77px;
     display: flex;
-    /* justify-content: center; */
-    align-items: end;
-    /* position: sticky; */
-    align-items: center;
-    /* top: 0px; */
+    align-items: flex-end;
   }
 }
 .light-mode-container {

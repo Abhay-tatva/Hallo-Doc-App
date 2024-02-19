@@ -8,7 +8,6 @@ import {
   TableRow,
   Paper,
   Grid,
-  MenuItem,
   TablePagination,
   Typography,
   InputAdornment,
@@ -18,26 +17,35 @@ import "./table.css";
 import { FormInput } from "../TextField/FormInput";
 import { Box } from "@mui/system";
 import { Button } from "../Button/ButtonInput";
-import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
-const MyTable = () => {
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Fade from "@mui/material/Fade";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const MyTable = ({ rows, columns, indicator, dropDown }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedColumn, setSelectedColumn] = useState("name");
-  const [filterCategory, setFilterCategory] = useState("");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [copied, setCopied] = useState(false);
+  const [copiedStates, setCopiedStates] = useState({});
 
-  const copyButtonText = (event) => {
+  const notify = () => toast("Phone number Copyied successfully!");
+
+  const copyButtonText = (btnId, event) => {
     const textToCopy = event.target.innerText;
 
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1000);
+        setCopiedStates((prev) => ({ ...prev, [btnId]: true }));
+        notify();
+        setTimeout(() => {
+          setCopiedStates((prev) => ({ ...prev, [btnId]: false }));
+        }, 1000);
       })
       .catch((err) => console.error("Error copying text: ", err));
   };
@@ -53,266 +61,69 @@ const MyTable = () => {
 
   const filterRows = (rows, term) => {
     return rows.filter((row) =>
-      Object.values(row).some(
-        (value) =>
-          value && value.toString().toLowerCase().includes(term.toLowerCase())
-      )
+      Object.values(row).some((value) => {
+        if (!value) {
+          return false;
+        }
+        const lowerCaseValue =
+          typeof value === "string"
+            ? value.toLowerCase()
+            : String(value).toLowerCase();
+
+        return (
+          selectedColumn === "all" ||
+          (selectedColumn === "name" &&
+            // selectedColumn !== "phoneNumber" &&
+            lowerCaseValue.includes(term.toLowerCase())) ||
+          (selectedColumn === "dateOfBirth" &&
+            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
+          (selectedColumn === "requestor" &&
+            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
+          (selectedColumn === "requestedDate" &&
+            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
+          (selectedColumn === "phoneNumber" &&
+            row[selectedColumn].toString().includes(term)) ||
+          (selectedColumn === "address" &&
+            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
+          (selectedColumn === "notes" &&
+            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
+          (selectedColumn === "chatWith" &&
+            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
+          (selectedColumn === "action" &&
+            row[selectedColumn].toLowerCase().includes(term.toLowerCase()))
+        );
+      })
     );
   };
 
-  const rows = [
-    {
-      name: `John Doe`,
-      mail: <MarkEmailUnreadOutlinedIcon />,
-      dateOfBirth: "Jun 16, 2023 (0)",
-      requestor: "Patient John Doe",
-      requestedDate: "Nov 20, 2023 335h 2m 02m ",
-      phoneNumber: (
-        <>
-          <Button
-            className="phone-btn"
-            name="+1287834888"
-            startIcon={<LocalPhoneOutlinedIcon />}
-            variant="outlined"
-            color="inherit"
-            onClick={copyButtonText}
-          />
-          {copied && <p>copied!</p>}
-        </>
-      ),
-      address: "Room location : 101",
-      notes: "- ",
-      chatWith: (
-        <Button
-          className="phone-btn"
-          name="Provider"
-          startIcon={<PersonOutlineOutlinedIcon />}
-          variant="outlined"
-          color="inherit"
-        />
-      ),
-      action: (
-        <Button
-          name="Actions"
-          variant="outlined"
-          color="inherit"
-          className="phone-btn"
-        />
-      ),
-    },
-    {
-      name: "Jane Smith",
-      mail: <MarkEmailUnreadOutlinedIcon />,
-      dateOfBirth: "1985-08-22",
-      requestor: "Patient",
-      requestedDate: "2024-02-14",
-      phoneNumber: (
-        <>
-          <Button
-            className="phone-btn"
-            name="+1287834888"
-            startIcon={<LocalPhoneOutlinedIcon />}
-            variant="outlined"
-            color="inherit"
-            onClick={copyButtonText}
-          />
-          {copied && <p>copied!</p>}
-        </>
-      ),
-      address: "456 Oak St, Townsville",
-      notes: "- ",
-      chatWith: (
-        <Button
-          className="phone-btn"
-          name="Provider"
-          startIcon={<PersonOutlineOutlinedIcon />}
-          variant="outlined"
-          color="inherit"
-        />
-      ),
-      action: (
-        <Button
-          name="Actions"
-          variant="outlined"
-          color="inherit"
-          className="phone-btn"
-        />
-      ),
-    },
-    {
-      name: "Bob Johnson",
-      mail: <MarkEmailUnreadOutlinedIcon />,
-      dateOfBirth: "1978-11-30",
-      requestor: "business Department",
-      requestedDate: "2024-02-13",
-      phoneNumber: (
-        <Button
-          className="phone-btn"
-          name="+1287834888"
-          startIcon={<LocalPhoneOutlinedIcon />}
-          variant="outlined"
-          color="inherit"
-          onClick={copyButtonText}
-        />
-      ),
-      address: "789 Pine St, Villagetown",
-      notes: "- ",
-      chatWith: (
-        <Button
-          className="phone-btn"
-          name="Provider"
-          startIcon={<PersonOutlineOutlinedIcon />}
-          variant="outlined"
-          color="inherit"
-        />
-      ),
-      action: (
-        <Button
-          name="Actions"
-          variant="outlined"
-          color="inherit"
-          className="phone-btn"
-        />
-      ),
-    },
-    {
-      name: "Alice Brown",
-      mail: <MarkEmailUnreadOutlinedIcon />,
-      dateOfBirth: "1995-04-18",
-      requestor: "concierge Department",
-      requestedDate: "2024-02-12",
-      phoneNumber: (
-        <Button
-          className="phone-btn"
-          name="+1287834888"
-          startIcon={<LocalPhoneOutlinedIcon />}
-          variant="outlined"
-          color="inherit"
-          onClick={copyButtonText}
-        />
-      ),
-      address: "101 Elm St, Hamletville",
-      notes: "Client-related request",
-      chatWith: (
-        <Button
-          className="phone-btn"
-          name="Provider"
-          startIcon={<PersonOutlineOutlinedIcon />}
-          variant="outlined"
-          color="inherit"
-        />
-      ),
-      action: (
-        <Button
-          name="Actions"
-          variant="outlined"
-          color="inherit"
-          className="phone-btn"
-        />
-      ),
-    },
-    {
-      name: "Charlie Davis",
-      mail: <MarkEmailUnreadOutlinedIcon />,
-      dateOfBirth: "1982-07-25",
-      requestor: "vip Department",
-      requestedDate: "2024-02-11",
-      phoneNumber: (
-        <Button
-          className="phone-btn"
-          name="+1287834888"
-          startIcon={<LocalPhoneOutlinedIcon />}
-          variant="outlined"
-          color="inherit"
-          onClick={copyButtonText}
-        />
-      ),
-      address: "202 Maple St, Countryside",
-      notes: "- ",
-      chatWith: (
-        <Button
-          className="phone-btn"
-          name="Provider"
-          startIcon={<PersonOutlineOutlinedIcon />}
-          variant="outlined"
-          color="inherit"
-        />
-      ),
-      action: (
-        <Button
-          name="Actions"
-          variant="outlined"
-          color="inherit"
-          className="phone-btn"
-        />
-      ),
-    },
-  ];
-
-  const columns = [
-    { id: "name", label: "Name", minWidth: 200 },
-    { id: "mail", label: "", minWidth: 10 },
-    { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
-    {
-      id: "requestor",
-      label: "Requestor",
-      align: "right",
-      maxWidth: 100,
-    },
-    {
-      id: "requestedDate",
-      label: "Requested Date",
-      maxWidth: 95,
-      align: "right",
-    },
-    {
-      id: "phoneNumber",
-      label: "Phone",
-      maxWidth: 175,
-      align: "right",
-    },
-    {
-      id: "address",
-      label: "Address",
-      minWidth: 250,
-      align: "right",
-    },
-    {
-      id: "notes",
-      label: "Notes",
-      minWidth: 130,
-      align: "right",
-    },
-    {
-      id: "chatWith",
-      label: "Chat With",
-      minWidth: 100,
-      align: "right",
-    },
-    {
-      id: "action",
-      label: "Actions",
-      minWidth: 100,
-      align: "right",
-    },
-  ];
-
-  const indicator = [
-    { name: "Patient", color: "green" },
-    { name: "Family/Freind", color: "orange" },
-    { name: "Business", color: "Pink" },
-    { name: "Concierge", color: "blue" },
-    { name: "VIP", color: "purple" },
-  ];
-
   const filteredData = filterRows(rows, searchTerm);
-
-  const handleCategoryChange = (event, newFilterCategory) => {
-    setFilterCategory(newFilterCategory);
-  };
 
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
+    setSelectedColumn(event.target.value);
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (action) => {
+    setAnchorEl(null);
+    switch (action) {
+      case "assign":
+        break;
+      case "cancel":
+        break;
+      case "view":
+        break;
+      case "view Notes":
+        break;
+      case "Block Patient":
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -346,8 +157,8 @@ const MyTable = () => {
               className="search-text drop-list"
               select
               placeholder="All Regions"
-              onChange={handleAdditionalFilterChange}
               value={additionalFilter}
+              onChange={handleAdditionalFilterChange}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -356,10 +167,14 @@ const MyTable = () => {
                 ),
               }}
             >
-              <MenuItem value="All Regions">All Regions</MenuItem>
-              <MenuItem value="all">All</MenuItem>
-              <MenuItem value="address">Address</MenuItem>
-              <MenuItem value="notes">Notes</MenuItem>
+              <MenuItem value="all">All Regions</MenuItem>
+              {columns.map((column) => {
+                return (
+                  <MenuItem key={column.id} value={column.id}>
+                    {column.label}
+                  </MenuItem>
+                );
+              })}
             </FormInput>
           </Box>
         </Grid>
@@ -408,26 +223,74 @@ const MyTable = () => {
             <TableBody>
               {filteredData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.code}
-                    className={`requestor-${row.requestor.toLowerCase()}`}
-                  >
-                    {columns.map((column, index) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={index} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
+                .map((row) => {
+                  return (
+                    <TableRow
+                      key={row.id}
+                      className={`requestor-${row.requestor.toLowerCase()}`}
+                    >
+                      {columns.map((column) => {
+                        return (
+                          <TableCell key={column.id}>
+                            {["phoneNumber", "chatWith", "action"].includes(
+                              column.id
+                            ) ? (
+                              <>
+                                <Button
+                                  className="phone-btn"
+                                  name={row[column.id]}
+                                  startIcon={
+                                    (column.id === "phoneNumber" && (
+                                      <LocalPhoneOutlinedIcon />
+                                    )) ||
+                                    (column.id === "chatWith" && (
+                                      <PersonOutlineOutlinedIcon />
+                                    ))
+                                  }
+                                  variant="outlined"
+                                  color="inherit"
+                                  onClick={(e) => {
+                                    column.id === "phoneNumber" &&
+                                      copyButtonText(row.id, e);
+                                    column.id === "action" && handleClick(e);
+                                  }}
+                                />
+                                {column.id === "phoneNumber" &&
+                                  copiedStates[row.id]}
+                                {column.id === "action" && (
+                                  <Menu
+                                    id="fade-menu"
+                                    MenuListProps={{
+                                      "aria-labelledby": "fade-button",
+                                    }}
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    TransitionComponent={Fade}
+                                  >
+                                    {dropDown.map((data) => {
+                                      return (
+                                        <MenuItem
+                                          key={data.id}
+                                          onClick={handleClose}
+                                          disableRipple
+                                        >
+                                          {data.icon}&nbsp;{data.name}
+                                        </MenuItem>
+                                      );
+                                    })}
+                                  </Menu>
+                                )}
+                              </>
+                            ) : (
+                              row[column.id]
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import { Box } from "@mui/system";
 import Dashboardmain from "../DashboardMain/dashboardmain";
@@ -25,6 +25,22 @@ import {
   successTriangle,
   warningTriangle,
 } from "../assests/images";
+import {
+  newColumns,
+  indicator,
+  rows,
+  newDropdown,
+  pendingColumns,
+  pendingDropdown,
+  activeColumns,
+  activeDropdown,
+  concludeColumns,
+  concludeDropdown,
+  toCloseColumns,
+  toCloseDropdown,
+  unpaidColumns,
+  unpaidDropdown,
+} from "../constant/common";
 
 const cards = [
   {
@@ -74,11 +90,45 @@ const cards = [
 const Dashboard = () => {
   const [isActive, setIsActive] = useState(true);
   const [activeButton, setActiveButton] = useState(0);
+  const [columns, setColumns] = useState(newColumns);
+  const [dropDown, setDropDown] = useState(newDropdown);
 
   const handleClick = (index) => {
     setActiveButton(index);
     setIsActive(true);
   };
+  useEffect(() => {
+    switch (activeButton) {
+      case 0:
+        setColumns(newColumns);
+        setDropDown(newDropdown);
+        break;
+      case 1:
+        setColumns(pendingColumns);
+        setDropDown(pendingDropdown);
+        break;
+      case 2:
+        setColumns(activeColumns);
+        setDropDown(activeDropdown);
+        break;
+      case 3:
+        setColumns(concludeColumns);
+        setDropDown(concludeDropdown);
+        break;
+      case 4:
+        setColumns(toCloseColumns);
+        setDropDown(toCloseDropdown);
+        break;
+      case 5:
+        setColumns(unpaidColumns);
+        setDropDown(unpaidDropdown);
+        break;
+      default:
+        setColumns(newColumns);
+        setDropDown(newDropdown);
+    }
+  }, [activeButton]);
+
   return (
     <Box container className="dashboard-container">
       <Header />
@@ -177,7 +227,12 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Box>
-      <MyTable />
+      <MyTable
+        rows={rows}
+        columns={columns}
+        indicator={indicator}
+        dropDown={dropDown}
+      />
       {/* </Container> */}
     </Box>
   );
