@@ -1,0 +1,53 @@
+.main-container {
+  background-color: #f6f6f6;
+}
+
+.container-wrapper {
+  padding: 1rem 3rem;
+}
+.conformation-number {
+  margin-top: 13px;
+}
+.form-container {
+  padding: 1.25rem;
+}
+.divider {
+  margin-top: 10px !important;
+  /* margin-bottom: 10px; */
+}
+.form-input {
+  background-color: #f6f6f6 !important;
+}
+.text-area {
+  margin-top: 27px !important;
+  background-color: #f6f6f6 !important;
+}
+/* .form-input1 {
+  margin-bottom: 1.25rem !important;
+} */
+.input-container {
+  margin-top: 0.75rem !important;
+  margin-bottom: 1.8rem !important;
+}
+.full-paper {
+  padding: 13px;
+}
+.patient-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 12px;
+  border-radius: 10px;
+  background-color: #1dc01d;
+  color: white;
+  padding: 0.25rem 11px;
+  margin-left: 5px;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+}
+.end-btn {
+  gap: 10px;
+}
+.location-info {
+  margin-top: 10px !important;
+}

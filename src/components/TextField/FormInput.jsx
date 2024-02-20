@@ -50,3 +50,4 @@ FormInput.propTypes = {
   restProps: PropTypes.object,
   variant: PropTypes.oneOf(["outlined", "filled", "standard"]),
 };
+

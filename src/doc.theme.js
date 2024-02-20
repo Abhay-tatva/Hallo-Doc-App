@@ -45,5 +45,30 @@ export const halloDocTheme = createTheme({
         },
       },
     },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          "&.phonebtn": {
+            minWidth: "45px",
+            padding: "7px 12px",
+            height: "100%",
+          },
+          "&.editbtn": {
+            minWidth: "45px",
+            height: "100%",
+          },
+          "&.locationbtn": {
+            height: "100%",
+            minWidth: "45px",
+          },
+          "&.viewbtn, &.backbtn": {
+            backgroundColor: "#39B3C3",
+          },
+          "&.hover": {
+            backgroundColor: "#39B3C3",
+          },
+        },
+      },
+    },
   },
 });

@@ -61,7 +61,7 @@ const MyTable = ({ rows, columns, indicator, dropDown }) => {
 
   const filterRows = (rows, term) => {
     return rows.filter((row) =>
-      Object.values(row).some((value) => {
+      Object.entries(row).some(([key, value]) => {
         if (!value) {
           return false;
         }
@@ -70,10 +70,14 @@ const MyTable = ({ rows, columns, indicator, dropDown }) => {
             ? value.toLowerCase()
             : String(value).toLowerCase();
 
+        if (key === "name") {
+          const nameText = value.props.children[0].props.children;
+          return nameText.toLowerCase().includes(term.toLowerCase());
+        }
+
         return (
           selectedColumn === "all" ||
-          (selectedColumn === "name" &&
-            // selectedColumn !== "phoneNumber" &&
+          (key === selectedColumn &&
             lowerCaseValue.includes(term.toLowerCase())) ||
           (selectedColumn === "dateOfBirth" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||

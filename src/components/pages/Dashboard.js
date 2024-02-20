@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import { Box } from "@mui/system";
-import Dashboardmain from "../DashboardMain/dashboardmain";
 import "../dashboard.css";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import PendingIcon from "@mui/icons-material/Pending";
@@ -132,7 +131,6 @@ const Dashboard = () => {
   return (
     <Box container className="dashboard-container">
       <Header />
-      <Dashboardmain />
       {/* <Container> */}
       <Grid container spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}>
         {cards.map((card, index) => {
