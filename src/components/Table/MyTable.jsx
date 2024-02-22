@@ -25,7 +25,7 @@ import Fade from "@mui/material/Fade";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../constant/route";
+import { AppRoutes } from "../../constant/route";
 
 const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
   const [searchTerm, setSearchTerm] = useState("");

@@ -40,7 +40,7 @@ import {
   toCloseDropdown,
   unpaidColumns,
   unpaidDropdown,
-} from "../constant/common";
+} from "../../constant/common";
 import CancelModal from "../Modal/CancelModal";
 import AssignModal from "../Modal/AssignModal";
 import ConfirmBlockModal from "../Modal/ConfirmBlockModal";

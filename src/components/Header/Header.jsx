@@ -5,7 +5,7 @@ import { patient } from "../assests/images";
 import { Button } from "../Button/ButtonInput";
 import "./header.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { AppRoutes } from "../constant/route";
+import { AppRoutes } from "../../constant/route";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Menu from "@mui/icons-material/Menu";
 import { useAuth } from "../../auth";

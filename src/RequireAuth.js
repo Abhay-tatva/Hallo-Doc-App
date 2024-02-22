@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "./auth";
-import { AppRoutes } from "./components/constant/route";
+import { AppRoutes } from "./constant/route";
 import { ToastContainer, toast } from "react-toastify";
 
 export const RequireAuth = ({ children }) => {

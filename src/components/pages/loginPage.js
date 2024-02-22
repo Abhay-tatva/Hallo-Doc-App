@@ -8,12 +8,11 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { FormInput } from "../TextField/FormInput";
-import { AppRoutes } from "../constant/route";
+import { AppRoutes } from "../../constant/route";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../Button/ButtonInput";
 import { useAuth } from "../../auth";
 import { LoginSchema } from "../ValidationSchema/validationSchema";
-
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = React.useState(false);

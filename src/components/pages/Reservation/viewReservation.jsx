@@ -15,7 +15,7 @@ import { FormInput } from "../../TextField/FormInput";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "../../constant/route";
+import { AppRoutes } from "../../../constant/route";
 import Header from "../../Header/Header";
 import { useFormik } from "formik";
 import { viewReservationSchema } from "../../ValidationSchema/validationSchema";

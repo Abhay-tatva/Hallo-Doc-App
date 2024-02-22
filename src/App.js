@@ -3,7 +3,7 @@ import "./App.css";
 import LoginPage from "./components/pages/loginPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ForgotPasswordPage from "./components/pages/Forgot-Pass";
-import { AppRoutes } from "./components/constant/route";
+import { AppRoutes } from "./constant/route";
 import Dashboard from "./components/pages/Dashboard";
 import { ThemeProvider } from "@mui/material";
 import { halloDocTheme } from "./doc.theme";

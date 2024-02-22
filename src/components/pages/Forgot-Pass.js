@@ -6,7 +6,7 @@ import Patient1 from "../assests/images/patient.png";
 // import Visibility from "@mui/icons-material/Visibility";
 // import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { AppRoutes } from "../constant/route";
+import { AppRoutes } from "../../constant/route";
 import { FormInput } from "../TextField/FormInput";
 import { Link } from "react-router-dom";
 import { Button } from "../Button/ButtonInput";
