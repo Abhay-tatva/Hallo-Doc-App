@@ -2,5 +2,6 @@ export const AppRoutes = {
   LOGIN: "/login",
   FORGOTPASS: "/forgot-password",
   DASHBOARD: "/dashboard",
-  RESERVATION: "/viewreservation",
+  RESERVATION: "/dashboard/viewreservation",
+  NOTES: "/dashboard/viewnotes",
 };

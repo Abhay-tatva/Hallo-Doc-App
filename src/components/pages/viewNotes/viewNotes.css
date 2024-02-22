@@ -1,0 +1,22 @@
+.view-notes-container {
+  background-color: #f6f6f6;
+  height: 73vh;
+  margin-top: 2px;
+  padding: 10px;
+}
+.patient-notes-box {
+  height: 250px;
+  padding: 20px;
+}
+/* .view-notes-area {
+  padding: 20px !important;
+} */
+.transfer-notes {
+  padding: 12px;
+  display: flex;
+}
+.save-change {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 70px;
+}

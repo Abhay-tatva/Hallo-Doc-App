@@ -1,6 +1,5 @@
 import React from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { Typography, Grid, InputAdornment } from "@mui/material";
 import Docimg from "../assests/images/doctor.jpg";
 import Patient1 from "../assests/images/patient.png";
@@ -12,18 +11,14 @@ import { FormInput } from "../TextField/FormInput";
 import { Link } from "react-router-dom";
 import { Button } from "../Button/ButtonInput";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-
-const validationSchema = Yup.object({
-  username: Yup.string().required("Username is required"),
-  //   password: Yup.string().required("Password is required"),
-});
+import { ForgotPassSchema } from "../ValidationSchema/validationSchema";
 
 const ForgotPasswordPage = () => {
   const formik = useFormik({
     initialValues: {
       username: "",
     },
-    validationSchema: validationSchema,
+    validationSchema: ForgotPassSchema,
     onSubmit: (values) => {
       console.log("Form submitted", values);
     },
@@ -36,7 +31,7 @@ const ForgotPasswordPage = () => {
         <img src={Docimg} alt="doctor.jpg" style={{ width: "100%" }} />
       </Grid>
       <Grid item xs={12} md={6} className="form-container">
-      <div className="blur-image"></div>
+        <div className="blur-image"></div>
         <div className="wrapper-container">
           <div className="hallodoc-logo">
             <img src={Patient1} alt="patient.jpg" />

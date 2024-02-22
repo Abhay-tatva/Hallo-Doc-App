@@ -24,14 +24,17 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../constant/route";
 
-const MyTable = ({ rows, columns, indicator, dropDown }) => {
+const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedColumn, setSelectedColumn] = useState("name");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
+  const navigate = useNavigate();
 
   const notify = () => toast("Phone number Copyied successfully!");
 
@@ -115,15 +118,20 @@ const MyTable = ({ rows, columns, indicator, dropDown }) => {
   const handleClose = (action) => {
     setAnchorEl(null);
     switch (action) {
-      case "assign":
+      case "Assign Case":
+        onClick(action);
         break;
-      case "cancel":
+      case "Cancel Case":
+        onClick(action);
         break;
-      case "view":
+      case "View Case":
+        navigate(AppRoutes.RESERVATION);
         break;
-      case "view Notes":
+      case "View Notes":
+        navigate(AppRoutes.NOTES);
         break;
       case "Block Patient":
+        onClick(action);
         break;
       default:
         break;
@@ -276,7 +284,9 @@ const MyTable = ({ rows, columns, indicator, dropDown }) => {
                                       return (
                                         <MenuItem
                                           key={data.id}
-                                          onClick={handleClose}
+                                          onClick={() => {
+                                            handleClose(data.name);
+                                          }}
                                           disableRipple
                                         >
                                           {data.icon}&nbsp;{data.name}

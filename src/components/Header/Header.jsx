@@ -1,44 +1,44 @@
-import {
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItemButton,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import React from "react";
 import { patient } from "../assests/images";
 import { Button } from "../Button/ButtonInput";
 import "./header.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../constant/route";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Menu from "@mui/icons-material/Menu";
+import { useAuth } from "../../auth";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    auth.logout();
+    navigate(AppRoutes.LOGIN);
+  };
 
   return (
     <Box>
       <Box className="header">
-        <Link to={AppRoutes.LOGIN}>
+        <Link to={AppRoutes.DASHBOARD}>
           <Box className="header-logo-image">
             <img src={patient} alt="HalloDoc" />
           </Box>
         </Link>
 
         <Box className="header-user-detail">
-          <Typography>Welcome</Typography>
-          <Link to={AppRoutes.LOGIN}>
-            <Button
-              name="Log Out"
-              variant="outlined"
-              size="medium"
-              className="log-out-btn"
-            />
-          </Link>
+          <Typography>Welcome {auth.user}</Typography>
+          {/* <Link to={AppRoutes.LOGIN}> */}
+          <Button
+            name="Log Out"
+            variant="outlined"
+            size="medium"
+            className="log-out-btn"
+            onClick={handleLogout}
+          />
+          {/* </Link> */}
           <Button variant="outlined" size="large" className="dark-btn icon-btn">
             <IconButton size="small">
               <DarkModeOutlinedIcon />
@@ -48,12 +48,9 @@ const Header = () => {
             variant="outlined"
             size="large"
             className="toggle-btn icon-btn"
+            onClick={() => setOpen(true)}
           >
-            <IconButton
-              variant="outlined"
-              color="neutral"
-              onClick={() => setOpen(true)}
-            >
+            <IconButton variant="outlined" color="neutral">
               <Menu />
             </IconButton>
           </Button>
@@ -119,7 +116,7 @@ const Header = () => {
         </li>
       </Box>
 
-      <Drawer open={open} onClose={() => setOpen(false)}>
+      <Drawer open={open} onClose={() => setOpen(false)} className="sidebar">
         <Box
           sx={{
             display: "flex",
@@ -136,90 +133,38 @@ const Header = () => {
               <DarkModeOutlinedIcon />
             </IconButton>
           </Button>
-          <Typography
-            component="label"
-            htmlFor="close-icon"
-            fontSize="sm"
-            fontWeight="lg"
-            sx={{ cursor: "pointer" }}
-          >
-            Close
-          </Typography>
-          <CloseOutlinedIcon id="close-icon" sx={{ position: "initial" }} />
+
+          <CloseOutlinedIcon
+            onClick={() => setOpen(false)}
+            id="close-icon"
+            sx={{ position: "initial" }}
+          />
         </Box>
-        <List
-          component="nav"
-          sx={{
-            flex: "none",
-            fontSize: "xl",
-            "& > div": { justifyContent: "center" },
-          }}
-        >
-          <ListItemButton>
-            <NavLink
-              to={AppRoutes.DASHBOARD}
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Dashboard
-            </NavLink>
-          </ListItemButton>
-          <ListItemButton>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Provider Location
-            </NavLink>
-          </ListItemButton>
-          <ListItemButton>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              My Profile
-            </NavLink>
-          </ListItemButton>
-          <ListItemButton>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Providers
-            </NavLink>
-          </ListItemButton>
-          <ListItemButton>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Partners
-            </NavLink>
-          </ListItemButton>
-          <ListItemButton>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Access
-            </NavLink>
-          </ListItemButton>
-          <ListItemButton>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Records
-            </NavLink>
-          </ListItemButton>
-          <ListItemButton>
-            <Button
-              name="Log Out"
-              variant="outlined"
-              size="medium"
-              className="MuiButton-textSizeSmall"
-            />
-          </ListItemButton>
-        </List>
+        <NavLink to={AppRoutes.DASHBOARD} className="sidelinks">
+          Dashboard
+        </NavLink>
+        <NavLink to="/" className="sidelinks">
+          Provider Location
+        </NavLink>
+        <NavLink to="/" className="sidelinks">
+          My Profile
+        </NavLink>
+        <NavLink to="/" className="sidelinks">
+          Providers
+        </NavLink>
+        <NavLink to="/" className="sidelinks">
+          Partners
+        </NavLink>
+        <NavLink to="/" className="sidelinks">
+          Access
+        </NavLink>
+        <NavLink to="/" className="sidelinks">
+          Records
+        </NavLink>
+
+        <NavLink to={AppRoutes.LOGIN} className="sidelinks">
+          Logout
+        </NavLink>
       </Drawer>
     </Box>
   );

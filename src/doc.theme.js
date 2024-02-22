@@ -70,5 +70,17 @@ export const halloDocTheme = createTheme({
         },
       },
     },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          minWidth: "250px",
+        },
+        root: {
+          "&.sidebar .MuiDrawer-paper": {
+            backgroundColor: "#d1e7df",
+          },
+        },
+      },
+    },
   },
 });

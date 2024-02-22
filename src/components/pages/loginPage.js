@@ -1,59 +1,44 @@
 import React from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { Typography, Grid, InputAdornment, IconButton } from "@mui/material";
 import Docimg from "../assests/images/doctor.jpg";
 import Patient1 from "../assests/images/patient.png";
-// import { useState, useEffect } from "react";
-// import Visibility from "@mui/icons-material/Visibility";
-// import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { FormInput } from "../TextField/FormInput";
 import { AppRoutes } from "../constant/route";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../Button/ButtonInput";
-const validationSchema = Yup.object({
-  username: Yup.string().required("Username is required"),
-  password: Yup.string().required("Password is required"),
-});
+import { useAuth } from "../../auth";
+import { LoginSchema } from "../ValidationSchema/validationSchema";
+
 
 const LoginPage = () => {
-  // const [apiData, setApiData] = useState([]);
-
-  // useEffect(() => {
-  //   // const fetchData = async () => {
-  //   //   try {
-  //   //     const response = await axios.get(
-  //   fetch(
-  //     "https://adminapi.staging.wymap.com.au/jobs?page=1&size=100&search=1000&filter=%7B%22durationOver3Hours%22:1,%22driverId%22:[48,322]%7D"
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) => setApiData(data))
-  //     .catch((error) => console.error("error fetching users:", error));
-  // }, []);
   const [showPassword, setShowPassword] = React.useState(false);
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: LoginSchema,
+    onSubmit: (values) => {
+      auth.login(values.username);
+      navigate(AppRoutes.DASHBOARD, { replace: true });
+      console.log("Form submitted", values);
+    },
+  });
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log("Form submitted", values);
-    },
-  });
 
   return (
-    // <Container className="container">
     <Grid container spacing={2} height="100vh">
       <Grid item xs={12} md={6} className="image-container">
         <img src={Docimg} alt="doctor.jpg" style={{ width: "100%" }} />
@@ -153,12 +138,6 @@ const LoginPage = () => {
         </div>
       </Grid>
     </Grid>
-    // </Container>
-    // <div>
-    //   {apiData.map((user) => (
-    //     <div key={apiData.id}>{user.name}</div>
-    //   ))}
-    // </div>
   );
 };
 

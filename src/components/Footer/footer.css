@@ -1,0 +1,23 @@
+.footer-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 0.5rem;
+  padding-right: 2rem;
+  color: white;
+  background-color: #252424;
+  height: 2.75rem;
+  font-size: small;
+  font-weight: lighter;
+  position: relative;
+  /* width: 100vw; */
+}
+
+.footer-container > span:first-child::after {
+  position: absolute;
+  content: "";
+  top: 0.75rem;
+  right: 7rem;
+  height: 1.25rem;
+  border-right: 1px solid #9e9798;
+}
