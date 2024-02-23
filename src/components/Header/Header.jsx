@@ -9,14 +9,18 @@ import { AppRoutes } from "../../constant/route";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Menu from "@mui/icons-material/Menu";
 import { useAuth } from "../../auth";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/loginSlice/loginSlice";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
   const auth = useAuth();
   const navigate = useNavigate();
   const handleLogout = () => {
     auth.logout();
     navigate(AppRoutes.LOGIN);
+    dispatch(logout());
   };
 
   return (

@@ -11,6 +11,7 @@ import ViewReservation from "./components/pages/Reservation/viewReservation";
 import ViewNotes from "./components/pages/viewNotes/viewNotes";
 import { AuthProvider } from "./auth";
 import { RequireAuth } from "./RequireAuth";
+import ViewUpload from "./components/pages/viewUpload/viewUpload";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             />
             <Route path={AppRoutes.RESERVATION} element={<ViewReservation />} />
             <Route path={AppRoutes.NOTES} element={<ViewNotes />} />
+            <Route path={AppRoutes.VIEWUPLOAD} element={<ViewUpload />} />
           </Routes>
         </AuthProvider>
       </ThemeProvider>

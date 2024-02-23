@@ -1,0 +1,22 @@
+.upload-main-container {
+  background-color: #f6f6f6;
+}
+
+.upload-main-wrapper {
+  padding: 1rem 3rem;
+}
+
+.upload-container {
+  padding: 1.25rem;
+}
+
+.patient-name {
+  color: #01bce9;
+}
+.document-cl {
+  min-width: 350px;
+  
+}
+.date-cl {
+  min-width: 100px;
+}

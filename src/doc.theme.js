@@ -23,6 +23,15 @@ import { createTheme } from "@mui/material";
 
 export const halloDocTheme = createTheme({
   components: {
+    MuiTableRow: {
+      styleOverrides: {
+        head: {
+          "&::last-child": {
+            textAlign: "center",
+          },
+        },
+      },
+    },
     MuiTableCell: {
       styleOverrides: {
         head: {

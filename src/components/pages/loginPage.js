@@ -13,20 +13,41 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../Button/ButtonInput";
 import { useAuth } from "../../auth";
 import { LoginSchema } from "../ValidationSchema/validationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loginFailure,
+  loginRequest,
+  loginSuccess,
+} from "../../redux/loginSlice/loginSlice";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const dispatch = useDispatch();
+  const { error } = useSelector((state) => state.login);
+  const onSubmit = (values) => {
+    auth.login(values.username);
+    console.log("Values Login", values);
+    dispatch(loginRequest());
+    if (
+      values.username === "admin@gmail.com" &&
+      values.password === "admin@123"
+    ) {
+      dispatch(loginSuccess());
+      toast.success("You are login Successfully");
+      navigate(AppRoutes.DASHBOARD, { replace: true });
+    } else {
+      dispatch(loginFailure("Invalid username or password"));
+      toast.error(error);
+    }
+  };
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
     validationSchema: LoginSchema,
-    onSubmit: (values) => {
-      auth.login(values.username);
-      navigate(AppRoutes.DASHBOARD, { replace: true });
-      console.log("Form submitted", values);
-    },
+    onSubmit,
   });
   const auth = useAuth();
   const navigate = useNavigate();

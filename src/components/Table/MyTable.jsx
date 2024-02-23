@@ -35,6 +35,7 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
   const navigate = useNavigate();
+  const [indicatorName, setIndicatorName] = useState("");
 
   const notify = () => toast("Phone number Copyied successfully!");
 
@@ -62,7 +63,12 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
     setPage(0);
   };
 
+  const handleClickIndicator = (indicatorValue) => {
+    setIndicatorName(indicatorValue);
+  };
+
   const filterRows = (rows, term) => {
+    console.log("indicatorName", indicatorName);
     return rows.filter((row) =>
       Object.entries(row).some(([key, value]) => {
         if (!value) {
@@ -206,6 +212,7 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
                       display: "inline-block",
                       marginLeft: "30px",
                     }}
+                    onClick={() => handleClickIndicator(value.name)}
                   ></span>
                   <Typography ml={1}>{value.name}</Typography>
                 </React.Fragment>
