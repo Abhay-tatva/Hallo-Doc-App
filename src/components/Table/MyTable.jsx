@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,47 +11,48 @@ import {
   TablePagination,
   Typography,
   InputAdornment,
-} from '@mui/material';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import './table.css';
-import {FormInput} from '../TextField/FormInput';
-import {Box} from '@mui/system';
-import {Button} from '../Button/ButtonInput';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Fade from '@mui/material/Fade';
-import {toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import {useNavigate} from 'react-router-dom';
-import {AppRoutes} from '../../constant/route';
+} from "@mui/material";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import "./table.css";
+import { FormInput } from "../TextField/FormInput";
+import { Box } from "@mui/system";
+import { Button } from "../Button/ButtonInput";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Fade from "@mui/material/Fade";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../constant/route";
 
-const MyTable = ({rows, columns, indicator, dropDown, onClick}) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedColumn, setSelectedColumn] = useState('name');
-  const [additionalFilter, setAdditionalFilter] = useState('all');
+const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedColumn, setSelectedColumn] = useState("name");
+  const [additionalFilter, setAdditionalFilter] = useState("all");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
   const navigate = useNavigate();
-  const [indicatorName, setIndicatorName] = useState('');
+  const [indicatorName, setIndicatorName] = useState("");
+  const [rowId, setRowId] = useState(null);
 
-  const notify = () => toast('Phone number Copyied successfully!');
+  const notify = () => toast("Phone number Copyied successfully!");
 
   const copyButtonText = (btnId, event) => {
     const textToCopy = event.target.innerText;
 
     navigator.clipboard
-        .writeText(textToCopy)
-        .then(() => {
-          setCopiedStates((prev) => ({...prev, [btnId]: true}));
-          notify();
-          setTimeout(() => {
-            setCopiedStates((prev) => ({...prev, [btnId]: false}));
-          }, 1000);
-        })
-        .catch((err) => console.error('Error copying text: ', err));
+      .writeText(textToCopy)
+      .then(() => {
+        setCopiedStates((prev) => ({ ...prev, [btnId]: true }));
+        notify();
+        setTimeout(() => {
+          setCopiedStates((prev) => ({ ...prev, [btnId]: false }));
+        }, 1000);
+      })
+      .catch((err) => console.error("Error copying text: ", err));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -68,44 +69,43 @@ const MyTable = ({rows, columns, indicator, dropDown, onClick}) => {
   };
 
   const filterRows = (rows, term) => {
-    console.log('indicatorName', indicatorName);
     return rows.filter((row) =>
       Object.entries(row).some(([key, value]) => {
         if (!value) {
           return false;
         }
         const lowerCaseValue =
-          typeof value === 'string' ?
-            value.toLowerCase() :
-            String(value).toLowerCase();
+          typeof value === "string"
+            ? value.toLowerCase()
+            : String(value).toLowerCase();
 
-        if (key === 'name') {
+        if (key === "name") {
           const nameText = value.props.children[0].props.children;
           return nameText.toLowerCase().includes(term.toLowerCase());
         }
 
         return (
-          selectedColumn === 'all' ||
+          selectedColumn === "all" ||
           (key === selectedColumn &&
             lowerCaseValue.includes(term.toLowerCase())) ||
-          (selectedColumn === 'dateOfBirth' &&
+          (selectedColumn === "dateOfBirth" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === 'requestor' &&
+          (selectedColumn === "requestor" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === 'requestedDate' &&
+          (selectedColumn === "requestedDate" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === 'phoneNumber' &&
+          (selectedColumn === "phoneNumber" &&
             row[selectedColumn].toString().includes(term)) ||
-          (selectedColumn === 'address' &&
+          (selectedColumn === "address" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === 'notes' &&
+          (selectedColumn === "notes" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === 'chatWith' &&
+          (selectedColumn === "chatWith" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === 'action' &&
+          (selectedColumn === "action" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase()))
         );
-      }),
+      })
     );
   };
 
@@ -118,37 +118,43 @@ const MyTable = ({rows, columns, indicator, dropDown, onClick}) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+
+  const handleClick = (event, id) => {
+    setRowId(id);
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = (action) => {
     setAnchorEl(null);
     switch (action) {
-      case 'Assign Case':
+      case "Assign Case":
         onClick(action);
         break;
-      case 'Cancel Case':
+      case "Cancel Case":
         onClick(action);
         break;
-      case 'View Case':
+      case "View Case":
         navigate(AppRoutes.RESERVATION);
         break;
-      case 'View Notes':
+      case "View Notes":
         navigate(AppRoutes.NOTES);
         break;
-      case 'Block Patient':
+      case "Block Patient":
         onClick(action);
         break;
-      case 'View Upload':
+      case "View Upload":
         navigate(AppRoutes.VIEWUPLOAD);
         break;
-      case 'Orders':
+      case "Orders":
         navigate(AppRoutes.ORDER);
         break;
-      case 'Transfer':
+      case "Transfer":
         onClick(action);
         break;
-      case 'Clear Case':
+      case "Clear Case":
+        onClick(action, rowId);
+        break;
+      case "Send Agreement":
         onClick(action);
         break;
       default:
@@ -163,7 +169,7 @@ const MyTable = ({rows, columns, indicator, dropDown, onClick}) => {
         alignItems="center"
         justifyContent="space-between"
         className="table-head"
-        spacing={{xs: 2}}
+        spacing={{ xs: 2 }}
       >
         <Grid item xs={12} md={12} lg={6}>
           <Box className="search-dropdown">
@@ -208,8 +214,8 @@ const MyTable = ({rows, columns, indicator, dropDown, onClick}) => {
             </FormInput>
           </Box>
         </Grid>
-        <Grid container justifyContent={'flex-end'} item xs={12} md={12} lg={6}>
-          <Box sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
+        <Grid container justifyContent={"flex-end"} item xs={12} md={12} lg={6}>
+          <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
             <Button name="All" variant="outlined" />
 
             {indicator.map((value, index) => {
@@ -217,24 +223,26 @@ const MyTable = ({rows, columns, indicator, dropDown, onClick}) => {
                 <React.Fragment key={index}>
                   <span
                     style={{
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
+                      width: "12px",
+                      height: "12px",
+                      borderRadius: "50%",
                       backgroundColor: value.color,
-                      display: 'inline-block',
-                      marginLeft: '30px',
+                      display: "inline-block",
+                      marginLeft: "30px",
                     }}
                     onClick={() => handleClickIndicator(value.name)}
                   ></span>
-                  <Typography ml={1}>{value.name}</Typography>
+                  <Typography ml={1} clas>
+                    {value.name}
+                  </Typography>
                 </React.Fragment>
               );
             })}
           </Box>
         </Grid>
       </Grid>
-      <Paper sx={{width: '100%', overflow: 'hidden'}}>
-        <TableContainer sx={{maxHeight: 440}}>
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -242,7 +250,7 @@ const MyTable = ({rows, columns, indicator, dropDown, onClick}) => {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{minWidth: column.minWidth}}
+                    style={{ minWidth: column.minWidth }}
                     className="table-head-label"
                   >
                     {column.label}
@@ -253,49 +261,50 @@ const MyTable = ({rows, columns, indicator, dropDown, onClick}) => {
 
             <TableBody>
               {filteredData
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <TableRow
-                        key={row.id}
-                        className={`requestor-${row.requestor.toLowerCase()}`}
-                      >
-                        {columns.map((column) => {
-                          return (
-                            <TableCell key={column.id}>
-                              {['phoneNumber', 'chatWith', 'action'].includes(
-                                  column.id,
-                              ) ? (
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                ?.map((row) => {
+                  return (
+                    <TableRow
+                      key={row.id}
+                      className={`requestor-${row.requestor.toLowerCase()}`}
+                    >
+                      {columns?.map((column) => {
+                        return (
+                          <TableCell key={column.id}>
+                            {["phoneNumber", "chatWith", "action"].includes(
+                              column.id
+                            ) ? (
                               <>
                                 <Button
                                   className="phone-btn"
                                   name={row[column.id]}
                                   startIcon={
-                                    (column.id === 'phoneNumber' && (
+                                    (column.id === "phoneNumber" && (
                                       <LocalPhoneOutlinedIcon />
                                     )) ||
-                                    (column.id === 'chatWith' && (
+                                    (column.id === "chatWith" && (
                                       <PersonOutlineOutlinedIcon />
                                     ))
                                   }
                                   variant="outlined"
                                   color="inherit"
                                   onClick={(e) => {
-                                    column.id === 'phoneNumber' &&
+                                    column.id === "phoneNumber" &&
                                       copyButtonText(row.id, e);
-                                    column.id === 'action' && handleClick(e);
+                                    column.id === "action" &&
+                                      handleClick(e, row.id);
                                   }}
                                 />
-                                {column.id === 'phoneNumber' &&
+                                {column.id === "phoneNumber" &&
                                   copiedStates[row.id]}
-                                {column.id === 'action' && (
+                                {column.id === "action" && (
                                   <Menu
                                     id="fade-menu"
                                     MenuListProps={{
-                                      'aria-labelledby': 'fade-button',
+                                      "aria-labelledby": "fade-button",
                                     }}
                                     anchorEl={anchorEl}
-                                    open={open}
+                                    open={open && row.id === rowId}
                                     onClose={handleClose}
                                     TransitionComponent={Fade}
                                   >
@@ -318,12 +327,12 @@ const MyTable = ({rows, columns, indicator, dropDown, onClick}) => {
                             ) : (
                               row[column.id]
                             )}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>

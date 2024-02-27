@@ -46,6 +46,7 @@ import AssignModal from "../Modal/AssignModal";
 import ConfirmBlockModal from "../Modal/ConfirmBlockModal";
 import TransferModal from "../Modal/TransferModal";
 import ClearCaseModal from "../Modal/ClearCaseModal";
+import SendAgreementModal from "../Modal/SendAgreementModal";
 
 const cards = [
   {
@@ -94,26 +95,35 @@ const cards = [
 
 const Dashboard = () => {
   const [isActive, setIsActive] = useState(true);
+  const [filterRows, setFilterRows] = useState(rows);
+  const [rowId, setRowId] = useState(null);
   const [activeButton, setActiveButton] = useState(0);
   const [columns, setColumns] = useState(newColumns);
   const [dropDown, setDropDown] = useState(newDropdown);
   const [open, setOpen] = React.useState(false);
   const [modalName, setModalName] = useState("");
-  const handleOpen = (name) => {
+
+  const handleOpen = (name, rowId) => {
+    setRowId(rowId);
     setModalName(name);
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
     setModalName("");
   };
+
   const handleClear = (id) => {
-    rows.filter((row) => id !== row.id);
+    setFilterRows((prevRows) => prevRows.filter((row) => id !== row.id));
+    handleClose();
   };
+
   const handleClick = (index) => {
     setActiveButton(index);
     setIsActive(true);
   };
+
   useEffect(() => {
     switch (activeButton) {
       case 0:
@@ -246,7 +256,7 @@ const Dashboard = () => {
           </Grid>
         </Box>
         <MyTable
-          rows={rows}
+          rows={filterRows}
           columns={columns}
           indicator={indicator}
           dropDown={dropDown}
@@ -277,7 +287,17 @@ const Dashboard = () => {
         open={open && modalName === "Clear Case"}
         handleClose={handleClose}
         handleClear={handleClear}
-        handleOpen={modalName === "Clear Case" ? handleOpen : null}
+        rowId={rowId}
+        handleOpen={
+          modalName === "Clear Case"
+            ? () => handleOpen("Clear Case", rowId)
+            : null
+        }
+      />
+      <SendAgreementModal
+        open={open && modalName === "Send Agreement"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Send Agreement" ? handleOpen : null}
       />
     </>
   );

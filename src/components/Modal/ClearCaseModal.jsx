@@ -4,9 +4,9 @@ import { Button } from "../Button/ButtonInput";
 import { info } from "../assests/images";
 import "./modal.css";
 
-const ClearCaseModal = ({ open, handleClose, handleOpen, handleClear }) => {
+const ClearCaseModal = ({ open, handleClose, handleOpen, handleClear, rowId }) => {
   const handleClearButtonClick = () => {
-    handleClear();
+    handleClear(rowId);
   };
   return (
     <Modal open={open} handleOpen={handleOpen}>

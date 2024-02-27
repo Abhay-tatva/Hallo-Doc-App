@@ -1,19 +1,19 @@
-import React from 'react';
-import {Box, Typography} from '@mui/material';
-import {FormInput} from '../TextField/FormInput';
-import {Button} from '../Button/ButtonInput';
-import {useFormik} from 'formik';
-import BasicModal from './Modal';
-import {confirmBlockModalSchema} from '../ValidationSchema/validationSchema';
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import { FormInput } from "../TextField/FormInput";
+import { Button } from "../Button/ButtonInput";
+import { useFormik } from "formik";
+import BasicModal from "./Modal";
+import { confirmBlockModalSchema } from "../ValidationSchema/validationSchema";
 
-const ConfirmBlockModal = ({open, handleClose, handleOpen}) => {
+const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
   const formik = useFormik({
     initialValues: {
-      blockRequest: '',
+      blockRequest: "",
     },
     validationSchema: confirmBlockModalSchema,
     onSubmit: (values) => {
-      console.log('submmitted', values);
+      console.log("submmitted", values);
     },
   });
   return (
@@ -26,7 +26,7 @@ const ConfirmBlockModal = ({open, handleClose, handleOpen}) => {
       <form>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
-            Patient Name :<span style={{color: 'aqua'}}>test test</span>
+            Patient Name :<span style={{ color: "aqua" }}>test test</span>
           </Typography>
           <FormInput
             name="blockRequest"
