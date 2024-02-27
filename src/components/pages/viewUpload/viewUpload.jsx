@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { Button } from "../../Button/ButtonInput";
+import React, {useState} from 'react';
+import {Button} from '../../Button/ButtonInput';
 import {
   Box,
   Container,
   Paper,
   TableSortLabel,
   Typography,
-} from "@mui/material";
-import Header from "../../Header/Header";
-import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+} from '@mui/material';
+import Header from '../../Header/Header';
+import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import {
   Table,
   TableBody,
@@ -17,24 +20,23 @@ import {
   TableHead,
   TableRow,
   Checkbox,
-  IconButton,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import "./viewUpload.css";
-import { useNavigate } from "react-router-dom";
-import { FormInput } from "../../TextField/FormInput";
+} from '@mui/material';
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import './viewUpload.css';
+import {useNavigate} from 'react-router-dom';
+// import { FormInput } from "../../TextField/FormInput";
 
 const rows = [
-  { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
-  { id: 2, document: "Document 2", uploadDate: "2024-02-21" },
-  { id: 3, document: "Document 3", uploadDate: "2024-02-22" },
+  {id: 1, document: 'Document 1', uploadDate: '2024-02-20'},
+  {id: 2, document: 'Document 2', uploadDate: '2024-02-21'},
+  {id: 3, document: 'Document 3', uploadDate: '2024-02-22'},
 ];
 
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("uploadDate");
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('uploadDate');
   const navigate = useNavigate();
 
   const handleSelectAllClick = (event) => {
@@ -58,8 +60,8 @@ const ViewUpload = () => {
       newSelected = newSelected.concat(selected.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+          selected.slice(0, selectedIndex),
+          selected.slice(selectedIndex + 1),
       );
     }
 
@@ -78,9 +80,9 @@ const ViewUpload = () => {
   };
 
   const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
+    return order === 'desc' ?
+      (a, b) => descendingComparator(a[orderBy], b[orderBy]) :
+      (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
   };
 
   const descendingComparator = (a, b) => {
@@ -94,15 +96,69 @@ const ViewUpload = () => {
   };
 
   const handleRequestSort = (property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState([]);
+
+  // console.log(selectedFile);
+  // }
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    console.log('event', event.target.files);
+    event.preventDefault();
+    setSelectedFile(event.target.files);
   };
+
+  const handleUpload = () => {
+    // Handle the upload functionality here with the selected file
+    if (selectedFile) {
+      for (let i = 0; i < selectedFile.length; i++) {
+        const newFile = {
+          id: rows.length + 1,
+          document: selectedFile[i].name,
+          uploadDate: new Date().toISOString().split('T')[0],
+        };
+        console.log('New file', newFile);
+        rows.push(newFile);
+      }
+      setSelectedFile(null); // Reset selected file after upload
+    }
+  };
+
+  const handleDownload = (document) => {
+    console.log('downloading document:', document);
+  };
+
+  const handleDelete = (id) => {
+    const updatedRows = rows.filter((row) => row.id !== id);
+    rows.length = 0;
+    Array.prototype.push.apply(rows, updatedRows);
+    setSelected(selected.filter((selectedId) => selectedId !== id));
+  };
+
+  const handleDeleteAll = () => {
+    const updatedRows = rows.filter((row) => !selected.includes(row.id));
+    rows.length = 0;
+    Array.prototype.push.apply(rows, updatedRows);
+    setSelected([]);
+  };
+
+  const handleDownloadAll = () => {
+    console.log('downloading All document:', document);
+
+    selected.forEach((id) => {
+      const file = rows.find((row) => row.id === id);
+      if (file) {
+        handleDownload(file.document);
+      }
+    });
+  };
+
+  // const handleSendMail = () => {
+  //   console.log("Sending mail...");
+  // };
   return (
     <>
       <Header />
@@ -132,29 +188,64 @@ const ViewUpload = () => {
           <Paper className="upload-container">
             <Typography variant="caption">Patient Name</Typography>
             <Typography variant="h6">
-              <b className="patient-name">Bhoomi Prajapati</b>(MD101819PRBH0005)
+              <b className="patient-name">Bhoomi Prajapati</b>{' '}
+              (MD101819PRBH0005)
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" marginTop="10px">
               Check here to review and add files that you or the Client/Member
               has attached to the Request.
             </Typography>
-            <Box>
-              <input
-                style={{ display: "none" }}
-                accept="image/*" // Specify accepted file types if needed
-                id="formFile"
-                multiple
-                type="file"
-                onChange={handleFileChange}
-              />
-              <FormInput
-                type="text"
-                value={selectedFile ? selectedFile.name : ""}
-                variant="standard"
-                fullWidth
-                disabled
-              />
-            </Box>
+
+            <form>
+              <Box position="relative" mb={2} mt={2}>
+                <Box display="flex">
+                  {/* <Box position="absolute" className="file-select">
+                    <label htmlFor="selectfile">Select Files</label>
+                  </Box> */}
+
+                  {/* <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={2}
+                    className="upload-content"
+                  > */}
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    component="label"
+                    className="upload-btn"
+                    title="Upload-files"
+                  >
+                    <input
+                      // accept="image/*"
+                      onChange={handleFileChange}
+                      multiple
+                      type="file"
+                    />
+                  </Button>
+                  {/* </Stack> */}
+
+                  {/* <FormInput
+                    type="file"
+                    id="selectfile"
+                    fullWidth
+                    inputProps={{
+                      multiple: true,
+                    }}
+                    className="file-input"
+                    onChange={handleFileChange}
+                  /> */}
+
+                  <Button
+                    name="Upload"
+                    variant="contained"
+                    size="large"
+                    startIcon={<CloudUploadOutlinedIcon />}
+                    onClick={handleUpload}
+                  />
+                </Box>
+              </Box>
+            </form>
             <Box
               display="flex"
               justifyContent="space-between"
@@ -171,8 +262,14 @@ const ViewUpload = () => {
                   name="Download All"
                   variant="outlined"
                   color="primary"
+                  onClick={() => handleDownloadAll('all')}
                 />
-                <Button name="Delete All" variant="outlined" color="primary" />
+                <Button
+                  name="Delete All"
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleDeleteAll('all')}
+                />
                 <Button name="Send Mail" variant="outlined" color="primary" />
               </Box>
             </Box>
@@ -192,9 +289,9 @@ const ViewUpload = () => {
                     <TableCell className="document-cl">Documents</TableCell>
                     <TableCell className="date-cl">
                       <TableSortLabel
-                        active={orderBy === "uploadDate"}
+                        active={orderBy === 'uploadDate'}
                         direction={order}
-                        onClick={() => handleRequestSort("uploadDate")}
+                        onClick={() => handleRequestSort('uploadDate')}
                       >
                         Upload Date
                       </TableSortLabel>
@@ -204,26 +301,33 @@ const ViewUpload = () => {
                 </TableHead>
                 <TableBody>
                   {stableSort(rows, getComparator(order, orderBy)).map(
-                    (row) => (
-                      <TableRow key={row.id} hover>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={isSelected(row.id)}
-                            onClick={(event) => handleClick(event, row.id)}
-                          />
-                        </TableCell>
-                        <TableCell>{row.document}</TableCell>
-                        <TableCell>{row.uploadDate}</TableCell>
-                        <TableCell>
-                          <IconButton aria-label="download">
-                            <CloudDownloadIcon />
-                          </IconButton>
-                          <IconButton aria-label="delete">
-                            <DeleteIcon />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    )
+                      (row) => (
+                        <TableRow key={row.id} hover>
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isSelected(row.id)}
+                              onClick={(event) => handleClick(event, row.id)}
+                            />
+                          </TableCell>
+                          <TableCell>{row.document}</TableCell>
+                          <TableCell>{row.uploadDate}</TableCell>
+                          <TableCell>
+                            <Button
+                              variant="outlined"
+                              onClick={() => handleDownload(row.document)}
+                            >
+                              <CloudDownloadOutlinedIcon />
+                            </Button>
+                          &nbsp;
+                            <Button
+                              variant="outlined"
+                              onClick={() => handleDelete(row.id)}
+                            >
+                              <DeleteOutlinedIcon />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ),
                   )}
                 </TableBody>
               </Table>

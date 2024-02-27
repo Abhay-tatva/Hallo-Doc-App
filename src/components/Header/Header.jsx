@@ -1,24 +1,21 @@
-import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import React from "react";
-import { patient } from "../assests/images";
-import { Button } from "../Button/ButtonInput";
-import "./header.css";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../constant/route";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import Menu from "@mui/icons-material/Menu";
-import { useAuth } from "../../auth";
-import { useDispatch } from "react-redux";
-import { logout } from "../../redux/loginSlice/loginSlice";
+import {Box, Divider, Drawer, IconButton, Typography} from '@mui/material';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import React from 'react';
+import {patient} from '../assests/images';
+import {Button} from '../Button/ButtonInput';
+import './header.css';
+import {Link, NavLink, useNavigate} from 'react-router-dom';
+import {AppRoutes} from '../../constant/route';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import Menu from '@mui/icons-material/Menu';
+import {useDispatch} from 'react-redux';
+import {logout} from '../../redux/loginSlice/loginSlice';
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
-  const auth = useAuth();
   const navigate = useNavigate();
   const handleLogout = () => {
-    auth.logout();
     navigate(AppRoutes.LOGIN);
     dispatch(logout());
   };
@@ -33,7 +30,7 @@ const Header = () => {
         </Link>
 
         <Box className="header-user-detail">
-          <Typography>Welcome {auth.user}</Typography>
+          <Typography>Welcome</Typography>
           {/* <Link to={AppRoutes.LOGIN}> */}
           <Button
             name="Log Out"
@@ -44,9 +41,7 @@ const Header = () => {
           />
           {/* </Link> */}
           <Button variant="outlined" size="large" className="dark-btn icon-btn">
-            <IconButton size="small">
-              <DarkModeOutlinedIcon />
-            </IconButton>
+            <DarkModeOutlinedIcon />
           </Button>
           <Button
             variant="outlined"
@@ -54,9 +49,7 @@ const Header = () => {
             className="toggle-btn icon-btn"
             onClick={() => setOpen(true)}
           >
-            <IconButton variant="outlined" color="neutral">
-              <Menu />
-            </IconButton>
+            <Menu />
           </Button>
         </Box>
       </Box>
@@ -65,7 +58,7 @@ const Header = () => {
         <li>
           <NavLink
             to={AppRoutes.DASHBOARD}
-            className={({ isActive }) => (isActive ? "active" : "")}
+            className={({isActive}) => (isActive ? 'active' : '')}
           >
             Dashboard
           </NavLink>
@@ -73,7 +66,7 @@ const Header = () => {
         <li>
           <NavLink
             to="/"
-            className={({ isActive }) => (isActive ? "active" : "")}
+            className={({isActive}) => (isActive ? 'active' : '')}
           >
             Provider Location
           </NavLink>
@@ -81,7 +74,7 @@ const Header = () => {
         <li>
           <NavLink
             to="/"
-            className={({ isActive }) => (isActive ? "active" : "")}
+            className={({isActive}) => (isActive ? 'active' : '')}
           >
             My Profile
           </NavLink>
@@ -89,7 +82,7 @@ const Header = () => {
         <li>
           <NavLink
             to="/"
-            className={({ isActive }) => (isActive ? "active" : "")}
+            className={({isActive}) => (isActive ? 'active' : '')}
           >
             Providers
           </NavLink>
@@ -97,7 +90,7 @@ const Header = () => {
         <li>
           <NavLink
             to="/"
-            className={({ isActive }) => (isActive ? "active" : "")}
+            className={({isActive}) => (isActive ? 'active' : '')}
           >
             Partners
           </NavLink>
@@ -105,7 +98,7 @@ const Header = () => {
         <li>
           <NavLink
             to="/"
-            className={({ isActive }) => (isActive ? "active" : "")}
+            className={({isActive}) => (isActive ? 'active' : '')}
           >
             Access
           </NavLink>
@@ -113,7 +106,7 @@ const Header = () => {
         <li>
           <NavLink
             to="/"
-            className={({ isActive }) => (isActive ? "active" : "")}
+            className={({isActive}) => (isActive ? 'active' : '')}
           >
             Records
           </NavLink>
@@ -123,11 +116,11 @@ const Header = () => {
       <Drawer open={open} onClose={() => setOpen(false)} className="sidebar">
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
             gap: 0.5,
-            ml: "auto",
+            ml: 'auto',
             mt: 1,
             mr: 2,
           }}
@@ -141,7 +134,7 @@ const Header = () => {
           <CloseOutlinedIcon
             onClick={() => setOpen(false)}
             id="close-icon"
-            sx={{ position: "initial" }}
+            sx={{position: 'initial'}}
           />
         </Box>
         <NavLink to={AppRoutes.DASHBOARD} className="sidelinks">

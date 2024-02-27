@@ -1,20 +1,20 @@
-import React from "react";
-import { Box, MenuItem, Typography } from "@mui/material";
-import { FormInput } from "../TextField/FormInput";
-import { Button } from "../Button/ButtonInput";
-import { useFormik } from "formik";
-import BasicModal from "./Modal";
-import { cancelModalSchema } from "../ValidationSchema/validationSchema";
+import React from 'react';
+import {Box, MenuItem, Typography} from '@mui/material';
+import {FormInput} from '../TextField/FormInput';
+import {Button} from '../Button/ButtonInput';
+import {useFormik} from 'formik';
+import BasicModal from './Modal';
+import {cancelModalSchema} from '../ValidationSchema/validationSchema';
 
-const CancelModal = ({ open, handleClose, handleOpen }) => {
+const CancelModal = ({open, handleClose, handleOpen}) => {
   const formik = useFormik({
     initialValues: {
-      additionalnotes: "",
-      canelReason: "",
+      additionalnotes: '',
+      canelReason: '',
     },
     validationSchema: cancelModalSchema,
     onSubmit: (values) => {
-      console.log("submmitted", values);
+      console.log('submmitted', values);
     },
   });
   return (
@@ -27,7 +27,7 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
       <form>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
-            Patient Name :<span style={{ color: "aqua" }}>test test</span>
+            Patient Name :<span style={{color: 'aqua'}}>test test</span>
           </Typography>
           <FormInput
             fullWidth

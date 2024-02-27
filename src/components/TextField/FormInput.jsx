@@ -1,14 +1,14 @@
-import { TextField as MuiTextField } from "@mui/material";
-import PropTypes from "prop-types";
+import {TextField as MuiTextField} from '@mui/material';
+import PropTypes from 'prop-types';
 
 export const FormInput = ({
   className,
   id,
   label,
-  value = "",
-  helperText = "",
-  type = "text",
-  variant = "outlined",
+  value = '',
+  helperText = '',
+  type = 'text',
+  variant = 'outlined',
   required = false,
   disabled = false,
   error = false,
@@ -48,6 +48,5 @@ FormInput.propTypes = {
   error: PropTypes.bool,
   helperText: PropTypes.string,
   restProps: PropTypes.object,
-  variant: PropTypes.oneOf(["outlined", "filled", "standard"]),
+  variant: PropTypes.oneOf(['outlined', 'filled', 'standard']),
 };
-

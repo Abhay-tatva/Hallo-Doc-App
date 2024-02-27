@@ -1,55 +1,52 @@
-import React from "react";
-import { useFormik } from "formik";
-import { Typography, Grid, InputAdornment, IconButton } from "@mui/material";
-import Docimg from "../assests/images/doctor.jpg";
-import Patient1 from "../assests/images/patient.png";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import { FormInput } from "../TextField/FormInput";
-import { AppRoutes } from "../../constant/route";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../Button/ButtonInput";
-import { useAuth } from "../../auth";
-import { LoginSchema } from "../ValidationSchema/validationSchema";
-import { useDispatch, useSelector } from "react-redux";
+import React from 'react';
+import {useFormik} from 'formik';
+import {Typography, Grid, InputAdornment, IconButton} from '@mui/material';
+import Docimg from '../assests/images/doctor.jpg';
+import Patient1 from '../assests/images/patient.png';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import {FormInput} from '../TextField/FormInput';
+import {AppRoutes} from '../../constant/route';
+import {Link, useNavigate} from 'react-router-dom';
+import {Button} from '../Button/ButtonInput';
+import {LoginSchema} from '../ValidationSchema/validationSchema';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   loginFailure,
   loginRequest,
   loginSuccess,
-} from "../../redux/loginSlice/loginSlice";
-import { toast } from "react-toastify";
+} from '../../redux/loginSlice/loginSlice';
+import {toast} from 'react-toastify';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.login);
+  const {error} = useSelector((state) => state.login);
   const onSubmit = (values) => {
-    auth.login(values.username);
-    console.log("Values Login", values);
     dispatch(loginRequest());
     if (
-      values.username === "admin@gmail.com" &&
-      values.password === "admin@123"
+      values.username === 'admin@gmail.com' &&
+      values.password === 'admin@123'
     ) {
       dispatch(loginSuccess());
-      toast.success("You are login Successfully");
-      navigate(AppRoutes.DASHBOARD, { replace: true });
+      toast.success('You are login Successfully');
+      navigate(AppRoutes.DASHBOARD, {replace: true});
     } else {
-      dispatch(loginFailure("Invalid username or password"));
-      toast.error(error);
+      dispatch(loginFailure('Invalid username or password'));
+      error && toast.error(error);
     }
   };
+
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     validationSchema: LoginSchema,
     onSubmit,
   });
-  const auth = useAuth();
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -61,7 +58,7 @@ const LoginPage = () => {
   return (
     <Grid container spacing={2} height="100vh">
       <Grid item xs={12} md={6} className="image-container">
-        <img src={Docimg} alt="doctor.jpg" style={{ width: "100%" }} />
+        <img src={Docimg} alt="doctor.jpg" style={{width: '100%'}} />
       </Grid>
       <div className="dm-btn">
         <Button
@@ -105,7 +102,7 @@ const LoginPage = () => {
             <FormInput
               margin="normal"
               fullWidth
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               id="password"
               label="Password"
               name="password"
@@ -147,11 +144,11 @@ const LoginPage = () => {
           </div>
 
           <div className="footer-links">
-            <Link to="#" sx={{ mr: "10px" }}>
+            <Link to="#" sx={{mr: '10px'}}>
               Terms of Condition
             </Link>
             |
-            <Link to="#" sx={{ ml: "10px" }}>
+            <Link to="#" sx={{ml: '10px'}}>
               Privacy Policy
             </Link>
           </div>

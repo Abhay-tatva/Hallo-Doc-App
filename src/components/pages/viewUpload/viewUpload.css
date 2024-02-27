@@ -8,6 +8,7 @@
 
 .upload-container {
   padding: 1.25rem;
+  border-radius: 20px !important;
 }
 
 .patient-name {
@@ -15,8 +16,37 @@
 }
 .document-cl {
   min-width: 350px;
-  
 }
 .date-cl {
   min-width: 100px;
+}
+
+.file-select {
+  z-index: 2;
+  width: 88%;
+  height: 56px;
+  background-color: #f6f6f6;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+.file-select {
+  z-index: 2;
+  width: 88%;
+  height: 56px;
+  background-color: #f6f6f6;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+tr th:last-child {
+  text-align: center;
+}
+tr td:last-child {
+  text-align: center;
+}
+thead {
+  background-color: #f6f6f6;
 }

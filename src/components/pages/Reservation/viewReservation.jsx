@@ -1,5 +1,5 @@
-import React from "react";
-import PhoneIcon from "@mui/icons-material/Phone";
+import React from 'react';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 import {
   Box,
@@ -8,33 +8,33 @@ import {
   IconButton,
   Paper,
   Typography,
-} from "@mui/material";
-import "./viewReservation.css";
-import { Button } from "../../Button/ButtonInput";
-import { FormInput } from "../../TextField/FormInput";
-import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { Link } from "react-router-dom";
-import { AppRoutes } from "../../../constant/route";
-import Header from "../../Header/Header";
-import { useFormik } from "formik";
-import { viewReservationSchema } from "../../ValidationSchema/validationSchema";
+} from '@mui/material';
+import './viewReservation.css';
+import {Button} from '../../Button/ButtonInput';
+import {FormInput} from '../../TextField/FormInput';
+import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import {Link} from 'react-router-dom';
+import {AppRoutes} from '../../../constant/route';
+import Header from '../../Header/Header';
+import {useFormik} from 'formik';
+import {viewReservationSchema} from '../../ValidationSchema/validationSchema';
 
 const ViewReservation = () => {
   const formik = useFormik({
     initialValues: {
-      patientNotes: "",
-      firstName: "",
-      lastName: "",
-      phonenumber: "",
-      email: "",
-      region: "",
-      business: "",
-      room: "",
+      patientNotes: '',
+      firstName: '',
+      lastName: '',
+      phonenumber: '',
+      email: '',
+      region: '',
+      business: '',
+      room: '',
     },
     validationSchema: viewReservationSchema,
     onSubmit: (values) => {
-      console.log("Form submitted", values);
+      console.log('Form submitted', values);
     },
   });
   return (
@@ -92,7 +92,7 @@ const ViewReservation = () => {
                 {/* <Divider /> */}
                 <Grid
                   container
-                  spacing={{ xs: 1, md: 2 }}
+                  spacing={{xs: 1, md: 2}}
                   margin="2rem"
                   className="divider"
                 >
@@ -191,7 +191,7 @@ const ViewReservation = () => {
               </Typography>
               <Grid
                 container
-                spacing={{ xs: 1, md: 2 }}
+                spacing={{xs: 1, md: 2}}
                 className="location-info"
               >
                 <Grid item xs={12} md={6}>

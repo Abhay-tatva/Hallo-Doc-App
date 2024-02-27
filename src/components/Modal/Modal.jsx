@@ -1,14 +1,14 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
-import { IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import {IconButton} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-import "./modal.css";
+import './modal.css';
 
-export default function BasicModal({ open, handleClose, children, header }) {
+export default function BasicModal({open, handleClose, children, header}) {
   return (
     <Modal
       open={open}

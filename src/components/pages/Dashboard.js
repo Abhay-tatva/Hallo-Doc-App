@@ -44,6 +44,8 @@ import {
 import CancelModal from "../Modal/CancelModal";
 import AssignModal from "../Modal/AssignModal";
 import ConfirmBlockModal from "../Modal/ConfirmBlockModal";
+import TransferModal from "../Modal/TransferModal";
+import ClearCaseModal from "../Modal/ClearCaseModal";
 
 const cards = [
   {
@@ -105,7 +107,9 @@ const Dashboard = () => {
     setOpen(false);
     setModalName("");
   };
-
+  const handleClear = (id) => {
+    rows.filter((row) => id !== row.id);
+  };
   const handleClick = (index) => {
     setActiveButton(index);
     setIsActive(true);
@@ -263,6 +267,17 @@ const Dashboard = () => {
         open={open && modalName === "Block Patient"}
         handleClose={handleClose}
         handleOpen={modalName === "Block Patient" ? handleOpen : null}
+      />
+      <TransferModal
+        open={open && modalName === "Transfer"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Transfer" ? handleOpen : null}
+      />
+      <ClearCaseModal
+        open={open && modalName === "Clear Case"}
+        handleClose={handleClose}
+        handleClear={handleClear}
+        handleOpen={modalName === "Clear Case" ? handleOpen : null}
       />
     </>
   );
