@@ -1,17 +1,17 @@
-import React, {useState} from 'react';
-import {Button} from '../../Button/ButtonInput';
+import React, { useState } from "react";
+import { Button } from "../../Button/ButtonInput";
 import {
   Box,
   Container,
   Paper,
   TableSortLabel,
   Typography,
-} from '@mui/material';
-import Header from '../../Header/Header';
-import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
-import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+} from "@mui/material";
+import Header from "../../Header/Header";
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import {
   Table,
   TableBody,
@@ -20,23 +20,21 @@ import {
   TableHead,
   TableRow,
   Checkbox,
-} from '@mui/material';
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import './viewUpload.css';
-import {useNavigate} from 'react-router-dom';
-// import { FormInput } from "../../TextField/FormInput";
+} from "@mui/material";
+
+import "./viewUpload.css";
+import { useNavigate } from "react-router-dom";
 
 const rows = [
-  {id: 1, document: 'Document 1', uploadDate: '2024-02-20'},
-  {id: 2, document: 'Document 2', uploadDate: '2024-02-21'},
-  {id: 3, document: 'Document 3', uploadDate: '2024-02-22'},
+  { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
+  { id: 2, document: "Document 2", uploadDate: "2024-02-21" },
+  { id: 3, document: "Document 3", uploadDate: "2024-02-22" },
 ];
 
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('uploadDate');
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("uploadDate");
   const navigate = useNavigate();
 
   const handleSelectAllClick = (event) => {
@@ -60,8 +58,8 @@ const ViewUpload = () => {
       newSelected = newSelected.concat(selected.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
-          selected.slice(0, selectedIndex),
-          selected.slice(selectedIndex + 1),
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
       );
     }
 
@@ -80,9 +78,9 @@ const ViewUpload = () => {
   };
 
   const getComparator = (order, orderBy) => {
-    return order === 'desc' ?
-      (a, b) => descendingComparator(a[orderBy], b[orderBy]) :
-      (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
+    return order === "desc"
+      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
+      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
   };
 
   const descendingComparator = (a, b) => {
@@ -96,8 +94,8 @@ const ViewUpload = () => {
   };
 
   const handleRequestSort = (property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
   const [selectedFile, setSelectedFile] = useState([]);
@@ -106,7 +104,7 @@ const ViewUpload = () => {
   // }
 
   const handleFileChange = (event) => {
-    console.log('event', event.target.files);
+    console.log("event", event.target.files);
     event.preventDefault();
     setSelectedFile(event.target.files);
   };
@@ -118,9 +116,9 @@ const ViewUpload = () => {
         const newFile = {
           id: rows.length + 1,
           document: selectedFile[i].name,
-          uploadDate: new Date().toISOString().split('T')[0],
+          uploadDate: new Date().toISOString().split("T")[0],
         };
-        console.log('New file', newFile);
+        console.log("New file", newFile);
         rows.push(newFile);
       }
       setSelectedFile(null); // Reset selected file after upload
@@ -128,7 +126,7 @@ const ViewUpload = () => {
   };
 
   const handleDownload = (document) => {
-    console.log('downloading document:', document);
+    console.log("downloading document:", document);
   };
 
   const handleDelete = (id) => {
@@ -146,7 +144,7 @@ const ViewUpload = () => {
   };
 
   const handleDownloadAll = () => {
-    console.log('downloading All document:', document);
+    console.log("downloading All document:", document);
 
     selected.forEach((id) => {
       const file = rows.find((row) => row.id === id);
@@ -188,7 +186,7 @@ const ViewUpload = () => {
           <Paper className="upload-container">
             <Typography variant="caption">Patient Name</Typography>
             <Typography variant="h6">
-              <b className="patient-name">Bhoomi Prajapati</b>{' '}
+              <b className="patient-name">Bhoomi Prajapati</b>{" "}
               (MD101819PRBH0005)
             </Typography>
             <Typography variant="body2" marginTop="10px">
@@ -262,13 +260,13 @@ const ViewUpload = () => {
                   name="Download All"
                   variant="outlined"
                   color="primary"
-                  onClick={() => handleDownloadAll('all')}
+                  onClick={() => handleDownloadAll("all")}
                 />
                 <Button
                   name="Delete All"
                   variant="outlined"
                   color="primary"
-                  onClick={() => handleDeleteAll('all')}
+                  onClick={() => handleDeleteAll("all")}
                 />
                 <Button name="Send Mail" variant="outlined" color="primary" />
               </Box>
@@ -289,9 +287,9 @@ const ViewUpload = () => {
                     <TableCell className="document-cl">Documents</TableCell>
                     <TableCell className="date-cl">
                       <TableSortLabel
-                        active={orderBy === 'uploadDate'}
+                        active={orderBy === "uploadDate"}
                         direction={order}
-                        onClick={() => handleRequestSort('uploadDate')}
+                        onClick={() => handleRequestSort("uploadDate")}
                       >
                         Upload Date
                       </TableSortLabel>
@@ -301,33 +299,33 @@ const ViewUpload = () => {
                 </TableHead>
                 <TableBody>
                   {stableSort(rows, getComparator(order, orderBy)).map(
-                      (row) => (
-                        <TableRow key={row.id} hover>
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isSelected(row.id)}
-                              onClick={(event) => handleClick(event, row.id)}
-                            />
-                          </TableCell>
-                          <TableCell>{row.document}</TableCell>
-                          <TableCell>{row.uploadDate}</TableCell>
-                          <TableCell>
-                            <Button
-                              variant="outlined"
-                              onClick={() => handleDownload(row.document)}
-                            >
-                              <CloudDownloadOutlinedIcon />
-                            </Button>
+                    (row) => (
+                      <TableRow key={row.id} hover>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={isSelected(row.id)}
+                            onClick={(event) => handleClick(event, row.id)}
+                          />
+                        </TableCell>
+                        <TableCell>{row.document}</TableCell>
+                        <TableCell>{row.uploadDate}</TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outlined"
+                            onClick={() => handleDownload(row.document)}
+                          >
+                            <CloudDownloadOutlinedIcon />
+                          </Button>
                           &nbsp;
-                            <Button
-                              variant="outlined"
-                              onClick={() => handleDelete(row.id)}
-                            >
-                              <DeleteOutlinedIcon />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ),
+                          <Button
+                            variant="outlined"
+                            onClick={() => handleDelete(row.id)}
+                          >
+                            <DeleteOutlinedIcon />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    )
                   )}
                 </TableBody>
               </Table>

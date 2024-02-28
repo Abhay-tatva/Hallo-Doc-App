@@ -22,6 +22,12 @@ export const viewReservationSchema = Yup.object({
 export const viewNotesSchema = Yup.object({
   adminNotes: Yup.string().required("Admin  Notes in required"),
 });
+export const viewCloseCaseSchema = Yup.object({
+  firstName: Yup.string().required("Password is required"),
+  lastName: Yup.string().required("Last Name is required"),
+  phonenumber: Yup.string().required("Phone number must be  required"),
+  email: Yup.string().required("email  is required"),
+});
 export const transferModalSchema = Yup.object({
   searchRegion: Yup.string().required("searchRegion must be required"),
   description: Yup.string().required("description must be required"),

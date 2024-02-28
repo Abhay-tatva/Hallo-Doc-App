@@ -34,9 +34,9 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
-  const navigate = useNavigate();
-  const [indicatorName, setIndicatorName] = useState("");
+  const [tableData, setTableData] = useState(rows);
   const [rowId, setRowId] = useState(null);
+  const navigate = useNavigate();
 
   const notify = () => toast("Phone number Copyied successfully!");
 
@@ -64,12 +64,9 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
     setPage(0);
   };
 
-  const handleClickIndicator = (indicatorValue) => {
-    setIndicatorName(indicatorValue);
-  };
-
   const filterRows = (rows, term) => {
-    return rows.filter((row) =>
+    setSearchTerm(term);
+    const filterData = rows.filter((row) =>
       Object.entries(row).some(([key, value]) => {
         if (!value) {
           return false;
@@ -107,9 +104,21 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
         );
       })
     );
+    setTableData(filterData);
   };
 
-  const filteredData = filterRows(rows, searchTerm);
+  const filterByIndicator = (indicatorValue) => {
+    if (indicatorValue === "all") return setTableData(rows);
+    else {
+      const filteredData = rows.filter((row) => {
+        const lowerCaseString = row.requestor.toLowerCase();
+        return lowerCaseString.includes(indicatorValue.toLowerCase())
+          ? true
+          : false;
+      });
+      setTableData(filteredData);
+    }
+  };
 
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
@@ -157,6 +166,9 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
       case "Send Agreement":
         onClick(action);
         break;
+      case "Close Case":
+        navigate(AppRoutes.CLOSECASE);
+        break;
       default:
         break;
     }
@@ -186,7 +198,7 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
                     </InputAdornment>
                   ),
                 }}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => filterRows(rows, e.target.value)}
               />
             </div>
             <FormInput
@@ -216,11 +228,20 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
         </Grid>
         <Grid container justifyContent={"flex-end"} item xs={12} md={12} lg={6}>
           <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-            <Button name="All" variant="outlined" />
+            <Button
+              name="All"
+              variant="outlined"
+              onClick={() => filterByIndicator("all")}
+            />
 
             {indicator.map((value, index) => {
               return (
-                <React.Fragment key={index}>
+                <Box
+                  key={index}
+                  display="flex"
+                  alignItems="center"
+                  onClick={() => filterByIndicator(value.name)}
+                >
                   <span
                     style={{
                       width: "12px",
@@ -230,12 +251,11 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
                       display: "inline-block",
                       marginLeft: "30px",
                     }}
-                    onClick={() => handleClickIndicator(value.name)}
                   ></span>
                   <Typography ml={1} clas>
                     {value.name}
                   </Typography>
-                </React.Fragment>
+                </Box>
               );
             })}
           </Box>
@@ -260,7 +280,7 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
             </TableHead>
 
             <TableBody>
-              {filteredData
+              {tableData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 ?.map((row) => {
                   return (
@@ -339,7 +359,7 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={filteredData.length}
+          count={tableData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
