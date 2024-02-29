@@ -1,8 +1,12 @@
-export const primaryTriangle = require('./primaryTriangle.svg').default;
-export const secondaryTriangle = require('./secondaryTriangle.svg').default;
-export const errorTriangle = require('./errorTriangle..svg').default;
-export const infoTriangle = require('./infoTriangle.svg').default;
-export const warningTriangle = require('./warningTriangle.svg').default;
-export const successTriangle = require('./successTriangle.svg').default;
-export const patient = require('./patient.png');
-export const info = require('./info.svg').default;
+export { default as info } from "./info.svg";
+export { default as infoImage } from "./info.svg";
+export { default as primaryTriangle } from "./primaryTriangle.svg";
+export { default as secondaryTriangle } from "./secondaryTriangle.svg";
+export { default as errorTriangle } from "./errorTriangle..svg";
+export { default as infoTriangle } from "./infoTriangle.svg";
+export { default as warningTriangle } from "./warningTriangle.svg";
+export { default as successTriangle } from "./successTriangle.svg";
+
+// import loginHeading from "./logo.png";
+import patient from "./patient.png";
+export { patient };

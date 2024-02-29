@@ -237,6 +237,7 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
             {indicator.map((value, index) => {
               return (
                 <Box
+                className="cursor"
                   key={index}
                   display="flex"
                   alignItems="center"

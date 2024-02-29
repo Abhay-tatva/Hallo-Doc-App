@@ -33,6 +33,15 @@ const rows = [
   { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
   { id: 2, document: "Document 2", uploadDate: "2024-02-21" },
 ];
+
+const initialValues = {
+  firstName: "text",
+  lastName: "text",
+  phonenumber: "6359421917",
+  email: "xyz@gamil.com",
+  date: "2000-10-2",
+};
+
 const CloseCase = () => {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("uploadDate");
@@ -88,13 +97,7 @@ const CloseCase = () => {
     return 0;
   };
   const formik = useFormik({
-    initialValues: {
-      firstName: "text",
-      lastName: "text",
-      phonenumber: "6359421917",
-      email: "xyz@gamil.com",
-      date: "2000-10-2",
-    },
+    initialValues,
     validationSchema: viewCloseCaseSchema,
     onSubmit: (values) => {
       console.log("Form submitted", values);
@@ -321,6 +324,14 @@ const CloseCase = () => {
                 <Button
                   name={isDisabled ? "Close Case" : "Cancel"}
                   variant="outlined"
+                  onClick={
+                    isDisabled
+                      ? console.log("Close case button clicked")
+                      : () => {
+                          formik.setValues(initialValues);
+                          setIsDisabled(true);
+                        }
+                  }
                 />
               </Box>
             </form>

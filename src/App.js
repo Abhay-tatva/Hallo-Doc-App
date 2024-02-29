@@ -14,6 +14,7 @@ import { RequireAuth } from "./RequireAuth";
 import ViewUpload from "./components/pages/viewUpload/viewUpload";
 import Order from "./components/pages/Orders/order";
 import CloseCase from "./components/pages/closeCase/closeCase";
+import MyProfile from "./components/pages/myProfile/myProfile";
 
 function App() {
   return (
@@ -23,19 +24,19 @@ function App() {
           <Route element={<BackLoginAuth />}>
             <Route path="/" element={<LoginPage />} />
             <Route path={AppRoutes.LOGIN} element={<LoginPage />} />
-          </Route>
-          <Route element={<RequireAuth />}>
             <Route
               path={AppRoutes.FORGOTPASS}
               element={<ForgotPasswordPage />}
             />
-
+          </Route>
+          <Route element={<RequireAuth />}>
             <Route path={AppRoutes.DASHBOARD} element={<Dashboard />} />
             <Route path={AppRoutes.RESERVATION} element={<ViewReservation />} />
             <Route path={AppRoutes.NOTES} element={<ViewNotes />} />
             <Route path={AppRoutes.VIEWUPLOAD} element={<ViewUpload />} />
             <Route path={AppRoutes.ORDER} element={<Order />} />
             <Route path={AppRoutes.CLOSECASE} element={<CloseCase />} />
+            <Route path={AppRoutes.MYPROFILE} element={<MyProfile />} />
           </Route>
         </Routes>
       </ThemeProvider>

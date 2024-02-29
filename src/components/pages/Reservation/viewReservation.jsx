@@ -1,5 +1,5 @@
-import React from 'react';
-import PhoneIcon from '@mui/icons-material/Phone';
+import React, { useState } from "react";
+import PhoneIcon from "@mui/icons-material/Phone";
 
 import {
   Box,
@@ -8,33 +8,38 @@ import {
   IconButton,
   Paper,
   Typography,
-} from '@mui/material';
-import './viewReservation.css';
-import {Button} from '../../Button/ButtonInput';
-import {FormInput} from '../../TextField/FormInput';
-import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import {Link} from 'react-router-dom';
-import {AppRoutes} from '../../../constant/route';
-import Header from '../../Header/Header';
-import {useFormik} from 'formik';
-import {viewReservationSchema} from '../../ValidationSchema/validationSchema';
+} from "@mui/material";
+import "./viewReservation.css";
+import { Button } from "../../Button/ButtonInput";
+import { FormInput } from "../../TextField/FormInput";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import { Link } from "react-router-dom";
+import { AppRoutes } from "../../../constant/route";
+import Header from "../../Header/Header";
+import { useFormik } from "formik";
+import { viewReservationSchema } from "../../ValidationSchema/validationSchema";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { MuiTelInput } from "mui-tel-input";
 
 const ViewReservation = () => {
+  // const [phoneNumber, setPhoneNumber] = useState("");
+
   const formik = useFormik({
     initialValues: {
-      patientNotes: '',
-      firstName: '',
-      lastName: '',
-      phonenumber: '',
-      email: '',
-      region: '',
-      business: '',
-      room: '',
+      patientNotes: "",
+      firstName: "",
+      lastName: "",
+      phonenumber: "",
+      email: "",
+      region: "",
+      business: "",
+      room: "",
     },
     validationSchema: viewReservationSchema,
     onSubmit: (values) => {
-      console.log('Form submitted', values);
+      console.log("Form submitted", values);
     },
   });
   return (
@@ -92,7 +97,7 @@ const ViewReservation = () => {
                 {/* <Divider /> */}
                 <Grid
                   container
-                  spacing={{xs: 1, md: 2}}
+                  spacing={{ xs: 1, md: 2 }}
                   margin="2rem"
                   className="divider"
                 >
@@ -130,25 +135,27 @@ const ViewReservation = () => {
                     <FormInput type="date" fullWidth className="form-input" />
                   </Grid>
                   <Grid item sm={12} md={5} lg={5}>
-                    <Box
+                    {/* <Box
                       display="flex"
                       alignItems="center"
                       className="form-input1"
-                    >
-                      <FormInput
-                        name="phoneNumber"
-                        label="Phone Number"
-                        fullWidth
-                        className="form-input"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.phoneNumber}
-                        error={
-                          formik.touched.phoneNumber &&
-                          Boolean(formik.errors.phoneNumber)
-                        }
-                      />
-                    </Box>
+                    > */}
+                    <PhoneInput
+                      inputStyle={{ height: "55px", width: "100%" }}
+                      name="phoneNumber"
+                      country="in"
+                      label="Phone Number"
+                      fullWidth="true"
+                      // className="form-input"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.phonenumber}
+                      error={
+                        formik.touched.phonenumber &&
+                        Boolean(formik.errors.phonenumber)
+                      }
+                    />
+                    {/* </Box> */}
                   </Grid>
                   <Grid item sm={12} md={1} lg={1}>
                     <Button
@@ -191,7 +198,7 @@ const ViewReservation = () => {
               </Typography>
               <Grid
                 container
-                spacing={{xs: 1, md: 2}}
+                spacing={{ xs: 1, md: 2 }}
                 className="location-info"
               >
                 <Grid item xs={12} md={6}>

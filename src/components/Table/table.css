@@ -27,12 +27,6 @@
   padding: 8px;
   text-align: left;
 }
-/* .search-bar {
-  margin-top: 16px;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-} */
 .dropdown {
   display: flex;
   justify-content: flex-end;
@@ -77,4 +71,7 @@
 }
 .phone-btn {
   border-radius: 10px !important;
+}
+.cursor {
+  cursor: pointer;
 }
