@@ -15,11 +15,17 @@ import ViewUpload from "./components/pages/viewUpload/viewUpload";
 import Order from "./components/pages/Orders/order";
 import CloseCase from "./components/pages/closeCase/closeCase";
 import MyProfile from "./components/pages/myProfile/myProfile";
+import Header from "./components/Header/Header";
+import { useState } from "react";
 
 function App() {
+  const [isDarktheme, setIsDarkTheme] = useState(false);
+  const handleDarkMode = () => {
+    setIsDarkTheme(!isDarktheme);
+  };
   return (
     <BrowserRouter>
-      <ThemeProvider theme={halloDocTheme}>
+      <ThemeProvider theme={halloDocTheme(isDarktheme)}>
         <Routes>
           <Route element={<BackLoginAuth />}>
             <Route path="/" element={<LoginPage />} />
@@ -30,13 +36,25 @@ function App() {
             />
           </Route>
           <Route element={<RequireAuth />}>
-            <Route path={AppRoutes.DASHBOARD} element={<Dashboard />} />
-            <Route path={AppRoutes.RESERVATION} element={<ViewReservation />} />
-            <Route path={AppRoutes.NOTES} element={<ViewNotes />} />
-            <Route path={AppRoutes.VIEWUPLOAD} element={<ViewUpload />} />
-            <Route path={AppRoutes.ORDER} element={<Order />} />
-            <Route path={AppRoutes.CLOSECASE} element={<CloseCase />} />
-            <Route path={AppRoutes.MYPROFILE} element={<MyProfile />} />
+            <Route
+              element={
+                <Header
+                  isDarktheme={isDarktheme}
+                  handleDarkMode={handleDarkMode}
+                />
+              }
+            >
+              <Route path={AppRoutes.DASHBOARD} element={<Dashboard />} />
+              <Route
+                path={AppRoutes.RESERVATION}
+                element={<ViewReservation />}
+              />
+              <Route path={AppRoutes.NOTES} element={<ViewNotes />} />
+              <Route path={AppRoutes.VIEWUPLOAD} element={<ViewUpload />} />
+              <Route path={AppRoutes.ORDER} element={<Order />} />
+              <Route path={AppRoutes.CLOSECASE} element={<CloseCase />} />
+              <Route path={AppRoutes.MYPROFILE} element={<MyProfile />} />
+            </Route>
           </Route>
         </Routes>
       </ThemeProvider>

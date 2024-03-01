@@ -237,7 +237,7 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
             {indicator.map((value, index) => {
               return (
                 <Box
-                className="cursor"
+                  className="cursor"
                   key={index}
                   display="flex"
                   alignItems="center"
@@ -253,9 +253,7 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
                       marginLeft: "30px",
                     }}
                   ></span>
-                  <Typography ml={1} clas>
-                    {value.name}
-                  </Typography>
+                  <Typography ml={1}>{value.name}</Typography>
                 </Box>
               );
             })}

@@ -1,17 +1,18 @@
 import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import React from "react";
 import { patient } from "../assests/images";
 import { Button } from "../Button/ButtonInput";
 import "./header.css";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constant/route";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Menu from "@mui/icons-material/Menu";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/loginSlice/loginSlice";
 
-const Header = () => {
+const Header = ({ isDarktheme, handleDarkMode }) => {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,8 +41,17 @@ const Header = () => {
             onClick={handleLogout}
           />
           {/* </Link> */}
-          <Button variant="outlined" size="large" className="dark-btn icon-btn">
-            <DarkModeOutlinedIcon />
+          <Button
+            variant="outlined"
+            size="large"
+            className="dark-btn icon-btn"
+            onClick={handleDarkMode}
+          >
+            {!isDarktheme ? (
+              <DarkModeOutlinedIcon />
+            ) : (
+              <LightModeOutlinedIcon />
+            )}
           </Button>
           <Button
             variant="outlined"
@@ -163,6 +173,7 @@ const Header = () => {
           Logout
         </NavLink>
       </Drawer>
+      <Outlet />
     </Box>
   );
 };

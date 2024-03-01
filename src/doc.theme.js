@@ -1,4 +1,4 @@
-import {createTheme} from '@mui/material';
+import { createTheme } from "@mui/material";
 
 // const primary = "#59B997";
 // const primaryContrast = "#F6F6F6";
@@ -21,75 +21,80 @@ import {createTheme} from '@mui/material';
 // const primaryHoverDark = "#338e6fe6";
 // const primaryLight = "#3EAE86";
 
-export const halloDocTheme = createTheme({
-  components: {
-    MuiTableRow: {
-      styleOverrides: {
-        head: {
-          '&::last-child': {
-            textAlign: 'center',
+export const halloDocTheme = (isDarktheme) => {
+  return createTheme({
+    palette: {
+      mode: isDarktheme ? "dark" : "light",
+    },
+    components: {
+      MuiTableRow: {
+        styleOverrides: {
+          head: {
+            "&::last-child": {
+              textAlign: "center",
+            },
+          },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          head: {
+            height: "3rem",
+          },
+          body: {
+            height: "3rem",
+          },
+        },
+      },
+      MuiFormControl: {
+        styleOverrides: {
+          root: {
+            "&.search-text .MuiInputBase-root": {
+              height: "2.5rem",
+            },
+            "&.drop-list .MuiInputBase-root": {
+              width: "15rem",
+            },
+          },
+        },
+      },
+      MuiButtonBase: {
+        styleOverrides: {
+          root: {
+            "&.phonebtn": {
+              minWidth: "45px",
+              padding: "7px 12px",
+              height: "100%",
+            },
+            "&.editbtn": {
+              minWidth: "45px",
+              height: "100%",
+            },
+            "&.locationbtn": {
+              height: "100%",
+              minWidth: "45px",
+            },
+            "&.viewbtn, &.backbtn": {
+              backgroundColor: "#39B3C3",
+            },
+            "&.hover": {
+              backgroundColor: "#39B3C3",
+            },
+          },
+        },
+      },
+      MuiDrawer: {
+        styleOverrides: {
+          paper: {
+            minWidth: "250px",
+          },
+          root: {
+            "&.sidebar .MuiDrawer-paper": {
+              backgroundColor: "#d1e7df",
+            },
           },
         },
       },
     },
-    MuiTableCell: {
-      styleOverrides: {
-        head: {
-          height: '3rem',
-        },
-        body: {
-          height: '3rem',
-        },
-      },
-    },
-    MuiFormControl: {
-      styleOverrides: {
-        root: {
-          '&.search-text .MuiInputBase-root': {
-            height: '2.5rem',
-          },
-          '&.drop-list .MuiInputBase-root': {
-            width: '15rem',
-          },
-        },
-      },
-    },
-    MuiButtonBase: {
-      styleOverrides: {
-        root: {
-          '&.phonebtn': {
-            minWidth: '45px',
-            padding: '7px 12px',
-            height: '100%',
-          },
-          '&.editbtn': {
-            minWidth: '45px',
-            height: '100%',
-          },
-          '&.locationbtn': {
-            height: '100%',
-            minWidth: '45px',
-          },
-          '&.viewbtn, &.backbtn': {
-            backgroundColor: '#39B3C3',
-          },
-          '&.hover': {
-            backgroundColor: '#39B3C3',
-          },
-        },
-      },
-    },
-    MuiDrawer: {
-      styleOverrides: {
-        paper: {
-          minWidth: '250px',
-        },
-        root: {
-          '&.sidebar .MuiDrawer-paper': {
-            backgroundColor: '#d1e7df',
-          },
-        },
-      },
-    },
-  },
-});
+  });
+};

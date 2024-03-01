@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PhoneIcon from "@mui/icons-material/Phone";
 
 import {
@@ -16,12 +16,10 @@ import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../../constant/route";
-import Header from "../../Header/Header";
-import { useFormik } from "formik";
 import { viewReservationSchema } from "../../ValidationSchema/validationSchema";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { MuiTelInput } from "mui-tel-input";
+import { useFormik } from "formik";
 
 const ViewReservation = () => {
   // const [phoneNumber, setPhoneNumber] = useState("");
@@ -44,7 +42,6 @@ const ViewReservation = () => {
   });
   return (
     <>
-      <Header />
       <Box className="main-container">
         <Container maxWidth="md" className="container-wrapper">
           <Box display="flex" justifyContent="space-between" mb="8px">

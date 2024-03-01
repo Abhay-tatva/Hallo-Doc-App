@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "../../Header/Header";
 import PhoneIcon from "@mui/icons-material/Phone";
 
 import {
@@ -17,14 +16,12 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
-import { ErrorMessage, useFormik } from "formik";
 import { Container } from "@mui/system";
 import { Button } from "../../Button/ButtonInput";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import { FormInput } from "../../TextField/FormInput";
-import { AppRoutes } from "../../../constant/route";
 import "./closeCase.css";
 import { viewCloseCaseSchema } from "../../ValidationSchema/validationSchema";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
@@ -105,7 +102,6 @@ const CloseCase = () => {
   });
   return (
     <>
-      <Header />
       <Box className="closecase-main-container">
         <Container maxWidth="lg" className="closecase-main-wrapper">
           <Box

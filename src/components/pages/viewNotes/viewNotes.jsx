@@ -3,7 +3,6 @@ import {Box, Container, Grid, Paper, Typography} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import {Button} from '../../Button/ButtonInput';
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
-import Header from '../../Header/Header';
 import './viewNotes.css';
 import {FormInput} from '../../TextField/FormInput';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
@@ -27,7 +26,6 @@ const ViewNotes = () => {
   });
   return (
     <>
-      <Header />
       <Box className="view-notes-container">
         <Container maxWidth="md">
           <Box display="flex" justifyContent="space-between" mb="8px">

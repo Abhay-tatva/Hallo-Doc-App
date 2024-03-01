@@ -1,21 +1,22 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { FormInput } from "../../../TextField/FormInput";
 import { Button } from "../../../Button/ButtonInput";
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 import PhoneInput from "react-phone-input-2";
 
 const Address = () => {
+  const [isDisabled, setIsDisabled] = useState(true);
+
   const billformik = useFormik({
     initialValues: {
-      address1: "",
-      confirmemail: "",
-      address2: "",
-      city: "",
-      state: "",
-      zip: "",
-      phoneNumber: "",
+      address1: "tatva soft house",
+      address2: "rajpathclub road",
+      city: "dubai",
+      state: "gujarat",
+      zip: "nthi kbr",
+      phoneNumber: "kale avjo",
     },
     validationSchema: myProfileSchema,
     onSubmit: (values) => {
@@ -23,7 +24,7 @@ const Address = () => {
     },
   });
   return (
-    <form>
+    <form onSubmit={billformik.handleSubmit}>
       <Typography variant="h6" className="account">
         <b>Mailing & Billing Information</b>
       </Typography>
@@ -34,6 +35,8 @@ const Address = () => {
             label="Address 1"
             fullWidth
             className="form-input"
+            value={billformik.values.address1}
+            disabled={isDisabled}
             onChange={billformik.handleChange}
             onBlur={billformik.handleBlur}
             error={
@@ -48,7 +51,9 @@ const Address = () => {
           <FormInput
             name="address2"
             label="Address 2"
+            disabled={isDisabled}
             fullWidth
+            value={billformik.values.address2}
             className="form-input"
             onChange={billformik.handleChange}
             onBlur={billformik.handleBlur}
@@ -64,6 +69,8 @@ const Address = () => {
           <FormInput
             name="city"
             label="City"
+            disabled={isDisabled}
+            value={billformik.values.city}
             fullWidth
             className="form-input"
             onChange={billformik.handleChange}
@@ -76,6 +83,8 @@ const Address = () => {
           <FormInput
             name="state"
             label="State"
+            disabled={isDisabled}
+            value={billformik.values.state}
             fullWidth
             className="form-input"
             onChange={billformik.handleChange}
@@ -88,7 +97,9 @@ const Address = () => {
           <FormInput
             name="zip"
             label="Zip"
+            disabled={isDisabled}
             fullWidth
+            value={billformik.values.zip}
             className="form-input"
             onChange={billformik.handleChange}
             onBlur={billformik.handleBlur}
@@ -101,6 +112,8 @@ const Address = () => {
             inputStyle={{ height: "55px", width: "100%" }}
             name="phoneNumber"
             country="in"
+            disabled={isDisabled}
+            value={billformik.values.phoneNumber}
             label="Phone Number"
             fullWidth="true"
             className="form-input"
@@ -117,7 +130,34 @@ const Address = () => {
         </Grid>
       </Grid>
       <Box display="flex" justifyContent="flex-end" mt={4}>
-        <Button name="Edit" variant="contained" color="primary" />
+        {isDisabled ? (
+          <Button
+            name="Edit"
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              setIsDisabled(false);
+            }}
+          />
+        ) : (
+          <>
+            <Button
+              name="Save"
+              variant="contained"
+              type="submit"
+              onClick={() => {
+                setIsDisabled(true);
+              }}
+            />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={() => {
+                setIsDisabled(true);
+              }}
+            />
+          </>
+        )}
       </Box>
     </form>
   );

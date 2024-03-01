@@ -47,6 +47,7 @@ import ConfirmBlockModal from "../Modal/ConfirmBlockModal";
 import TransferModal from "../Modal/TransferModal";
 import ClearCaseModal from "../Modal/ClearCaseModal";
 import SendAgreementModal from "../Modal/SendAgreementModal";
+import RequestModal from "../Modal/RequestModal";
 
 const cards = [
   {
@@ -159,7 +160,6 @@ const Dashboard = () => {
   return (
     <>
       <Box container className="dashboard-container">
-        <Header />
         <Grid container spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}>
           {cards.map((card, index) => {
             return (
@@ -250,6 +250,7 @@ const Dashboard = () => {
                   variant="contained"
                   startIcon={<PersonIcon />}
                   className="btn"
+                  onClick={() => handleOpen("Request Modal")}
                 />
               </Box>
             </Grid>
@@ -277,6 +278,11 @@ const Dashboard = () => {
         open={open && modalName === "Block Patient"}
         handleClose={handleClose}
         handleOpen={modalName === "Block Patient" ? handleOpen : null}
+      />
+      <RequestModal
+        open={open && modalName === "Request Modal"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Request Modal" ? handleOpen : null}
       />
       <TransferModal
         open={open && modalName === "Transfer"}

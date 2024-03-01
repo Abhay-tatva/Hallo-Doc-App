@@ -7,7 +7,6 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
-import Header from "../../Header/Header";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
@@ -159,7 +158,6 @@ const ViewUpload = () => {
   // };
   return (
     <>
-      <Header />
       <Box className="upload-main-container">
         <Container maxWidth="lg" className="upload-main-wrapper">
           <Box

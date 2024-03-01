@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from '../../Header/Header';
 import {useFormik} from 'formik';
 import {orderDetails} from '../../ValidationSchema/validationSchema';
 import {Box, Grid, MenuItem, Paper, Typography} from '@mui/material';
@@ -31,7 +30,6 @@ const Order = () => {
   });
   return (
     <>
-      <Header />
       <Box className="order-main-container">
         <Container maxWidth="lg" className="order-main-wrapper">
           <Box
