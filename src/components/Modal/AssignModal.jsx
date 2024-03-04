@@ -1,21 +1,23 @@
-import {Box, MenuItem, Typography} from '@mui/material';
-import React from 'react';
-import {FormInput} from '../TextField/FormInput';
-import {Button} from '../Button/ButtonInput';
-import {useFormik} from 'formik';
-import BasicModal from './Modal';
-import {assignModalSchema} from '../ValidationSchema/validationSchema';
+import { Box, MenuItem, Typography } from "@mui/material";
+import React from "react";
+import { FormInput } from "../TextField/FormInput";
+import { Button } from "../Button/ButtonInput";
+import { useFormik } from "formik";
+import BasicModal from "./Modal";
+import { assignModalSchema } from "../ValidationSchema/validationSchema";
 
-const AssignModal = ({open, handleClose, handleOpen}) => {
+const AssignModal = ({ open, handleClose, handleOpen }) => {
   const formik = useFormik({
     initialValues: {
-      searchRegion: '',
-      description: '',
-      physician: '',
+      searchRegion: "",
+      description: "",
+      physician: "",
     },
     validationSchema: assignModalSchema,
-    onSubmit: (values) => {
-      console.log('submmitted', values);
+    onSubmit: (values, onSubmitProps) => {
+      console.log("submmitted", values);
+      onSubmitProps.resetForm();
+      handleClose();
     },
   });
   return (
@@ -25,7 +27,7 @@ const AssignModal = ({open, handleClose, handleOpen}) => {
       handleClose={handleClose}
       header="Assign Request"
     >
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography variant="caption">
             To assign this request, searach and select another Physician
@@ -76,7 +78,7 @@ const AssignModal = ({open, handleClose, handleOpen}) => {
             }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Submit" variant="contained" />
+            <Button name="Submit" variant="contained" type="submit" />
             <Button name="Cancel" variant="outlined" onClick={handleClose} />
           </Box>
         </Box>

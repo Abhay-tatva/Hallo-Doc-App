@@ -1,0 +1,22 @@
+.provider-main-container {
+  background-color: #f6f6f6;
+}
+.provider-wrapper-container {
+  padding: 1rem 3rem;
+}
+.provider-full-paper {
+  padding: 1.25rem;
+  border-radius: 20px !important;
+}
+.provide-header {
+  margin-bottom: 30px;
+}
+tr th:last-child {
+  text-align: center;
+}
+tr td:last-child {
+  text-align: center;
+}
+thead {
+  background-color: #f6f6f6;
+}

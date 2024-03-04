@@ -25,3 +25,5 @@ export { orderDetails } from "./OrderDetailsSchema";
 export { myProfileSchema } from "./MyProfileSchema";
 
 export { requestModalSchema } from "./RequestModalSchema";
+
+export { sendLinkModalSchema } from "./SendLinkModalSchema";

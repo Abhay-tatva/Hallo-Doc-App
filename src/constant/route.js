@@ -8,4 +8,5 @@ export const AppRoutes = {
   ORDER: "/dashboard/order",
   CLOSECASE: "/dashboard/closecase",
   MYPROFILE: "/myprofile",
+  PROVIDER: "/provider",
 };

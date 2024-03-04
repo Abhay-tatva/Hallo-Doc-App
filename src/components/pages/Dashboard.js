@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Header from "../Header/Header";
 import { Box } from "@mui/system";
 import "../dashboard.css";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
@@ -48,6 +47,7 @@ import TransferModal from "../Modal/TransferModal";
 import ClearCaseModal from "../Modal/ClearCaseModal";
 import SendAgreementModal from "../Modal/SendAgreementModal";
 import RequestModal from "../Modal/RequestModal";
+import SendLinkModal from "../Modal/SendLinkModal";
 
 const cards = [
   {
@@ -86,7 +86,7 @@ const cards = [
     toolTip: infoTriangle,
   },
   {
-    applicationState: "Upload",
+    applicationState: "Unpaid",
     figure: "16",
     icon: <AttachMoneyIcon />,
     color: "warning",
@@ -117,6 +117,7 @@ const Dashboard = () => {
 
   const handleClear = (id) => {
     setFilterRows((prevRows) => prevRows.filter((row) => id !== row.id));
+    console.log("row", filterRows);
     handleClose();
   };
 
@@ -222,6 +223,7 @@ const Dashboard = () => {
                   variant="contained"
                   startIcon={<SendOutlinedIcon />}
                   className="btn"
+                  onClick={() => handleOpen("Send Link")}
                 />
 
                 <Button
@@ -304,6 +306,11 @@ const Dashboard = () => {
         open={open && modalName === "Send Agreement"}
         handleClose={handleClose}
         handleOpen={modalName === "Send Agreement" ? handleOpen : null}
+      />
+      <SendLinkModal
+        open={open && modalName === "Send Link"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Send Link" ? handleOpen : null}
       />
     </>
   );

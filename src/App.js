@@ -17,6 +17,7 @@ import CloseCase from "./components/pages/closeCase/closeCase";
 import MyProfile from "./components/pages/myProfile/myProfile";
 import Header from "./components/Header/Header";
 import { useState } from "react";
+import Provide from "./components/pages/ProviderInformation/Provide";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -54,6 +55,7 @@ function App() {
               <Route path={AppRoutes.ORDER} element={<Order />} />
               <Route path={AppRoutes.CLOSECASE} element={<CloseCase />} />
               <Route path={AppRoutes.MYPROFILE} element={<MyProfile />} />
+              <Route path={AppRoutes.PROVIDER} element={<Provide />} />
             </Route>
           </Route>
         </Routes>

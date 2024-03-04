@@ -12,8 +12,10 @@ const RequestModal = ({ open, handleClose, handleOpen }) => {
       message: "",
     },
     validationSchema: requestModalSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, onSubmitProps) => {
       console.log("submmitted", values);
+      onSubmitProps.resetForm();
+      handleClose();
     },
   });
   return (

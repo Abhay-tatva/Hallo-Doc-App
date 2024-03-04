@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -34,9 +34,11 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
-  const [tableData, setTableData] = useState(rows);
+  const [tableData, setTableData] = useState([]);
   const [rowId, setRowId] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => setTableData(rows), [rows]);
 
   const notify = () => toast("Phone number Copyied successfully!");
 

@@ -25,6 +25,7 @@ import { FormInput } from "../../TextField/FormInput";
 import "./closeCase.css";
 import { viewCloseCaseSchema } from "../../ValidationSchema/validationSchema";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import { useFormik } from "formik";
 
 const rows = [
   { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
