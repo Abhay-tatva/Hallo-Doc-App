@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { FormInput } from "../../../TextField/FormInput";
 import { Button } from "../../../Button/ButtonInput";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 import PhoneInput from "react-phone-input-2";
 
@@ -129,7 +129,7 @@ const Address = () => {
           />
         </Grid>
       </Grid>
-      <Box display="flex" justifyContent="flex-end" mt={4}>
+      <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
         {isDisabled ? (
           <Button
             name="Edit"

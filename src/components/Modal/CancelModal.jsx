@@ -42,6 +42,7 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
             error={
               formik.touched.canelReason && Boolean(formik.errors.canelReason)
             }
+            helperText={formik.touched.canelReason && formik.errors.canelReason}
           >
             <MenuItem value="Service not Availabel">
               Service not Availabel
@@ -64,6 +65,9 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
             error={
               formik.touched.additionalnotes &&
               Boolean(formik.errors.additionalnotes)
+            }
+            helperText={
+              formik.touched.additionalnotes && formik.errors.additionalnotes
             }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>

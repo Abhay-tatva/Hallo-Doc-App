@@ -90,6 +90,9 @@ const ViewReservation = () => {
                     formik.touched.patientNotes &&
                     Boolean(formik.errors.patientNotes)
                   }
+                  helperText={
+                    formik.touched.patientNotes && formik.errors.patientNotes
+                  }
                 />
                 {/* <Divider /> */}
                 <Grid
@@ -111,6 +114,9 @@ const ViewReservation = () => {
                         formik.touched.firstName &&
                         Boolean(formik.errors.firstName)
                       }
+                      helperText={
+                        formik.touched.firstName && formik.errors.firstName
+                      }
                     />
                   </Grid>
                   <Grid item xs={12} md={6} lg={6}>
@@ -125,6 +131,9 @@ const ViewReservation = () => {
                       error={
                         formik.touched.lastName &&
                         Boolean(formik.errors.lastName)
+                      }
+                      helperText={
+                        formik.touched.lastName && formik.errors.lastName
                       }
                     />
                   </Grid>
@@ -151,6 +160,9 @@ const ViewReservation = () => {
                         formik.touched.phonenumber &&
                         Boolean(formik.errors.phonenumber)
                       }
+                      helperText={
+                        formik.touched.phoneNumber && formik.errors.phoneNumber
+                      }
                     />
                     {/* </Box> */}
                   </Grid>
@@ -175,6 +187,7 @@ const ViewReservation = () => {
                       error={
                         formik.touched.email && Boolean(formik.errors.email)
                       }
+                      helperText={formik.touched.email && formik.errors.email}
                     />
                   </Grid>
                   <Grid item sm={12} md={6} lg={6}>
@@ -210,6 +223,7 @@ const ViewReservation = () => {
                     error={
                       formik.touched.region && Boolean(formik.errors.region)
                     }
+                    helperText={formik.touched.region && formik.errors.region}
                   />
                 </Grid>
                 <Grid item xs={11} md={5}>
@@ -223,6 +237,9 @@ const ViewReservation = () => {
                     value={formik.values.business}
                     error={
                       formik.touched.business && Boolean(formik.errors.business)
+                    }
+                    helperText={
+                      formik.touched.business && formik.errors.business
                     }
                   />
                 </Grid>
@@ -247,6 +264,7 @@ const ViewReservation = () => {
                     onBlur={formik.handleBlur}
                     value={formik.values.room}
                     error={formik.touched.room && Boolean(formik.errors.room)}
+                    helperText={formik.touched.room && formik.errors.room}
                   />
                 </Grid>
               </Grid>

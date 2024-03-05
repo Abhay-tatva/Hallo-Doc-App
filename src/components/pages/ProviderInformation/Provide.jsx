@@ -21,19 +21,27 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Button } from "../../Button/ButtonInput";
 import { columns, rows } from "../../../constant/providerData";
 import "./provide.css";
+import ContactModal from "../../Modal/ContactModal";
+import { AppRoutes } from "../../../constant/route";
+import { Navigate, useNavigate } from "react-router-dom";
 const Provide = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedColumn, setSelectedColumn] = useState("name");
+  const [additionalFilter, setAdditionalFilter] = useState("all");
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("providerName");
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => setTableData(rows), [rows]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const handleAdditionalFilterChange = (event) => {
+    setAdditionalFilter(event.target.value);
+    setSelectedColumn(event.target.value);
   };
 
   const stableSort = (array, comparator) => {
@@ -73,6 +81,13 @@ const Provide = () => {
     setPage(0);
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <>
       <Box className="provider-main-container">
@@ -88,11 +103,11 @@ const Provide = () => {
               className="provide-header"
             >
               <FormInput
+                className="search-text drop-list"
                 select
-                className="search-text"
-                placeholder="Search"
-                variant="outlined"
-                value={searchTerm}
+                placeholder="All Regions"
+                value={additionalFilter}
+                onChange={handleAdditionalFilterChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -100,18 +115,22 @@ const Provide = () => {
                     </InputAdornment>
                   ),
                 }}
-                // onChange={(e) => filterRows(rows, e.target.value)}
               >
-                <MenuItem value="All">All</MenuItem>
-                <MenuItem value="All">All</MenuItem>
-                <MenuItem value="All">All</MenuItem>
-                <MenuItem value="All">All</MenuItem>
+                <MenuItem value="all">All</MenuItem>
+                {columns.map((column) => {
+                  return (
+                    <MenuItem key={column.id} value={column.id}>
+                      {column.label}
+                    </MenuItem>
+                  );
+                })}
               </FormInput>
               <Button name="Create Provider Account" />
             </Box>
-            <TableContainer sx={{ maxHeight: "none" }}>
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead>
+
+            <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
+              <Table>
+                <TableHead style={{ backgroundColor: "#f6f6f6" }}>
                   <TableRow>
                     {columns.map((column) => (
                       <TableCell
@@ -153,11 +172,15 @@ const Provide = () => {
                                       name="Contact"
                                       variant="outlined"
                                       size="small"
+                                      onClick={handleOpen}
                                     />
                                     <Button
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
+                                      onClick={() =>
+                                        navigate(AppRoutes.EDITACCOUNT)
+                                      }
                                     />
                                   </Box>
                                 ) : (
@@ -184,6 +207,11 @@ const Provide = () => {
           </Paper>
         </Container>
       </Box>
+      <ContactModal
+        open={open}
+        handleClose={handleClose}
+        handleOpen={handleOpen}
+      />
     </>
   );
 };

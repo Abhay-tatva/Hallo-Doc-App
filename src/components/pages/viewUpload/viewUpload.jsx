@@ -195,16 +195,6 @@ const ViewUpload = () => {
             <form>
               <Box position="relative" mb={2} mt={2}>
                 <Box display="flex">
-                  {/* <Box position="absolute" className="file-select">
-                    <label htmlFor="selectfile">Select Files</label>
-                  </Box> */}
-
-                  {/* <Stack
-                    direction="row"
-                    alignItems="center"
-                    spacing={2}
-                    className="upload-content"
-                  > */}
                   <Button
                     fullWidth
                     variant="outlined"
@@ -219,18 +209,6 @@ const ViewUpload = () => {
                       type="file"
                     />
                   </Button>
-                  {/* </Stack> */}
-
-                  {/* <FormInput
-                    type="file"
-                    id="selectfile"
-                    fullWidth
-                    inputProps={{
-                      multiple: true,
-                    }}
-                    className="file-input"
-                    onChange={handleFileChange}
-                  /> */}
 
                   <Button
                     name="Upload"

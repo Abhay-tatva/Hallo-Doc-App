@@ -18,6 +18,7 @@ import MyProfile from "./components/pages/myProfile/myProfile";
 import Header from "./components/Header/Header";
 import { useState } from "react";
 import Provide from "./components/pages/ProviderInformation/Provide";
+import EditAccount from "./components/pages/EditAccount/EditAccount";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -56,6 +57,7 @@ function App() {
               <Route path={AppRoutes.CLOSECASE} element={<CloseCase />} />
               <Route path={AppRoutes.MYPROFILE} element={<MyProfile />} />
               <Route path={AppRoutes.PROVIDER} element={<Provide />} />
+              <Route path={AppRoutes.EDITACCOUNT} element={<EditAccount />} />
             </Route>
           </Route>
         </Routes>

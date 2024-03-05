@@ -54,7 +54,7 @@ const CloseCase = () => {
   const handleSave = () => {
     setIsDisabled(true);
   };
-
+  const handleClick = () => {};
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = rows.map((row) => row.id);

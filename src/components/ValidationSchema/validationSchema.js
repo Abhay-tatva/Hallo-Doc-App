@@ -27,3 +27,5 @@ export { myProfileSchema } from "./MyProfileSchema";
 export { requestModalSchema } from "./RequestModalSchema";
 
 export { sendLinkModalSchema } from "./SendLinkModalSchema";
+
+export { contactModalSchema } from "./ContactModalSchema";

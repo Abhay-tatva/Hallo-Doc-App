@@ -1,27 +1,27 @@
-import React from 'react';
-import {Box, Container, Grid, Paper, Typography} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
-import {Button} from '../../Button/ButtonInput';
-import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
-import './viewNotes.css';
-import {FormInput} from '../../TextField/FormInput';
-import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
-import PersonIcon from '@mui/icons-material/Person';
-import Person4Icon from '@mui/icons-material/Person4';
-import Footer from '../../Footer/Footer';
-import {useFormik} from 'formik';
-import {viewNotesSchema} from '../../ValidationSchema/validationSchema';
+import React from "react";
+import { Box, Container, Grid, Paper, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../../Button/ButtonInput";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
+import "./viewNotes.css";
+import { FormInput } from "../../TextField/FormInput";
+import WifiProtectedSetupIcon from "@mui/icons-material/WifiProtectedSetup";
+import PersonIcon from "@mui/icons-material/Person";
+import Person4Icon from "@mui/icons-material/Person4";
+import Footer from "../../Footer/Footer";
+import { useFormik } from "formik";
+import { viewNotesSchema } from "../../ValidationSchema/validationSchema";
 
 const ViewNotes = () => {
   const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
-      adminNotes: '',
+      adminNotes: "",
     },
     validationSchema: viewNotesSchema,
     onSubmit: (values) => {
-      console.log('submmitted', values);
+      console.log("submmitted", values);
     },
   });
   return (
@@ -46,14 +46,14 @@ const ViewNotes = () => {
             />
             {/* </Link> */}
           </Box>
-          <Grid container spacing={{xs: 1, md: 2}}>
+          <Grid container spacing={{ xs: 1, md: 2 }}>
             <Grid item xs={12} md={6}>
               <Paper className="transfer-notes">
                 <Box>
                   <WifiProtectedSetupIcon />
                 </Box>
                 <Box>
-                  <Typography sx={{display: 'flex', alignItems: 'center'}}>
+                  <Typography sx={{ display: "flex", alignItems: "center" }}>
                     <b>Transfer Notes</b>
                   </Typography>
                   <Typography variant="caption">
@@ -104,6 +104,9 @@ const ViewNotes = () => {
                     error={
                       formik.touched.adminNotes &&
                       Boolean(formik.errors.adminNotes)
+                    }
+                    helperText={
+                      formik.touched.adminNotes && formik.errors.adminNotes
                     }
                   />
                   <Box className="save-change">

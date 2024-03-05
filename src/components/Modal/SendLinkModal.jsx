@@ -39,6 +39,7 @@ const SendLinkModal = ({ open, handleClose, handleOpen }) => {
             onBlur={formik.handleBlur}
             value={formik.values.firstName}
             error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            helperText={formik.touched.firstName && formik.errors.firstName}
           />
           <FormInput
             name="lastName"
@@ -48,6 +49,7 @@ const SendLinkModal = ({ open, handleClose, handleOpen }) => {
             onBlur={formik.handleBlur}
             value={formik.values.lastName}
             error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+            helperText={formik.touched.lastName && formik.errors.lastName}
           />
           <PhoneInput
             name="phoneNumber"
@@ -69,6 +71,7 @@ const SendLinkModal = ({ open, handleClose, handleOpen }) => {
             onBlur={formik.handleBlur}
             value={formik.values.email}
             error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Send" variant="contained" type="submit" />

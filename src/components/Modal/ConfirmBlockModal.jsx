@@ -40,6 +40,9 @@ const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
             error={
               formik.touched.blockRequest && Boolean(formik.errors.blockRequest)
             }
+            helperText={
+              formik.touched.blockRequest && formik.errors.blockRequest
+            }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Conform" variant="contained" />

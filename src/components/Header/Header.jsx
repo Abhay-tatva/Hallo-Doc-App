@@ -1,24 +1,46 @@
-import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import React from "react";
+import React, { useState } from "react";
 import { patient } from "../assests/images";
 import { Button } from "../Button/ButtonInput";
 import "./header.css";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constant/route";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import Menu from "@mui/icons-material/Menu";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/loginSlice/loginSlice";
 
 const Header = ({ isDarktheme, handleDarkMode }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = () => {
     navigate(AppRoutes.LOGIN);
     dispatch(logout());
+  };
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleNavLinkHover = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
   return (
@@ -59,7 +81,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             className="toggle-btn icon-btn"
             onClick={() => setOpen(true)}
           >
-            <Menu />
+            <MenuOutlinedIcon />
           </Button>
         </Box>
       </Box>
@@ -89,13 +111,31 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             My Profile
           </NavLink>
         </li>
-        <li>
+        <li onMouseEnter={handleNavLinkHover} onMouseLeave={handleMenuClose}>
           <NavLink
             to={AppRoutes.PROVIDER}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Providers
           </NavLink>
+          {anchorEl && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.PROVIDER);
+                  handleMenuClose();
+                }}
+              >
+                Provider
+              </MenuItem>
+              <MenuItem onClick={() => navigate(-1)}>Scheduling</MenuItem>
+              <MenuItem onClick={() => navigate(-1)}>Invoicing</MenuItem>
+            </Menu>
+          )}
         </li>
         <li>
           <NavLink

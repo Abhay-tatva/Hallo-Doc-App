@@ -1,30 +1,30 @@
-import React from 'react';
-import {useFormik} from 'formik';
-import {orderDetails} from '../../ValidationSchema/validationSchema';
-import {Box, Grid, MenuItem, Paper, Typography} from '@mui/material';
-import {Container} from '@mui/system';
-import {Button} from '../../Button/ButtonInput';
-import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
-import {useNavigate} from 'react-router-dom';
-import {FormInput} from '../../TextField/FormInput';
-import './Order.css';
-import {AppRoutes} from '../../../constant/route';
+import React from "react";
+import { useFormik } from "formik";
+import { orderDetails } from "../../ValidationSchema/validationSchema";
+import { Box, Grid, MenuItem, Paper, Typography } from "@mui/material";
+import { Container } from "@mui/system";
+import { Button } from "../../Button/ButtonInput";
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import { useNavigate } from "react-router-dom";
+import { FormInput } from "../../TextField/FormInput";
+import "./Order.css";
+import { AppRoutes } from "../../../constant/route";
 const Order = () => {
   const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
-      selectPro: '',
-      business: '',
-      businessContact: '',
-      email: '',
-      faxNumber: '',
-      orderDetail: '',
-      retailNumber: '',
+      selectPro: "",
+      business: "",
+      businessContact: "",
+      email: "",
+      faxNumber: "",
+      orderDetail: "",
+      retailNumber: "",
     },
     validationSchema: orderDetails,
     onSubmit: (values, onSubmitProps) => {
-      console.log('Form Submitted', values);
+      console.log("Form Submitted", values);
       onSubmitProps.resetForm();
     },
   });
@@ -55,7 +55,7 @@ const Order = () => {
           </Box>
           <form onSubmit={formik.handleSubmit}>
             <Paper className="order-paper">
-              <Grid container spacing={{xs: 1, md: 2}} className="divider">
+              <Grid container spacing={{ xs: 1, md: 2 }} className="divider">
                 <Grid item xs={12} md={6} lg={6}>
                   <FormInput
                     fullWidth
@@ -68,6 +68,9 @@ const Order = () => {
                     error={
                       formik.touched.selectPro &&
                       Boolean(formik.errors.selectPro)
+                    }
+                    helperText={
+                      formik.touched.selectPro && formik.errors.selectPro
                     }
                   >
                     <MenuItem value="Doctor">Doctor</MenuItem>
@@ -88,6 +91,9 @@ const Order = () => {
                     error={
                       formik.touched.business && Boolean(formik.errors.business)
                     }
+                    helperText={
+                      formik.touched.business && formik.errors.business
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
@@ -103,6 +109,10 @@ const Order = () => {
                       formik.touched.businessContact &&
                       Boolean(formik.errors.businessContact)
                     }
+                    helperText={
+                      formik.touched.businessContact &&
+                      formik.errors.businessContact
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
@@ -115,6 +125,7 @@ const Order = () => {
                     onBlur={formik.handleBlur}
                     value={formik.values.email}
                     error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
                   />
                 </Grid>
                 <Grid item sm={12} md={6} lg={6}>
@@ -129,6 +140,9 @@ const Order = () => {
                     error={
                       formik.touched.faxNumber &&
                       Boolean(formik.errors.faxNumber)
+                    }
+                    helperText={
+                      formik.touched.faxNumber && formik.errors.faxNumber
                     }
                   />
                 </Grid>
@@ -148,11 +162,15 @@ const Order = () => {
                     formik.touched.orderDetail &&
                     Boolean(formik.errors.orderDetail)
                   }
+                  helperText={
+                    formik.touched.businessContact &&
+                    formik.errors.businessContact
+                  }
                 />
               </Box>
               <Grid
                 container
-                spacing={{xs: 1, md: 2}}
+                spacing={{ xs: 1, md: 2 }}
                 className="location-info"
               >
                 <Grid item xs={12} md={6}>
@@ -167,6 +185,10 @@ const Order = () => {
                     error={
                       formik.touched.retailNumber &&
                       Boolean(formik.errors.retailNumber)
+                    }
+                    helperText={
+                      formik.touched.businessContact &&
+                      formik.errors.businessContact
                     }
                   />
                 </Grid>

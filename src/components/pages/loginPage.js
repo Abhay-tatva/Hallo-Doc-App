@@ -13,41 +13,35 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../Button/ButtonInput";
 import { LoginSchema } from "../ValidationSchema/validationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  loginFailure,
-  loginRequest,
-  loginSuccess,
-} from "../../redux/loginSlice/loginSlice";
+
 import { toast } from "react-toastify";
+import { userLogin } from "../../redux/loginSlice/loginApi";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.login);
+
   const onSubmit = (values) => {
-    dispatch(loginRequest());
-    if (
-      values.username === "admin@gmail.com" &&
-      values.password === "Admin@123"
-    ) {
-      dispatch(loginSuccess());
-      toast.success("You are login Successfully");
-      navigate(AppRoutes.DASHBOARD, { replace: true });
-    } else {
-      dispatch(loginFailure("Invalid username or password"));
-      error && toast.error(error);
-    }
+    dispatch(userLogin(values)).then((response) => {
+      if (response.type === "userLogin/fulfilled") {
+        toast.success("You are login Successfully");
+        navigate(AppRoutes.DASHBOARD);
+      } else {
+        toast.error("Invalid email or password");
+      }
+    });
   };
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
     },
     validationSchema: LoginSchema,
     onSubmit,
   });
-  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -82,14 +76,14 @@ const LoginPage = () => {
             <FormInput
               margin="normal"
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
+              id="email"
+              label="email"
+              name="email"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.username}
-              error={formik.touched.username && Boolean(formik.errors.username)}
-              helperText={formik.touched.username && formik.errors.username}
+              value={formik.values.email}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
               className="form-group"
               InputProps={{
                 endAdornment: (

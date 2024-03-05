@@ -37,7 +37,9 @@ const Account = () => {
               accountformik.touched.username &&
               Boolean(accountformik.errors.username)
             }
-            helperText={accountformik.touched.Role && accountformik.errors.Role}
+            helperText={
+              accountformik.touched.username && accountformik.errors.username
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -53,7 +55,9 @@ const Account = () => {
               accountformik.touched.password &&
               Boolean(accountformik.errors.password)
             }
-            helperText={accountformik.touched.Role && accountformik.errors.Role}
+            helperText={
+              accountformik.touched.password && accountformik.errors.password
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -70,7 +74,9 @@ const Account = () => {
               accountformik.touched.status &&
               Boolean(accountformik.errors.status)
             }
-            helperText={accountformik.touched.Role && accountformik.errors.Role}
+            helperText={
+              accountformik.touched.status && accountformik.errors.status
+            }
           >
             <MenuItem value="active">Active</MenuItem>
             <MenuItem value="unactive">UnActive</MenuItem>
