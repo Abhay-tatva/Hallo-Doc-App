@@ -4,7 +4,7 @@ import { FormInput } from "../TextField/FormInput";
 import { Button } from "../Button/ButtonInput";
 import { useFormik } from "formik";
 import BasicModal from "./Modal";
-import { assignModalSchema } from "../ValidationSchema/validationSchema";
+import { assignModalSchema } from "../ValidationSchema/index";
 
 const AssignModal = ({ open, handleClose, handleOpen }) => {
   const formik = useFormik({

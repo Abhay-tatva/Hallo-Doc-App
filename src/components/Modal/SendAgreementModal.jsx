@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
-import { sendAgreementModalSchema } from "../ValidationSchema/validationSchema";
+import { sendAgreementModalSchema } from "../ValidationSchema/index";
 import { Box, Typography } from "@mui/material";
 import BasicModal from "./Modal";
 import { FormInput } from "../TextField/FormInput";

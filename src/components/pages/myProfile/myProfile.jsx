@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import { Button } from "../../Button/ButtonInput";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../../constant/route";

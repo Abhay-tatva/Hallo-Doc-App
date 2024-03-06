@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import { FormInput } from "../../TextField/FormInput";
 import "./closeCase.css";
-import { viewCloseCaseSchema } from "../../ValidationSchema/validationSchema";
+import { viewCloseCaseSchema } from "../../ValidationSchema/index";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { useFormik } from "formik";
 

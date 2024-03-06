@@ -17,8 +17,7 @@ import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constant/route";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/loginSlice/loginSlice";
 

@@ -16,7 +16,7 @@ import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../../constant/route";
-import { viewReservationSchema } from "../../ValidationSchema/validationSchema";
+import { viewReservationSchema } from "../../ValidationSchema/index";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useFormik } from "formik";

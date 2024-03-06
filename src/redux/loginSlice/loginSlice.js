@@ -5,7 +5,7 @@ const initialState = {
   isLoggedIn: false,
   isLoading: false,
   error: null,
-  token: "",
+  jwtToken: "",
 };
 
 export const loginSlice = createSlice({
@@ -18,10 +18,10 @@ export const loginSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(userLogin.fulfilled, (state, action) => {
-      if (action.payload.token) {
+      if (action.payload.jwtToken) {
         state.isLoading = false;
         state.isLoggedIn = true;
-        state.token = action.payload.token;
+        state.jwtToken = action.payload.jwtToken;
       }
     });
     builder.addCase(userLogin.pending, (state, action) => {

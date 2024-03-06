@@ -4,7 +4,7 @@ import BasicModal from "./Modal";
 import { Box, Typography } from "@mui/material";
 import { FormInput } from "../TextField/FormInput";
 import { Button } from "../Button/ButtonInput";
-import { requestModalSchema } from "../ValidationSchema/RequestModalSchema";
+import { requestModalSchema } from "../ValidationSchema/index";
 
 const RequestModal = ({ open, handleClose, handleOpen }) => {
   const formik = useFormik({

@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
-import { orderDetails } from "../../ValidationSchema/validationSchema";
+import { orderDetails } from "../../ValidationSchema/index";
 import { Box, Grid, MenuItem, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { Button } from "../../Button/ButtonInput";

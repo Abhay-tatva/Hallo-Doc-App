@@ -11,7 +11,7 @@ import { FormInput } from "../TextField/FormInput";
 import { AppRoutes } from "../../constant/route";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../Button/ButtonInput";
-import { LoginSchema } from "../ValidationSchema/validationSchema";
+import { LoginSchema } from "../ValidationSchema/index";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "react-toastify";

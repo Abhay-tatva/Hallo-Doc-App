@@ -10,7 +10,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import Person4Icon from "@mui/icons-material/Person4";
 import Footer from "../../Footer/Footer";
 import { useFormik } from "formik";
-import { viewNotesSchema } from "../../ValidationSchema/validationSchema";
+import { viewNotesSchema } from "../../ValidationSchema/index";
 
 const ViewNotes = () => {
   const navigate = useNavigate();

@@ -1,21 +1,21 @@
-import React from 'react';
-import {Box, MenuItem, Typography} from '@mui/material';
-import {FormInput} from '../TextField/FormInput';
-import {Button} from '../Button/ButtonInput';
-import {useFormik} from 'formik';
-import BasicModal from './Modal';
-import {transferModalSchema} from '../ValidationSchema/validationSchema';
+import React from "react";
+import { Box, MenuItem, Typography } from "@mui/material";
+import { FormInput } from "../TextField/FormInput";
+import { Button } from "../Button/ButtonInput";
+import { useFormik } from "formik";
+import BasicModal from "./Modal";
+import { transferModalSchema } from "../ValidationSchema/index";
 
-const TransferModal = ({open, handleClose, handleOpen}) => {
+const TransferModal = ({ open, handleClose, handleOpen }) => {
   const formik = useFormik({
     initialValues: {
-      searchRegion: '',
-      description: '',
-      physician: '',
+      searchRegion: "",
+      description: "",
+      physician: "",
     },
     validationSchema: transferModalSchema,
     onSubmit: (values) => {
-      console.log('submmitted', values);
+      console.log("submmitted", values);
     },
   });
   return (

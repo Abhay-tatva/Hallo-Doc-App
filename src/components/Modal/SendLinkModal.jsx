@@ -1,5 +1,5 @@
 import React from "react";
-import { sendLinkModalSchema } from "../ValidationSchema/SendLinkModalSchema";
+import { sendLinkModalSchema } from "../ValidationSchema/index";
 import BasicModal from "./Modal";
 import { FormInput } from "../TextField/FormInput";
 import { useFormik } from "formik";

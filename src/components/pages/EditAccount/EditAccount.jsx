@@ -1,4 +1,4 @@
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../../constant/route";
@@ -9,6 +9,7 @@ import Address from "../myProfile/components/Address";
 import PhysiciansInformation from "../myProfile/components/PhysiciansInformation";
 import ProvideProfile from "../myProfile/components/ProvideProfile";
 import "./editAccount.css";
+import OnBording from "../myProfile/components/onBoarding";
 
 const EditAccount = () => {
   return (
@@ -40,6 +41,19 @@ const EditAccount = () => {
             <Address />
             {/* .......................................Provider Profile.................................. */}
             <ProvideProfile />
+            <Divider sx={{ backgroundColor: "black" }} />
+            {/* ........................................On boarding........................................................ */}
+            <OnBording />
+            <Divider sx={{ backgroundColor: "black", marginTop: "20px" }} />
+            <Box display="flex" justifyContent="end" gap={2} mt={2}>
+              <Button name="save" variant="contained" />
+              <Button
+                name="Delete Account"
+                variant="contained"
+                color="error"
+                mt={1}
+              />
+            </Box>
           </Paper>
         </Container>
       </Box>

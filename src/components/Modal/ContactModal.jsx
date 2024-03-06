@@ -11,7 +11,7 @@ import {
 import { FormInput } from "../TextField/FormInput";
 import { Button } from "../Button/ButtonInput";
 import { useFormik } from "formik";
-import { contactModalSchema } from "../ValidationSchema/ContactModalSchema";
+import { contactModalSchema } from "../ValidationSchema/index";
 
 const ContactModal = ({ open, handleClose, handleOpen }) => {
   const formik = useFormik({
