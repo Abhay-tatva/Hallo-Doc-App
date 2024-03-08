@@ -1,5 +1,5 @@
-import {Button as MuiButton} from '@mui/material';
-import PropTypes from 'prop-types';
+import { Button as MuiButton } from "@mui/material";
+import PropTypes from "prop-types";
 
 export const Button = ({
   className,
@@ -7,8 +7,8 @@ export const Button = ({
   onClick,
   disabled,
   children,
-  color = 'primary',
-  variant = 'contained',
+  color = "primary",
+  variant = "contained",
   ...restProps
 }) => {
   return (
@@ -33,14 +33,14 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   restProps: PropTypes.object,
-  variant: PropTypes.oneOf(['text', 'contained', 'outlined']),
+  variant: PropTypes.oneOf(["text", "contained", "outlined"]),
   color: PropTypes.oneOf([
-    'inherit',
-    'primary',
-    'secondary',
-    'success',
-    'error',
-    'info',
-    'warning',
+    "inherit",
+    "primary",
+    "secondary",
+    "success",
+    "error",
+    "info",
+    "warning",
   ]),
 };

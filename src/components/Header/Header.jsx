@@ -19,7 +19,7 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 import { useDispatch } from "react-redux";
-import { logout } from "../../redux/loginSlice/loginSlice";
+import { logout } from "../../redux/slices/loginSlice";
 
 const Header = ({ isDarktheme, handleDarkMode }) => {
   const [open, setOpen] = useState(false);
@@ -146,7 +146,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to={AppRoutes.ACCESSACCOUNT}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Access

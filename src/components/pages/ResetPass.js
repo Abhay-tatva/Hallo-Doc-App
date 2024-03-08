@@ -6,28 +6,27 @@ import Patient1 from "../assests/images/patient.png";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import { FormInput } from "../TextField/FormInput";
 import { AppRoutes } from "../../constant/route";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../Button/ButtonInput";
-import { LoginSchema } from "../ValidationSchema/index";
+import { ResetPassSchema } from "../ValidationSchema/index";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "react-toastify";
-import { userLogin } from "../../redux/loginApi/loginApi";
+import { resetPassApi } from "../../redux/resetPass/resetPassApi";
 
-const LoginPage = () => {
+const ResetPass = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.root.loginReducer);
+  const { reset_token } = useParams();
 
   const onSubmit = (values) => {
-    dispatch(userLogin(values)).then((response) => {
-      if (response.type === "userLogin/fulfilled") {
-        toast.success("You are login Successfully");
-        navigate(AppRoutes.DASHBOARD);
+    dispatch(resetPassApi({ ...values, reset_token })).then((response) => {
+      if (response.type === "resetPass/fulfilled") {
+        toast.success("Reset Password set Successfully");
+        navigate(AppRoutes.LOGIN);
       } else {
         toast.error("Invalid email or password");
       }
@@ -36,10 +35,10 @@ const LoginPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "",
       password: "",
+      confirm_password: "",
     },
-    validationSchema: LoginSchema,
+    validationSchema: ResetPassSchema,
     onSubmit,
   });
 
@@ -69,36 +68,16 @@ const LoginPage = () => {
           </div>
           <div className="text">
             <Typography variant="h4" align="center">
-              Login To Your Account
+              Reset Password
             </Typography>
           </div>
           <form onSubmit={formik.handleSubmit} className="form-page">
             <FormInput
               margin="normal"
               fullWidth
-              id="email"
-              label="email"
-              name="email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              className="form-group"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <AccountCircle />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <FormInput
-              margin="normal"
-              fullWidth
+              //   id="email"
               type={showPassword ? "text" : "password"}
-              id="password"
-              label="Password"
+              label="New Password"
               name="password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -125,17 +104,51 @@ const LoginPage = () => {
                 ),
               }}
             />
+            <FormInput
+              margin="normal"
+              fullWidth
+              type={showPassword ? "text" : "password"}
+              label="Confirm Password"
+              name="confirm_password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.confirm_password}
+              error={
+                formik.touched.confirm_password &&
+                Boolean(formik.errors.confirm_password)
+              }
+              helperText={
+                formik.touched.confirm_password &&
+                formik.errors.confirm_password
+              }
+              className="form-group"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? (
+                        <VisibilityOffOutlinedIcon />
+                      ) : (
+                        <VisibilityOutlinedIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
             <Button
-              className=" btn"
-              name="Log In"
+              className="btn"
+              name="Reset Your Password"
               type="submit"
               fullWidth
               size="large"
             />
           </form>
-          <div className="link">
-            <Link to={AppRoutes.FORGOTPASS}>Forgot password ?</Link>
-          </div>
 
           <div className="footer-links">
             <Link to="#" sx={{ mr: "10px" }}>
@@ -152,4 +165,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default ResetPass;

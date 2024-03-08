@@ -48,31 +48,33 @@ import ClearCaseModal from "../Modal/ClearCaseModal";
 import SendAgreementModal from "../Modal/SendAgreementModal";
 import RequestModal from "../Modal/RequestModal";
 import SendLinkModal from "../Modal/SendLinkModal";
+import { useDispatch } from "react-redux";
+import { newState } from "../../redux/newState/newStateApi";
 
 const cards = [
   {
-    applicationState: "New",
+    applicationState: "new",
     figure: "1452",
     icon: <NewReleasesIcon />,
     color: "primary",
     toolTip: primaryTriangle,
   },
   {
-    applicationState: "Pending",
+    applicationState: "pending",
     figure: "266",
     icon: <PendingIcon />,
     color: "secondary",
     toolTip: secondaryTriangle,
   },
   {
-    applicationState: "Active",
+    applicationState: "active",
     figure: "26",
     icon: <CheckCircleOutlineIcon />,
     color: "success",
     toolTip: successTriangle,
   },
   {
-    applicationState: "Conclude",
+    applicationState: "conclude",
     figure: "1078",
     icon: <CodeIcon />,
     color: "error",
@@ -86,7 +88,7 @@ const cards = [
     toolTip: infoTriangle,
   },
   {
-    applicationState: "Unpaid",
+    applicationState: "unpaid",
     figure: "16",
     icon: <AttachMoneyIcon />,
     color: "warning",
@@ -98,11 +100,12 @@ const Dashboard = () => {
   const [isActive, setIsActive] = useState(true);
   const [filterRows, setFilterRows] = useState(rows);
   const [rowId, setRowId] = useState(null);
-  const [activeButton, setActiveButton] = useState(0);
+  const [activeButton, setActiveButton] = useState("new");
   const [columns, setColumns] = useState(newColumns);
   const [dropDown, setDropDown] = useState(newDropdown);
   const [open, setOpen] = React.useState(false);
   const [modalName, setModalName] = useState("");
+  const dispatch = useDispatch();
 
   const handleOpen = (name, rowId) => {
     setRowId(rowId);
@@ -121,34 +124,39 @@ const Dashboard = () => {
     handleClose();
   };
 
-  const handleClick = (index) => {
-    setActiveButton(index);
+  const handleClick = (name) => {
+    setActiveButton(name);
     setIsActive(true);
   };
+  useEffect(() => {
+    dispatch(newState(activeButton.toLowerCase())).then((response) => {
+      console.log("New Response", response);
+    });
+  }, [activeButton, dispatch]);
 
   useEffect(() => {
     switch (activeButton) {
-      case 0:
+      case "New":
         setColumns(newColumns);
         setDropDown(newDropdown);
         break;
-      case 1:
+      case "Pending":
         setColumns(pendingColumns);
         setDropDown(pendingDropdown);
         break;
-      case 2:
+      case "Active":
         setColumns(activeColumns);
         setDropDown(activeDropdown);
         break;
-      case 3:
+      case "Conclude":
         setColumns(concludeColumns);
         setDropDown(concludeDropdown);
         break;
-      case 4:
+      case "To Close":
         setColumns(toCloseColumns);
         setDropDown(toCloseDropdown);
         break;
-      case 5:
+      case "Unpaid":
         setColumns(unpaidColumns);
         setDropDown(unpaidDropdown);
         break;
@@ -177,13 +185,13 @@ const Dashboard = () => {
                 <Button
                   color={card.color}
                   variant={
-                    isActive && activeButton === index
+                    isActive && activeButton === card.applicationState
                       ? "contained"
                       : "outlined"
                   }
                   className="card-btn"
                   fullWidth
-                  onClick={() => handleClick(index)}
+                  onClick={() => handleClick(card.applicationState)}
                 >
                   <Box className="card-content-heading">
                     {card.icon}
@@ -193,7 +201,7 @@ const Dashboard = () => {
                   </Box>
                   <Typography variant="h5">{card.figure}</Typography>
                 </Button>
-                {isActive && activeButton === index ? (
+                {isActive && activeButton === card.applicationState ? (
                   <img
                     src={card.toolTip}
                     alt="triangle"

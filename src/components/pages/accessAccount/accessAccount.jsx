@@ -1,9 +1,6 @@
 import {
   Box,
-  Checkbox,
   Container,
-  InputAdornment,
-  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -16,34 +13,28 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { FormInput } from "../../TextField/FormInput";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Button } from "../../Button/ButtonInput";
-import { columns, rows } from "../../../constant/providerData";
-import "./provide.css";
-import ContactModal from "../../Modal/ContactModal";
-import { AppRoutes } from "../../../constant/route";
-import { useNavigate } from "react-router-dom";
-const Provide = () => {
-  const [additionalFilter, setAdditionalFilter] = useState("all");
+import { columns, rows } from "../../../constant/accessData";
+import "./acessAccount.css";
+
+const AccessAccount = () => {
+  const [orderBy, setOrderBy] = useState("accountType");
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("providerName");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => setTableData(rows), [rows]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleAdditionalFilterChange = (event) => {
-    setAdditionalFilter(event.target.value);
-    setSelectedColumn(event.target.value);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
-
   const stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
@@ -69,18 +60,6 @@ const Provide = () => {
     }
     return 0;
   };
-
-  const handleRequestSort = (property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -88,44 +67,21 @@ const Provide = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
   return (
     <>
-      <Box className="provider-main-container">
-        <Container maxWidth="lg" className="provider-wrapper-container">
+      <Box className="acess-main-container">
+        <Container maxWidth="lg" className="access-wrapper-container">
           <Typography variant="h5" gutterBottom>
-            <b>Provider Information</b>
+            <b>Account Acess</b>
           </Typography>
-          <Paper className="provider-full-paper">
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              className="provide-header"
-            >
-              <FormInput
-                className="search-text drop-list"
-                select
-                placeholder="All Regions"
-                value={additionalFilter}
-                onChange={handleAdditionalFilterChange}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchOutlinedIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              >
-                <MenuItem value="all">All</MenuItem>
-                {columns.map((column) => {
-                  return (
-                    <MenuItem key={column.id} value={column.id}>
-                      {column.label}
-                    </MenuItem>
-                  );
-                })}
-              </FormInput>
-              <Button name="Create Provider Account" />
+          <Paper className="acess-full-paper">
+            <Box display="flex" justifyContent="end" p={3}>
+              <Button name="Create Acess" variant="outlined" />
             </Box>
 
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
@@ -135,7 +91,7 @@ const Provide = () => {
                     {columns.map((column) => (
                       <TableCell
                         key={column.id}
-                        align="left"
+                        align="center"
                         style={{ minWidth: column.minWidth }}
                         className="table-head-label"
                       >
@@ -159,14 +115,12 @@ const Provide = () => {
                         <TableRow key={row.id}>
                           {columns.map((column) => {
                             return (
-                              <TableCell key={column.id} align="left">
-                                {column.id === "Stop Notification" ? (
-                                  <Checkbox checked={row.stopNotifications} />
-                                ) : column.id === "actions" ? (
+                              <TableCell key={column.id} align="center">
+                                {column.id === "actions" ? (
                                   <Box
                                     display="flex"
                                     gap={1}
-                                    alignItems="center"
+                                    justifyContent="center"
                                   >
                                     <Button
                                       name="Contact"
@@ -178,13 +132,10 @@ const Provide = () => {
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
-                                      onClick={() =>
-                                        navigate(AppRoutes.EDITACCOUNT)
-                                      }
                                     />
                                   </Box>
                                 ) : (
-                                  row[column.id]
+                                  row[column.label]
                                 )}
                               </TableCell>
                             );
@@ -207,13 +158,8 @@ const Provide = () => {
           </Paper>
         </Container>
       </Box>
-      <ContactModal
-        open={open}
-        handleClose={handleClose}
-        handleOpen={handleOpen}
-      />
     </>
   );
 };
 
-export default Provide;
+export default AccessAccount;

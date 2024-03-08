@@ -9,7 +9,9 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use((config) => {
   const useToken = config?.withAuthToken ?? true;
-  const token = "";
+  const token = JSON.parse(
+    JSON.parse(localStorage.getItem("persist:root")).loginReducer,
+  ).jwtToken;
   const headers = config.headers;
   return {
     ...config,
@@ -25,13 +27,13 @@ Axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.request?.statusText === "Unauthorized") {
-      //for handling unauthorised api
+      // for handling unauthorised api
       //   clearCookie();
       //   if (window) window.location.href = HOMEPAGE_URL;
     }
     // eslint-disable-next-line no-undef
     return Promise.reject(error);
-  }
+  },
 );
 
 export default Axios;

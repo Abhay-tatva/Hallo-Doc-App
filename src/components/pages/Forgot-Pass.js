@@ -14,6 +14,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { ForgotPassSchema } from "../ValidationSchema/index";
 import { useDispatch } from "react-redux";
 import { forgotPass } from "../../redux/forgotSlice/forgotApi";
+import { toast } from "react-toastify";
 
 const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const ForgotPasswordPage = () => {
     onSubmit: (values) => {
       dispatch(forgotPass(values)).then((response) => {
         console.log(response);
-        if (response.type === "userLogin/fulfilled") {
+        if (response.type === "forgotPass/fulfilled") {
           toast.success("You are login Successfully");
           // navigate(AppRoutes.DASHBOARD);
         } else {
@@ -51,7 +52,7 @@ const ForgotPasswordPage = () => {
           </div>
           <div className="text">
             <Typography variant="h4" align="center">
-              Reset Your Password
+              Forgot Your Password
             </Typography>
           </div>
           <form onSubmit={formik.handleSubmit} className="form-page">

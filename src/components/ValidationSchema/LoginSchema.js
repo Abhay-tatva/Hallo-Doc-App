@@ -5,7 +5,7 @@ export const LoginSchema = Yup.object({
   password: Yup.string()
     .matches(
       /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[0-9]).{8,16}$/,
-      "formate is invalid"
+      "formate is invalid",
     )
     .required("Password is required"),
 });

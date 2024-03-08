@@ -17,45 +17,50 @@ import "./table.css";
 import { FormInput } from "../TextField/FormInput";
 import { Box } from "@mui/system";
 import { Button } from "../Button/ButtonInput";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
-import Menu from "@mui/material/Menu";
+// import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+// import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+// import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Fade from "@mui/material/Fade";
-import { toast } from "react-toastify";
+// import Fade from "@mui/material/Fade";
+// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../constant/route";
+// import { useNavigate } from "react-router-dom";
+// import { AppRoutes } from "../../constant/route";
+import { useSelector } from "react-redux";
 
-const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
+const MyTable = ({ columns, indicator, dropDown, onClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedColumn, setSelectedColumn] = useState("name");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [copiedStates, setCopiedStates] = useState({});
+  // const [copiedStates, setCopiedStates] = useState({});
   const [tableData, setTableData] = useState([]);
-  const [rowId, setRowId] = useState(null);
-  const navigate = useNavigate();
+  // const [rowId, setRowId] = useState(null);
+  // const navigate = useNavigate();
+  const state = useSelector((state) => state.root.newStateReducer);
+  const rows = state.data.data;
+
+  console.log("Rows : ", rows);
 
   useEffect(() => setTableData(rows), [rows]);
 
-  const notify = () => toast("Phone number Copyied successfully!");
+  // const notify = () => toast("Phone number Copyied successfully!");
 
-  const copyButtonText = (btnId, event) => {
-    const textToCopy = event.target.innerText;
+  // const copyButtonText = (btnId, event) => {
+  //   const textToCopy = event.target.innerText;
 
-    navigator.clipboard
-      .writeText(textToCopy)
-      .then(() => {
-        setCopiedStates((prev) => ({ ...prev, [btnId]: true }));
-        notify();
-        setTimeout(() => {
-          setCopiedStates((prev) => ({ ...prev, [btnId]: false }));
-        }, 1000);
-      })
-      .catch((err) => console.error("Error copying text: ", err));
-  };
+  //   navigator.clipboard
+  //     .writeText(textToCopy)
+  //     .then(() => {
+  //       setCopiedStates((prev) => ({ ...prev, [btnId]: true }));
+  //       notify();
+  //       setTimeout(() => {
+  //         setCopiedStates((prev) => ({ ...prev, [btnId]: false }));
+  //       }, 1000);
+  //     })
+  //     .catch((err) => console.error("Error copying text: ", err));
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -104,7 +109,7 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
           (selectedColumn === "action" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase()))
         );
-      })
+      }),
     );
     setTableData(filterData);
   };
@@ -127,54 +132,54 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
     setSelectedColumn(event.target.value);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const open = Boolean(anchorEl);
 
-  const handleClick = (event, id) => {
-    setRowId(id);
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = (event, id) => {
+  //   setRowId(id);
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleClose = (action) => {
-    setAnchorEl(null);
-    switch (action) {
-      case "Assign Case":
-        onClick(action);
-        break;
-      case "Cancel Case":
-        onClick(action);
-        break;
-      case "View Case":
-        navigate(AppRoutes.RESERVATION);
-        break;
-      case "View Notes":
-        navigate(AppRoutes.NOTES);
-        break;
-      case "Block Patient":
-        onClick(action);
-        break;
-      case "View Upload":
-        navigate(AppRoutes.VIEWUPLOAD);
-        break;
-      case "Orders":
-        navigate(AppRoutes.ORDER);
-        break;
-      case "Transfer":
-        onClick(action);
-        break;
-      case "Clear Case":
-        onClick(action, rowId);
-        break;
-      case "Send Agreement":
-        onClick(action);
-        break;
-      case "Close Case":
-        navigate(AppRoutes.CLOSECASE);
-        break;
-      default:
-        break;
-    }
-  };
+  // const handleClose = (action) => {
+  //   setAnchorEl(null);
+  //   switch (action) {
+  //     case "Assign Case":
+  //       onClick(action);
+  //       break;
+  //     case "Cancel Case":
+  //       onClick(action);
+  //       break;
+  //     case "View Case":
+  //       navigate(AppRoutes.RESERVATION);
+  //       break;
+  //     case "View Notes":
+  //       navigate(AppRoutes.NOTES);
+  //       break;
+  //     case "Block Patient":
+  //       onClick(action);
+  //       break;
+  //     case "View Upload":
+  //       navigate(AppRoutes.VIEWUPLOAD);
+  //       break;
+  //     case "Orders":
+  //       navigate(AppRoutes.ORDER);
+  //       break;
+  //     case "Transfer":
+  //       onClick(action);
+  //       break;
+  //     case "Clear Case":
+  //       onClick(action, rowId);
+  //       break;
+  //     case "Send Agreement":
+  //       onClick(action);
+  //       break;
+  //     case "Close Case":
+  //       navigate(AppRoutes.CLOSECASE);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   return (
     <div className="my-table-container">
@@ -289,68 +294,18 @@ const MyTable = ({ rows, columns, indicator, dropDown, onClick }) => {
                       key={row.id}
                       className={`requestor-${row.requestor.toLowerCase()}`}
                     >
-                      {columns?.map((column) => {
-                        return (
-                          <TableCell key={column.id}>
-                            {["phoneNumber", "chatWith", "action"].includes(
-                              column.id
-                            ) ? (
-                              <>
-                                <Button
-                                  className="phone-btn"
-                                  name={row[column.id]}
-                                  startIcon={
-                                    (column.id === "phoneNumber" && (
-                                      <LocalPhoneOutlinedIcon />
-                                    )) ||
-                                    (column.id === "chatWith" && (
-                                      <PersonOutlineOutlinedIcon />
-                                    ))
-                                  }
-                                  variant="outlined"
-                                  color="inherit"
-                                  onClick={(e) => {
-                                    column.id === "phoneNumber" &&
-                                      copyButtonText(row.id, e);
-                                    column.id === "action" &&
-                                      handleClick(e, row.id);
-                                  }}
-                                />
-                                {column.id === "phoneNumber" &&
-                                  copiedStates[row.id]}
-                                {column.id === "action" && (
-                                  <Menu
-                                    id="fade-menu"
-                                    MenuListProps={{
-                                      "aria-labelledby": "fade-button",
-                                    }}
-                                    anchorEl={anchorEl}
-                                    open={open && row.id === rowId}
-                                    onClose={handleClose}
-                                    TransitionComponent={Fade}
-                                  >
-                                    {dropDown.map((data) => {
-                                      return (
-                                        <MenuItem
-                                          key={data.id}
-                                          onClick={() => {
-                                            handleClose(data.name);
-                                          }}
-                                          disableRipple
-                                        >
-                                          {data.icon}&nbsp;{data.name}
-                                        </MenuItem>
-                                      );
-                                    })}
-                                  </Menu>
-                                )}
-                              </>
-                            ) : (
-                              row[column.id]
-                            )}
-                          </TableCell>
-                        );
-                      })}
+                      <TableCell>{row.patient_data.name}</TableCell>
+                      <TableCell>{row.patient_data.DOB}</TableCell>
+                      <TableCell>
+                        {row.requestor},{row.requestor_data.firstname}{" "}
+                        {row.requestor_data.last_name}
+                      </TableCell>
+                      <TableCell>{row.requested_date}</TableCell>
+                      <TableCell>{row.patient_data.mobile_no}</TableCell>
+                      <TableCell>{row.patient_data.address}</TableCell>
+                      <TableCell>{row.notes.description}</TableCell>
+                      <TableCell>{row.patient_data.name}</TableCell>
+                      <TableCell>{row.patient_data.name}</TableCell>
                     </TableRow>
                   );
                 })}

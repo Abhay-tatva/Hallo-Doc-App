@@ -207,7 +207,7 @@ const CloseCase = () => {
                           </Button>
                         </TableCell>
                       </TableRow>
-                    )
+                    ),
                   )}
                 </TableBody>
               </Table>

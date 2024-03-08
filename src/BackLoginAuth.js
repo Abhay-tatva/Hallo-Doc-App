@@ -1,17 +1,17 @@
-import {useSelector} from 'react-redux';
-import {Navigate, Outlet, useLocation} from 'react-router-dom';
-import {AppRoutes} from './constant/route';
+import { useSelector } from "react-redux";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { AppRoutes } from "./constant/route";
 
 export const BackLoginAuth = () => {
   const location = useLocation();
-  const state = useSelector((state) => state.login);
+  const state = useSelector((state) => state.root.loginReducer);
 
   if (state.isLoggedIn) {
     return (
       <>
         <Navigate
           to={AppRoutes.DASHBOARD}
-          state={{path: location.pathname}}
+          state={{ path: location.pathname }}
         />
       </>
     );

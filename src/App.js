@@ -19,6 +19,8 @@ import Header from "./components/Header/Header";
 import { useState } from "react";
 import Provide from "./components/pages/ProviderInformation/Provide";
 import EditAccount from "./components/pages/EditAccount/EditAccount";
+import ResetPass from "./components/pages/ResetPass";
+import AccessAccount from "./components/pages/accessAccount/accessAccount";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -36,6 +38,7 @@ function App() {
               path={AppRoutes.FORGOTPASS}
               element={<ForgotPasswordPage />}
             />
+            <Route path={AppRoutes.RESETPASS} element={<ResetPass />} />
           </Route>
           <Route element={<RequireAuth />}>
             <Route
@@ -58,6 +61,10 @@ function App() {
               <Route path={AppRoutes.MYPROFILE} element={<MyProfile />} />
               <Route path={AppRoutes.PROVIDER} element={<Provide />} />
               <Route path={AppRoutes.EDITACCOUNT} element={<EditAccount />} />
+              <Route
+                path={AppRoutes.ACCESSACCOUNT}
+                element={<AccessAccount />}
+              />
             </Route>
           </Route>
         </Routes>
