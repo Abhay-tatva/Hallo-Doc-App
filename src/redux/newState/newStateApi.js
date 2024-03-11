@@ -6,7 +6,6 @@ export const newState = createAsyncThunk(
   "newState",
   async (params, { rejectWithValue }) => {
     try {
-      console.log("Params", params);
       const response = await Axios.get(`${NEWSTATE_API}?state=${params}`, {
         withAuthToken: true,
       });

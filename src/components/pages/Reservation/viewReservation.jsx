@@ -14,26 +14,29 @@ import { Button } from "../../Button/ButtonInput";
 import { FormInput } from "../../TextField/FormInput";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../constant/route";
 import { viewReservationSchema } from "../../ValidationSchema/index";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useFormik } from "formik";
+import { useSelector } from "react-redux";
 
 const ViewReservation = () => {
-  // const [phoneNumber, setPhoneNumber] = useState("");
+  const state = useSelector((state) => state.root.viewCaseReducer);
+  const data = state.data.data[0];
 
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      patientNotes: "",
-      firstName: "",
-      lastName: "",
-      phonenumber: "",
-      email: "",
-      region: "",
-      business: "",
-      room: "",
+      patientNotes: data.patient_data.patient_notes[0].description,
+      firstName: data.patient_data.first_name,
+      lastName: data.patient_data.last_name,
+      phonenumber: "914276427644",
+      email: data.patient_data.email,
+      region: data.patient_data.location_information.region,
+      business: data.patient_data.location_information.business_name,
+      room: data.patient_data.location_information.room,
     },
     validationSchema: viewReservationSchema,
     onSubmit: (values) => {
@@ -72,136 +75,118 @@ const ViewReservation = () => {
                   Conformation Number
                 </Typography>
                 <Typography variant="subtitle1" color="#39B3C3">
-                  <b>MD200224MOAB0002</b>
+                  <b>{data.confirmation_no}</b>
                 </Typography>
               </Box>
-              <form>
-                <FormInput
-                  name="patientNotes"
-                  label="Patient Notes"
-                  multiline
-                  rows={4}
-                  fullWidth
-                  className="form-input, text-area"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.patientNotes}
-                  error={
-                    formik.touched.patientNotes &&
-                    Boolean(formik.errors.patientNotes)
-                  }
-                  helperText={
-                    formik.touched.patientNotes && formik.errors.patientNotes
-                  }
-                />
-                {/* <Divider /> */}
-                <Grid
-                  container
-                  spacing={{ xs: 1, md: 2 }}
-                  margin="2rem"
-                  className="divider"
-                >
-                  <Grid item xs={12} md={6} lg={6}>
-                    <FormInput
-                      name="firstName"
-                      label="First Name"
-                      fullWidth
-                      className="form-input"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.firstName}
-                      error={
-                        formik.touched.firstName &&
-                        Boolean(formik.errors.firstName)
-                      }
-                      helperText={
-                        formik.touched.firstName && formik.errors.firstName
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} lg={6}>
-                    <FormInput
-                      name="lastName"
-                      label="Last Name"
-                      fullWidth
-                      className="form-input"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.lastName}
-                      error={
-                        formik.touched.lastName &&
-                        Boolean(formik.errors.lastName)
-                      }
-                      helperText={
-                        formik.touched.lastName && formik.errors.lastName
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} lg={6}>
-                    <FormInput type="date" fullWidth className="form-input" />
-                  </Grid>
-                  <Grid item sm={12} md={5} lg={5}>
-                    {/* <Box
-                      display="flex"
-                      alignItems="center"
-                      className="form-input1"
-                    > */}
-                    <PhoneInput
-                      inputStyle={{ height: "55px", width: "100%" }}
-                      name="phoneNumber"
-                      country="in"
-                      label="Phone Number"
-                      fullWidth="true"
-                      // className="form-input"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.phonenumber}
-                      error={
-                        formik.touched.phonenumber &&
-                        Boolean(formik.errors.phonenumber)
-                      }
-                      helperText={
-                        formik.touched.phoneNumber && formik.errors.phoneNumber
-                      }
-                    />
-                    {/* </Box> */}
-                  </Grid>
-                  <Grid item sm={12} md={1} lg={1}>
-                    <Button
-                      variant="outlined"
-                      size="large"
-                      className="phonebtn"
-                    >
-                      <PhoneIcon />
-                    </Button>
-                  </Grid>
-                  <Grid item sm={12} md={6} lg={6}>
-                    <FormInput
-                      name="email"
-                      label="Email"
-                      fullWidth
-                      className="form-input"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.email}
-                      error={
-                        formik.touched.email && Boolean(formik.errors.email)
-                      }
-                      helperText={formik.touched.email && formik.errors.email}
-                    />
-                  </Grid>
-                  <Grid item sm={12} md={6} lg={6}>
-                    <Button
-                      variant="outlined"
-                      name="Edit"
-                      color="primary"
-                      //   startIcon={<EditIcon />}
-                      size="large"
-                      className="form-btn editbtn"
-                    />
-                  </Grid>
+              <FormInput
+                name="patientNotes"
+                label="Patient Notes"
+                multiline
+                rows={4}
+                fullWidth
+                className="form-input, text-area"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.patientNotes}
+                error={
+                  formik.touched.patientNotes &&
+                  Boolean(formik.errors.patientNotes)
+                }
+                helperText={
+                  formik.touched.patientNotes && formik.errors.patientNotes
+                }
+              />
+              <Grid
+                container
+                spacing={{ xs: 1, md: 2 }}
+                margin="2rem"
+                className="divider"
+              >
+                <Grid item xs={12} md={6} lg={6}>
+                  <FormInput
+                    name="firstName"
+                    label="First Name"
+                    fullWidth
+                    className="form-input"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.firstName}
+                    error={
+                      formik.touched.firstName &&
+                      Boolean(formik.errors.firstName)
+                    }
+                    helperText={
+                      formik.touched.firstName && formik.errors.firstName
+                    }
+                  />
                 </Grid>
-              </form>
+                <Grid item xs={12} md={6} lg={6}>
+                  <FormInput
+                    name="lastName"
+                    label="Last Name"
+                    fullWidth
+                    className="form-input"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.lastName}
+                    error={
+                      formik.touched.lastName && Boolean(formik.errors.lastName)
+                    }
+                    helperText={
+                      formik.touched.lastName && formik.errors.lastName
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
+                  <FormInput type="date" fullWidth className="form-input" />
+                </Grid>
+                <Grid item sm={12} md={5} lg={5}>
+                  <PhoneInput
+                    inputStyle={{ height: "55px", width: "100%" }}
+                    name="phoneNumber"
+                    country="in"
+                    label="Phone Number"
+                    fullWidth="true"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.phonenumber}
+                    error={
+                      formik.touched.phonenumber &&
+                      Boolean(formik.errors.phonenumber)
+                    }
+                    helperText={
+                      formik.touched.phonenumber && formik.errors.phonenumber
+                    }
+                  />
+                </Grid>
+                <Grid item sm={12} md={1} lg={1}>
+                  <Button variant="outlined" size="large" className="phonebtn">
+                    <PhoneIcon />
+                  </Button>
+                </Grid>
+                <Grid item sm={12} md={6} lg={6}>
+                  <FormInput
+                    name="email"
+                    label="Email"
+                    fullWidth
+                    className="form-input"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.email}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
+                </Grid>
+                <Grid item sm={12} md={6} lg={6}>
+                  <Button
+                    variant="outlined"
+                    name="Edit"
+                    color="primary"
+                    size="large"
+                    className="form-btn editbtn"
+                  />
+                </Grid>
+              </Grid>
 
               <Typography variant="h6">
                 <b>Location Information</b>
@@ -274,24 +259,22 @@ const ViewReservation = () => {
                 mt={4}
                 className="end-btn"
               >
-                <Link to={AppRoutes.DASHBOARD}>
+                {data.request_state === "new" && (
                   <Button
-                    name="Back"
+                    name="Assign"
                     variant="contained"
                     color="primary"
-                    startIcon={<ArrowBackIosOutlinedIcon />}
                     className="form-btn backbtn"
                   />
-                </Link>
-                <Link to={AppRoutes.NOTES}>
-                  <Button
-                    name="View Notes"
-                    variant="contained"
-                    // color="primary"
-                    //   startIcon={<NoteIcon />}
-                    className="form-btn viewbtn"
-                  />
-                </Link>
+                )}
+
+                <Button
+                  onClick={() => navigate(AppRoutes.NOTES)}
+                  name="View Notes"
+                  variant="contained"
+                  className="form-btn viewbtn"
+                />
+
                 <Button
                   name="Cancle"
                   variant="contained"

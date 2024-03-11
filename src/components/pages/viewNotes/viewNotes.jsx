@@ -11,8 +11,13 @@ import Person4Icon from "@mui/icons-material/Person4";
 import Footer from "../../Footer/Footer";
 import { useFormik } from "formik";
 import { viewNotesSchema } from "../../ValidationSchema/index";
+import { useSelector } from "react-redux";
 
 const ViewNotes = () => {
+  const state = useSelector((state) => state.root.viewNotesReducer);
+  const data = state.data.data[0];
+  console.log("data", data);
+
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -57,8 +62,7 @@ const ViewNotes = () => {
                     <b>Transfer Notes</b>
                   </Typography>
                   <Typography variant="caption">
-                    Admin Transferred to Dr.AGOLA on 27/09/2023 at 9:38:04 AM:
-                    test assign
+                    {data.transfer_notes.notes[0]?.description}
                   </Typography>
                 </Box>
               </Paper>
@@ -72,7 +76,9 @@ const ViewNotes = () => {
                   <Typography>
                     <b>Physician Notes</b>
                   </Typography>
-                  <Typography>test add, concluded </Typography>
+                  <Typography>
+                    {data.physician_notes.notes[0]?.description}
+                  </Typography>
                 </Box>
               </Paper>
             </Grid>
@@ -85,7 +91,9 @@ const ViewNotes = () => {
                   <Typography>
                     <b>Admin Notes</b>
                   </Typography>
-                  <Typography>-</Typography>
+                  <Typography>
+                    {data.admin_notes.notes[0]?.description}
+                  </Typography>
                 </Box>
               </Paper>
             </Grid>

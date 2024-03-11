@@ -1,5 +1,3 @@
-import * as Yup from "yup";
-
 export { LoginSchema } from "./LoginSchema";
 
 export { ForgotPassSchema } from "./ForgotPassSchema";

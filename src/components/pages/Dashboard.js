@@ -81,7 +81,7 @@ const cards = [
     toolTip: errorTriangle,
   },
   {
-    applicationState: "To Close",
+    applicationState: "toclose",
     figure: "519",
     icon: <CancelOutlinedIcon />,
     color: "info",
@@ -128,35 +128,36 @@ const Dashboard = () => {
     setActiveButton(name);
     setIsActive(true);
   };
+
   useEffect(() => {
-    dispatch(newState(activeButton.toLowerCase())).then((response) => {
+    dispatch(newState(activeButton?.toLowerCase())).then((response) => {
       console.log("New Response", response);
     });
   }, [activeButton, dispatch]);
 
   useEffect(() => {
     switch (activeButton) {
-      case "New":
+      case "new":
         setColumns(newColumns);
         setDropDown(newDropdown);
         break;
-      case "Pending":
+      case "pending":
         setColumns(pendingColumns);
         setDropDown(pendingDropdown);
         break;
-      case "Active":
+      case "active":
         setColumns(activeColumns);
         setDropDown(activeDropdown);
         break;
-      case "Conclude":
+      case "conclude":
         setColumns(concludeColumns);
         setDropDown(concludeDropdown);
         break;
-      case "To Close":
+      case "toclose":
         setColumns(toCloseColumns);
         setDropDown(toCloseDropdown);
         break;
-      case "Unpaid":
+      case "unpaid":
         setColumns(unpaidColumns);
         setDropDown(unpaidDropdown);
         break;
@@ -267,7 +268,7 @@ const Dashboard = () => {
           </Grid>
         </Box>
         <MyTable
-          rows={filterRows}
+          stateButton={activeButton?.toLowerCase()}
           columns={columns}
           indicator={indicator}
           dropDown={dropDown}
