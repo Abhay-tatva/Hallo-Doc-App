@@ -31,3 +31,5 @@ export { contactModalSchema } from "./ContactModalSchema";
 export { provideProfileSchema } from "./ProvideProfileSchema";
 
 export { ResetPassSchema } from "./ResetPassSchema";
+
+export { CreateAccessSchema } from "./CreateAccessSchema";

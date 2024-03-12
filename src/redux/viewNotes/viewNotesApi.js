@@ -18,3 +18,20 @@ export const viewNotes = createAsyncThunk(
     }
   },
 );
+export const viewNotesUpdate = createAsyncThunk(
+  "viewNotesUpdate",
+  async (params, { rejectWithVAlue }) => {
+    try {
+      const response = await Axios.put(
+        `${VIEWNOTES_API.replace(":confirmation_no", params.confirmnumber)}`,
+        {
+          withAuthToken: true,
+          new_note: params.value,
+        },
+      );
+      return response?.data;
+    } catch (error) {
+      return rejectWithVAlue(error?.response);
+    }
+  },
+);

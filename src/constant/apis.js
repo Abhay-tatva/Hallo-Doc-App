@@ -7,3 +7,6 @@ export const VIEWCASE_API =
 
 export const VIEWNOTES_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewnotes";
+
+export const CANCELCASE_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/viewcancelcase";

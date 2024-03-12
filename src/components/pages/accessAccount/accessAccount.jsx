@@ -16,6 +16,8 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../../Button/ButtonInput";
 import { columns, rows } from "../../../constant/accessData";
 import "./acessAccount.css";
+import { AppRoutes } from "../../../constant/route";
+import { useNavigate } from "react-router-dom";
 
 const AccessAccount = () => {
   const [orderBy, setOrderBy] = useState("accountType");
@@ -23,7 +25,8 @@ const AccessAccount = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => setTableData(rows), [rows]);
 
@@ -60,13 +63,13 @@ const AccessAccount = () => {
     }
     return 0;
   };
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -81,7 +84,11 @@ const AccessAccount = () => {
           </Typography>
           <Paper className="acess-full-paper">
             <Box display="flex" justifyContent="end" p={3}>
-              <Button name="Create Acess" variant="outlined" />
+              <Button
+                onClick={() => navigate(AppRoutes.CREATEACCESS)}
+                name="Create Acess"
+                variant="outlined"
+              />
             </Box>
 
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
@@ -126,7 +133,7 @@ const AccessAccount = () => {
                                       name="Contact"
                                       variant="outlined"
                                       size="small"
-                                      onClick={handleOpen}
+                                      // onClick={handleOpen}
                                     />
                                     <Button
                                       name="Edit"

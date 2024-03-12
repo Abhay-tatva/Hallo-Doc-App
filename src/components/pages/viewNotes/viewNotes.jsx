@@ -11,9 +11,15 @@ import Person4Icon from "@mui/icons-material/Person4";
 import Footer from "../../Footer/Footer";
 import { useFormik } from "formik";
 import { viewNotesSchema } from "../../ValidationSchema/index";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  viewNotes,
+  viewNotesUpdate,
+} from "../../../redux/viewNotes/viewNotesApi";
+import { toast } from "react-toastify";
 
 const ViewNotes = () => {
+  const dispatch = useDispatch();
   const state = useSelector((state) => state.root.viewNotesReducer);
   const data = state.data.data[0];
   console.log("data", data);
@@ -25,8 +31,21 @@ const ViewNotes = () => {
       adminNotes: "",
     },
     validationSchema: viewNotesSchema,
-    onSubmit: (values) => {
-      console.log("submmitted", values);
+    onSubmit: (values, onSubmitProps) => {
+      dispatch(
+        viewNotesUpdate({
+          value: values.adminNotes,
+          confirmnumber: data.confirmation_no,
+        }),
+      ).then((response) => {
+        if (response.type === "viewNotesUpdate/fulfilled") {
+          toast.success("You are successfully save changes");
+          onSubmitProps.resetForm();
+          dispatch(viewNotes(data.confirmation_no));
+        } else {
+          toast.error(response?.error?.message);
+        }
+      });
     },
   });
   return (
@@ -98,7 +117,7 @@ const ViewNotes = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} md={12}>
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <Paper className="patient-notes-box">
                   <FormInput
                     name="adminNotes"
@@ -119,6 +138,7 @@ const ViewNotes = () => {
                   />
                   <Box className="save-change">
                     <Button
+                      type="submit"
                       name="savechanges"
                       variant="contained"
                       className="form-btn viewbtn"

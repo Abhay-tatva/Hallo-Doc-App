@@ -29,6 +29,7 @@ import { AppRoutes } from "../../constant/route";
 import { useDispatch, useSelector } from "react-redux";
 import { viewCase } from "../../redux/viewCase/viewCaseApi";
 import { viewNotes } from "../../redux/viewNotes/viewNotesApi";
+import { cancelCase } from "../../redux/cancelCase/cancelCaseApi";
 
 const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -142,13 +143,13 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   };
 
   const handleClose = (action) => {
-    console.log("action", action);
     setAnchorEl(null);
     switch (action) {
       case "Assign Case":
         onClick(action);
         break;
       case "Cancel Case":
+        dispatch(cancelCase(confirmno));
         onClick(action);
         break;
       case "View Case":

@@ -5,8 +5,12 @@ import { Button } from "../Button/ButtonInput";
 import { useFormik } from "formik";
 import BasicModal from "./Modal";
 import { cancelModalSchema } from "../ValidationSchema/index";
+import { useSelector } from "react-redux";
 
 const CancelModal = ({ open, handleClose, handleOpen }) => {
+  const state = useSelector((state) => state.root.cancelCaseReducer);
+  const data = state.data.data[0];
+  console.log("state", data);
   const formik = useFormik({
     initialValues: {
       additionalnotes: "",
@@ -29,7 +33,10 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
-            Patient Name :<span style={{ color: "aqua" }}>test test</span>
+            Patient Name :
+            <span style={{ color: "aqua" }}>
+              {data.patient_data.first_name},{data.patient_data.last_name}
+            </span>
           </Typography>
           <FormInput
             fullWidth

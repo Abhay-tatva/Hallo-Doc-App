@@ -30,9 +30,9 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
     navigate(AppRoutes.LOGIN);
     dispatch(logout());
   };
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleMenuOpen = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -53,7 +53,6 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
 
         <Box className="header-user-detail">
           <Typography>Welcome</Typography>
-          {/* <Link to={AppRoutes.LOGIN}> */}
           <Button
             name="Log Out"
             variant="outlined"
@@ -61,7 +60,6 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             className="log-out-btn"
             onClick={handleLogout}
           />
-          {/* </Link> */}
           <Button
             variant="outlined"
             size="large"

@@ -21,6 +21,7 @@ import Provide from "./components/pages/ProviderInformation/Provide";
 import EditAccount from "./components/pages/EditAccount/EditAccount";
 import ResetPass from "./components/pages/ResetPass";
 import AccessAccount from "./components/pages/accessAccount/accessAccount";
+import CreateAccess from "./components/pages/createAccess/createAccess";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -65,6 +66,7 @@ function App() {
                 path={AppRoutes.ACCESSACCOUNT}
                 element={<AccessAccount />}
               />
+              <Route path={AppRoutes.CREATEACCESS} element={<CreateAccess />} />
             </Route>
           </Route>
         </Routes>

@@ -615,7 +615,7 @@ export const unpaidDropdown = [
 
 export const indicator = [
   { name: "Patient", color: "green" },
-  { name: "Family/Freind", color: "orange" },
+  { name: "Family/Friend", color: "orange" },
   { name: "Business", color: "Pink" },
   { name: "Concierge", color: "blue" },
   { name: "VIP", color: "purple" },

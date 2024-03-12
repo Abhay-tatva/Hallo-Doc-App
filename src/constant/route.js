@@ -12,4 +12,5 @@ export const AppRoutes = {
   PROVIDER: "/provider",
   EDITACCOUNT: "/editAccount",
   ACCESSACCOUNT: "/acessAccount",
+  CREATEACCESS: "/acessAccount/createAccess",
 };
