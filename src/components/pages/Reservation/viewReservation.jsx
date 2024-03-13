@@ -34,7 +34,7 @@ const ViewReservation = () => {
       firstName: data.patient_data.first_name,
       lastName: data.patient_data.last_name,
       dob: data.patient_data.DOB,
-      phonenumber: "914276427644",
+      phonenumber: "6359421917",
       email: data.patient_data.email,
       region: data.patient_data.location_information.region,
       business: data.patient_data.location_information.business_name,

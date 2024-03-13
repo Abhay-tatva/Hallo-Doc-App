@@ -10,3 +10,10 @@ export const VIEWNOTES_API =
 
 export const CANCELCASE_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewcancelcase";
+export const REGION_API = "/admin/dashboard/requests/region";
+
+export const PHYSICIAN_API =
+  "/admin/dashboard/requests/actions/transferrequestphysicians";
+
+export const TRANSFERMODEL_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/transferrequest";

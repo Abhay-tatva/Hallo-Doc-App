@@ -50,6 +50,7 @@ import RequestModal from "../Modal/RequestModal";
 import SendLinkModal from "../Modal/SendLinkModal";
 import { useDispatch } from "react-redux";
 import { newState } from "../../redux/newState/newStateApi";
+import { getRegions } from "../../redux/regionPhysician/regionPhysicianApi";
 
 const cards = [
   {
@@ -105,6 +106,7 @@ const Dashboard = () => {
   const [dropDown, setDropDown] = useState(newDropdown);
   const [open, setOpen] = React.useState(false);
   const [modalName, setModalName] = useState("");
+
   const dispatch = useDispatch();
 
   const handleOpen = (name, rowId) => {
@@ -112,6 +114,11 @@ const Dashboard = () => {
     setModalName(name);
     setOpen(true);
   };
+  useEffect(() => {
+    dispatch(getRegions()).then((response) => {
+      console.log("Response", response);
+    });
+  }, [dispatch]);
 
   const handleClose = () => {
     setOpen(false);

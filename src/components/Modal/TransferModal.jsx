@@ -5,8 +5,18 @@ import { Button } from "../Button/ButtonInput";
 import { useFormik } from "formik";
 import BasicModal from "./Modal";
 import { transferModalSchema } from "../ValidationSchema/index";
+import { useDispatch, useSelector } from "react-redux";
+import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
+import { transferCase } from "../../redux/transferCase/transferCaseApi";
 
 const TransferModal = ({ open, handleClose, handleOpen }) => {
+  const { physicians } = useSelector(
+    (state) => state.root.regionPhysicianReducer,
+  );
+
+  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
@@ -14,8 +24,19 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
       physician: "",
     },
     validationSchema: transferModalSchema,
-    onSubmit: (values) => {
-      console.log("submmitted", values);
+    onSubmit: (values, onSubmitProps) => {
+      const name = values.physician.split(" ");
+
+      dispatch(
+        transferCase({
+          confirmationnumber: "Gu240307PaRo0008",
+          firstname: name[0],
+          lastname: name[1],
+          description: values.description,
+        }),
+      );
+      onSubmitProps.resetForm();
+      handleClose();
     },
   });
   return (
@@ -42,10 +63,20 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
               formik.touched.searchRegion && Boolean(formik.errors.searchRegion)
             }
           >
-            <MenuItem value="all">Service not Availabel</MenuItem>
-            <MenuItem value="all">Doctor are not Availabel</MenuItem>
-            <MenuItem value="all">Slots are nbot free</MenuItem>
-            <MenuItem value="all">Other</MenuItem>
+            <MenuItem value="all">All Regions</MenuItem>
+            {regions.map((region, index) => {
+              return (
+                <MenuItem
+                  key={index}
+                  value={region.region_name}
+                  onClick={() =>
+                    dispatch(getPhysician(formik.values.searchRegion))
+                  }
+                >
+                  {region.region_name}
+                </MenuItem>
+              );
+            })}
           </FormInput>
           <FormInput
             name="physician"
@@ -57,10 +88,17 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
             value={formik.values.physician}
             error={formik.touched.physician && Boolean(formik.errors.physician)}
           >
-            <MenuItem value="all">Service not Availabel</MenuItem>
-            <MenuItem value="all">Doctor are not Availabel</MenuItem>
-            <MenuItem value="all">Slots are nbot free</MenuItem>
-            <MenuItem value="all">Other</MenuItem>
+            {physicians &&
+              physicians.map((physician) => {
+                return (
+                  <MenuItem
+                    key={physician.sr_no}
+                    value={`${physician.physician_name}`}
+                  >
+                    {`${physician.physician_name}`}
+                  </MenuItem>
+                );
+              })}
           </FormInput>
           <FormInput
             name="description"

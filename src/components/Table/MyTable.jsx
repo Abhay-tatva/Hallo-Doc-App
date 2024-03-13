@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { viewCase } from "../../redux/viewCase/viewCaseApi";
 import { viewNotes } from "../../redux/viewNotes/viewNotesApi";
 import { cancelCase } from "../../redux/cancelCase/cancelCaseApi";
+import { transferCase } from "../../redux/transferCase/transferCaseApi";
 
 const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -170,6 +171,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
         navigate(AppRoutes.ORDER);
         break;
       case "Transfer":
+        dispatch(transferCase);
         onClick(action);
         break;
       case "Clear Case":

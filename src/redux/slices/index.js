@@ -4,6 +4,7 @@ import newStateSlice from "./newStateSlice";
 import viewCaseSlice from "./viewCaseSlice";
 import viewNotesSlice from "./viewNotesSlice";
 import cancelCaseSlice from "./cancelCaseSlice";
+import regionPhysicianSlice from "./regionPhysicianSlice";
 
 export const rootReducer = combineReducers({
   loginReducer: loginSlice,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   viewCaseReducer: viewCaseSlice,
   viewNotesReducer: viewNotesSlice,
   cancelCaseReducer: cancelCaseSlice,
+  regionPhysicianReducer: regionPhysicianSlice,
 });
