@@ -24,7 +24,8 @@ import { useSelector } from "react-redux";
 
 const ViewReservation = () => {
   const state = useSelector((state) => state.root.viewCaseReducer);
-  const data = state.data.data[0];
+  const data = state?.data?.data[0];
+  console.log("data", data);
 
   const navigate = useNavigate();
   const formik = useFormik({
@@ -32,6 +33,7 @@ const ViewReservation = () => {
       patientNotes: data.patient_data.patient_notes[0].description,
       firstName: data.patient_data.first_name,
       lastName: data.patient_data.last_name,
+      dob: data.patient_data.DOB,
       phonenumber: "914276427644",
       email: data.patient_data.email,
       region: data.patient_data.location_information.region,
@@ -138,7 +140,17 @@ const ViewReservation = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
-                  <FormInput type="date" fullWidth className="form-input" />
+                  <FormInput
+                    type="date"
+                    fullWidth
+                    className="form-input"
+                    name="dob"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.dob}
+                    error={formik.touched.dob && Boolean(formik.errors.dob)}
+                    helperText={formik.touched.dob && formik.errors.dob}
+                  />
                 </Grid>
                 <Grid item sm={12} md={5} lg={5}>
                   <PhoneInput
@@ -276,7 +288,7 @@ const ViewReservation = () => {
                 />
 
                 <Button
-                  name="Cancle"
+                  name="Cancel"
                   variant="contained"
                   color="error"
                   className="form-btn"

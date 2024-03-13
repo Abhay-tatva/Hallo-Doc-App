@@ -80,7 +80,7 @@ const AccessAccount = () => {
       <Box className="acess-main-container">
         <Container maxWidth="lg" className="access-wrapper-container">
           <Typography variant="h5" gutterBottom>
-            <b>Account Acess</b>
+            <b>Account Access</b>
           </Typography>
           <Paper className="acess-full-paper">
             <Box display="flex" justifyContent="end" p={3}>

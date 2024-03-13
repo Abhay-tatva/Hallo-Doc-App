@@ -4,7 +4,7 @@ import { VIEWNOTES_API } from "../../constant/apis";
 
 export const viewNotes = createAsyncThunk(
   "viewNotes",
-  async (params, { rejectWithVAlue }) => {
+  async (params, { rejectWithValue }) => {
     try {
       const response = await Axios.get(
         `${VIEWNOTES_API.replace(":confirmation_no", params)}`,
@@ -14,13 +14,13 @@ export const viewNotes = createAsyncThunk(
       );
       return response?.data;
     } catch (error) {
-      return rejectWithVAlue(error?.response);
+      return rejectWithValue(error?.response);
     }
   },
 );
 export const viewNotesUpdate = createAsyncThunk(
   "viewNotesUpdate",
-  async (params, { rejectWithVAlue }) => {
+  async (params, { rejectWithValue }) => {
     try {
       const response = await Axios.put(
         `${VIEWNOTES_API.replace(":confirmation_no", params.confirmnumber)}`,
@@ -31,7 +31,7 @@ export const viewNotesUpdate = createAsyncThunk(
       );
       return response?.data;
     } catch (error) {
-      return rejectWithVAlue(error?.response);
+      return rejectWithValue(error?.response);
     }
   },
 );
