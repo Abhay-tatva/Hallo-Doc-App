@@ -10,8 +10,8 @@ const Axios = axios.create({
 Axios.interceptors.request.use((config) => {
   const useToken = config?.withAuthToken ?? true;
   const token = JSON.parse(
-    JSON.parse(localStorage.getItem("persist:root")).loginReducer,
-  ).jwtToken;
+    JSON.parse(localStorage.getItem("persist:root"))?.loginReducer,
+  )?.jwtToken;
   const headers = config.headers;
   return {
     ...config,

@@ -5,12 +5,14 @@ import { Button } from "../Button/ButtonInput";
 import { useFormik } from "formik";
 import BasicModal from "./Modal";
 import { cancelModalSchema } from "../ValidationSchema/index";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { cancelCaseUpdate } from "../../redux/cancelCase/cancelCaseApi";
 
 const CancelModal = ({ open, handleClose, handleOpen }) => {
   const state = useSelector((state) => state.root.cancelCaseReducer);
-  const data = state.data.data[0];
-  console.log("state", data);
+  const data = state?.data?.data[0];
+  console.log("data", data);
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       additionalnotes: "",
@@ -18,6 +20,13 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
     },
     validationSchema: cancelModalSchema,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(
+        cancelCaseUpdate({
+          confirmnumber: data.confirmation_no,
+          reason: values.canelReason,
+          additional_notes: values.additionalnotes,
+        }),
+      );
       console.log("submmitted", values);
       onSubmitProps.resetForm();
       handleClose();
@@ -35,7 +44,7 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
           <Typography>
             Patient Name :
             <span style={{ color: "aqua" }}>
-              {data.patient_data.first_name},{data.patient_data.last_name}
+              {data?.patient_data?.first_name},{data?.patient_data?.last_name}
             </span>
           </Typography>
           <FormInput

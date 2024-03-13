@@ -10,7 +10,7 @@ import "./provideProfile.css";
 import SignatureCanvas from "react-signature-canvas";
 import { useRef } from "react";
 
-const ProvideProfile = ({ handleClose }) => {
+const ProvideProfile = ({ handleClose, rows }) => {
   // const [isDisabled, setIsDisabled] = useState(true);
   const [openModel, setOpenModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState([]);
@@ -29,11 +29,11 @@ const ProvideProfile = ({ handleClose }) => {
     dlink.click();
   };
 
-  const handleFileChange = (event) => {
-    console.log("event", event.target.files);
-    event.preventDefault();
-    setSelectedFile(event.target.files);
-  };
+  // const handleFileChange = (event) => {
+  //   console.log("event", event.target.files);
+  //   event.preventDefault();
+  //   setSelectedFile(event.target.files);
+  // };
 
   const handleUpload = () => {
     // Handle the upload functionality here with the selected file

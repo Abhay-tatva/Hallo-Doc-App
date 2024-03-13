@@ -3,7 +3,6 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  MenuItem,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";

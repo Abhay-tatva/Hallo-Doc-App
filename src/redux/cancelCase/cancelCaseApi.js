@@ -18,3 +18,22 @@ export const cancelCase = createAsyncThunk(
     }
   },
 );
+
+export const cancelCaseUpdate = createAsyncThunk(
+  "cancelCaseUpdate",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.put(
+        `${CANCELCASE_API.replace(":confirmation_no", params.confirmnumber)}`,
+        {
+          withAuthToken: true,
+          reason: params.reason,
+          additional_notes: params.additional_notes,
+        },
+      );
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);

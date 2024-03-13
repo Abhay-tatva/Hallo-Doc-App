@@ -41,7 +41,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   const [tableData, setTableData] = useState([]);
   const navigate = useNavigate();
   const state = useSelector((state) => state.root.newStateReducer);
-  const rows = state.data.data;
+  const rows = state?.data?.data;
   const dispatch = useDispatch();
   const [confirmno, setConfirmNo] = useState("");
 
@@ -289,10 +289,9 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
                 ))}
               </TableRow>
             </TableHead>
-
             <TableBody>
               {tableData
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 ?.map((row) => {
                   return (
                     <TableRow
@@ -406,7 +405,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={tableData.length}
+          count={tableData?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
