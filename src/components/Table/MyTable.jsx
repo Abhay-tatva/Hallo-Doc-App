@@ -50,6 +50,8 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
 
   const notify = () => toast("Phone number Copyied successfully!");
 
+  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+
   const copyButtonText = (btnId, event) => {
     const textToCopy = event.target.innerText;
 
@@ -230,10 +232,10 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
               }}
             >
               <MenuItem value="all">All Regions</MenuItem>
-              {columns.map((column) => {
+              {regions?.map((region, index) => {
                 return (
-                  <MenuItem key={column.id} value={column.id}>
-                    {column.label}
+                  <MenuItem key={index} value={region.region_name}>
+                    {region.region_name}
                   </MenuItem>
                 );
               })}

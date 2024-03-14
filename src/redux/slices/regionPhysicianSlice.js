@@ -13,7 +13,7 @@ const regionPhysicianSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getRegions.fulfilled, (state, action) => {
       if (action.payload) {
-        state.regions = action.payload.regions;
+        state.regions = action.payload.data;
       }
     });
     builder.addCase(getPhysician.fulfilled, (state, action) => {

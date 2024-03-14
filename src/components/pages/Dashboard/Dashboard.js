@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
-import "../dashboard.css";
+import "./dashboard.css";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import PendingIcon from "@mui/icons-material/Pending";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CodeIcon from "@mui/icons-material/Code";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { Button } from "../Button/ButtonInput";
+import { Button } from "../../Button/ButtonInput";
 import { Grid, Typography } from "@mui/material";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import RequestPageOutlinedIcon from "@mui/icons-material/RequestPageOutlined";
@@ -15,7 +15,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
-import MyTable from "../Table/MyTable";
+import MyTable from "../../Table/MyTable";
 import {
   errorTriangle,
   infoTriangle,
@@ -23,7 +23,7 @@ import {
   secondaryTriangle,
   successTriangle,
   warningTriangle,
-} from "../assests/images";
+} from "../../assests/images";
 import {
   newColumns,
   indicator,
@@ -39,18 +39,19 @@ import {
   toCloseDropdown,
   unpaidColumns,
   unpaidDropdown,
-} from "../../constant/common";
-import CancelModal from "../Modal/CancelModal";
-import AssignModal from "../Modal/AssignModal";
-import ConfirmBlockModal from "../Modal/ConfirmBlockModal";
-import TransferModal from "../Modal/TransferModal";
-import ClearCaseModal from "../Modal/ClearCaseModal";
-import SendAgreementModal from "../Modal/SendAgreementModal";
-import RequestModal from "../Modal/RequestModal";
-import SendLinkModal from "../Modal/SendLinkModal";
-import { useDispatch } from "react-redux";
-import { newState } from "../../redux/newState/newStateApi";
-import { getRegions } from "../../redux/regionPhysician/regionPhysicianApi";
+} from "../../../constant/common";
+import CancelModal from "../../Modal/CancelModal";
+import AssignModal from "../../Modal/AssignModal";
+import ConfirmBlockModal from "../../Modal/ConfirmBlockModal";
+import TransferModal from "../../Modal/TransferModal";
+import ClearCaseModal from "../../Modal/ClearCaseModal";
+import SendAgreementModal from "../../Modal/SendAgreementModal";
+import RequestModal from "../../Modal/RequestModal";
+import SendLinkModal from "../../Modal/SendLinkModal";
+import { useDispatch, useSelector } from "react-redux";
+import { newState } from "../../../redux/newState/newStateApi";
+import { getRegions } from "../../../redux/regionPhysician/regionPhysicianApi";
+import { requestCount } from "../../../redux/requestCount/requestCountApi";
 
 const cards = [
   {
@@ -108,6 +109,8 @@ const Dashboard = () => {
   const [modalName, setModalName] = useState("");
 
   const dispatch = useDispatch();
+  const count = useSelector((state) => state.root.requestCountReducer);
+  console.log("count", count);
 
   const handleOpen = (name, rowId) => {
     setRowId(rowId);
@@ -115,9 +118,8 @@ const Dashboard = () => {
     setOpen(true);
   };
   useEffect(() => {
-    dispatch(getRegions()).then((response) => {
-      console.log("Response", response);
-    });
+    dispatch(getRegions());
+    dispatch(requestCount());
   }, [dispatch]);
 
   const handleClose = () => {
@@ -207,7 +209,7 @@ const Dashboard = () => {
                       {card.applicationState}
                     </Typography>
                   </Box>
-                  <Typography variant="h5">{card.figure}</Typography>
+                  <Typography variant="h5">{count}</Typography>
                 </Button>
                 {isActive && activeButton === card.applicationState ? (
                   <img

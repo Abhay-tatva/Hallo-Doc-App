@@ -4,7 +4,7 @@ import LoginPage from "./components/pages/loginPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ForgotPasswordPage from "./components/pages/Forgot-Pass";
 import { AppRoutes } from "./constant/route";
-import Dashboard from "./components/pages/Dashboard";
+import Dashboard from "./components/pages/Dashboard/Dashboard";
 import { ThemeProvider } from "@mui/material";
 import { halloDocTheme } from "./doc.theme";
 import ViewReservation from "./components/pages/Reservation/viewReservation";
@@ -22,6 +22,7 @@ import EditAccount from "./components/pages/EditAccount/EditAccount";
 import ResetPass from "./components/pages/ResetPass";
 import AccessAccount from "./components/pages/accessAccount/accessAccount";
 import CreateAccess from "./components/pages/createAccess/createAccess";
+import Scheduling from "./components/pages/scheduling/scheduling";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -67,6 +68,7 @@ function App() {
                 element={<AccessAccount />}
               />
               <Route path={AppRoutes.CREATEACCESS} element={<CreateAccess />} />
+              <Route path={AppRoutes.SCHEDULING} element={<Scheduling />} />
             </Route>
           </Route>
         </Routes>

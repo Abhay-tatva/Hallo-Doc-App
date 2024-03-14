@@ -13,4 +13,5 @@ export const AppRoutes = {
   EDITACCOUNT: "/editAccount",
   ACCESSACCOUNT: "/acessAccount",
   CREATEACCESS: "/acessAccount/createAccess",
+  SCHEDULING: "/provider/scheduling",
 };

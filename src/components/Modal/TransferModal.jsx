@@ -64,7 +64,7 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
             }
           >
             <MenuItem value="all">All Regions</MenuItem>
-            {regions.map((region, index) => {
+            {regions?.map((region, index) => {
               return (
                 <MenuItem
                   key={index}

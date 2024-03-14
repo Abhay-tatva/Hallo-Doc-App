@@ -1,0 +1,10 @@
+.main-scheduling-container {
+  background-color: #f6f6f6;
+  padding: 1rem;
+}
+.patient-btn {
+  /* height: 12px; */
+  /* width: 15px; */
+  border-radius: 10px;
+  background-color: #1dc01d;
+}
