@@ -137,11 +137,8 @@ const Dashboard = () => {
     setActiveButton(name);
     setIsActive(true);
   };
-
   useEffect(() => {
-    dispatch(newState(activeButton?.toLowerCase())).then((response) => {
-      console.log("New Response", response);
-    });
+    dispatch(newState(activeButton?.toLowerCase()));
   }, [activeButton, dispatch]);
 
   useEffect(() => {

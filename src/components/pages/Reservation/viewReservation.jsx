@@ -83,6 +83,7 @@ const ViewReservation = () => {
               <FormInput
                 name="patientNotes"
                 label="Patient Notes"
+                disabled
                 multiline
                 rows={4}
                 fullWidth
@@ -108,6 +109,7 @@ const ViewReservation = () => {
                   <FormInput
                     name="firstName"
                     label="First Name"
+                    disabled
                     fullWidth
                     className="form-input"
                     onChange={formik.handleChange}
@@ -126,6 +128,7 @@ const ViewReservation = () => {
                   <FormInput
                     name="lastName"
                     label="Last Name"
+                    disabled
                     fullWidth
                     className="form-input"
                     onChange={formik.handleChange}
@@ -143,6 +146,7 @@ const ViewReservation = () => {
                   <FormInput
                     type="date"
                     fullWidth
+                    disabled
                     className="form-input"
                     name="dob"
                     onChange={formik.handleChange}
@@ -157,6 +161,7 @@ const ViewReservation = () => {
                     inputStyle={{ height: "55px", width: "100%" }}
                     name="phoneNumber"
                     country="in"
+                    disabled
                     label="Phone Number"
                     fullWidth="true"
                     onChange={formik.handleChange}
@@ -180,6 +185,7 @@ const ViewReservation = () => {
                   <FormInput
                     name="email"
                     label="Email"
+                    disabled
                     fullWidth
                     className="form-input"
                     onChange={formik.handleChange}
@@ -187,15 +193,6 @@ const ViewReservation = () => {
                     value={formik.values.email}
                     error={formik.touched.email && Boolean(formik.errors.email)}
                     helperText={formik.touched.email && formik.errors.email}
-                  />
-                </Grid>
-                <Grid item sm={12} md={6} lg={6}>
-                  <Button
-                    variant="outlined"
-                    name="Edit"
-                    color="primary"
-                    size="large"
-                    className="form-btn editbtn"
                   />
                 </Grid>
               </Grid>
@@ -213,6 +210,7 @@ const ViewReservation = () => {
                     name="region"
                     className="form-input"
                     label="Region"
+                    disabled
                     fullWidth
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -229,6 +227,7 @@ const ViewReservation = () => {
                     className="form-input"
                     label="Business Name/Address"
                     fullWidth
+                    disabled
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.business}
@@ -255,6 +254,7 @@ const ViewReservation = () => {
                   <FormInput
                     name="room"
                     label="Room #"
+                    disabled
                     className="form-input"
                     fullWidth
                     onChange={formik.handleChange}

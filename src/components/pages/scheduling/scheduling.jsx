@@ -1,7 +1,7 @@
 import {
   Box,
   Container,
-  IconButton,
+  // IconButton,
   MenuItem,
   Typography,
 } from "@mui/material";
@@ -12,13 +12,20 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FormInput } from "../../TextField/FormInput";
 import "./scheduling.css";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
-import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+// import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+// import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
+// import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid";
 
 const Scheduling = () => {
   const navigate = useNavigate();
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const handleDateClick = (arg) => {
+    alert(arg.dateStr);
+  };
 
   return (
     <>
@@ -68,67 +75,24 @@ const Scheduling = () => {
               <Button name="Add New Shift"></Button>
             </Box>
           </Box>
-          <Typography variant="h5" gutterBottom marginTop={4}>
-            <b>Monday, Dec 4, 2023 </b>
-          </Typography>
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            alignItems="center"
-            gap={2}
-          >
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              gap={1}
-            >
-              <span className="patient-btn"></span>
-              <Typography variant="subtitle2">Pending Shifts</Typography>
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              gap={1}
-            >
-              <span className="patient-btn"></span>
-              <Typography variant="subtitle2">Approved Shifts</Typography>
-            </Box>
-          </Box>
-
-          <Box display="flex" justifyContent="space-between">
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              gap={1}
-              mt={5}
-            >
-              <IconButton
-                size="medium"
-                sx={{ backgroundColor: "aqua", borderRadius: "50%" }}
-              >
-                <KeyboardArrowLeftOutlinedIcon />
-              </IconButton>
-              <CalendarMonthOutlinedIcon />
-              <IconButton
-                size="medium"
-                sx={{ backgroundColor: "aqua", borderRadius: "50%" }}
-              >
-                <ChevronRightOutlinedIcon />
-              </IconButton>
-            </Box>
-            <Box
-              display="flex"
-              gap={2}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Button name="Day"></Button>
-              <Button name="Week"></Button>
-              <Button name="Month"></Button>
-            </Box>
+          <Box className="calendar">
+            <FullCalendar
+              plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+              dateClick={handleDateClick}
+              initialView="timeGridDay"
+              headerToolbar={{
+                left: "title prev next",
+                right: "timeGridDay timeGridWeek dayGridMonth",
+              }}
+              events={[
+                { title: "event 1", date: "2024-03-15" },
+                { title: "event 2", date: "2019-04-02" },
+              ]}
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvents={true}
+            />
           </Box>
         </Container>
       </Box>

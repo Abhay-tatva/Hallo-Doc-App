@@ -11,7 +11,6 @@ import { cancelCaseUpdate } from "../../redux/cancelCase/cancelCaseApi";
 const CancelModal = ({ open, handleClose, handleOpen }) => {
   const state = useSelector((state) => state.root.cancelCaseReducer);
   const data = state?.data?.data[0];
-  console.log("data", data);
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
