@@ -23,6 +23,7 @@ import ResetPass from "./components/pages/ResetPass";
 import AccessAccount from "./components/pages/accessAccount/accessAccount";
 import CreateAccess from "./components/pages/createAccess/createAccess";
 import Scheduling from "./components/pages/scheduling/scheduling";
+import RequestedShifts from "./components/pages/requestedShifts/requestedShifts";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -69,6 +70,10 @@ function App() {
               />
               <Route path={AppRoutes.CREATEACCESS} element={<CreateAccess />} />
               <Route path={AppRoutes.SCHEDULING} element={<Scheduling />} />
+              <Route
+                path={AppRoutes.REQUESTED_SHIFTS}
+                element={<RequestedShifts />}
+              />
             </Route>
           </Route>
         </Routes>
