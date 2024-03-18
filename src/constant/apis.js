@@ -18,3 +18,6 @@ export const TRANSFERMODEL_API =
   "/admin/dashboard/requests/:confirmation_no/actions/transferrequest";
 
 export const REQUESTCOUNT_API = "admin/dashboard/requestscount";
+
+export const VIEWUPLOAD_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/viewdata";

@@ -31,6 +31,7 @@ import { viewCase } from "../../redux/viewCase/viewCaseApi";
 import { viewNotes } from "../../redux/viewNotes/viewNotesApi";
 import { cancelCase } from "../../redux/cancelCase/cancelCaseApi";
 import { transferCase } from "../../redux/transferCase/transferCaseApi";
+import { viewUpload } from "../../redux/viewUpload/viewUploadApi";
 
 const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -167,6 +168,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
         onClick(action);
         break;
       case "View Upload":
+        dispatch(viewUpload(confirmno));
         navigate(AppRoutes.VIEWUPLOAD);
         break;
       case "Orders":

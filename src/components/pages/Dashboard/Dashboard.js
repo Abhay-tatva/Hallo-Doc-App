@@ -110,7 +110,7 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
   const count = useSelector((state) => state.root.requestCountReducer);
-  console.log("count", count);
+  const caseCount = count.caseCount;
 
   const handleOpen = (name, rowId) => {
     setRowId(rowId);
@@ -206,7 +206,15 @@ const Dashboard = () => {
                       {card.applicationState}
                     </Typography>
                   </Box>
-                  <Typography variant="h5">{count}</Typography>
+                  {caseCount?.map((count, index) => {
+                    return (
+                      <Typography variant="h5" key={index}>
+                        {count.request_state === card.applicationState && (
+                          <b>{count.counts}</b>
+                        )}
+                      </Typography>
+                    );
+                  })}
                 </Button>
                 {isActive && activeButton === card.applicationState ? (
                   <img

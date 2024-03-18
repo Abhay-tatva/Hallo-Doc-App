@@ -19,8 +19,9 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 // import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
+// import interactionPlugin from "@fullcalendar/interaction";
+// import timeGridPlugin from "@fullcalendar/timegrid";
+import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import { AppRoutes } from "../../../constant/route";
 
 const Scheduling = () => {
@@ -87,12 +88,17 @@ const Scheduling = () => {
           </Box>
           <Box className="calendar">
             <FullCalendar
-              plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+              plugins={[
+                dayGridPlugin,
+                // interactionPlugin,
+                // timeGridPlugin,
+                resourceTimelinePlugin,
+              ]}
               dateClick={handleDateClick}
-              initialView="timeGridDay"
+              initialView="resourceTimelineWeek"
               headerToolbar={{
                 left: "title prev next",
-                right: "timeGridDay timeGridWeek dayGridMonth",
+                right: "resourceTimelineDay resourceTimelineWeek dayGridMonth",
               }}
               events={[
                 { title: "event 1", date: "2024-03-15" },

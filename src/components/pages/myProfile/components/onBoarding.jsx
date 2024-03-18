@@ -35,7 +35,7 @@ const OnBording = () => {
               onChange={handleCheckBox}
             />
           }
-          label="Indipendent Contractor Aggrement"
+          label="Independent Contractor Aggrement"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />
@@ -50,7 +50,7 @@ const OnBording = () => {
               onChange={handleCheckBox}
             />
           }
-          label="Background Cheak"
+          label="Background Check"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />

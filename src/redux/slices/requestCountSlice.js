@@ -6,7 +6,6 @@ export const requestCountSlice = createSlice({
   initialState: { caseCount: [] },
   extraReducers: (builder) => {
     builder.addCase(requestCount.fulfilled, (state, action) => {
-      console.log("action", action);
       if (action.payload) {
         state.caseCount = action.payload.data;
       }

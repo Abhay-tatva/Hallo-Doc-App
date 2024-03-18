@@ -23,6 +23,7 @@ import {
 
 import "./viewUpload.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const rows = [
   { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
@@ -35,6 +36,8 @@ const ViewUpload = () => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("uploadDate");
   const navigate = useNavigate();
+  const selector = useSelector((state) => state.root.viewuploadReducer);
+  console.log("selector", selector.uploadFile);
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -184,8 +187,10 @@ const ViewUpload = () => {
           <Paper className="upload-container">
             <Typography variant="caption">Patient Name</Typography>
             <Typography variant="h6">
-              <b className="patient-name">Bhoomi Prajapati</b>{" "}
-              (MD101819PRBH0005)
+              <b className="patient-name">
+                {selector.uploadFile[0]?.patient_data?.name}
+              </b>
+              ({selector.uploadFile[0]?.confirmationNo})
             </Typography>
             <Typography variant="body2" marginTop="10px">
               Check here to review and add files that you or the Client/Member
