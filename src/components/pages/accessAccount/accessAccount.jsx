@@ -139,6 +139,9 @@ const AccessAccount = () => {
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
+                                      onClick={() =>
+                                        navigate(AppRoutes.USERACCESS)
+                                      }
                                     />
                                   </Box>
                                 ) : (

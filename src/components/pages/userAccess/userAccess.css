@@ -1,0 +1,10 @@
+.user-main-container {
+  background-color: #f6f6f6;
+}
+.user-wrapper-container {
+  padding: 1rem 3rem;
+}
+.user-full-paper {
+  padding: 1.25rem;
+  border-radius: 18px !important;
+}

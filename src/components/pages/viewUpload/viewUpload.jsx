@@ -23,7 +23,8 @@ import {
 
 import "./viewUpload.css";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { viewUpdate } from "../../../redux/viewUpload/viewUploadApi";
 
 const rows = [
   { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
@@ -32,12 +33,16 @@ const rows = [
 ];
 
 const ViewUpload = () => {
+  const [selectedFile, setSelectedFile] = useState({});
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("uploadDate");
   const navigate = useNavigate();
   const selector = useSelector((state) => state.root.viewuploadReducer);
-  console.log("selector", selector.uploadFile);
+  // console.log("selector", selector);
+  const dispatch = useDispatch();
+
+  const { confirmation_no, patientData } = selector.uploadFile[0];
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -100,8 +105,6 @@ const ViewUpload = () => {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  const [selectedFile, setSelectedFile] = useState([]);
-
   // console.log(selectedFile);
   // }
 
@@ -110,21 +113,9 @@ const ViewUpload = () => {
     event.preventDefault();
     setSelectedFile(event.target.files);
   };
-
+  // Handle the upload functionality here with the selected file
   const handleUpload = () => {
-    // Handle the upload functionality here with the selected file
-    if (selectedFile) {
-      for (let i = 0; i < selectedFile.length; i++) {
-        const newFile = {
-          id: rows.length + 1,
-          document: selectedFile[i].name,
-          uploadDate: new Date().toISOString().split("T")[0],
-        };
-        console.log("New file", newFile);
-        rows.push(newFile);
-      }
-      setSelectedFile(null); // Reset selected file after upload
-    }
+    dispatch(viewUpdate({ confirmation_no, file: selectedFile }));
   };
 
   const handleDownload = (document) => {
@@ -187,10 +178,8 @@ const ViewUpload = () => {
           <Paper className="upload-container">
             <Typography variant="caption">Patient Name</Typography>
             <Typography variant="h6">
-              <b className="patient-name">
-                {selector.uploadFile[0]?.patient_data?.name}
-              </b>
-              ({selector.uploadFile[0]?.confirmationNo})
+              <b className="patient-name">{patientData?.name}</b>(
+              {confirmation_no})
             </Typography>
             <Typography variant="body2" marginTop="10px">
               Check here to review and add files that you or the Client/Member

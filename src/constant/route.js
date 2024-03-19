@@ -12,6 +12,7 @@ export const AppRoutes = {
   PROVIDER: "/provider",
   EDITACCOUNT: "/editAccount",
   ACCESSACCOUNT: "/acessAccount",
+  USERACCESS: "/acessAccount/userAccess",
   CREATEACCESS: "/acessAccount/createAccess",
   SCHEDULING: "/provider/scheduling",
   REQUESTED_SHIFTS: "/provider/scheduling/requestedshifts",

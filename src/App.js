@@ -24,6 +24,7 @@ import AccessAccount from "./components/pages/accessAccount/accessAccount";
 import CreateAccess from "./components/pages/createAccess/createAccess";
 import Scheduling from "./components/pages/scheduling/scheduling";
 import RequestedShifts from "./components/pages/requestedShifts/requestedShifts";
+import UserAccess from "./components/pages/userAccess/userAccess";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -74,6 +75,7 @@ function App() {
                 path={AppRoutes.REQUESTED_SHIFTS}
                 element={<RequestedShifts />}
               />
+              <Route path={AppRoutes.USERACCESS} element={<UserAccess />} />
             </Route>
           </Route>
         </Routes>

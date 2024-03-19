@@ -21,3 +21,6 @@ export const REQUESTCOUNT_API = "admin/dashboard/requestscount";
 
 export const VIEWUPLOAD_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/viewdata";
+
+export const VIEWUPDATE_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/upload";
