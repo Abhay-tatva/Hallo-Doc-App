@@ -24,13 +24,10 @@ import {
 import "./viewUpload.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { viewUpdate } from "../../../redux/viewUpload/viewUploadApi";
-
-const rows = [
-  { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
-  { id: 2, document: "Document 2", uploadDate: "2024-02-21" },
-  { id: 3, document: "Document 3", uploadDate: "2024-02-22" },
-];
+import {
+  viewUpdate,
+  viewUpload,
+} from "../../../redux/viewUpload/viewUploadApi";
 
 const ViewUpload = () => {
   const [selectedFile, setSelectedFile] = useState({});
@@ -39,10 +36,10 @@ const ViewUpload = () => {
   const [orderBy, setOrderBy] = useState("uploadDate");
   const navigate = useNavigate();
   const selector = useSelector((state) => state.root.viewuploadReducer);
-  // console.log("selector", selector);
+  const rows = selector.uploadFile[0].documents;
   const dispatch = useDispatch();
 
-  const { confirmation_no, patientData } = selector.uploadFile[0];
+  const { confirmationNo, patientData } = selector.uploadFile[0];
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -108,14 +105,25 @@ const ViewUpload = () => {
   // console.log(selectedFile);
   // }
 
-  const handleFileChange = (event) => {
-    console.log("event", event.target.files);
-    event.preventDefault();
-    setSelectedFile(event.target.files);
-  };
+  // const handleFileChange = (event) => {
+  //   console.log("event", event.target.files);
+  //   event.preventDefault();
+  //   setSelectedFile(event.target.files);
+  // };
   // Handle the upload functionality here with the selected file
-  const handleUpload = () => {
-    dispatch(viewUpdate({ confirmation_no, file: selectedFile }));
+  // const handleUpload = () => {
+  //   dispatch(viewUpdate({ confirmation_no, file: selectedFile }));
+  // };
+  const handleUpload = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    dispatch(viewUpdate({ confirmationNo, formData })).then((response) => {
+      if (response.type === "viewUpdate/fulfilled") {
+        dispatch(viewUpload(confirmationNo));
+      }
+    });
+    setSelectedFile(null);
   };
 
   const handleDownload = (document) => {
@@ -123,7 +131,7 @@ const ViewUpload = () => {
   };
 
   const handleDelete = (id) => {
-    const updatedRows = rows.filter((row) => row.id !== id);
+    const updatedRows = rows.filter((row) => row.document_id !== id);
     rows.length = 0;
     Array.prototype.push.apply(rows, updatedRows);
     setSelected(selected.filter((selectedId) => selectedId !== id));
@@ -179,14 +187,14 @@ const ViewUpload = () => {
             <Typography variant="caption">Patient Name</Typography>
             <Typography variant="h6">
               <b className="patient-name">{patientData?.name}</b>(
-              {confirmation_no})
+              {confirmationNo})
             </Typography>
             <Typography variant="body2" marginTop="10px">
               Check here to review and add files that you or the Client/Member
               has attached to the Request.
             </Typography>
 
-            <form>
+            <form onSubmit={handleUpload}>
               <Box position="relative" mb={2} mt={2}>
                 <Box display="flex">
                   <Button
@@ -198,7 +206,10 @@ const ViewUpload = () => {
                   >
                     <input
                       // accept="image/*"
-                      onChange={handleFileChange}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setSelectedFile(e.target.files[0]);
+                      }}
                       multiple
                       type="file"
                     />
@@ -209,7 +220,7 @@ const ViewUpload = () => {
                     variant="contained"
                     size="large"
                     startIcon={<CloudUploadOutlinedIcon />}
-                    onClick={handleUpload}
+                    type="submit"
                   />
                 </Box>
               </Box>
@@ -270,26 +281,28 @@ const ViewUpload = () => {
                 <TableBody>
                   {stableSort(rows, getComparator(order, orderBy)).map(
                     (row) => (
-                      <TableRow key={row.id} hover>
+                      <TableRow key={row.document_id} hover>
                         <TableCell padding="checkbox">
                           <Checkbox
-                            checked={isSelected(row.id)}
-                            onClick={(event) => handleClick(event, row.id)}
+                            checked={isSelected(row.document_id)}
+                            onClick={(event) =>
+                              handleClick(event, row.document_id)
+                            }
                           />
                         </TableCell>
-                        <TableCell>{row.document}</TableCell>
-                        <TableCell>{row.uploadDate}</TableCell>
+                        <TableCell>{row.document_path}</TableCell>
+                        <TableCell>{row.createdAt}</TableCell>
                         <TableCell>
                           <Button
                             variant="outlined"
-                            onClick={() => handleDownload(row.document)}
+                            onClick={() => handleDownload(row.document_path)}
                           >
                             <CloudDownloadOutlinedIcon />
                           </Button>
                           &nbsp;
                           <Button
                             variant="outlined"
-                            onClick={() => handleDelete(row.id)}
+                            onClick={() => handleDelete(row.document_id)}
                           >
                             <DeleteOutlinedIcon />
                           </Button>

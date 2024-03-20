@@ -9,4 +9,8 @@ export { default as successTriangle } from "./successTriangle.svg";
 
 // import loginHeading from "./logo.png";
 import patient from "./patient.png";
-export { patient };
+import flower from "./flower.png";
+import mountain from "./mountain.png";
+import person from "./person.png";
+
+export { patient, flower, mountain, person };

@@ -16,4 +16,5 @@ export const AppRoutes = {
   CREATEACCESS: "/acessAccount/createAccess",
   SCHEDULING: "/provider/scheduling",
   REQUESTED_SHIFTS: "/provider/scheduling/requestedshifts",
+  PROVIDERCALL: "/provider/scheduling/providercall",
 };

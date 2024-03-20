@@ -10,15 +10,17 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   TableSortLabel,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./userAccess.css";
 import { FormInput } from "../../TextField/FormInput";
 import { useSelector } from "react-redux";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { Button } from "../../Button/ButtonInput";
 
 const rows = [
   {
@@ -49,14 +51,18 @@ const rows = [
     action: "Actions",
   },
 ];
+
 const UserAccess = () => {
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [additionalFilter, setAdditionalFilter] = useState("all");
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [tableData, setTableData] = useState([]);
+  const [page, setPage] = React.useState(0);
   const [orderBy, setOrderBy] = useState("accountType");
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const isSelected = (id) => selected.indexOf(id) !== -1;
-
+  useEffect(() => setTableData(rows), [rows]);
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
   };
@@ -68,6 +74,10 @@ const UserAccess = () => {
       return;
     }
     setSelected([]);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   const handleRequestSort = (property) => {
@@ -121,6 +131,10 @@ const UserAccess = () => {
     setSelected(newSelected);
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
   return (
     <>
       <Box className="user-main-container">
@@ -129,29 +143,31 @@ const UserAccess = () => {
             <b>User Access</b>
           </Typography>
           <Paper className="user-full-paper">
-            <FormInput
-              className="search-text drop-list"
-              select
-              placeholder="All Regions"
-              value={additionalFilter}
-              onChange={handleAdditionalFilterChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchOutlinedIcon />
-                  </InputAdornment>
-                ),
-              }}
-            >
-              <MenuItem value="all">All Regions</MenuItem>
-              {regions?.map((region, index) => {
-                return (
-                  <MenuItem key={index} value={region.region_name}>
-                    {region.region_name}
-                  </MenuItem>
-                );
-              })}
-            </FormInput>
+            <Box className="region-box">
+              <FormInput
+                className="search-text drop-list"
+                select
+                placeholder="All Regions"
+                value={additionalFilter}
+                onChange={handleAdditionalFilterChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchOutlinedIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              >
+                <MenuItem value="all">All Regions</MenuItem>
+                {regions?.map((region, index) => {
+                  return (
+                    <MenuItem key={index} value={region.region_name}>
+                      {region.region_name}
+                    </MenuItem>
+                  );
+                })}
+              </FormInput>
+            </Box>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -165,7 +181,7 @@ const UserAccess = () => {
                         onChange={handleSelectAllClick}
                       />
                     </TableCell>
-                    <TableCell className="staff-cl">
+                    <TableCell>
                       <TableSortLabel
                         active={orderBy === "accountType"}
                         direction={order}
@@ -196,13 +212,24 @@ const UserAccess = () => {
                         <TableCell>{row.phone}</TableCell>
                         <TableCell>{row.status}</TableCell>
                         <TableCell>{row.openRequests}</TableCell>
-                        <TableCell>{row.action}</TableCell>
+                        <TableCell>
+                          <Button name="edit" variant="outlined"></Button>
+                        </TableCell>
                       </TableRow>
                     ),
                   )}
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={tableData?.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </Paper>
         </Container>
       </Box>

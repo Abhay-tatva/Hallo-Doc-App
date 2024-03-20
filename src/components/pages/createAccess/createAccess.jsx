@@ -37,7 +37,7 @@ const CreateAccess = () => {
             <Box display="flex" justifyContent="space-between" mb="8px">
               <Box display="flex">
                 <Typography variant="h5" gutterBottom>
-                  <b>Create Access</b>
+                  <b>Create Role</b>
                 </Typography>
               </Box>
               <Button

@@ -39,6 +39,7 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
       handleClose();
     },
   });
+
   return (
     <BasicModal
       open={open}
@@ -69,9 +70,7 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
                 <MenuItem
                   key={index}
                   value={region.region_name}
-                  onClick={() =>
-                    dispatch(getPhysician(formik.values.searchRegion))
-                  }
+                  onClick={() => dispatch(getPhysician(region.region_name))}
                 >
                   {region.region_name}
                 </MenuItem>

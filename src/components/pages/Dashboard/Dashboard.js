@@ -138,7 +138,14 @@ const Dashboard = () => {
     setIsActive(true);
   };
   useEffect(() => {
-    dispatch(newState(activeButton?.toLowerCase()));
+    dispatch(
+      newState({
+        state: activeButton.toLowerCase(),
+        firstname: "",
+        lastname: "",
+        region: "all",
+      }),
+    );
   }, [activeButton, dispatch]);
 
   useEffect(() => {

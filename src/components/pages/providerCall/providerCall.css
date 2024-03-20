@@ -1,0 +1,15 @@
+.call-main-container {
+  background-color: #f6f6f6;
+  padding: 1rem;
+}
+.call-container {
+  padding: 1.25rem;
+  border-radius: 20px !important;
+  margin-top: 35px;
+}
+.physicians {
+  margin-top: 35px;
+}
+.grid {
+  margin-top: 10px !important;
+}

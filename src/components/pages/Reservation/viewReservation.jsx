@@ -25,7 +25,6 @@ import { useSelector } from "react-redux";
 const ViewReservation = () => {
   const state = useSelector((state) => state.root.viewCaseReducer);
   const data = state?.data?.data[0];
-  console.log("data", data);
 
   const navigate = useNavigate();
   const formik = useFormik({

@@ -23,15 +23,23 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 // import timeGridPlugin from "@fullcalendar/timegrid";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import { AppRoutes } from "../../../constant/route";
+import CreateShift from "../../Modal/CreateShift";
 
 const Scheduling = () => {
   const navigate = useNavigate();
   const [additionalFilter, setAdditionalFilter] = useState("all");
+  const [open, setOpen] = React.useState(false);
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const handleDateClick = (arg) => {
     alert(arg.dateStr);
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
   };
@@ -78,12 +86,15 @@ const Scheduling = () => {
               })}
             </FormInput>
             <Box display="flex" gap={2}>
-              <Button name="Provider on call"></Button>
+              <Button
+                name="Provider on call"
+                onClick={() => navigate(AppRoutes.PROVIDERCALL)}
+              ></Button>
               <Button
                 name="Shifts For Review"
                 onClick={() => navigate(AppRoutes.REQUESTED_SHIFTS)}
               ></Button>
-              <Button name="Add New Shift"></Button>
+              <Button name="Add New Shift" onClick={handleOpen}></Button>
             </Box>
           </Box>
           <Box className="calendar">
@@ -112,6 +123,11 @@ const Scheduling = () => {
           </Box>
         </Container>
       </Box>
+      <CreateShift
+        open={open}
+        handleClose={handleClose}
+        handleOpen={handleOpen}
+      />
     </>
   );
 };

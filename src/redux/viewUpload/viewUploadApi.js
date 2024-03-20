@@ -22,13 +22,19 @@ export const viewUpload = createAsyncThunk(
 export const viewUpdate = createAsyncThunk(
   "viewUpdate",
   async (params, { rejectWithValue }) => {
-    const { confirmation_no, file } = params;
+    const { confirmationNo, formData } = params;
+    console.log("number", confirmationNo);
     try {
       const response = await Axios.post(
-        `${VIEWUPDATE_API.replace(":confirmaton_no", confirmation_no)}`,
+        `${VIEWUPDATE_API.replace(":confirmation_no", confirmationNo)}`,
+        formData,
         {
           withAuthToken: true,
-          file,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         },
       );
       return response?.data;

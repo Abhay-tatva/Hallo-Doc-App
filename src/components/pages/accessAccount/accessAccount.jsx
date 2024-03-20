@@ -130,18 +130,18 @@ const AccessAccount = () => {
                                     justifyContent="center"
                                   >
                                     <Button
-                                      name="Contact"
-                                      variant="outlined"
-                                      size="small"
-                                      // onClick={handleOpen}
-                                    />
-                                    <Button
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
                                       onClick={() =>
                                         navigate(AppRoutes.USERACCESS)
                                       }
+                                    />
+                                    <Button
+                                      name="delete"
+                                      variant="outlined"
+                                      size="small"
+                                      // onClick={handleOpen}
                                     />
                                   </Box>
                                 ) : (

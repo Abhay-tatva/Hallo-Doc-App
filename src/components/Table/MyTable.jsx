@@ -32,10 +32,10 @@ import { viewNotes } from "../../redux/viewNotes/viewNotesApi";
 import { cancelCase } from "../../redux/cancelCase/cancelCaseApi";
 import { transferCase } from "../../redux/transferCase/transferCaseApi";
 import { viewUpload } from "../../redux/viewUpload/viewUploadApi";
+import { newState } from "../../redux/newState/newStateApi";
 
 const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedColumn, setSelectedColumn] = useState("name");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -77,49 +77,6 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
     setPage(0);
   };
 
-  const filterRows = (rows, term) => {
-    setSearchTerm(term);
-    const filterData = rows.filter((row) =>
-      Object.entries(row).some(([key, value]) => {
-        if (!value) {
-          return false;
-        }
-        const lowerCaseValue =
-          typeof value === "string"
-            ? value.toLowerCase()
-            : String(value).toLowerCase();
-
-        if (key === "name") {
-          const nameText = value.props.children[0].props.children;
-          return nameText.toLowerCase().includes(term.toLowerCase());
-        }
-
-        return (
-          selectedColumn === "all" ||
-          (key === selectedColumn &&
-            lowerCaseValue.includes(term.toLowerCase())) ||
-          (selectedColumn === "dateOfBirth" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "requestor" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "requestedDate" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "phoneNumber" &&
-            row[selectedColumn].toString().includes(term)) ||
-          (selectedColumn === "address" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "notes" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "chatWith" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "action" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase()))
-        );
-      }),
-    );
-    setTableData(filterData);
-  };
-
   const filterByIndicator = (indicatorValue) => {
     if (indicatorValue === "all") return setTableData(rows);
     else {
@@ -132,11 +89,16 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
       setTableData(filteredData);
     }
   };
-
-  const handleAdditionalFilterChange = (event) => {
-    setAdditionalFilter(event.target.value);
-    setSelectedColumn(event.target.value);
-  };
+  useEffect(() => {
+    dispatch(
+      newState({
+        state: stateButton,
+        firstname: searchTerm,
+        lastname: "",
+        region: additionalFilter,
+      }),
+    );
+  }, [stateButton, dispatch, additionalFilter, searchTerm]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -216,7 +178,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
                     </InputAdornment>
                   ),
                 }}
-                onChange={(e) => filterRows(rows, e.target.value)}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <FormInput
@@ -224,7 +186,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
               select
               placeholder="All Regions"
               value={additionalFilter}
-              onChange={handleAdditionalFilterChange}
+              onChange={(e) => setAdditionalFilter(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

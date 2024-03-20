@@ -41,7 +41,6 @@ const Provide = () => {
 
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
-    setSelectedColumn(event.target.value);
   };
 
   const stableSort = (array, comparator) => {
