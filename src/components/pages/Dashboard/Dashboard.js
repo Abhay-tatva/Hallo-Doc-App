@@ -141,8 +141,7 @@ const Dashboard = () => {
     dispatch(
       newState({
         state: activeButton.toLowerCase(),
-        firstname: "",
-        lastname: "",
+        search: "",
         region: "all",
       }),
     );

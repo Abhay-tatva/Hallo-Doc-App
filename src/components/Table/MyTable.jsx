@@ -93,8 +93,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
     dispatch(
       newState({
         state: stateButton,
-        firstname: searchTerm,
-        lastname: "",
+        search: searchTerm,
         region: additionalFilter,
       }),
     );
