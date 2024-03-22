@@ -19,7 +19,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 // import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-// import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin from "@fullcalendar/interaction";
 // import timeGridPlugin from "@fullcalendar/timegrid";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import { AppRoutes } from "../../../constant/route";
@@ -29,16 +29,16 @@ const Scheduling = () => {
   const navigate = useNavigate();
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [open, setOpen] = React.useState(false);
+  const [modalName, setModalName] = useState("");
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
-  const handleDateClick = (arg) => {
-    alert(arg.dateStr);
-  };
 
-  const handleOpen = () => {
+  const handleOpen = (name) => {
+    setModalName(name);
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    setModalName("");
   };
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
@@ -94,18 +94,21 @@ const Scheduling = () => {
                 name="Shifts For Review"
                 onClick={() => navigate(AppRoutes.REQUESTED_SHIFTS)}
               ></Button>
-              <Button name="Add New Shift" onClick={handleOpen}></Button>
+              <Button
+                name="Add New Shift"
+                onClick={() => handleOpen("Create Shift")}
+              ></Button>
             </Box>
           </Box>
           <Box className="calendar">
             <FullCalendar
               plugins={[
                 dayGridPlugin,
-                // interactionPlugin,
+                interactionPlugin,
                 // timeGridPlugin,
                 resourceTimelinePlugin,
               ]}
-              dateClick={handleDateClick}
+              dateClick={() => handleOpen("View Shift")}
               initialView="resourceTimelineWeek"
               headerToolbar={{
                 left: "title prev next",
@@ -124,9 +127,8 @@ const Scheduling = () => {
         </Container>
       </Box>
       <CreateShift
-        open={open}
+        open={open && modalName === "Create Shift"}
         handleClose={handleClose}
-        handleOpen={handleOpen}
       />
     </>
   );

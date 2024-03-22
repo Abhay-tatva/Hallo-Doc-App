@@ -5,15 +5,31 @@ import { Button } from "../Button/ButtonInput";
 import { useFormik } from "formik";
 import BasicModal from "./Modal";
 import { confirmBlockModalSchema } from "../ValidationSchema/index";
+import {
+  blockCase,
+  blockCasePut,
+} from "../../redux/blockCaseApi.js/blockCaseApi";
+import { useDispatch, useSelector } from "react-redux";
 
 const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
+  const state = useSelector((state) => state.root.blockCaseReducer);
+  const data = state?.data?.data[0];
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       blockRequest: "",
     },
     validationSchema: confirmBlockModalSchema,
     onSubmit: (values) => {
-      console.log("submmitted", values);
+      dispatch(
+        blockCasePut({
+          confirmation_no: data.confirmation_no,
+          reason_for_block: values.blockRequest,
+        }),
+      );
+      onSubmitProps.resetForm();
+      handleClose();
     },
   });
   return (
@@ -23,10 +39,13 @@ const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
       handleClose={handleClose}
       header="Confirm Block"
     >
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
-            Patient Name :<span style={{ color: "aqua" }}>test test</span>
+            Patient Name :
+            <span style={{ color: "aqua" }}>
+              {data?.patient_data?.firstname},{data?.patient_data?.lastname}
+            </span>
           </Typography>
           <FormInput
             name="blockRequest"
@@ -45,7 +64,7 @@ const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
             }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Conform" variant="contained" />
+            <Button name="Conform" variant="contained" type="submit" />
             <Button name="Cancel" variant="outlined" onClick={handleClose} />
           </Box>
         </Box>

@@ -24,3 +24,10 @@ export const VIEWUPLOAD_API =
 
 export const VIEWUPDATE_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/upload";
+export const ASSIGNMODAL_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/assignrequest";
+
+export const GETBLOACKCASE_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/viewblockcase";
+export const PUTBLOCKCASE_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/blockcase";

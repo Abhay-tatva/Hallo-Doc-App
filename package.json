@@ -12,6 +12,7 @@
     "@fullcalendar/resource": "^6.1.11",
     "@fullcalendar/resource-timeline": "^6.1.11",
     "@fullcalendar/timegrid": "^6.1.11",
+    "@mobiscroll/react": "npm:@mobiscroll/react-trial@^5.29.0",
     "@mui/icons-material": "^5.15.10",
     "@mui/joy": "^5.0.0-beta.28",
     "@mui/material": "^5.15.9",

@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import BasicModal from "./Modal";
-import { Box, Grid, MenuItem } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  MenuItem,
+  Switch,
+  Typography,
+} from "@mui/material";
 import { FormInput } from "../TextField/FormInput";
 import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { useFormik } from "formik";
 import { Button } from "../Button/ButtonInput";
+import { Datepicker, Input, setOptions } from "@mobiscroll/react";
+import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 
 const CreateShift = ({ open, handleClose, handleOpen }) => {
+  const [start, startRef] = useState(null);
+  const [end, endRef] = useState(null);
+  const [checked, setChecked] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
@@ -18,6 +32,10 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
   );
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const dispatch = useDispatch();
+  setOptions({
+    theme: "ios",
+    themeVariant: "light",
+  });
   return (
     <BasicModal
       open={open}
@@ -79,7 +97,6 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
               <FormInput
                 type="date"
                 fullWidth
-                className="form-input"
                 // name="dob"
                 // onChange={formik.handleChange}
                 // onBlur={formik.handleBlur}
@@ -88,9 +105,88 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                 // helperText={formik.touched.dob && formik.errors.dob}
               />
             </Grid>
-            <Grid item xs={6}>
-              <FormInput fullWidth></FormInput>
-            </Grid>
+            {/* <Grid item xs={6}> */}
+            <Datepicker
+              controls={["time"]}
+              select="range"
+              startInput={start}
+              endInput={end}
+              touchUi={true}
+            />
+            <Box display="flex" justifyContent="space-between" gap={1.5}>
+              <Input ref={startRef} placeholder="Please Select...">
+                Start
+              </Input>
+              <Input ref={endRef} placeholder="Please Select...">
+                End
+              </Input>
+            </Box>
+            {/* </Grid> */}
+          </Grid>
+          <Box display="flex">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={checked}
+                  onChange={(event) => {
+                    setChecked(event.target.checked);
+                  }}
+                />
+              }
+              label="Repeat"
+              labelPlacement="repeat"
+            />
+          </Box>
+          <Grid item xs={12} md={6}>
+            <Typography>
+              <b>Repeat Days</b>
+            </Typography>
+            <FormControlLabel
+              control={<Checkbox disabled={!checked} size="medium" />}
+              label="Every Sunday"
+            />
+            <FormControlLabel
+              control={<Checkbox disabled={!checked} size="medium" />}
+              label="Every Monday"
+            />
+            <FormControlLabel
+              control={<Checkbox disabled={!checked} size="medium" />}
+              label="Every Tuesday"
+            />
+            <FormControlLabel
+              control={<Checkbox disabled={!checked} size="medium" />}
+              label="Every Wednesday"
+            />
+            <FormControlLabel
+              control={<Checkbox disabled={!checked} size="medium" />}
+              label="Every thursday"
+            />
+            <FormControlLabel
+              control={<Checkbox disabled={!checked} size="medium" />}
+              label="Every Friday"
+            />
+            <FormControlLabel
+              control={<Checkbox disabled={!checked} size="medium" />}
+              label="Every Saturday"
+            />
+          </Grid>
+          <Grid item xs={12} md={12} lg={12}>
+            <FormInput
+              label="Repeat End"
+              fullWidth
+              disabled={!checked}
+              select
+              // name="dob"
+              // onChange={formik.handleChange}
+              // onBlur={formik.handleBlur}
+              // value={formik.values.dob}
+              // error={formik.touched.dob && Boolean(formik.errors.dob)}
+              // helperText={formik.touched.dob && formik.errors.dob}
+            >
+              <MenuItem>2-times</MenuItem>
+              <MenuItem>1-times</MenuItem>
+              <MenuItem>0-times</MenuItem>
+            </FormInput>
           </Grid>
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Save" variant="contained" Type="submit" />

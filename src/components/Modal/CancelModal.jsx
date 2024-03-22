@@ -26,7 +26,6 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
           additional_notes: values.additionalnotes,
         }),
       );
-      console.log("submmitted", values);
       onSubmitProps.resetForm();
       handleClose();
     },

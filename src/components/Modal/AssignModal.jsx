@@ -5,8 +5,17 @@ import { Button } from "../Button/ButtonInput";
 import { useFormik } from "formik";
 import BasicModal from "./Modal";
 import { assignModalSchema } from "../ValidationSchema/index";
+import { useDispatch, useSelector } from "react-redux";
+import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
+import { assignCase } from "../../redux/assignCase/assignCaseApi";
 
 const AssignModal = ({ open, handleClose, handleOpen }) => {
+  const { physicians } = useSelector(
+    (state) => state.root.regionPhysicianReducer,
+  );
+
+  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
@@ -15,7 +24,16 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
     },
     validationSchema: assignModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submmitted", values);
+      const name = values.physician.split(" ");
+
+      dispatch(
+        assignCase({
+          confirmationNo: "Te240307TeSa0004",
+          firstname: name[0],
+          lastname: name[1],
+          assignReqDescription: values.description,
+        }),
+      );
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -47,10 +65,18 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
               formik.touched.searchRegion && formik.errors.searchRegion
             }
           >
-            <MenuItem value="all">Service not Availabel</MenuItem>
-            <MenuItem value="all">Doctor are not Availabel</MenuItem>
-            <MenuItem value="all">Slots are nbot free</MenuItem>
-            <MenuItem value="all">Other</MenuItem>
+            <MenuItem value="all">All Regions</MenuItem>
+            {regions?.map((region, index) => {
+              return (
+                <MenuItem
+                  key={index}
+                  value={region.region_name}
+                  onClick={() => dispatch(getPhysician(region.region_name))}
+                >
+                  {region.region_name}
+                </MenuItem>
+              );
+            })}
           </FormInput>
           <FormInput
             name="physician"
@@ -63,10 +89,17 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
             error={formik.touched.physician && Boolean(formik.errors.physician)}
             helperText={formik.touched.physician && formik.errors.physician}
           >
-            <MenuItem value="all">Service not Availabel</MenuItem>
-            <MenuItem value="all">Doctor are not Availabel</MenuItem>
-            <MenuItem value="all">Slots are nbot free</MenuItem>
-            <MenuItem value="all">Other</MenuItem>
+            {physicians &&
+              physicians.map((physician) => {
+                return (
+                  <MenuItem
+                    key={physician.sr_no}
+                    value={`${physician.physician_name}`}
+                  >
+                    {`${physician.physician_name}`}
+                  </MenuItem>
+                );
+              })}
           </FormInput>
           <FormInput
             name="description"

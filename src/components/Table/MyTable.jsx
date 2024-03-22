@@ -33,6 +33,7 @@ import { cancelCase } from "../../redux/cancelCase/cancelCaseApi";
 import { transferCase } from "../../redux/transferCase/transferCaseApi";
 import { viewUpload } from "../../redux/viewUpload/viewUploadApi";
 import { newState } from "../../redux/newState/newStateApi";
+import { blockcaseGet } from "../../redux/blockCaseApi.js/blockCaseApi";
 
 const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -126,6 +127,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
         navigate(AppRoutes.NOTES);
         break;
       case "Block Patient":
+        dispatch(blockcaseGet(confirmno));
         onClick(action);
         break;
       case "View Upload":
