@@ -13,7 +13,6 @@ export const assignCase = createAsyncThunk(
       const response = await Axios.put(
         `${ASSIGNMODAL_API.replace(":confirmation_no", confirmation_no)}`,
         {
-          // withAuthToken: true,
           firstname,
           lastname,
           assign_req_description,

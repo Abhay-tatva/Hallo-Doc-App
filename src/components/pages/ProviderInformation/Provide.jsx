@@ -124,7 +124,10 @@ const Provide = () => {
                   );
                 })}
               </FormInput>
-              <Button name="Create Provider Account" />
+              <Button
+                name="Create Provider Account"
+                onClick={() => navigate(AppRoutes.CREATEPROVIDER)}
+              />
             </Box>
 
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>

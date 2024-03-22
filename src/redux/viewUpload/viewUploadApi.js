@@ -8,9 +8,6 @@ export const viewUpload = createAsyncThunk(
     try {
       const response = await Axios.get(
         `${VIEWUPLOAD_API.replace(":confirmation_no", params)}`,
-        {
-          withAuthToken: true,
-        },
       );
       return response?.data;
     } catch (error) {
@@ -28,9 +25,7 @@ export const viewUpdate = createAsyncThunk(
       const response = await Axios.post(
         `${VIEWUPDATE_API.replace(":confirmation_no", confirmationNo)}`,
         formData,
-        {
-          withAuthToken: true,
-        },
+
         {
           headers: {
             "Content-Type": "multipart/form-data",

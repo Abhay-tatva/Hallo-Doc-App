@@ -10,7 +10,6 @@ export const transferCase = createAsyncThunk(
       const response = await Axios.post(
         `${TRANSFERMODEL_API.replace(":confirmation_no", confirmationnumber)}`,
         {
-          withAuthToken: true,
           firstname,
           lastname,
           description,

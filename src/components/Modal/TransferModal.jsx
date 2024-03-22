@@ -15,6 +15,7 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
   );
 
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const { confirmation_no } = useSelector((state) => state.root.commonReducer);
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -29,7 +30,7 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
 
       dispatch(
         transferCase({
-          confirmationnumber: "Gu240307PaRo0008",
+          confirmationnumber: confirmation_no,
           firstname: name[0],
           lastname: name[1],
           description: values.description,

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Config/axios";
-import { CANCELCASE_API } from "../../constant/apis";
+import { CANCELCASE_API, PUTCANCELCASE_API } from "../../constant/apis";
 
 export const cancelCase = createAsyncThunk(
   "cancelCase",
@@ -8,9 +8,6 @@ export const cancelCase = createAsyncThunk(
     try {
       const response = await Axios.get(
         `${CANCELCASE_API.replace(":confirmation_no", params)}`,
-        {
-          withAuthToken: true,
-        },
       );
       return response?.data;
     } catch (error) {
@@ -24,9 +21,8 @@ export const cancelCaseUpdate = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await Axios.put(
-        `${CANCELCASE_API.replace("confirmation_no", params.confirmnumber)}`,
+        `${PUTCANCELCASE_API.replace("confirmation_no", params.confirmnumber)}`,
         {
-          withAuthToken: true,
           reason: params.reason,
           additional_notes: params.additional_notes,
         },

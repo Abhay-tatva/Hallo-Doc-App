@@ -6,9 +6,7 @@ export const requestCount = createAsyncThunk(
   "requestCount",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.get(REQUESTCOUNT_API, {
-        withAuthToken: true,
-      });
+      const response = await Axios.get(REQUESTCOUNT_API);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

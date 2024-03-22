@@ -6,8 +6,13 @@ import BasicModal from "./Modal";
 import { FormInput } from "../TextField/FormInput";
 import { Button } from "../Button/ButtonInput";
 import "./modal.css";
+import { useDispatch, useSelector } from "react-redux";
+import { sendAgreement } from "../../redux/sendAgreement/sendAgreementApi";
 
 const SendAgreementModal = ({ open, handleClose, handleOpen }) => {
+  const dispatch = useDispatch();
+  const { confirmation_no } = useSelector((state) => state.root.commonReducer);
+
   const formik = useFormik({
     initialValues: {
       phonenumber: "",
@@ -15,7 +20,13 @@ const SendAgreementModal = ({ open, handleClose, handleOpen }) => {
     },
     validationSchema: sendAgreementModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submmitted", values);
+      dispatch(
+        sendAgreement({
+          confirmationnumber: confirmation_no,
+          mobile_no: values.phonenumber,
+          email: values.email,
+        }),
+      );
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -29,7 +40,7 @@ const SendAgreementModal = ({ open, handleClose, handleOpen }) => {
     >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
-          <Typography className="text-dot">Patient Name</Typography>
+          <Typography className="text-dot">Patient </Typography>
           <Typography variant="caption">
             To Send Agreement please make sure you are updating the correct
             contact information below for the responsive party

@@ -21,8 +21,7 @@ import { toast } from "react-toastify";
 const ViewNotes = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.root.viewNotesReducer);
-  const data = state.data.data[0];
-  console.log("data", data);
+  const data = state?.data?.data[0];
 
   const navigate = useNavigate();
 

@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Config/axios";
-import { VIEWCASE_API } from "../../constant/apis";
+import { COMMON_API } from "../../constant/apis";
 
-export const viewCase = createAsyncThunk(
-  "viewCase",
+export const commonApi = createAsyncThunk(
+  "commonApi",
   async (params, { rejectWithValue }) => {
     try {
       const response = await Axios.get(
-        `${VIEWCASE_API.replace(":confirmation_no", params)}`,
+        `${COMMON_API.replace(":confirmation_no", params)}`,
       );
       return response?.data;
     } catch (error) {

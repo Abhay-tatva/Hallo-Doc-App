@@ -8,6 +8,10 @@ export const VIEWNOTES_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewnotes";
 export const CANCELCASE_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewcancelcase";
+
+export const PUTCANCELCASE_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/cancelcase";
+
 export const REGION_API =
   "/admin/dashboard/requests/actions/transferrequestregions";
 
@@ -31,3 +35,9 @@ export const GETBLOACKCASE_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewblockcase";
 export const PUTBLOCKCASE_API =
   "/admin/dashboard/requests/:confirmation_no/actions/blockcase";
+export const CLEARCASE_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/clearcase";
+export const SENDAGREEMENT_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/sendagreement";
+
+export const COMMON_API = "/commonroute/:confirmation_no/actions";

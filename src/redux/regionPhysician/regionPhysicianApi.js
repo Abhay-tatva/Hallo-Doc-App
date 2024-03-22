@@ -6,9 +6,7 @@ export const getRegions = createAsyncThunk(
   "getRegions",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.get(`${REGION_API}`, {
-        withAuthToken: true,
-      });
+      const response = await Axios.get(`${REGION_API}`);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);
@@ -20,9 +18,7 @@ export const getPhysician = createAsyncThunk(
   "getPhysician",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.get(`${PHYSICIAN_API}?region=${params}`, {
-        withAuthToken: true,
-      });
+      const response = await Axios.get(`${PHYSICIAN_API}?region=${params}`);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

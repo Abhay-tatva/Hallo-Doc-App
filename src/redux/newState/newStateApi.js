@@ -9,9 +9,7 @@ export const newState = createAsyncThunk(
       let url = `${NEWSTATE_API}?state=${params.state}`;
       if (params?.search) url += `&search=${params.search}`;
       if (params?.region !== "all") url += `&region=${params.region}`;
-      const response = await Axios.get(url, {
-        withAuthToken: true,
-      });
+      const response = await Axios.get(url);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

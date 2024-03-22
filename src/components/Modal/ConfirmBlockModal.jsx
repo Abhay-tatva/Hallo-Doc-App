@@ -5,10 +5,7 @@ import { Button } from "../Button/ButtonInput";
 import { useFormik } from "formik";
 import BasicModal from "./Modal";
 import { confirmBlockModalSchema } from "../ValidationSchema/index";
-import {
-  blockCase,
-  blockCasePut,
-} from "../../redux/blockCaseApi.js/blockCaseApi";
+import { blockCasePut } from "../../redux/blockCaseApi.js/blockCaseApi";
 import { useDispatch, useSelector } from "react-redux";
 
 const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
@@ -21,7 +18,7 @@ const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
       blockRequest: "",
     },
     validationSchema: confirmBlockModalSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, onSubmitProps) => {
       dispatch(
         blockCasePut({
           confirmation_no: data.confirmation_no,

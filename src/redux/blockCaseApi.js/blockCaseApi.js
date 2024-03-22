@@ -8,9 +8,6 @@ export const blockcaseGet = createAsyncThunk(
     try {
       const response = await Axios.get(
         `${GETBLOACKCASE_API.replace(":confirmation_no", params)}`,
-        {
-          withAuthToken: true,
-        },
       );
       return response?.data;
     } catch (error) {
@@ -29,7 +26,6 @@ export const blockCasePut = createAsyncThunk(
       const response = await Axios.put(
         `${PUTBLOCKCASE_API.replace(":confirmation_no", confirmation_no)}`,
         {
-          // withAuthToken: true,
           reason_for_block,
         },
       );

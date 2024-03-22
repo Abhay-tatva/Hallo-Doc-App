@@ -26,6 +26,7 @@ import Scheduling from "./components/pages/scheduling/scheduling";
 import RequestedShifts from "./components/pages/requestedShifts/requestedShifts";
 import UserAccess from "./components/pages/userAccess/userAccess";
 import ProviderCall from "./components/pages/providerCall/providerCall";
+import CreateProvider from "./components/pages/createProvider/createProvider";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -78,6 +79,10 @@ function App() {
               />
               <Route path={AppRoutes.USERACCESS} element={<UserAccess />} />
               <Route path={AppRoutes.PROVIDERCALL} element={<ProviderCall />} />
+              <Route
+                path={AppRoutes.CREATEPROVIDER}
+                element={<CreateProvider />}
+              />
             </Route>
           </Route>
         </Routes>
