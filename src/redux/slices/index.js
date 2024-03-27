@@ -9,6 +9,8 @@ import requestCountSlice from "./requestCountSlice";
 import viewUploadSlice from "./viewUploadSlice";
 import blockCaseSlice from "./blockCaseSlice";
 import commonSlice from "./commonSlice";
+import professionBussinessSlice from "./professionBussinessSlice";
+import closeCaseSlice from "./closeCaseSlice";
 
 export const rootReducer = combineReducers({
   loginReducer: loginSlice,
@@ -21,4 +23,6 @@ export const rootReducer = combineReducers({
   viewuploadReducer: viewUploadSlice,
   blockCaseReducer: blockCaseSlice,
   commonReducer: commonSlice,
+  professionBussinessReducer: professionBussinessSlice,
+  closeCaseReducer: closeCaseSlice,
 });

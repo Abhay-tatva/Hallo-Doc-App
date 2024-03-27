@@ -52,6 +52,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { newState } from "../../../redux/newState/newStateApi";
 import { getRegions } from "../../../redux/regionPhysician/regionPhysicianApi";
 import { requestCount } from "../../../redux/requestCount/requestCountApi";
+import { sendOrderProfession } from "../../../redux/professionBussiness/getProfessionBussinessApi";
 
 const cards = [
   {
@@ -120,6 +121,7 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(getRegions());
     dispatch(requestCount());
+    dispatch(sendOrderProfession());
   }, [dispatch]);
 
   const handleClose = () => {

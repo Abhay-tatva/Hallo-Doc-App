@@ -153,6 +153,7 @@ export const rows = [
 
 export const newColumns = [
   { id: "name", label: "Name", minWidth: 200 },
+  { id: "mail", label: "", minWidth: 50 },
   { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
   {
     id: "requestor",
@@ -199,6 +200,7 @@ export const newColumns = [
 ];
 export const pendingColumns = [
   { id: "name", label: "Name", minWidth: 200 },
+  { id: "mail", label: "", minWidth: 50 },
   { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
   {
     id: "requestor",
@@ -251,6 +253,7 @@ export const pendingColumns = [
 ];
 export const activeColumns = [
   { id: "name", label: "Name", minWidth: 200 },
+  { id: "mail", label: "", minWidth: 50 },
   { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
   {
     id: "requestor",
@@ -303,6 +306,7 @@ export const activeColumns = [
 ];
 export const concludeColumns = [
   { id: "name", label: "Name", minWidth: 200 },
+  { id: "mail", label: "", minWidth: 50 },
   { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
   {
     id: "physicanName",
@@ -344,6 +348,7 @@ export const concludeColumns = [
 ];
 export const toCloseColumns = [
   { id: "name", label: "Name", minWidth: 200 },
+  { id: "mail", label: "", minWidth: 50 },
   { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
 
   {
@@ -392,6 +397,7 @@ export const toCloseColumns = [
 ];
 export const unpaidColumns = [
   { id: "name", label: "Name", minWidth: 200 },
+  { id: "mail", label: "", minWidth: 50 },
   {
     id: "physicanName",
     label: "Physican Name",

@@ -41,3 +41,21 @@ export const SENDAGREEMENT_API =
   "/admin/dashboard/requests/:confirmation_no/actions/sendagreement";
 
 export const COMMON_API = "/commonroute/:confirmation_no/actions";
+
+export const COMMONPROFESSION_API = "/commonroute/professions";
+
+export const COMMONBUSINESS_API =
+  "/admin/dashboard/requests/actions/sendorders/businesses";
+export const GETSENDORDER_API =
+  "/admin/dashboard/requests/actions/viewsendorders";
+export const POSTSENDORDER_API =
+  "/admin/dashboard/requests/:state/:confirmation_no/actions/sendorders";
+
+export const GETCLOSECASE_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/closecase/viewdetails";
+export const PUTCLOSECASE_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/closecase";
+export const POSTCLOSECASE_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/closecase/edit";
+
+export const SENDLINK_API = "/admin/dashboard/requests/sendlink";

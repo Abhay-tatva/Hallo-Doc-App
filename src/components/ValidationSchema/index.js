@@ -33,3 +33,5 @@ export { provideProfileSchema } from "./ProvideProfileSchema";
 export { ResetPassSchema } from "./ResetPassSchema";
 
 export { CreateAccessSchema } from "./CreateAccessSchema";
+
+export { ViewModalSchema } from "./ViewModalSchema";

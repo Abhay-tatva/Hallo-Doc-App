@@ -10,7 +10,7 @@ export const AppRoutes = {
   CLOSECASE: "/dashboard/closecase",
   MYPROFILE: "/myprofile",
   PROVIDER: "/provider",
-  EDITACCOUNT: "/editAccount",
+  EDITACCOUNT: "/provider/editAccount",
   ACCESSACCOUNT: "/acessAccount",
   USERACCESS: "/acessAccount/userAccess",
   CREATEACCESS: "/acessAccount/createAccess",

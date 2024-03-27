@@ -36,6 +36,8 @@ import { newState } from "../../redux/newState/newStateApi";
 import { blockcaseGet } from "../../redux/blockCaseApi.js/blockCaseApi";
 import { clearCase } from "../../redux/clearCase/clearCaseApi";
 import { commonApi } from "../../redux/commonApi/commonApi";
+import { getCloseCase } from "../../redux/closeCase/closeCaseApi";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
 const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -152,6 +154,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
         onClick(action);
         break;
       case "Close Case":
+        dispatch(getCloseCase(confirmno));
         navigate(AppRoutes.CLOSECASE);
         break;
       default:
@@ -272,6 +275,10 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
                       className={`requestor-${row.requestor?.toLowerCase()}`}
                     >
                       <TableCell>{row.patient_data.name}</TableCell>
+                      <TableCell>
+                        <EmailOutlinedIcon />
+                      </TableCell>
+
                       {stateButton !== "unpaid" && (
                         <TableCell>{row.patient_data.DOB}</TableCell>
                       )}
@@ -323,7 +330,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
                         stateButton === "pending" ||
                         stateButton === "active" ||
                         stateButton === "toclose") && (
-                        <TableCell>{row.notes?.description}</TableCell>
+                        <TableCell>{row.notes[0]?.description}</TableCell>
                       )}
                       <TableCell>
                         <Button

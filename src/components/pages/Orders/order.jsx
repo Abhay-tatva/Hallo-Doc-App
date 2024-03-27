@@ -9,22 +9,50 @@ import { useNavigate } from "react-router-dom";
 import { FormInput } from "../../TextField/FormInput";
 import "./Order.css";
 import { AppRoutes } from "../../../constant/route";
+import { useDispatch, useSelector } from "react-redux";
+import { sendOrderBussiness } from "../../../redux/professionBussiness/getProfessionBussinessApi";
+import {
+  getSendOrder,
+  postSendOrder,
+} from "../../../redux/sendOrder/sendOrderApi";
 const Order = () => {
   const navigate = useNavigate();
+  const { professions } = useSelector(
+    (state) => state.root.professionBussinessReducer,
+  );
+  const { bussinesses } = useSelector(
+    (state) => state.root.professionBussinessReducer,
+  );
+  const { business_contact, email, fax_number } = useSelector(
+    (state) => state.sendOrderReducer,
+  );
+  const { confirmation_no, request_state } = useSelector(
+    (state) => state.root.commonReducer,
+  );
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
       selectPro: "",
       business: "",
-      businessContact: "",
-      email: "",
-      faxNumber: "",
       orderDetail: "",
-      retailNumber: "",
+      refillNumber: "",
     },
     validationSchema: orderDetails,
     onSubmit: (values, onSubmitProps) => {
-      console.log("Form Submitted", values);
+      dispatch(
+        postSendOrder({
+          request_state,
+          confirmation_no,
+          business_contact,
+          email,
+          order_details: values.orderDetail,
+          number_of_refill: values.refillNumber,
+        }),
+      ).then((response) => {
+        if (response.type === "postSendOrder/fulfilled")
+          navigate(AppRoutes.DASHBOARD);
+      });
       onSubmitProps.resetForm();
     },
   });
@@ -73,10 +101,21 @@ const Order = () => {
                       formik.touched.selectPro && formik.errors.selectPro
                     }
                   >
-                    <MenuItem value="Doctor">Doctor</MenuItem>
-                    <MenuItem value="Teacher">Teacher </MenuItem>
-                    <MenuItem value="Business Man">Business Man </MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
+                    {professions?.map((profession, index) => {
+                      return (
+                        <MenuItem
+                          key={index}
+                          value={profession.profession_name}
+                          onClick={() =>
+                            dispatch(
+                              sendOrderBussiness(profession.profession_name),
+                            )
+                          }
+                        >
+                          {profession.profession_name}
+                        </MenuItem>
+                      );
+                    })}
                   </FormInput>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
@@ -84,6 +123,7 @@ const Order = () => {
                     name="business"
                     label="Business"
                     fullWidth
+                    select
                     // className="form-input"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -94,25 +134,35 @@ const Order = () => {
                     helperText={
                       formik.touched.business && formik.errors.business
                     }
-                  />
+                  >
+                    {bussinesses &&
+                      bussinesses?.map((bussiness, index) => {
+                        return (
+                          <MenuItem
+                            key={index}
+                            value={bussiness.business_name}
+                            onClick={() =>
+                              dispatch(
+                                getSendOrder({
+                                  profession: formik.values.selectPro,
+                                  business: bussiness.business_name,
+                                }),
+                              )
+                            }
+                          >
+                            {bussiness.business_name}
+                          </MenuItem>
+                        );
+                      })}
+                  </FormInput>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
                   <FormInput
                     name="businessContact"
                     label="Business Contact"
                     fullWidth
-                    // className="form-input"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.businessContact}
-                    error={
-                      formik.touched.businessContact &&
-                      Boolean(formik.errors.businessContact)
-                    }
-                    helperText={
-                      formik.touched.businessContact &&
-                      formik.errors.businessContact
-                    }
+                    value={business_contact}
+                    disabled
                   />
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
@@ -121,11 +171,8 @@ const Order = () => {
                     label="Email"
                     fullWidth
                     // className="form-input"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
+                    value={email}
+                    disabled
                   />
                 </Grid>
                 <Grid item sm={12} md={6} lg={6}>
@@ -134,16 +181,8 @@ const Order = () => {
                     label="Fax Number"
                     fullWidth
                     // className="form-input"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.faxNumber}
-                    error={
-                      formik.touched.faxNumber &&
-                      Boolean(formik.errors.faxNumber)
-                    }
-                    helperText={
-                      formik.touched.faxNumber && formik.errors.faxNumber
-                    }
+                    disabled
+                    value={fax_number}
                   />
                 </Grid>
               </Grid>
@@ -175,16 +214,16 @@ const Order = () => {
               >
                 <Grid item xs={12} md={6}>
                   <FormInput
-                    name="retailNumber"
+                    name="refillNumber"
                     label="Number Of Refill"
                     fullWidth
                     // className="form-input"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.retailNumber}
+                    value={formik.values.refillNumber}
                     error={
-                      formik.touched.retailNumber &&
-                      Boolean(formik.errors.retailNumber)
+                      formik.touched.refillNumber &&
+                      Boolean(formik.errors.refillNumber)
                     }
                     helperText={
                       formik.touched.businessContact &&

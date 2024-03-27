@@ -5,6 +5,7 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
+  Input,
   MenuItem,
   Switch,
   Typography,
@@ -14,17 +15,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { useFormik } from "formik";
 import { Button } from "../Button/ButtonInput";
-import { Datepicker, Input, setOptions } from "@mobiscroll/react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import { CreateModalSchema } from "../ValidationSchema/CreateShiftModalSchema";
 
 const CreateShift = ({ open, handleClose, handleOpen }) => {
-  const [start, startRef] = useState(null);
-  const [end, endRef] = useState(null);
   const [checked, setChecked] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
+      physician: "",
+    },
+    validationSchema: CreateModalSchema,
+    onSubmit: (values, onSubmitProps) => {
+      console.log("submitted", values);
+      onSubmitProps.resetForm();
+      handleClose();
     },
   });
   const { physicians } = useSelector(
@@ -32,10 +38,7 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
   );
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const dispatch = useDispatch();
-  setOptions({
-    theme: "ios",
-    themeVariant: "light",
-  });
+
   return (
     <BasicModal
       open={open}
@@ -75,10 +78,10 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
             fullWidth
             label="Select Physician"
             select
-            //   onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            //   value={formik.values.physician}
-            //   error={formik.touched.physician && Boolean(formik.errors.physician)}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.physician}
+            error={formik.touched.physician && Boolean(formik.errors.physician)}
           >
             {physicians &&
               physicians.map((physician) => {
@@ -97,32 +100,21 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
               <FormInput
                 type="date"
                 fullWidth
-                // name="dob"
-                // onChange={formik.handleChange}
-                // onBlur={formik.handleBlur}
-                // value={formik.values.dob}
-                // error={formik.touched.dob && Boolean(formik.errors.dob)}
-                // helperText={formik.touched.dob && formik.errors.dob}
+                name="dob"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.dob}
+                error={formik.touched.dob && Boolean(formik.errors.dob)}
+                helperText={formik.touched.dob && formik.errors.dob}
               />
             </Grid>
             {/* <Grid item xs={6}> */}
-            <Datepicker
-              controls={["time"]}
-              select="range"
-              startInput={start}
-              endInput={end}
-              touchUi={true}
-            />
-            <Box display="flex" justifyContent="space-between" gap={1.5}>
-              <Input ref={startRef} placeholder="Please Select...">
-                Start
-              </Input>
-              <Input ref={endRef} placeholder="Please Select...">
-                End
-              </Input>
-            </Box>
             {/* </Grid> */}
           </Grid>
+          <Box display="flex" justifyContent="space-between" gap={1.5}>
+            <Input label="Start" type="time" fullWidth />
+            <Input label="End" type="time" fullWidth />
+          </Box>
           <Box display="flex">
             <FormControlLabel
               control={
@@ -176,12 +168,12 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
               fullWidth
               disabled={!checked}
               select
-              // name="dob"
-              // onChange={formik.handleChange}
-              // onBlur={formik.handleBlur}
-              // value={formik.values.dob}
-              // error={formik.touched.dob && Boolean(formik.errors.dob)}
-              // helperText={formik.touched.dob && formik.errors.dob}
+              name="dob"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.dob}
+              error={formik.touched.dob && Boolean(formik.errors.dob)}
+              helperText={formik.touched.dob && formik.errors.dob}
             >
               <MenuItem>2-times</MenuItem>
               <MenuItem>1-times</MenuItem>

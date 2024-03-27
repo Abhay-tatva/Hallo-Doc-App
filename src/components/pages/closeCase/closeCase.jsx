@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PhoneIcon from "@mui/icons-material/Phone";
 
 import {
@@ -26,33 +26,59 @@ import "./closeCase.css";
 import { viewCloseCaseSchema } from "../../ValidationSchema/index";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getCloseCase,
+  postCloseCase,
+} from "../../../redux/closeCase/closeCaseApi";
 
-const rows = [
-  { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
-  { id: 2, document: "Document 2", uploadDate: "2024-02-21" },
-];
+// const rows = [
+//   { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
+//   { id: 2, document: "Document 2", uploadDate: "2024-02-21" },
+// ];
 
-const initialValues = {
-  firstName: "text",
-  lastName: "text",
-  phonenumber: "6359421917",
-  email: "xyz@gamil.com",
-  date: "2000-10-2",
+const initialValue = {
+  firstName: "",
+  lastName: "",
+  phoneNumber: "",
+  email: "",
+  date: "",
 };
 
 const CloseCase = () => {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("uploadDate");
+  const [initialValues, setInitialValues] = useState(initialValue);
   const [order, setOrder] = useState("asc");
   const [isDisabled, setIsDisabled] = useState(true);
   const isSelected = (id) => selected.indexOf(id) !== -1;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { confirmation_no } = useSelector((state) => state.root.commonReducer);
+
+  const { documents } = useSelector((state) => state.root.closeCaseReducer);
+  const rows = documents[0].patient_data.documents;
 
   const handleEdit = () => {
     setIsDisabled(false);
   };
   const handleSave = () => {
+    setInitialValues(formik.values);
     setIsDisabled(true);
+    dispatch(
+      postCloseCase({
+        confirmation_no,
+        firstname: formik.values.firstName,
+        lastname: formik.values.lastName,
+        dob: formik.values.date,
+        mobile_no: formik.values.phoneNumber,
+        email: formik.values.email,
+      }),
+    ).then((response) => {
+      if (response.type === "postCloseCase/fulfilled") {
+        dispatch(getCloseCase(confirmation_no));
+      }
+    });
   };
   const handleClick = () => {};
   const handleSelectAllClick = (event) => {
@@ -100,7 +126,23 @@ const CloseCase = () => {
     onSubmit: (values) => {
       console.log("Form submitted", values);
     },
+    enableReinitialize: true,
   });
+  useEffect(() => {
+    setInitialValues({
+      firstName: documents[0].patient_data.first_name,
+      lastName: documents[0].patient_data.last_name,
+      phoneNumber: documents[0].patient_data.mobile_no,
+      email: documents[0].patient_data.email,
+      date: documents[0].patient_data.DOB,
+    });
+  }, [
+    documents[0].patient_data.first_name,
+    documents[0].patient_data.last_name,
+    documents[0].patient_data.mobile_no,
+    documents[0].patient_data.email,
+    documents[0].patient_data.DOB,
+  ]);
   return (
     <>
       <Box className="closecase-main-container">
@@ -136,8 +178,11 @@ const CloseCase = () => {
               <Box>
                 <Typography variant="caption">Patient Name</Typography>
                 <Typography variant="h6">
-                  <b className="patient-name2">Test AkStageBus</b>
-                  (MD101819PRBH0005)
+                  <b className="patient-name2">
+                    {documents[0].patient_data.first_name}
+                    {documents[0].patient_data.last_name}
+                  </b>
+                  ({documents[0].confirmation_no})
                 </Typography>
               </Box>
               <Button

@@ -7,7 +7,6 @@ export const assignCase = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     const { firstname, lastname, assign_req_description, confirmation_no } =
       params;
-    console.log("params", params);
 
     try {
       const response = await Axios.put(

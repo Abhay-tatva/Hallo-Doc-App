@@ -24,6 +24,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import { AppRoutes } from "../../../constant/route";
 import CreateShift from "../../Modal/CreateShift";
+import ViewShift from "../../Modal/ViewShift";
 
 const Scheduling = () => {
   const navigate = useNavigate();
@@ -128,6 +129,10 @@ const Scheduling = () => {
       </Box>
       <CreateShift
         open={open && modalName === "Create Shift"}
+        handleClose={handleClose}
+      />
+      <ViewShift
+        open={open && modalName === "View Shift"}
         handleClose={handleClose}
       />
     </>

@@ -4,10 +4,15 @@ import BasicModal from "./Modal";
 import { FormInput } from "../TextField/FormInput";
 import { useFormik } from "formik";
 import { Box } from "@mui/material";
-import PhoneInput from "react-phone-input-2";
 import { Button } from "../Button/ButtonInput";
+import { useDispatch } from "react-redux";
+import { sendLink } from "../../redux/sendLink/sendLinkApi";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const SendLinkModal = ({ open, handleClose, handleOpen }) => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -15,9 +20,17 @@ const SendLinkModal = ({ open, handleClose, handleOpen }) => {
       phoneNumber: "",
       email: "",
     },
+
     validationSchema: sendLinkModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("Form submmitted", values);
+      dispatch(
+        sendLink({
+          firstname: formik.values.firstName,
+          lastname: formik.values.lastName,
+          mobile_no: formik.values.phoneNumber,
+          email: formik.values.email,
+        }),
+      );
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -63,6 +76,7 @@ const SendLinkModal = ({ open, handleClose, handleOpen }) => {
             }
             helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
           />
+
           <FormInput
             name="email"
             label="Email"
