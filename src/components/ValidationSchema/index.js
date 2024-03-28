@@ -35,3 +35,5 @@ export { ResetPassSchema } from "./ResetPassSchema";
 export { CreateAccessSchema } from "./CreateAccessSchema";
 
 export { ViewModalSchema } from "./ViewModalSchema";
+
+export { createProviderSchema } from "./createProviderSchema";

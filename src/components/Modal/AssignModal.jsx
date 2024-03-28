@@ -13,6 +13,7 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
   const { physicians } = useSelector(
     (state) => state.root.regionPhysicianReducer,
   );
+  const { confirmation_no } = useSelector((state) => state.root.commonReducer);
 
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
 
       dispatch(
         assignCase({
-          confirmationNo: "Te240307TeSa0004",
+          confirmationNo: confirmation_no,
           firstname: name[0],
           lastname: name[1],
           assignReqDescription: values.description,

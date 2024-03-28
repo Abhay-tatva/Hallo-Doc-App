@@ -5,7 +5,11 @@ import { Button } from "../../../Button/ButtonInput";
 import { useFormik } from "formik";
 import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 
-const Account = () => {
+import { useDispatch } from "react-redux";
+import { resetPass } from "../../../../redux/myProfileResetPass/myProfileResetPass";
+
+const Account = ({ userName, Status, Role, userId }) => {
+  const dispatch = useDispatch();
   const accountformik = useFormik({
     initialValues: {
       username: "",
@@ -15,11 +19,18 @@ const Account = () => {
     },
     validationSchema: myProfileSchema,
     onSubmit: (values) => {
-      console.log("Form submitted", values);
+      dispatch(
+        resetPass({
+          user_id: userId,
+          password: values.password,
+        }),
+      );
     },
   });
+  console.log("object", accountformik);
+
   return (
-    <form>
+    <form onSubmit={accountformik.handleSubmit}>
       <Typography variant="h6" className="account">
         <b>Account Information</b>
       </Typography>
@@ -30,16 +41,7 @@ const Account = () => {
             label="User Name"
             fullWidth
             className="form-input"
-            onChange={accountformik.handleChange}
-            onBlur={accountformik.handleBlur}
-            value={accountformik.values.username}
-            error={
-              accountformik.touched.username &&
-              Boolean(accountformik.errors.username)
-            }
-            helperText={
-              accountformik.touched.username && accountformik.errors.username
-            }
+            value={userName}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -67,16 +69,7 @@ const Account = () => {
             select
             fullWidth
             className="form-input"
-            onChange={accountformik.handleChange}
-            onBlur={accountformik.handleBlur}
-            value={accountformik.values.status}
-            error={
-              accountformik.touched.status &&
-              Boolean(accountformik.errors.status)
-            }
-            helperText={
-              accountformik.touched.status && accountformik.errors.status
-            }
+            value={Status}
           >
             <MenuItem value="active">Active</MenuItem>
             <MenuItem value="unactive">UnActive</MenuItem>
@@ -89,20 +82,21 @@ const Account = () => {
             select
             fullWidth
             className="form-input"
-            onChange={accountformik.handleChange}
-            onBlur={accountformik.handleBlur}
-            error={
-              accountformik.touched.Role && Boolean(accountformik.errors.Role)
-            }
-            helperText={accountformik.touched.Role && accountformik.errors.Role}
+            value={Role}
           >
+            <MenuItem value="admin">Admin</MenuItem>
             <MenuItem value="masteradmin">Master Admin</MenuItem>
             <MenuItem value="localadmin">Local Admin</MenuItem>
           </FormInput>
         </Grid>
       </Grid>
       <Box display="flex" justifyContent="flex-end" mt={4}>
-        <Button name="Reset Password" variant="outlined" color="primary" />
+        <Button
+          name="Reset Password"
+          variant="outlined"
+          color="primary"
+          type="submit"
+        />
       </Box>
     </form>
   );

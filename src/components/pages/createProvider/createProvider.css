@@ -1,0 +1,10 @@
+.createprovider-main-container {
+  background-color: #f6f6f6;
+}
+.createprovider-main-wrapper {
+  padding: 1rem 3rem;
+}
+.createprovider-paper-container {
+  padding: 1.25rem;
+  border-radius: 20px !important;
+}

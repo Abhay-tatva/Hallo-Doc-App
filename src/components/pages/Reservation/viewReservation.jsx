@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PhoneIcon from "@mui/icons-material/Phone";
 
 import {
@@ -20,11 +20,17 @@ import { viewReservationSchema } from "../../ValidationSchema/index";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useFormik } from "formik";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import CancelModal from "../../Modal/CancelModal";
+import AssignModal from "../../Modal/AssignModal";
+import { cancelCase } from "../../../redux/cancelCase/cancelCaseApi";
 
 const ViewReservation = () => {
   const state = useSelector((state) => state.root.viewCaseReducer);
   const data = state?.data?.data[0];
+  const [open, setOpen] = useState(false);
+  const [modalName, setModalName] = useState("");
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const formik = useFormik({
@@ -44,6 +50,16 @@ const ViewReservation = () => {
       console.log("Form submitted", values);
     },
   });
+  const handleOpen = (name, rowId) => {
+    setModalName(name);
+    setOpen(true);
+    dispatch(cancelCase(data.confirmation_no));
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setModalName("");
+  };
+
   return (
     <>
       <Box className="main-container">
@@ -276,6 +292,7 @@ const ViewReservation = () => {
                     variant="contained"
                     color="primary"
                     className="form-btn backbtn"
+                    onClick={() => handleOpen("Assign Case")}
                   />
                 )}
 
@@ -291,12 +308,23 @@ const ViewReservation = () => {
                   variant="contained"
                   color="error"
                   className="form-btn"
+                  onClick={() => handleOpen("Cancel Case")}
                 />
               </Box>
             </Paper>
           </form>
         </Container>
       </Box>
+      <CancelModal
+        open={open && modalName === "Cancel Case"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Cancel Case" ? handleOpen : null}
+      />
+      <AssignModal
+        open={open && modalName === "Assign Case"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Assign Case" ? handleOpen : null}
+      />
     </>
   );
 };

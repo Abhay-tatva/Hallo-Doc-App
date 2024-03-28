@@ -6,17 +6,17 @@ import { useFormik } from "formik";
 import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 import PhoneInput from "react-phone-input-2";
 
-const Address = () => {
+const Address = ({ add1, add2, City, State, Zip, billNo }) => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const billformik = useFormik({
     initialValues: {
-      address1: "tatva soft house",
-      address2: "rajpathclub road",
-      city: "dubai",
-      state: "gujarat",
-      zip: "nthi kbr",
-      phoneNumber: "kale avjo",
+      address1: "",
+      address2: "",
+      city: "",
+      state: "",
+      zip: "",
+      phoneNumber: "",
     },
     validationSchema: myProfileSchema,
     onSubmit: (values) => {
@@ -35,16 +35,8 @@ const Address = () => {
             label="Address 1"
             fullWidth
             className="form-input"
-            value={billformik.values.address1}
+            value={add1}
             disabled={isDisabled}
-            onChange={billformik.handleChange}
-            onBlur={billformik.handleBlur}
-            error={
-              billformik.touched.address1 && Boolean(billformik.errors.address1)
-            }
-            helperText={
-              billformik.touched.address1 && billformik.errors.address1
-            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -53,16 +45,7 @@ const Address = () => {
             label="Address 2"
             disabled={isDisabled}
             fullWidth
-            value={billformik.values.address2}
-            className="form-input"
-            onChange={billformik.handleChange}
-            onBlur={billformik.handleBlur}
-            error={
-              billformik.touched.address2 && Boolean(billformik.errors.address2)
-            }
-            helperText={
-              billformik.touched.address2 && billformik.errors.address2
-            }
+            value={add2}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -70,13 +53,9 @@ const Address = () => {
             name="city"
             label="City"
             disabled={isDisabled}
-            value={billformik.values.city}
+            value={City}
             fullWidth
             className="form-input"
-            onChange={billformik.handleChange}
-            onBlur={billformik.handleBlur}
-            error={billformik.touched.city && Boolean(billformik.errors.city)}
-            helperText={billformik.touched.city && billformik.errors.city}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -84,13 +63,9 @@ const Address = () => {
             name="state"
             label="State"
             disabled={isDisabled}
-            value={billformik.values.state}
+            value={State}
             fullWidth
             className="form-input"
-            onChange={billformik.handleChange}
-            onBlur={billformik.handleBlur}
-            error={billformik.touched.state && Boolean(billformik.errors.state)}
-            helperText={billformik.touched.state && billformik.errors.state}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -99,12 +74,8 @@ const Address = () => {
             label="Zip"
             disabled={isDisabled}
             fullWidth
-            value={billformik.values.zip}
+            value={Zip}
             className="form-input"
-            onChange={billformik.handleChange}
-            onBlur={billformik.handleBlur}
-            error={billformik.touched.zip && Boolean(billformik.errors.zip)}
-            helperText={billformik.touched.zip && billformik.errors.zip}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>

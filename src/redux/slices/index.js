@@ -11,6 +11,7 @@ import blockCaseSlice from "./blockCaseSlice";
 import commonSlice from "./commonSlice";
 import professionBussinessSlice from "./professionBussinessSlice";
 import closeCaseSlice from "./closeCaseSlice";
+import myProfileSlice from "./myProfileSlice";
 
 export const rootReducer = combineReducers({
   loginReducer: loginSlice,
@@ -25,4 +26,5 @@ export const rootReducer = combineReducers({
   commonReducer: commonSlice,
   professionBussinessReducer: professionBussinessSlice,
   closeCaseReducer: closeCaseSlice,
+  myProfileReducer: myProfileSlice,
 });

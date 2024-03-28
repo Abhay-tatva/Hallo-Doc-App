@@ -5,15 +5,23 @@ import { Box, Typography } from "@mui/material";
 import { FormInput } from "../TextField/FormInput";
 import { Button } from "../Button/ButtonInput";
 import { requestModalSchema } from "../ValidationSchema/index";
+import { useDispatch } from "react-redux";
+import { requestSupport } from "../../redux/requestSupport/requestSupportApi";
 
 const RequestModal = ({ open, handleClose, handleOpen }) => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       message: "",
     },
     validationSchema: requestModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submmitted", values);
+      dispatch(
+        requestSupport({
+          support_message: formik.values.message,
+        }),
+      );
       onSubmitProps.resetForm();
       handleClose();
     },

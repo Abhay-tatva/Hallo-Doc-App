@@ -28,6 +28,10 @@ import {
   viewUpdate,
   viewUpload,
 } from "../../../redux/viewUpload/viewUploadApi";
+import {
+  downloadAll,
+  singleDownload,
+} from "../../../redux/downloadCase/downloadApi";
 
 const ViewUpload = () => {
   const [selectedFile, setSelectedFile] = useState({});
@@ -36,7 +40,7 @@ const ViewUpload = () => {
   const [orderBy, setOrderBy] = useState("uploadDate");
   const navigate = useNavigate();
   const selector = useSelector((state) => state.root.viewuploadReducer);
-  const rows = selector.uploadFile[0].documents;
+  const rows = selector.uploadFile[0]?.documents;
   const dispatch = useDispatch();
 
   const { confirmationNo, patientData } = selector.uploadFile[0];
@@ -127,7 +131,12 @@ const ViewUpload = () => {
   };
 
   const handleDownload = (document) => {
-    console.log("downloading document:", document);
+    dispatch(
+      singleDownload({
+        confirmation_no: confirmationNo,
+        document_id: document,
+      }),
+    );
   };
 
   const handleDelete = (id) => {
@@ -145,8 +154,7 @@ const ViewUpload = () => {
   };
 
   const handleDownloadAll = () => {
-    console.log("downloading All document:", document);
-
+    dispatch(downloadAll({ confirmation_no: confirmationNo }));
     selected.forEach((id) => {
       const file = rows.find((row) => row.id === id);
       if (file) {
@@ -295,7 +303,7 @@ const ViewUpload = () => {
                         <TableCell>
                           <Button
                             variant="outlined"
-                            onClick={() => handleDownload(row.document_path)}
+                            onClick={() => handleDownload(row.document_id)}
                           >
                             <CloudDownloadOutlinedIcon />
                           </Button>

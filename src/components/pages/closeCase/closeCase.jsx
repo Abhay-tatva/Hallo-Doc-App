@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getCloseCase,
   postCloseCase,
+  putCloseCase,
 } from "../../../redux/closeCase/closeCaseApi";
 
 // const rows = [
@@ -260,7 +261,7 @@ const CloseCase = () => {
             <Typography variant="h6">
               <b>Patient Information</b>
             </Typography>
-            <form>
+            <form onSubmit={formik.handleSubmit}>
               <Grid
                 container
                 spacing={{ xs: 1, md: 2 }}
@@ -364,11 +365,12 @@ const CloseCase = () => {
                   onClick={isDisabled ? handleEdit : handleSave}
                 />
                 <Button
+                  type="submit"
                   name={isDisabled ? "Close Case" : "Cancel"}
                   variant="outlined"
                   onClick={
                     isDisabled
-                      ? console.log("Close case button clicked")
+                      ? () => dispatch(putCloseCase(confirmation_no))
                       : () => {
                           formik.setValues(initialValues);
                           setIsDisabled(true);

@@ -59,3 +59,16 @@ export const POSTCLOSECASE_API =
   "/admin/dashboard/requests/:confirmation_no/actions/closecase/edit";
 
 export const SENDLINK_API = "/admin/dashboard/requests/sendlink";
+
+export const REQUESTSUPPORT_API = "/admin/dashboard/requests/requestsupport";
+
+export const GETMYPROFILE_API = "/admin/myprofile/admin_profile/view";
+
+export const MYPROFILERESETPASS_API =
+  "/admin/myprofile/admin_profile/resetpassword";
+
+export const SINGLEDOWNLOAD_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/download/:document_id";
+
+export const DOWNLOADALL_API =
+  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/downloadall";

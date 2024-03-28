@@ -20,6 +20,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/loginSlice";
+import { getMyProfile } from "../../redux/myProfile/myProfileApi";
 
 const Header = ({ isDarktheme, handleDarkMode }) => {
   const [open, setOpen] = useState(false);
@@ -104,6 +105,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
           <NavLink
             to={AppRoutes.MYPROFILE}
             className={({ isActive }) => (isActive ? "active" : "")}
+            onClick={() => dispatch(getMyProfile())}
           >
             My Profile
           </NavLink>
