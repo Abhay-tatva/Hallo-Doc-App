@@ -21,7 +21,7 @@ export const cancelCaseUpdate = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await Axios.put(
-        `${PUTCANCELCASE_API.replace("confirmation_no", params.confirmnumber)}`,
+        `${PUTCANCELCASE_API.replace(":confirmation_no", params.confirmnumber)}`,
         {
           reason: params.reason,
           additional_notes: params.additional_notes,

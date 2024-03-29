@@ -27,6 +27,9 @@ import RequestedShifts from "./components/pages/requestedShifts/requestedShifts"
 import UserAccess from "./components/pages/userAccess/userAccess";
 import ProviderCall from "./components/pages/providerCall/providerCall";
 import CreateProvider from "./components/pages/createProvider/createProvider";
+import ProviderLocation from "./components/pages/providerLocation/providerLocation";
+import Partners from "./components/pages/partners/partners";
+import AddBussiness from "./components/pages/addBussiness/addBussiness";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -83,6 +86,12 @@ function App() {
                 path={AppRoutes.CREATEPROVIDER}
                 element={<CreateProvider />}
               />
+              <Route
+                path={AppRoutes.PROVIDERLOCATION}
+                element={<ProviderLocation />}
+              />
+              <Route path={AppRoutes.PARTNERS} element={<Partners />} />
+              <Route path={AppRoutes.ADDBUSSINESS} element={<AddBussiness />} />
             </Route>
           </Route>
         </Routes>

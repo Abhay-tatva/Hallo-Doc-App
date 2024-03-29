@@ -24,6 +24,6 @@
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "require-jsdoc": "off",
-    "camelcase": ["error", { "properties": "never" }]
+    "camelcase": ["error", { "allow": ["aa_bb"] }]
   }
 }

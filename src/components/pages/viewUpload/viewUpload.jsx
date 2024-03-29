@@ -32,6 +32,7 @@ import {
   downloadAll,
   singleDownload,
 } from "../../../redux/downloadCase/downloadApi";
+import { deleteAll, singleDelete } from "../../../redux/deleteCase/deleteApi";
 
 const ViewUpload = () => {
   const [selectedFile, setSelectedFile] = useState({});
@@ -140,27 +141,25 @@ const ViewUpload = () => {
   };
 
   const handleDelete = (id) => {
-    const updatedRows = rows.filter((row) => row.document_id !== id);
-    rows.length = 0;
-    Array.prototype.push.apply(rows, updatedRows);
-    setSelected(selected.filter((selectedId) => selectedId !== id));
+    dispatch(
+      singleDelete({
+        confirmation_no: confirmationNo,
+        document_id: id,
+      }),
+    );
   };
 
   const handleDeleteAll = () => {
-    const updatedRows = rows.filter((row) => !selected.includes(row.id));
-    rows.length = 0;
-    Array.prototype.push.apply(rows, updatedRows);
-    setSelected([]);
+    dispatch(deleteAll(confirmationNo)).then((response) => {
+      console.log("abhay", response);
+      if (response.type === "deleteAll/fulfilled") {
+        dispatch(viewUpload(confirmationNo));
+      }
+    });
   };
 
   const handleDownloadAll = () => {
-    dispatch(downloadAll({ confirmation_no: confirmationNo }));
-    selected.forEach((id) => {
-      const file = rows.find((row) => row.id === id);
-      if (file) {
-        handleDownload(file.document);
-      }
-    });
+    dispatch(downloadAll(confirmationNo));
   };
 
   // const handleSendMail = () => {

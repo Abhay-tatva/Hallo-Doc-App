@@ -95,7 +95,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to={AppRoutes.PROVIDERLOCATION}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Provider Location
@@ -145,7 +145,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to={AppRoutes.PARTNERS}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Partners
@@ -196,19 +196,19 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
         <NavLink to={AppRoutes.DASHBOARD} className="sidelinks">
           Dashboard
         </NavLink>
-        <NavLink to="/" className="sidelinks">
+        <NavLink to={AppRoutes.PROVIDERLOCATION} className="sidelinks">
           Provider Location
         </NavLink>
-        <NavLink to="/" className="sidelinks">
+        <NavLink to={AppRoutes.MYPROFILE} className="sidelinks">
           My Profile
         </NavLink>
-        <NavLink to="/" className="sidelinks">
+        <NavLink to={AppRoutes.PROVIDER} className="sidelinks">
           Providers
         </NavLink>
         <NavLink to="/" className="sidelinks">
           Partners
         </NavLink>
-        <NavLink to="/" className="sidelinks">
+        <NavLink to={AppRoutes.ACCESSACCOUNT} className="sidelinks">
           Access
         </NavLink>
         <NavLink to="/" className="sidelinks">

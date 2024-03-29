@@ -24,6 +24,7 @@ import "./provide.css";
 import ContactModal from "../../Modal/ContactModal";
 import { AppRoutes } from "../../../constant/route";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const Provide = () => {
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [order, setOrder] = useState("asc");
@@ -38,10 +39,11 @@ const Provide = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
 
-  const handleAdditionalFilterChange = (event) => {
-    setAdditionalFilter(event.target.value);
-  };
+  // const handleAdditionalFilterChange = (event) => {
+  //   setAdditionalFilter(event.target.value);
+  // };
 
   const stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -106,7 +108,7 @@ const Provide = () => {
                 select
                 placeholder="All Regions"
                 value={additionalFilter}
-                onChange={handleAdditionalFilterChange}
+                onChange={(e) => setAdditionalFilter(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -115,11 +117,11 @@ const Provide = () => {
                   ),
                 }}
               >
-                <MenuItem value="all">All</MenuItem>
-                {columns.map((column) => {
+                <MenuItem value="all">All Regions</MenuItem>
+                {regions?.map((region, index) => {
                   return (
-                    <MenuItem key={column.id} value={column.id}>
-                      {column.label}
+                    <MenuItem key={index} value={region.region_name}>
+                      {region.region_name}
                     </MenuItem>
                   );
                 })}

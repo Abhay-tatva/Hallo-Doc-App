@@ -56,6 +56,7 @@ const CloseCase = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { confirmation_no } = useSelector((state) => state.root.commonReducer);
+  console.log(confirmation_no);
 
   const { documents } = useSelector((state) => state.root.closeCaseReducer);
   const rows = documents[0].patient_data.documents;

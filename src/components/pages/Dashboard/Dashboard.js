@@ -147,7 +147,7 @@ const Dashboard = () => {
         region: "all",
       }),
     );
-  }, [activeButton, dispatch]);
+  }, [activeButton, dispatch, caseCount]);
 
   useEffect(() => {
     switch (activeButton) {

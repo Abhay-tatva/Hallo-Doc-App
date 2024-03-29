@@ -7,6 +7,7 @@ import BasicModal from "./Modal";
 import { cancelModalSchema } from "../ValidationSchema/index";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelCaseUpdate } from "../../redux/cancelCase/cancelCaseApi";
+import { requestCount } from "../../redux/requestCount/requestCountApi";
 
 const CancelModal = ({ open, handleClose, handleOpen }) => {
   const state = useSelector((state) => state.root.cancelCaseReducer);
@@ -25,7 +26,11 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
           reason: values.canelReason,
           additional_notes: values.additionalnotes,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "cancelCaseUpdate/fulfilled") {
+          dispatch(requestCount());
+        }
+      });
       onSubmitProps.resetForm();
       handleClose();
     },

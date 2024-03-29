@@ -1,15 +1,15 @@
 /* eslint-disable camelcase */
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Config/axios";
-import { DOWNLOADALL_API, SINGLEDOWNLOAD_API } from "../../constant/apis";
+import { DELETEALL_API, SINGLEDELETE_API } from "../../constant/apis";
 
-export const singleDownload = createAsyncThunk(
-  "singleDownload",
+export const singleDelete = createAsyncThunk(
+  "singleDelete",
   async (params, { rejectWithValue }) => {
     const { confirmation_no, document_id } = params;
     try {
       const response = await Axios.get(
-        `${SINGLEDOWNLOAD_API.replace(":confirmation_no", confirmation_no).replace(":document_id", document_id)}`,
+        `${SINGLEDELETE_API.replace(":confirmation_no", confirmation_no).replace(":document_id", document_id)}`,
       );
       return response?.data;
     } catch (error) {
@@ -18,12 +18,12 @@ export const singleDownload = createAsyncThunk(
   },
 );
 
-export const downloadAll = createAsyncThunk(
-  "downloadAll",
+export const deleteAll = createAsyncThunk(
+  "deleteAll",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.get(
-        `${DOWNLOADALL_API.replace(":confirmation_no", params)}`,
+      const response = await Axios.delete(
+        `${DELETEALL_API.replace(":confirmation_no", params)}`,
       );
       return response?.data;
     } catch (error) {

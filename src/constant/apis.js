@@ -72,3 +72,9 @@ export const SINGLEDOWNLOAD_API =
 
 export const DOWNLOADALL_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/downloadall";
+
+export const SINGLEDELETE_API =
+  " /admin/dashboard/requests/:confirmation_no/actions/viewuploads/delete/:document_id";
+
+export const DELETEALL_API =
+  "/admin//dashboard/requests/:confirmation_no/actions/viewuploads/deleteall";
