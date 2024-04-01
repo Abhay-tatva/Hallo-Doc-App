@@ -1,0 +1,10 @@
+.searchrecord-main-container {
+  background-color: #f6f6f6;
+}
+.searchrecord-wrapper-container {
+  padding: 1rem 3rem;
+}
+.searchrecord-full-paper {
+  padding: 1.25rem;
+  border-radius: 20px !important;
+}

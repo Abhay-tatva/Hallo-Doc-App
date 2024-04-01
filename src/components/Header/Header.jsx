@@ -24,6 +24,8 @@ import { getMyProfile } from "../../redux/myProfile/myProfileApi";
 
 const Header = ({ isDarktheme, handleDarkMode }) => {
   const [open, setOpen] = useState(false);
+  const [providerMenuOpen, setProviderMenuOpen] = useState(false);
+  const [recordsMenuOpen, setRecordsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,10 +39,19 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    setProviderMenuOpen(false);
+    setRecordsMenuOpen(false);
   };
 
-  const handleNavLinkHover = (event) => {
+  const handleNavLinkHover = (event, menuType) => {
     setAnchorEl(event.currentTarget);
+    if (menuType === "provider") {
+      setProviderMenuOpen(true);
+      setRecordsMenuOpen(false);
+    } else if (menuType === "records") {
+      setProviderMenuOpen(false);
+      setRecordsMenuOpen(true);
+    }
   };
 
   return (
@@ -110,14 +121,17 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             My Profile
           </NavLink>
         </li>
-        <li onMouseEnter={handleNavLinkHover} onMouseLeave={handleMenuClose}>
+        <li
+          onMouseEnter={(e) => handleNavLinkHover(e, "provider")}
+          onMouseLeave={handleMenuClose}
+        >
           <NavLink
             to={AppRoutes.PROVIDER}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Providers
           </NavLink>
-          {anchorEl && (
+          {providerMenuOpen && (
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
@@ -159,13 +173,54 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             Access
           </NavLink>
         </li>
-        <li>
+        <li
+          onMouseEnter={(e) => handleNavLinkHover(e, "records")}
+          onMouseLeave={handleMenuClose}
+        >
           <NavLink
-            to="/"
+            to={AppRoutes.RECORDS}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Records
           </NavLink>
+          {recordsMenuOpen && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.SEARCHRECORDS);
+                  handleMenuClose();
+                }}
+              >
+                Search Records
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.EMAILLOGS);
+                  handleMenuClose();
+                }}
+              >
+                Email Logs
+              </MenuItem>
+              <MenuItem onClick={() => navigate(AppRoutes.SMSLOGS)}>
+                SMS Logs
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.PATIENTHISTORY);
+                  handleMenuClose();
+                }}
+              >
+                Patients Records
+              </MenuItem>
+              <MenuItem onClick={() => navigate(AppRoutes.BLOCKHISTORY)}>
+                Blocked History
+              </MenuItem>
+            </Menu>
+          )}
         </li>
       </Box>
 
@@ -211,7 +266,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
         <NavLink to={AppRoutes.ACCESSACCOUNT} className="sidelinks">
           Access
         </NavLink>
-        <NavLink to="/" className="sidelinks">
+        <NavLink to={AppRoutes.RECORDS} className="sidelinks">
           Records
         </NavLink>
 

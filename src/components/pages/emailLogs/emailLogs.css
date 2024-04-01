@@ -1,0 +1,11 @@
+.email-main-conatiner {
+  background-color: #f6f6f6;
+}
+.email-wrapper-container {
+  padding: 1rem 3rem;
+}
+
+.email-full-paper {
+  padding: 1.25rem;
+  border-radius: 8px !important;
+}

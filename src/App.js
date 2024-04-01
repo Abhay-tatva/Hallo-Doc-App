@@ -30,6 +30,12 @@ import CreateProvider from "./components/pages/createProvider/createProvider";
 import ProviderLocation from "./components/pages/providerLocation/providerLocation";
 import Partners from "./components/pages/partners/partners";
 import AddBussiness from "./components/pages/addBussiness/addBussiness";
+import Records from "./components/pages/records/records";
+import PatientRecords from "./components/pages/patientRecords/patientRecords";
+import SearchRecords from "./components/pages/searchRecords/searchRecords";
+import EmailLogs from "./components/pages/emailLogs/emailLogs";
+import SmsLogs from "./components/pages/smsLogs/smsLogs";
+import BlockHistory from "./components/pages/blockHistory/blockHistory";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -92,6 +98,18 @@ function App() {
               />
               <Route path={AppRoutes.PARTNERS} element={<Partners />} />
               <Route path={AppRoutes.ADDBUSSINESS} element={<AddBussiness />} />
+              <Route path={AppRoutes.PATIENTHISTORY} element={<Records />} />
+              <Route
+                path={AppRoutes.PATIENTRECORDS}
+                element={<PatientRecords />}
+              />
+              <Route
+                path={AppRoutes.SEARCHRECORDS}
+                element={<SearchRecords />}
+              />
+              <Route path={AppRoutes.EMAILLOGS} element={<EmailLogs />} />
+              <Route path={AppRoutes.SMSLOGS} element={<SmsLogs />} />
+              <Route path={AppRoutes.BLOCKHISTORY} element={<BlockHistory />} />
             </Route>
           </Route>
         </Routes>

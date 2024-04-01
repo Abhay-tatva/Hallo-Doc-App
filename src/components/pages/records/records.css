@@ -1,0 +1,13 @@
+.records-main-container {
+  background-color: #f6f6f6;
+}
+.records-wrapper-conatiner {
+  padding: 1rem 3rem;
+}
+.records-full-paper {
+  padding: 1.25rem;
+  border-radius: 20px !important;
+}
+.record-btn {
+  margin-bottom: 10px;
+}
