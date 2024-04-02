@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {
   Box,
   Container,
@@ -14,10 +15,12 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Button } from "../../Button/ButtonInput";
-import { columns, rows } from "../../../constant/accessData";
+import { columns } from "../../../constant/accessData";
 import "./acessAccount.css";
 import { AppRoutes } from "../../../constant/route";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAccountAccess } from "../../../redux/accountAccess/accountAccessApi";
 
 const AccessAccount = () => {
   const [orderBy, setOrderBy] = useState("accountType");
@@ -27,9 +30,17 @@ const AccessAccount = () => {
   const [tableData, setTableData] = useState([]);
   // const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => setTableData(rows), [rows]);
+  const { accountData } = useSelector(
+    (state) => state.root.accountAccessReducer,
+  );
+  useEffect(() => setTableData(accountData), [accountData]);
 
+  useEffect(() => {
+    dispatch(getAccountAccess({ page: 1, page_size: 20 }));
+    return undefined;
+  }, []);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -134,7 +145,7 @@ const AccessAccount = () => {
                                       variant="outlined"
                                       size="small"
                                       onClick={() =>
-                                        navigate(AppRoutes.USERACCESS)
+                                        navigate(AppRoutes.CREATEACCESS)
                                       }
                                     />
                                     <Button
@@ -145,7 +156,7 @@ const AccessAccount = () => {
                                     />
                                   </Box>
                                 ) : (
-                                  row[column.label]
+                                  row[column.id]
                                 )}
                               </TableCell>
                             );

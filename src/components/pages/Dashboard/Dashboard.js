@@ -53,6 +53,9 @@ import { newState } from "../../../redux/newState/newStateApi";
 import { getRegions } from "../../../redux/regionPhysician/regionPhysicianApi";
 import { requestCount } from "../../../redux/requestCount/requestCountApi";
 import { sendOrderProfession } from "../../../redux/professionBussiness/getProfessionBussinessApi";
+import { AppRoutes } from "../../../constant/route";
+import { useNavigate } from "react-router-dom";
+import { exportAll, singleExport } from "../../../redux/export/exportApi";
 
 const cards = [
   {
@@ -108,7 +111,7 @@ const Dashboard = () => {
   const [dropDown, setDropDown] = useState(newDropdown);
   const [open, setOpen] = React.useState(false);
   const [modalName, setModalName] = useState("");
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const count = useSelector((state) => state.root.requestCountReducer);
   const caseCount = count.caseCount;
@@ -262,6 +265,7 @@ const Dashboard = () => {
                   variant="contained"
                   startIcon={<RequestPageOutlinedIcon />}
                   className="btn"
+                  onClick={() => navigate(AppRoutes.CREATEREQUEST)}
                 />
 
                 <Button
@@ -269,6 +273,9 @@ const Dashboard = () => {
                   variant="contained"
                   startIcon={<ExitToAppIcon />}
                   className="btn"
+                  onClick={() =>
+                    dispatch(singleExport(activeButton.toLowerCase()))
+                  }
                 />
 
                 <Button
@@ -276,6 +283,7 @@ const Dashboard = () => {
                   variant="contained"
                   startIcon={<IosShareIcon />}
                   className="btn"
+                  onClick={() => dispatch(exportAll())}
                 />
 
                 <Button

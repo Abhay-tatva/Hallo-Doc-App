@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { Box, Grid, MenuItem, Typography } from "@mui/material";
 import React from "react";
 import { FormInput } from "../../../TextField/FormInput";

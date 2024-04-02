@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React from "react";
 import { sendLinkModalSchema } from "../ValidationSchema/index";
 import BasicModal from "./Modal";

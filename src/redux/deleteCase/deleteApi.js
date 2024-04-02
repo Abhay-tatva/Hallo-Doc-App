@@ -8,7 +8,7 @@ export const singleDelete = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     const { confirmation_no, document_id } = params;
     try {
-      const response = await Axios.get(
+      const response = await Axios.delete(
         `${SINGLEDELETE_API.replace(":confirmation_no", confirmation_no).replace(":document_id", document_id)}`,
       );
       return response?.data;

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Config/axios";
 import { MYPROFILERESETPASS_API } from "../../constant/apis";

@@ -44,7 +44,7 @@ export const columns = [
   },
 
   {
-    id: "accountType",
+    id: "account_type",
     label: "Account Type",
   },
   {

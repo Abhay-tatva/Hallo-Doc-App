@@ -74,7 +74,18 @@ export const DOWNLOADALL_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/downloadall";
 
 export const SINGLEDELETE_API =
-  " /admin/dashboard/requests/:confirmation_no/actions/viewuploads/delete/:document_id";
+  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/delete/:document_id";
 
 export const DELETEALL_API =
-  "/admin//dashboard/requests/:confirmation_no/actions/viewuploads/deleteall";
+  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/deleteall";
+
+export const CREATEREQUEST_API = "/admin/dashboard/requests/createrequest";
+
+export const CREATEREQUESTVERIFY_API =
+  "/admin/dashboard/requests/createrequestverify";
+
+export const GETACCOUNTACCESS_API = "/admin/access/accountaccess";
+
+export const SINGLEEXPORT_API = "/commonroute/export_single";
+
+export const EXPORTALL_API = "/commonroute/export_all";

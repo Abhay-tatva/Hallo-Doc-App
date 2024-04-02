@@ -12,6 +12,7 @@ import commonSlice from "./commonSlice";
 import professionBussinessSlice from "./professionBussinessSlice";
 import closeCaseSlice from "./closeCaseSlice";
 import myProfileSlice from "./myProfileSlice";
+import accountAccessSlice from "./accountAccessSlice";
 
 export const rootReducer = combineReducers({
   loginReducer: loginSlice,
@@ -27,4 +28,5 @@ export const rootReducer = combineReducers({
   professionBussinessReducer: professionBussinessSlice,
   closeCaseReducer: closeCaseSlice,
   myProfileReducer: myProfileSlice,
+  accountAccessReducer: accountAccessSlice,
 });

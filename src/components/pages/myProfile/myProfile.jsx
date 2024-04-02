@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from "react";
 import { Box, Container, Paper, Typography } from "@mui/material";
 import { Button } from "../../Button/ButtonInput";

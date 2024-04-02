@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from "react";
 import { useFormik } from "formik";
 import { orderDetails } from "../../ValidationSchema/index";

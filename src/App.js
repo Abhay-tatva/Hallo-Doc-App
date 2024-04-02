@@ -36,6 +36,7 @@ import SearchRecords from "./components/pages/searchRecords/searchRecords";
 import EmailLogs from "./components/pages/emailLogs/emailLogs";
 import SmsLogs from "./components/pages/smsLogs/smsLogs";
 import BlockHistory from "./components/pages/blockHistory/blockHistory";
+import CreateRequest from "./components/pages/createRequest/createRequest";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -110,6 +111,10 @@ function App() {
               <Route path={AppRoutes.EMAILLOGS} element={<EmailLogs />} />
               <Route path={AppRoutes.SMSLOGS} element={<SmsLogs />} />
               <Route path={AppRoutes.BLOCKHISTORY} element={<BlockHistory />} />
+              <Route
+                path={AppRoutes.CREATEREQUEST}
+                element={<CreateRequest />}
+              />
             </Route>
           </Route>
         </Routes>
