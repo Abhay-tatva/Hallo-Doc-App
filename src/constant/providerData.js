@@ -51,12 +51,12 @@ export const rows = [
 
 export const columns = [
   {
-    id: "Stop Notification",
+    id: "stop_notification",
     label: "Stop Notification",
   },
 
   {
-    id: "providerName",
+    id: "provider_name",
     label: "Provider Name",
   },
   {
@@ -64,11 +64,11 @@ export const columns = [
     label: "Role",
   },
   {
-    id: "onCallStatus",
+    id: "on_call_status",
     label: "On Call Status",
   },
   {
-    id: "satus",
+    id: "status",
     label: "Status",
   },
   {

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React from "react";
 import BasicModal from "./Modal";
 import {
@@ -12,15 +14,25 @@ import { FormInput } from "../TextField/FormInput";
 import { Button } from "../Button/ButtonInput";
 import { useFormik } from "formik";
 import { contactModalSchema } from "../ValidationSchema/index";
+import { useDispatch } from "react-redux";
+import { postContactProvider } from "../../redux/provider/providerApi";
 
-const ContactModal = ({ open, handleClose, handleOpen }) => {
+const ContactModal = ({ open, handleClose, handleOpen, id }) => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       message: "",
     },
     validationSchema: contactModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submitted", values);
+      dispatch(
+        postContactProvider({
+          message: formik.values.message,
+          email: "sample@yopmail.com",
+          user_id: id,
+        }),
+      );
       onSubmitProps.resetForm();
       handleClose();
     },

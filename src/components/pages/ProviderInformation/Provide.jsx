@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Checkbox,
@@ -19,12 +21,17 @@ import React, { useEffect, useState } from "react";
 import { FormInput } from "../../TextField/FormInput";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Button } from "../../Button/ButtonInput";
-import { columns, rows } from "../../../constant/providerData";
+import { columns } from "../../../constant/providerData";
 import "./provide.css";
 import ContactModal from "../../Modal/ContactModal";
 import { AppRoutes } from "../../../constant/route";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getProvider,
+  getProviderPhysician,
+} from "../../../redux/provider/providerApi";
+
 const Provide = () => {
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [order, setOrder] = useState("asc");
@@ -33,14 +40,24 @@ const Provide = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = useState([]);
   const [open, setOpen] = React.useState(false);
+  const [id, setId] = useState(-1);
+  // const [info, setInfo] = useState({ });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => setTableData(rows), [rows]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const { providerData } = useSelector(
+    (state) => state.root.providerMenureducer,
+  );
 
+  useEffect(() => setTableData(providerData), [providerData]);
+  useEffect(() => {
+    dispatch(getProvider({ page: 1, page_size: 20 }));
+    return undefined;
+  }, []);
   // const handleAdditionalFilterChange = (event) => {
   //   setAdditionalFilter(event.target.value);
   // };
@@ -82,8 +99,9 @@ const Provide = () => {
     setPage(0);
   };
 
-  const handleOpen = () => {
+  const handleOpen = (id) => {
     setOpen(true);
+    setId(id);
   };
 
   const handleClose = () => {
@@ -160,12 +178,14 @@ const Provide = () => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     ?.map((row) => {
                       return (
-                        <TableRow key={row.id}>
+                        <TableRow key={row.user_id}>
                           {columns.map((column) => {
                             return (
                               <TableCell key={column.id} align="left">
-                                {column.id === "Stop Notification" ? (
-                                  <Checkbox checked={row.stopNotifications} />
+                                {column.id === "stop_notification" ? (
+                                  <Checkbox
+                                    checked={row.stop_notification === "yes"}
+                                  />
                                 ) : column.id === "actions" ? (
                                   <Box
                                     display="flex"
@@ -176,15 +196,24 @@ const Provide = () => {
                                       name="Contact"
                                       variant="outlined"
                                       size="small"
-                                      onClick={handleOpen}
+                                      onClick={() => handleOpen(row.user_id)}
                                     />
                                     <Button
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
-                                      onClick={() =>
-                                        navigate(AppRoutes.EDITACCOUNT)
-                                      }
+                                      onClick={() => {
+                                        dispatch(
+                                          getProviderPhysician(row.user_id),
+                                        ).then((response) => {
+                                          if (
+                                            response.type ===
+                                            "getProviderPhysician/fulfilled"
+                                          ) {
+                                            navigate(AppRoutes.EDITACCOUNT);
+                                          }
+                                        });
+                                      }}
                                     />
                                   </Box>
                                 ) : (
@@ -212,6 +241,7 @@ const Provide = () => {
         </Container>
       </Box>
       <ContactModal
+        id={id}
         open={open}
         handleClose={handleClose}
         handleOpen={handleOpen}

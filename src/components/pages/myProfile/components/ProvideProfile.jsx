@@ -10,11 +10,19 @@ import "./provideProfile.css";
 import SignatureCanvas from "react-signature-canvas";
 import { useRef } from "react";
 
-const ProvideProfile = ({ handleClose, rows }) => {
+const ProvideProfile = ({
+  handleClose,
+  rows,
+  businessName,
+  businessWebsite,
+  adminNotes,
+}) => {
   // const [isDisabled, setIsDisabled] = useState(true);
   const [openModel, setOpenModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState([]);
   const [imageURL, setImageURL] = useState(null);
+  const [isDisabled, setIsDisabled] = useState(true);
+
   const sigCanvas = useRef();
 
   const create = () => {
@@ -85,18 +93,8 @@ const ProvideProfile = ({ handleClose, rows }) => {
             label="Business Name"
             fullWidth
             className="form-input"
-            value={provideProfile.values.businessName}
-            // disabled={isDisabled}
-            onChange={provideProfile.handleChange}
-            onBlur={provideProfile.handleBlur}
-            error={
-              provideProfile.touched.businessName &&
-              Boolean(provideProfile.errors.businessName)
-            }
-            helperText={
-              provideProfile.touched.businessName &&
-              provideProfile.errors.businessName
-            }
+            value={businessName}
+            disabled={isDisabled}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -105,18 +103,8 @@ const ProvideProfile = ({ handleClose, rows }) => {
             label="Business Website"
             fullWidth
             className="form-input"
-            // disabled={isDisabled}
-            value={provideProfile.values.businessWebsite}
-            onChange={provideProfile.handleChange}
-            onBlur={provideProfile.handleBlur}
-            error={
-              provideProfile.touched.businessWebsite &&
-              Boolean(provideProfile.errors.businessWebsite)
-            }
-            helperText={
-              provideProfile.touched.businessWebsite &&
-              provideProfile.errors.businessWebsite
-            }
+            disabled={isDisabled}
+            value={businessWebsite}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -219,21 +207,38 @@ const ProvideProfile = ({ handleClose, rows }) => {
             fullWidth
             multiline
             rows={5}
-            value={provideProfile.values.adminNotes}
-            // disabled={isDisabled}
-            onChange={provideProfile.handleChange}
-            onBlur={provideProfile.handleBlur}
-            error={
-              provideProfile.touched.adminNotes &&
-              Boolean(provideProfile.errors.adminNotes)
-            }
-            helperText={
-              provideProfile.touched.adminNotes &&
-              provideProfile.errors.adminNotes
-            }
+            value={adminNotes}
+            disabled={isDisabled}
           />
-          <Box display="flex" justifyContent="flex-end" mt={4}>
-            <Button name="Edit" variant="contained" color="primary" />
+          <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
+            {isDisabled ? (
+              <Button
+                name="Edit"
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setIsDisabled(false);
+                }}
+              />
+            ) : (
+              <>
+                <Button
+                  name="Save"
+                  variant="contained"
+                  type="submit"
+                  onClick={() => {
+                    setIsDisabled(true);
+                  }}
+                />
+                <Button
+                  name="Cancel"
+                  variant="outlined"
+                  onClick={() => {
+                    setIsDisabled(true);
+                  }}
+                />
+              </>
+            )}
           </Box>
         </Grid>
       </Grid>

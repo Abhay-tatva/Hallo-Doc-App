@@ -14,6 +14,7 @@ const MyProfile = () => {
   const navigate = useNavigate();
   const state1 = useSelector((state) => state.root.myProfileReducer);
   const data = state1?.data?.data[0];
+  console.log("myprofile", data);
   const { username, status, role } = data.account_information;
   const {
     firstname,

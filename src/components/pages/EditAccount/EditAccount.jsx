@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -10,8 +12,28 @@ import PhysiciansInformation from "../myProfile/components/PhysiciansInformation
 import ProvideProfile from "../myProfile/components/ProvideProfile";
 import "./editAccount.css";
 import OnBording from "../myProfile/components/onBoarding";
+import { useSelector } from "react-redux";
 
 const EditAccount = () => {
+  const { physicianData } = useSelector(
+    (state) => state.root.providerMenureducer,
+  );
+  const data = physicianData;
+  const { username, status, role } = data.account_information;
+  const {
+    firstname,
+    lastname,
+    email,
+    mobile_no,
+    medical_licence,
+    NPI_number,
+    synchronization_email,
+    service_areas_availability,
+  } = data.physician_information;
+  const { address_1, address_2, city, state, zip, billing_mobile_no } =
+    data.mailing_billing_information;
+  const { business_name, business_website, admin_notes } =
+    data.provider_profile;
   return (
     <>
       <Box className="edit-main-container">
@@ -34,13 +56,38 @@ const EditAccount = () => {
           </Box>
           <Paper className="edit-full-paper">
             {/* .................................................Account Information....................................... */}
-            <Account />
+            <Account
+              userId={data.user_id}
+              userName={username}
+              Status={status}
+              Role={role}
+            />
             {/* ................................................Physician Information...................................... */}
-            <PhysiciansInformation />
+            <PhysiciansInformation
+              firstName={firstname}
+              lastName={lastname}
+              email={email}
+              mobileNo={mobile_no}
+              medicalLicence={medical_licence}
+              nipNumber={NPI_number}
+              synchronizationEmail={synchronization_email}
+              serviceAreasAvailability={service_areas_availability}
+            />
             {/* ..............................................Address Information........................................... */}
-            <Address />
+            <Address
+              add1={address_1}
+              add2={address_2}
+              city={city}
+              state={state}
+              Zip={zip}
+              billNo={billing_mobile_no}
+            />
             {/* .......................................Provider Profile.................................. */}
-            <ProvideProfile />
+            <ProvideProfile
+              businessName={business_name}
+              businessWebsite={business_website}
+              adminNotes={admin_notes}
+            />
             <Divider sx={{ backgroundColor: "black" }} />
             {/* ........................................On boarding........................................................ */}
             <OnBording />

@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { resetPass } from "../../../../redux/myProfileResetPass/myProfileResetPass";
 
 const Account = ({ userName, Status, Role, userId }) => {
+  console.log("userid", userId);
   const dispatch = useDispatch();
   const accountformik = useFormik({
     initialValues: {
@@ -86,7 +87,7 @@ const Account = ({ userName, Status, Role, userId }) => {
             className="form-input"
             value={Role}
           >
-            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="send_order">Send Order</MenuItem>
             <MenuItem value="masteradmin">Master Admin</MenuItem>
             <MenuItem value="localadmin">Local Admin</MenuItem>
           </FormInput>

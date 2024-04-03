@@ -20,7 +20,11 @@ import "./acessAccount.css";
 import { AppRoutes } from "../../../constant/route";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAccountAccess } from "../../../redux/accountAccess/accountAccessApi";
+import {
+  accountAccessDelete,
+  accountAccessEdit,
+  getAccountAccess,
+} from "../../../redux/accountAccess/accountAccessApi";
 
 const AccessAccount = () => {
   const [orderBy, setOrderBy] = useState("accountType");
@@ -130,7 +134,7 @@ const AccessAccount = () => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     ?.map((row) => {
                       return (
-                        <TableRow key={row.id}>
+                        <TableRow key={row.role_id}>
                           {columns.map((column) => {
                             return (
                               <TableCell key={column.id} align="center">
@@ -144,15 +148,28 @@ const AccessAccount = () => {
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
-                                      onClick={() =>
-                                        navigate(AppRoutes.CREATEACCESS)
-                                      }
+                                      onClick={() => {
+                                        dispatch(
+                                          accountAccessEdit(row.role_id),
+                                        ).then((response) => {
+                                          if (
+                                            response.type ===
+                                            "accountAccessEdit/fulfilled"
+                                          ) {
+                                            navigate(AppRoutes.CREATEACCESS);
+                                          }
+                                        });
+                                      }}
                                     />
                                     <Button
                                       name="delete"
                                       variant="outlined"
                                       size="small"
-                                      // onClick={handleOpen}
+                                      onClick={() =>
+                                        dispatch(
+                                          accountAccessDelete(row.role_id),
+                                        )
+                                      }
                                     />
                                   </Box>
                                 ) : (

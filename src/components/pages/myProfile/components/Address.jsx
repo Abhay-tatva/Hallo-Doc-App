@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 import PhoneInput from "react-phone-input-2";
 
-const Address = ({ add1, add2, City, State, Zip, billNo }) => {
+const Address = ({ add1, add2, city, state, zip, billNo }) => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const billformik = useFormik({
@@ -53,7 +53,7 @@ const Address = ({ add1, add2, City, State, Zip, billNo }) => {
             name="city"
             label="City"
             disabled={isDisabled}
-            value={City}
+            value={city}
             fullWidth
             className="form-input"
           />
@@ -63,7 +63,7 @@ const Address = ({ add1, add2, City, State, Zip, billNo }) => {
             name="state"
             label="State"
             disabled={isDisabled}
-            value={State}
+            value={state}
             fullWidth
             className="form-input"
           />
@@ -74,7 +74,7 @@ const Address = ({ add1, add2, City, State, Zip, billNo }) => {
             label="Zip"
             disabled={isDisabled}
             fullWidth
-            value={Zip}
+            value={zip}
             className="form-input"
           />
         </Grid>

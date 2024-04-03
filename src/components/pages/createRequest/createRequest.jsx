@@ -17,6 +17,7 @@ import {
   createRequest,
   createRequestVerify,
 } from "../../../redux/createRequest/createRequestApi";
+import { toast } from "react-toastify";
 const CreateRequest = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -246,7 +247,17 @@ const CreateRequest = () => {
                       variant="outlined"
                       size="large"
                       onClick={() =>
-                        dispatch(createRequestVerify(formik.values.state))
+                        dispatch(createRequestVerify(formik.values.state)).then(
+                          (response) => {
+                            if (
+                              response.type === "createRequestVerify/fulfilled"
+                            ) {
+                              toast.success("state verified successfully.");
+                            } else {
+                              formik.setErrors({ state: "invalid state" });
+                            }
+                          },
+                        )
                       }
                     />
                     <Button name="map" variant="outlined" size="large">
