@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Checkbox,
@@ -140,6 +142,7 @@ const PhysiciansInformation = ({
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
+          {console.log("phone:", physicianformik.values)}
           <PhoneInput
             inputStyle={{ height: "55px", width: "100%" }}
             name="phoneNumber"
@@ -148,7 +151,7 @@ const PhysiciansInformation = ({
             fullWidth="true"
             className="form-input"
             disabled={isDisabled}
-            // value={physicianformik.values.phoneNumber}
+            value={physicianformik.values?.phoneNumber?.toString()}
             onChange={(value) =>
               physicianformik.setFieldValue("phoneNumber", value)
             }
@@ -259,13 +262,16 @@ const PhysiciansInformation = ({
               variant="contained"
               type="submit"
               onClick={() => {
-                dispatch(putProviderInfo(physicianformik.values)).then(
-                  (response) => {
-                    if (response.type === "putProviderInfo/fulfilled") {
-                      dispatch(getProviderPhysician(userId));
-                    }
-                  },
-                );
+                dispatch(
+                  putProviderInfo({
+                    user_id: userId,
+                    data: physicianformik.values,
+                  }),
+                ).then((response) => {
+                  if (response.type === "putProviderInfo/fulfilled") {
+                    dispatch(getProviderPhysician(userId));
+                  }
+                });
                 setIsDisabled(true);
               }}
             />

@@ -6,38 +6,42 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormInput } from "../../../TextField/FormInput";
 import { Button } from "../../../Button/ButtonInput";
 import { useFormik } from "formik";
 import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 import PhoneInput from "react-phone-input-2";
-
-const Administrator = ({
-  firstName,
-  lirstName,
-  Email,
-  mobileNo,
-  districtColumbia,
-  newYyork,
-  Virginia,
-  Maryland,
-}) => {
+import { useSelector } from "react-redux";
+const INITIAL_VALUES = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  confirmeMail: "",
+  mobileNo: "",
+};
+const Administrator = ({ firstName, lastName, email, mobileNo, regions }) => {
   const [isDisabled, setIsDisabled] = useState(true);
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
+  const data = useSelector((state) => state.root.regionPhysicianReducer);
 
   const administratorformik = useFormik({
-    initialValues: {
-      firstname: "",
-      lastname: "",
-      email: "",
-      confirmemail: "",
-      mobileNo: "",
-    },
+    initialValues,
     validationSchema: myProfileSchema,
     onSubmit: (values) => {
       console.log("Form submitted", values);
     },
+    enableReinitialize: true,
   });
+  useEffect(() => {
+    setInitialValues({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      confirmeMail: email,
+      mobileNo: mobileNo,
+    });
+  }, [firstName, lastName, email, mobileNo]);
   return (
     <form onSubmit={administratorformik.handleSubmit}>
       <Typography variant="h6" className="account">
@@ -46,21 +50,21 @@ const Administrator = ({
       <Grid container spacing={{ xs: 1, md: 2 }} margin="2rem">
         <Grid item xs={12} md={6} lg={6}>
           <FormInput
-            name="firstname"
+            name="firstName"
             label="First Name"
             fullWidth
             className="form-input"
-            value={firstName}
+            value={administratorformik.values.firstName}
             disabled={isDisabled}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <FormInput
-            name="lastname"
+            name="lastName"
             label="Last Name"
             fullWidth
             className="form-input"
-            value={lirstName}
+            value={administratorformik.values.lastName}
             disabled={isDisabled}
           />
         </Grid>
@@ -70,25 +74,26 @@ const Administrator = ({
             label="Email"
             fullWidth
             className="form-input"
-            value={Email}
+            value={administratorformik.values.email}
             disabled={isDisabled}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <FormInput
-            name="confirmemail"
+            name="confirmeMail"
             label="Confirm Email"
             fullWidth
             className="form-input"
+            value={administratorformik.values.confirmeMail}
             onChange={administratorformik.handleChange}
             onBlur={administratorformik.handleBlur}
             error={
-              administratorformik.touched.confirmemail &&
-              Boolean(administratorformik.errors.confirmemail)
+              administratorformik.touched.confirmeMail &&
+              Boolean(administratorformik.errors.confirmeMail)
             }
             helperText={
-              administratorformik.touched.confirmemail &&
-              administratorformik.errors.confirmemail
+              administratorformik.touched.confirmeMail &&
+              administratorformik.errors.confirmeMail
             }
             disabled={isDisabled}
           >
@@ -109,33 +114,33 @@ const Administrator = ({
             }
             onBlur={administratorformik.handleBlur}
             error={
-              administratorformik.touched.confirmemail &&
+              administratorformik.touched.mobileNo &&
               Boolean(administratorformik.errors.mobileNo)
             }
             helperText={
               administratorformik.touched.mobileNo &&
-              administratorformik.errors.confirmemail
+              administratorformik.errors.mobileNo
             }
+            value={administratorformik.values?.mobileNo?.toString()}
             disabled={isDisabled}
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <FormControlLabel
-            control={<Checkbox size="medium" />}
-            label="Label"
-          />
-          <FormControlLabel
-            control={<Checkbox size="medium" />}
-            label="Required"
-          />
-          <FormControlLabel
-            control={<Checkbox size="medium" />}
-            label="Required"
-          />
-          <FormControlLabel
-            control={<Checkbox size="medium" />}
-            label="Required"
-          />
+          {data.regions.map((region, index) => {
+            const isChecked = regions?.some(
+              (selectedRegion) =>
+                selectedRegion.region_name === region.region_name,
+            );
+            return (
+              <FormControlLabel
+                className="checkbox-padding"
+                disabled={isDisabled}
+                key={index}
+                control={<Checkbox size="small" checked={isChecked} />}
+                label={region.region_name}
+              />
+            );
+          })}
         </Grid>
       </Grid>
       <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>

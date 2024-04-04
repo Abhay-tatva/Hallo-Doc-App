@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React, { useState } from "react";
 import { Button } from "../../Button/ButtonInput";
 import {

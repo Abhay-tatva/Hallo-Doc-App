@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
-
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Config/axios";
 import {
   GETPROVIDERINFORMATION_API,
   GETPROVIDERPHYSICIANDATA_API,
   POSTCONTACTPROVIDER_API,
+  PROVIDEREDIT_API,
 } from "../../constant/apis";
 
 export const getProvider = createAsyncThunk(
@@ -60,12 +60,12 @@ export const putProviderInfo = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     const { user_id, data } = params;
     try {
-      const response = await Axios.get(`${GETPROVIDERPHYSICIANDATA_API}`, {
+      const response = await Axios.put(`${PROVIDEREDIT_API}`, {
         user_id,
         firstname: data?.firstName,
         lastname: data?.lastName,
         email: data?.email,
-        mobile_no: data?.phoneNumber,
+        mobile_no: data?.phoneNumber.toString(),
         medical_licence: data?.medicalLicence,
         NPI_no: data?.npiNumber,
         synchronization_email: data?.synEmail,

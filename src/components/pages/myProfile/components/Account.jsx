@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import { Box, Grid, MenuItem, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FormInput } from "../../../TextField/FormInput";
 import { Button } from "../../../Button/ButtonInput";
 import { useFormik } from "formik";
@@ -9,17 +9,18 @@ import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 
 import { useDispatch } from "react-redux";
 import { resetPass } from "../../../../redux/myProfileResetPass/myProfileResetPass";
+const INITIAL_VALUES = {
+  userName: "",
+  status: "",
+  role: "",
+};
+const Account = ({ userName, status, role, userId }) => {
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
 
-const Account = ({ userName, Status, Role, userId }) => {
   console.log("userid", userId);
   const dispatch = useDispatch();
   const accountformik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-      status: "",
-      Role: "",
-    },
+    initialValues,
     validationSchema: myProfileSchema,
     onSubmit: (values) => {
       dispatch(
@@ -29,8 +30,15 @@ const Account = ({ userName, Status, Role, userId }) => {
         }),
       );
     },
+    enableReinitialize: true,
   });
-  console.log("object", accountformik);
+  useEffect(() => {
+    setInitialValues({
+      userName: userName,
+      status: status,
+      role: role,
+    });
+  }, [userName, status, role]);
 
   return (
     <form onSubmit={accountformik.handleSubmit}>
@@ -40,7 +48,7 @@ const Account = ({ userName, Status, Role, userId }) => {
       <Grid container spacing={{ xs: 1, md: 2 }} margin="2rem">
         <Grid item xs={12} md={6} lg={6}>
           <FormInput
-            name="username"
+            name="userName"
             label="User Name"
             fullWidth
             className="form-input"
@@ -72,7 +80,7 @@ const Account = ({ userName, Status, Role, userId }) => {
             select
             fullWidth
             className="form-input"
-            value={Status}
+            value={status}
           >
             <MenuItem value="active">Active</MenuItem>
             <MenuItem value="unactive">UnActive</MenuItem>
@@ -80,15 +88,15 @@ const Account = ({ userName, Status, Role, userId }) => {
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <FormInput
-            name="Role"
+            name="role"
             label="Role"
             select
             fullWidth
             className="form-input"
-            value={Role}
+            value={role}
           >
             <MenuItem value="send_order">Send Order</MenuItem>
-            <MenuItem value="dashboad">Dashboard</MenuItem>
+            <MenuItem value="dashboard">Dashboard</MenuItem>
             <MenuItem value="localadmin">Local Admin</MenuItem>
           </FormInput>
         </Grid>

@@ -6,7 +6,9 @@ export const singleExport = createAsyncThunk(
   "singleExport",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.get(`${SINGLEEXPORT_API}?state=${params}`);
+      const response = await Axios.get(`${SINGLEEXPORT_API}?state=${params}`, {
+        responseType: "blob",
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);
@@ -18,7 +20,9 @@ export const exportAll = createAsyncThunk(
   "exportAll",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.get(`${EXPORTALL_API}`);
+      const response = await Axios.get(`${EXPORTALL_API}`, {
+        responseType: "blob",
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

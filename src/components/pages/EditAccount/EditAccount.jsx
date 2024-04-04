@@ -61,8 +61,8 @@ const EditAccount = () => {
             <Account
               userId={data.user_id}
               userName={username}
-              Status={status}
-              Role={role}
+              status={status}
+              role={role}
             />
             {/* ................................................Physician Information...................................... */}
             <PhysiciansInformation

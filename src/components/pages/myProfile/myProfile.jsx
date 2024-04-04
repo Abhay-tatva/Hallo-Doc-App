@@ -16,16 +16,8 @@ const MyProfile = () => {
   const data = state1?.data?.data[0];
   console.log("myprofile", data);
   const { username, status, role } = data.admin_account_information;
-  const {
-    firstname,
-    lastname,
-    email,
-    mobile_no,
-    district_of_columbia,
-    new_york,
-    virginia,
-    maryland,
-  } = data.admin_administrator_information;
+  const { firstname, lastname, email, mobile_no, regions } =
+    data.admin_administrator_information;
   const { address_1, address_2, city, state, zip, billing_mobile_no } =
     data.admin_mailing_billing_information;
 
@@ -55,29 +47,26 @@ const MyProfile = () => {
 
             <Account
               userName={username}
-              Status={status}
-              Role={role}
+              status={status}
+              role={role}
               userId={data.admin_user_id}
             />
             {/* ............................/ Administration Information............  */}
             <Administrator
               firstName={firstname}
-              lirstName={lastname}
-              Email={email}
+              lastName={lastname}
+              email={email}
               mobileNo={mobile_no}
-              districtColumbia={district_of_columbia}
-              newYyork={new_york}
-              Virginia={virginia}
-              Maryland={maryland}
+              regions={regions}
             />
 
             {/* .............................Mailing and biling Information......................... */}
             <Address
               add1={address_1}
               add2={address_2}
-              City={city}
-              State={state}
-              Zip={zip}
+              city={city}
+              state={state}
+              zip={zip}
               billNo={billing_mobile_no}
             />
           </Paper>
