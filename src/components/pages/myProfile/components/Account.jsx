@@ -88,7 +88,7 @@ const Account = ({ userName, Status, Role, userId }) => {
             value={Role}
           >
             <MenuItem value="send_order">Send Order</MenuItem>
-            <MenuItem value="masteradmin">Master Admin</MenuItem>
+            <MenuItem value="dashboad">Dashboard</MenuItem>
             <MenuItem value="localadmin">Local Admin</MenuItem>
           </FormInput>
         </Grid>

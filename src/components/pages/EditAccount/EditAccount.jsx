@@ -29,6 +29,8 @@ const EditAccount = () => {
     NPI_number,
     synchronization_email,
     service_areas_availability,
+    district_of_columbia,
+    new_york,
   } = data.physician_information;
   const { address_1, address_2, city, state, zip, billing_mobile_no } =
     data.mailing_billing_information;
@@ -64,14 +66,17 @@ const EditAccount = () => {
             />
             {/* ................................................Physician Information...................................... */}
             <PhysiciansInformation
+              userId={data.user_id}
               firstName={firstname}
               lastName={lastname}
               email={email}
               mobileNo={mobile_no}
               medicalLicence={medical_licence}
-              nipNumber={NPI_number}
+              npiNumber={NPI_number}
               synchronizationEmail={synchronization_email}
               serviceAreasAvailability={service_areas_availability}
+              districtOfColumbia={district_of_columbia}
+              newYork={new_york}
             />
             {/* ..............................................Address Information........................................... */}
             <Address

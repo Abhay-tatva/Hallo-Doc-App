@@ -116,20 +116,22 @@ const AddBussiness = () => {
                     inputStyle={{ height: "55px", width: "100%" }}
                     name="phoneNumber"
                     country="us"
-                    //   value={billformik.values.phoneNumber}
+                    value={businessFormik.values.phoneNumber}
                     label="Phone Number"
-                    //   fullWidth="true"
-                    //   className="form-input"
-                    //   onChange={billformik.handleChange}
-                    //   onBlur={billformik.handleBlur}
-                    //   error={
-                    //     billformik.touched.phoneNumber &&
-                    //     Boolean(billformik.errors.phoneNumber)
-                    //   }
-                    //   helperText={
-                    //     billformik.touched.phoneNumber &&
-                    //     billformik.errors.phoneNumber
-                    //   }
+                    fullWidth="true"
+                    className="form-input"
+                    onChange={(value) =>
+                      businessFormik.setFieldValue("phoneNumber", value)
+                    }
+                    onBlur={businessFormik.handleBlur}
+                    error={
+                      businessFormik.touched.phoneNumber &&
+                      Boolean(businessFormik.errors.phoneNumber)
+                    }
+                    helperText={
+                      businessFormik.touched.phoneNumber &&
+                      businessFormik.errors.phoneNumber
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>

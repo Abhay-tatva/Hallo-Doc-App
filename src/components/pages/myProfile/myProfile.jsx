@@ -15,7 +15,7 @@ const MyProfile = () => {
   const state1 = useSelector((state) => state.root.myProfileReducer);
   const data = state1?.data?.data[0];
   console.log("myprofile", data);
-  const { username, status, role } = data.account_information;
+  const { username, status, role } = data.admin_account_information;
   const {
     firstname,
     lastname,
@@ -25,9 +25,9 @@ const MyProfile = () => {
     new_york,
     virginia,
     maryland,
-  } = data.administrator_information;
+  } = data.admin_administrator_information;
   const { address_1, address_2, city, state, zip, billing_mobile_no } =
-    data.mailing_billing_information;
+    data.admin_mailing_billing_information;
 
   return (
     <>
@@ -57,7 +57,7 @@ const MyProfile = () => {
               userName={username}
               Status={status}
               Role={role}
-              userId={data.user_id}
+              userId={data.admin_user_id}
             />
             {/* ............................/ Administration Information............  */}
             <Administrator

@@ -11,7 +11,11 @@ import PhoneInput from "react-phone-input-2";
 import { Button } from "../../../Button/ButtonInput";
 import { physicianSchema } from "../../../ValidationSchema/PhysicianSchema";
 import { useFormik } from "formik";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getProviderPhysician,
+  putProviderInfo,
+} from "../../../../redux/provider/providerApi";
 
 const INITIAL_VALUES = {
   firstName: "",
@@ -29,13 +33,17 @@ const PhysiciansInformation = ({
   email,
   mobileNo,
   medicalLicence,
-  nipNumber,
+  npiNumber,
   synchronizationEmail,
   serviceAreasAvailability,
+  districtOfColumbia,
+  newYork,
+  userId,
 }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
+  const dispatch = useDispatch();
 
   const physicianformik = useFormik({
     initialValues,
@@ -53,7 +61,7 @@ const PhysiciansInformation = ({
       email: email,
       phoneNumber: mobileNo,
       medicalLicence: medicalLicence,
-      npiNumber: nipNumber,
+      npiNumber: npiNumber,
       synEmail: synchronizationEmail,
     });
   }, [
@@ -62,7 +70,7 @@ const PhysiciansInformation = ({
     email,
     mobileNo,
     medicalLicence,
-    nipNumber,
+    npiNumber,
     synchronizationEmail,
   ]);
 
@@ -94,7 +102,7 @@ const PhysiciansInformation = ({
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <FormInput
-            name="lastname"
+            name="lastName"
             label="Last Name"
             fullWidth
             className="form-input"
@@ -103,12 +111,12 @@ const PhysiciansInformation = ({
             onChange={physicianformik.handleChange}
             onBlur={physicianformik.handleBlur}
             error={
-              physicianformik.touched.firstName &&
-              Boolean(physicianformik.errors.firstName)
+              physicianformik.touched.lastName &&
+              Boolean(physicianformik.errors.lastName)
             }
             helperText={
-              physicianformik.touched.firstName &&
-              physicianformik.errors.firstName
+              physicianformik.touched.lastName &&
+              physicianformik.errors.lastName
             }
           />
         </Grid>
@@ -123,12 +131,11 @@ const PhysiciansInformation = ({
             onChange={physicianformik.handleChange}
             onBlur={physicianformik.handleBlur}
             error={
-              physicianformik.touched.firstName &&
-              Boolean(physicianformik.errors.firstName)
+              physicianformik.touched.email &&
+              Boolean(physicianformik.errors.email)
             }
             helperText={
-              physicianformik.touched.firstName &&
-              physicianformik.errors.firstName
+              physicianformik.touched.email && physicianformik.errors.email
             }
           />
         </Grid>
@@ -141,7 +148,19 @@ const PhysiciansInformation = ({
             fullWidth="true"
             className="form-input"
             disabled={isDisabled}
-            // value={mobileNo}
+            // value={physicianformik.values.phoneNumber}
+            onChange={(value) =>
+              physicianformik.setFieldValue("phoneNumber", value)
+            }
+            onBlur={physicianformik.handleBlur}
+            error={
+              physicianformik.touched.medicalLicence &&
+              Boolean(physicianformik.errors.medicalLicence)
+            }
+            helperText={
+              physicianformik.touched.medicalLicence &&
+              physicianformik.errors.medicalLicence
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -155,32 +174,32 @@ const PhysiciansInformation = ({
             onChange={physicianformik.handleChange}
             onBlur={physicianformik.handleBlur}
             error={
-              physicianformik.touched.firstName &&
-              Boolean(physicianformik.errors.firstName)
+              physicianformik.touched.medicalLicence &&
+              Boolean(physicianformik.errors.medicalLicence)
             }
             helperText={
-              physicianformik.touched.firstName &&
-              physicianformik.errors.firstName
+              physicianformik.touched.medicalLicence &&
+              physicianformik.errors.medicalLicence
             }
           ></FormInput>
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <FormInput
-            name="nipNumber"
+            name="npiNumber"
             label="NPI Number"
             fullWidth
             className="form-input"
             disabled={isDisabled}
-            value={physicianformik.values.nipNumber}
+            value={physicianformik.values.npiNumber}
             onChange={physicianformik.handleChange}
             onBlur={physicianformik.handleBlur}
             error={
-              physicianformik.touched.firstName &&
-              Boolean(physicianformik.errors.firstName)
+              physicianformik.touched.npiNumber &&
+              Boolean(physicianformik.errors.npiNumber)
             }
             helperText={
-              physicianformik.touched.firstName &&
-              physicianformik.errors.firstName
+              physicianformik.touched.npiNumber &&
+              physicianformik.errors.npiNumber
             }
           ></FormInput>
         </Grid>
@@ -240,6 +259,13 @@ const PhysiciansInformation = ({
               variant="contained"
               type="submit"
               onClick={() => {
+                dispatch(putProviderInfo(physicianformik.values)).then(
+                  (response) => {
+                    if (response.type === "putProviderInfo/fulfilled") {
+                      dispatch(getProviderPhysician(userId));
+                    }
+                  },
+                );
                 setIsDisabled(true);
               }}
             />

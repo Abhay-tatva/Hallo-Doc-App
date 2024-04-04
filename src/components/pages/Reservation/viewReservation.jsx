@@ -179,7 +179,9 @@ const ViewReservation = () => {
                     disabled
                     label="Phone Number"
                     fullWidth="true"
-                    onChange={formik.handleChange}
+                    onChange={(value) =>
+                      formik.setFieldValue("phoneNumber", value)
+                    }
                     onBlur={formik.handleBlur}
                     value={formik.values.phonenumber}
                     error={

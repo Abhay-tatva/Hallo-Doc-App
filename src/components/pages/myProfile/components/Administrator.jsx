@@ -31,7 +31,7 @@ const Administrator = ({
       lastname: "",
       email: "",
       confirmemail: "",
-      phoneNumber: "",
+      mobileNo: "",
     },
     validationSchema: myProfileSchema,
     onSubmit: (values) => {
@@ -99,19 +99,21 @@ const Administrator = ({
         <Grid item xs={12} md={6} lg={6}>
           <PhoneInput
             inputStyle={{ height: "55px", width: "100%" }}
-            name="phoneNumber"
+            name="mobileNo"
             country="in"
             label="Phone Number"
             fullWidth="true"
             className="form-input"
-            onChange={administratorformik.handleChange}
+            onChange={(value) =>
+              administratorformik.setFieldValue("mobileNo", value)
+            }
             onBlur={administratorformik.handleBlur}
             error={
               administratorformik.touched.confirmemail &&
-              Boolean(administratorformik.errors.phoneNumber)
+              Boolean(administratorformik.errors.mobileNo)
             }
             helperText={
-              administratorformik.touched.phoneNumber &&
+              administratorformik.touched.mobileNo &&
               administratorformik.errors.confirmemail
             }
             disabled={isDisabled}

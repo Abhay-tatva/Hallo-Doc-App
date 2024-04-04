@@ -88,7 +88,6 @@ const Address = ({ add1, add2, city, state, zip, billNo }) => {
             label="Phone Number"
             fullWidth="true"
             className="form-input"
-            onChange={billformik.handleChange}
             onBlur={billformik.handleBlur}
             error={
               billformik.touched.phoneNumber &&
@@ -97,6 +96,7 @@ const Address = ({ add1, add2, city, state, zip, billNo }) => {
             helperText={
               billformik.touched.phoneNumber && billformik.errors.phoneNumber
             }
+            onChange={(value) => billformik.setFieldValue("phoneNumber", value)}
           />
         </Grid>
       </Grid>
