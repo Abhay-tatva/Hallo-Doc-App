@@ -12,12 +12,16 @@ import PhysiciansInformation from "../myProfile/components/PhysiciansInformation
 import ProvideProfile from "../myProfile/components/ProvideProfile";
 import "./editAccount.css";
 import OnBording from "../myProfile/components/onBoarding";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteProvider } from "../../../redux/provider/providerApi";
+import { useNavigate } from "react-router-dom";
 
 const EditAccount = () => {
   const { physicianData } = useSelector(
     (state) => state.root.providerMenureducer,
   );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const data = physicianData;
   const { username, status, role } = data.account_information;
   const {
@@ -105,6 +109,13 @@ const EditAccount = () => {
                 variant="contained"
                 color="error"
                 mt={1}
+                onClick={() => {
+                  dispatch(deleteProvider(data.user_id)).then((response) => {
+                    if (response.type === "deleteProvider/fulfilled") {
+                      navigate(AppRoutes.PROVIDER);
+                    }
+                  });
+                }}
               />
             </Box>
           </Paper>

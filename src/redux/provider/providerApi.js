@@ -2,6 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Config/axios";
 import {
+  DELETEPROVIDER_API,
   GETPROVIDERINFORMATION_API,
   GETPROVIDERPHYSICIANDATA_API,
   POSTCONTACTPROVIDER_API,
@@ -83,6 +84,20 @@ export const putProviderInfo = createAsyncThunk(
         business_website: data?.business_website,
         admin_notes: data?.admin_notes,
       });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const deleteProvider = createAsyncThunk(
+  "deleteProvider",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.delete(
+        `${DELETEPROVIDER_API.replace(":user_id", params)}`,
+      );
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

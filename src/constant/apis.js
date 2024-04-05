@@ -70,16 +70,16 @@ export const PUTMYPROFILE_API =
   "/admin/myprofile/admin_profile/editadminbillinginfo";
 
 export const SINGLEDOWNLOAD_API =
-  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/download/:document_id";
+  "/common/dashboard/requests/:confirmation_no/actions/viewuploads/download/:document_id";
 
 export const DOWNLOADALL_API =
-  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/downloadall";
+  "/common/dashboard/requests/:confirmation_no/actions/viewuploads/downloadall";
 
 export const SINGLEDELETE_API =
-  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/delete/:document_id";
+  "/common/dashboard/requests/:confirmation_no/actions/viewuploads/delete/:document_id";
 
 export const DELETEALL_API =
-  "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/deleteall";
+  "/common/dashboard/requests/:confirmation_no/actions/viewuploads/deleteall";
 
 export const CREATEREQUEST_API = "/admin/dashboard/requests/createrequest";
 
@@ -104,3 +104,6 @@ export const GETPROVIDERPHYSICIANDATA_API =
   "/admin/providermenu/provider_list/:user_id/view_edit_physician_account";
 export const PROVIDEREDIT_API =
   "/admin/providermenu/provider_list/save_user_information";
+
+export const DELETEPROVIDER_API =
+  "/admin/providermenu/provider_list/:user_id/delete_provider_account";

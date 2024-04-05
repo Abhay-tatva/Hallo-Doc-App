@@ -139,7 +139,33 @@ const ViewUpload = () => {
         confirmation_no: confirmationNo,
         document_id: document,
       }),
-    );
+    )
+      .then((response) => {
+        if (response.type === "downloadFile/fulfilled") {
+          const blob = new Blob([response.payload], {
+            type: "application/octet-stream",
+          });
+
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, `download.jpg`);
+          } else {
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `downloaded-files.jpg`;
+            document.body.appendChild;
+            link.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild;
+          }
+          // toast.success(response.payload.message);
+        } else {
+          console.error("File download failed.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
   };
 
   const handleDelete = (id) => {
@@ -148,7 +174,11 @@ const ViewUpload = () => {
         confirmation_no: confirmationNo,
         document_id: id,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "singleDelete/fulfilled") {
+        dispatch(viewUpload(confirmationNo));
+      }
+    });
   };
 
   const handleDeleteAll = () => {
