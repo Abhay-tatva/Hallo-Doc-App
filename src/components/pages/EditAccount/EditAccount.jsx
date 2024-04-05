@@ -80,6 +80,7 @@ const EditAccount = () => {
             />
             {/* ..............................................Address Information........................................... */}
             <Address
+              name="providerProfile"
               add1={address_1}
               add2={address_2}
               city={city}

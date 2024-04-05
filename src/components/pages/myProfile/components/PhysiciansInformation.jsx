@@ -63,7 +63,7 @@ const PhysiciansInformation = ({
       email: email,
       phoneNumber: mobileNo,
       medicalLicence: medicalLicence,
-      npiNumber: npiNumber,
+      npiNumber,
       synEmail: synchronizationEmail,
     });
   }, [
@@ -193,7 +193,7 @@ const PhysiciansInformation = ({
             fullWidth
             className="form-input"
             disabled={isDisabled}
-            value={physicianformik.values.npiNumber}
+            value={physicianformik?.values?.npiNumber?.toString()}
             onChange={physicianformik.handleChange}
             onBlur={physicianformik.handleBlur}
             error={

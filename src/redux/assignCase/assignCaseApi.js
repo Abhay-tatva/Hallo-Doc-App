@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Config/axios";
 import { ASSIGNMODAL_API } from "../../constant/apis";
@@ -5,12 +7,12 @@ import { ASSIGNMODAL_API } from "../../constant/apis";
 export const assignCase = createAsyncThunk(
   "assignCase",
   async (params, { rejectWithValue }) => {
-    const { firstname, lastname, assign_req_description, confirmation_no } =
+    const { firstname, lastname, assign_req_description, confirmationNo } =
       params;
 
     try {
       const response = await Axios.put(
-        `${ASSIGNMODAL_API.replace(":confirmation_no", confirmation_no)}`,
+        `${ASSIGNMODAL_API.replace(":confirmation_no", confirmationNo)}`,
         {
           firstname,
           lastname,

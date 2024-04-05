@@ -1,18 +1,25 @@
+/* eslint-disable camelcase */
+
 import { Box, Modal, Typography } from "@mui/material";
 import React from "react";
 import { Button } from "../Button/ButtonInput";
 import { info } from "../assests/images";
 import "./modal.css";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCase } from "../../redux/clearCase/clearCaseApi";
+import { requestCount } from "../../redux/requestCount/requestCountApi";
 
-const ClearCaseModal = ({
-  open,
-  handleClose,
-  handleOpen,
-  handleClear,
-  rowId,
-}) => {
+const ClearCaseModal = ({ open, handleClose, handleOpen, rowId }) => {
+  const dispatch = useDispatch();
+  const { confirmation_no } = useSelector((state) => state.root.commonReducer);
+
   const handleClearButtonClick = () => {
-    handleClear(rowId);
+    dispatch(clearCase(confirmation_no)).then((response) => {
+      if (response.type === "clearCase/fulfilled") {
+        dispatch(requestCount());
+        handleClose();
+      }
+    });
   };
   return (
     <Modal open={open} handleOpen={handleOpen}>

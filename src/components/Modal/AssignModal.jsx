@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { Box, MenuItem, Typography } from "@mui/material";
 import React from "react";
 import { FormInput } from "../TextField/FormInput";
@@ -8,6 +10,7 @@ import { assignModalSchema } from "../ValidationSchema/index";
 import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { assignCase } from "../../redux/assignCase/assignCaseApi";
+import { requestCount } from "../../redux/requestCount/requestCountApi";
 
 const AssignModal = ({ open, handleClose, handleOpen }) => {
   const { physicians } = useSelector(
@@ -34,7 +37,11 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
           lastname: name[1],
           assignReqDescription: values.description,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "assignCase/fulfilled") {
+          dispatch(requestCount());
+        }
+      });
       onSubmitProps.resetForm();
       handleClose();
     },

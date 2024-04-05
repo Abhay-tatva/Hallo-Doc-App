@@ -14,7 +14,6 @@ const MyProfile = () => {
   const navigate = useNavigate();
   const state1 = useSelector((state) => state.root.myProfileReducer);
   const data = state1?.data?.data[0];
-  console.log("myprofile", data);
   const { username, status, role } = data.admin_account_information;
   const { firstname, lastname, email, mobile_no, regions } =
     data.admin_administrator_information;
@@ -53,6 +52,7 @@ const MyProfile = () => {
             />
             {/* ............................/ Administration Information............  */}
             <Administrator
+              userId={data.admin_user_id}
               firstName={firstname}
               lastName={lastname}
               email={email}
@@ -62,6 +62,8 @@ const MyProfile = () => {
 
             {/* .............................Mailing and biling Information......................... */}
             <Address
+              name="myProfile"
+              userId={data.admin_user_id}
               add1={address_1}
               add2={address_2}
               city={city}

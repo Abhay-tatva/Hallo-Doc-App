@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { GETSENDORDER_API, POSTSENDORDER_API } from "../../constant/apis";
 import Axios from "../../Config/axios";

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Checkbox,
@@ -10,9 +12,13 @@ import React, { useEffect, useState } from "react";
 import { FormInput } from "../../../TextField/FormInput";
 import { Button } from "../../../Button/ButtonInput";
 import { useFormik } from "formik";
-import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
+import { accountMyProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 import PhoneInput from "react-phone-input-2";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getMyProfile,
+  putMyProfile,
+} from "../../../../redux/myProfile/myProfileApi";
 const INITIAL_VALUES = {
   firstName: "",
   lastName: "",
@@ -20,14 +26,21 @@ const INITIAL_VALUES = {
   confirmeMail: "",
   mobileNo: "",
 };
-const Administrator = ({ firstName, lastName, email, mobileNo, regions }) => {
+const Administrator = ({
+  firstName,
+  lastName,
+  email,
+  mobileNo,
+  regions,
+  userId,
+}) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const data = useSelector((state) => state.root.regionPhysicianReducer);
-
+  const dispatch = useDispatch();
   const administratorformik = useFormik({
     initialValues,
-    validationSchema: myProfileSchema,
+    validationSchema: accountMyProfileSchema,
     onSubmit: (values) => {
       console.log("Form submitted", values);
     },
@@ -56,6 +69,16 @@ const Administrator = ({ firstName, lastName, email, mobileNo, regions }) => {
             className="form-input"
             value={administratorformik.values.firstName}
             disabled={isDisabled}
+            onChange={administratorformik.handleChange}
+            onBlur={administratorformik.handleBlur}
+            error={
+              administratorformik.touched.firstName &&
+              Boolean(administratorformik.errors.firstName)
+            }
+            helperText={
+              administratorformik.touched.firstName &&
+              administratorformik.errors.firstName
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -66,6 +89,16 @@ const Administrator = ({ firstName, lastName, email, mobileNo, regions }) => {
             className="form-input"
             value={administratorformik.values.lastName}
             disabled={isDisabled}
+            onChange={administratorformik.handleChange}
+            onBlur={administratorformik.handleBlur}
+            error={
+              administratorformik.touched.lastName &&
+              Boolean(administratorformik.errors.lastName)
+            }
+            helperText={
+              administratorformik.touched.lastName &&
+              administratorformik.errors.lastName
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -76,6 +109,16 @@ const Administrator = ({ firstName, lastName, email, mobileNo, regions }) => {
             className="form-input"
             value={administratorformik.values.email}
             disabled={isDisabled}
+            onChange={administratorformik.handleChange}
+            onBlur={administratorformik.handleBlur}
+            error={
+              administratorformik.touched.email &&
+              Boolean(administratorformik.errors.email)
+            }
+            helperText={
+              administratorformik.touched.email &&
+              administratorformik.errors.email
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -159,6 +202,17 @@ const Administrator = ({ firstName, lastName, email, mobileNo, regions }) => {
               name="Save"
               variant="contained"
               onClick={() => {
+                dispatch(
+                  putMyProfile({
+                    user_id: userId,
+                    data: administratorformik.values,
+                  }),
+                ).then((respons) => {
+                  if (respons.type === "putMyProfile/fulfilled") {
+                    dispatch(getMyProfile(userId));
+                  }
+                });
+
                 setIsDisabled(true);
               }}
             />

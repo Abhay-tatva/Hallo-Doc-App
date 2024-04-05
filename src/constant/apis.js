@@ -45,11 +45,11 @@ export const COMMON_API = "/commonroute/:confirmation_no/actions";
 export const COMMONPROFESSION_API = "/commonroute/professions";
 
 export const COMMONBUSINESS_API =
-  "/admin/dashboard/requests/actions/sendorders/businesses";
+  "/common/dashboard/requests/actions/sendorders/businesses";
 export const GETSENDORDER_API =
-  "/admin/dashboard/requests/actions/viewsendorders";
+  "/common/dashboard/requests/actions/viewsendorders";
 export const POSTSENDORDER_API =
-  "/admin/dashboard/requests/:state/:confirmation_no/actions/sendorders";
+  "/common/dashboard/requests/:state/:confirmation_no/actions/sendorders";
 
 export const GETCLOSECASE_API =
   "/admin/dashboard/requests/:confirmation_no/actions/closecase/viewdetails";
@@ -66,6 +66,8 @@ export const GETMYPROFILE_API = "/admin/myprofile/admin_profile/view";
 
 export const MYPROFILERESETPASS_API =
   "/admin/myprofile/admin_profile/resetpassword";
+export const PUTMYPROFILE_API =
+  "/admin/myprofile/admin_profile/editadminbillinginfo";
 
 export const SINGLEDOWNLOAD_API =
   "/admin/dashboard/requests/:confirmation_no/actions/viewuploads/download/:document_id";

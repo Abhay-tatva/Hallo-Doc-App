@@ -376,7 +376,6 @@ const Dashboard = () => {
         open={open && modalName === "Clear Case"}
         handleClose={handleClose}
         handleClear={handleClear}
-        rowId={rowId}
         handleOpen={
           modalName === "Clear Case"
             ? () => handleOpen("Clear Case", rowId)

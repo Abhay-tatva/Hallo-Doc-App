@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { FormInput } from "../TextField/FormInput";
@@ -7,6 +9,7 @@ import BasicModal from "./Modal";
 import { confirmBlockModalSchema } from "../ValidationSchema/index";
 import { blockCasePut } from "../../redux/blockCaseApi.js/blockCaseApi";
 import { useDispatch, useSelector } from "react-redux";
+import { requestCount } from "../../redux/requestCount/requestCountApi";
 
 const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
   const state = useSelector((state) => state.root.blockCaseReducer);
@@ -24,7 +27,11 @@ const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
           confirmation_no: data.confirmation_no,
           reason_for_block: values.blockRequest,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "blockCasePut/fulfilled") {
+          dispatch(requestCount());
+        }
+      });
       onSubmitProps.resetForm();
       handleClose();
     },

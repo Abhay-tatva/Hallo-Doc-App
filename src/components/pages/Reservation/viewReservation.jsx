@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PhoneIcon from "@mui/icons-material/Phone";
 
 import {
@@ -25,30 +25,34 @@ import CancelModal from "../../Modal/CancelModal";
 import AssignModal from "../../Modal/AssignModal";
 import { cancelCase } from "../../../redux/cancelCase/cancelCaseApi";
 
+const INITIAL_VALUES = {
+  patientNotes: "",
+  firstName: "",
+  lastName: "",
+  dob: "",
+  phonenumber: "",
+  email: "",
+  region: "",
+  business: "",
+  room: "",
+};
+
 const ViewReservation = () => {
   const state = useSelector((state) => state.root.viewCaseReducer);
   const data = state?.data?.data[0];
   const [open, setOpen] = useState(false);
   const [modalName, setModalName] = useState("");
   const dispatch = useDispatch();
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
 
   const navigate = useNavigate();
   const formik = useFormik({
-    initialValues: {
-      patientNotes: data?.patient_data.patient_notes[0].description,
-      firstName: data?.patient_data.first_name,
-      lastName: data?.patient_data.last_name,
-      dob: data?.patient_data.DOB,
-      phonenumber: "6359421917",
-      email: data?.patient_data.email,
-      region: data?.patient_data.location_information.region,
-      business: data?.patient_data.location_information.business_name,
-      room: data?.patient_data.location_information.room,
-    },
+    initialValues,
     validationSchema: viewReservationSchema,
     onSubmit: (values) => {
       console.log("Form submitted", values);
     },
+    enableReinitialize: true,
   });
   const handleOpen = (name, rowId) => {
     setModalName(name);
@@ -59,6 +63,19 @@ const ViewReservation = () => {
     setOpen(false);
     setModalName("");
   };
+  useEffect(() => {
+    setInitialValues({
+      patientNotes: data?.patient_data.patient_notes[0].description,
+      firstName: data?.patient_data.first_name,
+      lastName: data?.patient_data.last_name,
+      dob: data?.patient_data.DOB,
+      phonenumber: data?.patient_data.mobile_no,
+      email: data?.patient_data.email,
+      region: data?.patient_data.location_information.region,
+      business: data?.patient_data.location_information.business_name,
+      room: data?.patient_data.location_information.room,
+    });
+  });
 
   return (
     <>
@@ -174,16 +191,16 @@ const ViewReservation = () => {
                 <Grid item sm={12} md={5} lg={5}>
                   <PhoneInput
                     inputStyle={{ height: "55px", width: "100%" }}
-                    name="phoneNumber"
+                    name="phonenumber"
                     country="in"
                     disabled
                     label="Phone Number"
                     fullWidth="true"
                     onChange={(value) =>
-                      formik.setFieldValue("phoneNumber", value)
+                      formik.setFieldValue("phonenumber", value)
                     }
                     onBlur={formik.handleBlur}
-                    value={formik.values.phonenumber}
+                    value={formik.values?.phonenumber?.toString()}
                     error={
                       formik.touched.phonenumber &&
                       Boolean(formik.errors.phonenumber)

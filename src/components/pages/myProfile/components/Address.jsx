@@ -1,10 +1,23 @@
+/* eslint-disable camelcase */
+
 import { Box, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FormInput } from "../../../TextField/FormInput";
 import { Button } from "../../../Button/ButtonInput";
 import { useFormik } from "formik";
-import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
+import { addressSchema } from "../../../ValidationSchema/MyProfileSchema";
 import PhoneInput from "react-phone-input-2";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+
+import {
+  getMyProfile,
+  putMyProfile,
+} from "../../../../redux/myProfile/myProfileApi";
+import {
+  getProviderPhysician,
+  putProviderInfo,
+} from "../../../../redux/provider/providerApi";
 
 const INITIAL_VALUES = {
   address1: "",
@@ -14,14 +27,15 @@ const INITIAL_VALUES = {
   zip: "",
   billNumber: "",
 };
-const Address = ({ add1, add2, city, state, zip, billNo }) => {
+const Address = ({ add1, add2, city, state, zip, billNo, userId, name }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
+  const dispatch = useDispatch();
 
   const billformik = useFormik({
     initialValues,
 
-    validationSchema: myProfileSchema,
+    validationSchema: addressSchema,
     onSubmit: (values) => {
       console.log("Form submitted", values);
     },
@@ -33,10 +47,11 @@ const Address = ({ add1, add2, city, state, zip, billNo }) => {
       address2: add2,
       city: city,
       state: state,
-      zip: zip,
+      zip,
       billNumber: billNo,
     });
   }, [add1, add2, city, state, zip, billNo]);
+
   return (
     <form onSubmit={billformik.handleSubmit}>
       <Typography variant="h6" className="account">
@@ -112,7 +127,7 @@ const Address = ({ add1, add2, city, state, zip, billNo }) => {
             label="Zip"
             disabled={isDisabled}
             fullWidth
-            value={billformik.values.zip}
+            value={billformik?.values?.zip?.toString()}
             className="form-input"
             onChange={billformik.handleChange}
             onBlur={billformik.handleBlur}
@@ -156,10 +171,41 @@ const Address = ({ add1, add2, city, state, zip, billNo }) => {
           <>
             <Button
               name="Save"
-              variant="contained"
               type="submit"
+              variant="contained"
               onClick={() => {
-                setIsDisabled(true);
+                if (name === "myProfile") {
+                  dispatch(
+                    putMyProfile({
+                      user_id: userId,
+                      data: billformik.values,
+                    }),
+                  ).then((response) => {
+                    if (response.type === "putMyProfile/fulfilled") {
+                      dispatch(getMyProfile(userId));
+                      toast.success(response.payload.message);
+                    } else if (response.type === "putMyProfile/rejected") {
+                      toast.error(
+                        response.payload.data.validation.body.message,
+                      );
+                    }
+                  });
+                  setIsDisabled(true);
+                }
+
+                if (name === "providerProfile") {
+                  dispatch(
+                    putProviderInfo({
+                      user_id: userId,
+                      data: billformik.values,
+                    }),
+                  ).then((response) => {
+                    if (response.type === "putProviderInfo/fulfilled") {
+                      dispatch(getProviderPhysician(userId));
+                    }
+                  });
+                  setIsDisabled(true);
+                }
               }}
             />
             <Button

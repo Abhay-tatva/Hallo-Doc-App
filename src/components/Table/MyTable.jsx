@@ -34,7 +34,6 @@ import { transferCase } from "../../redux/transferCase/transferCaseApi";
 import { viewUpload } from "../../redux/viewUpload/viewUploadApi";
 import { newState } from "../../redux/newState/newStateApi";
 import { blockcaseGet } from "../../redux/blockCaseApi.js/blockCaseApi";
-import { clearCase } from "../../redux/clearCase/clearCaseApi";
 import { commonApi } from "../../redux/commonApi/commonApi";
 import { getCloseCase } from "../../redux/closeCase/closeCaseApi";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -147,7 +146,6 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
         onClick(action);
         break;
       case "Clear Case":
-        dispatch(clearCase(confirmno));
         onClick(action);
         break;
       case "Send Agreement":

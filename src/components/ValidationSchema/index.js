@@ -20,7 +20,11 @@ export { sendAgreementModalSchema } from "./SendAgreementModalSchema";
 
 export { orderDetails } from "./OrderDetailsSchema";
 
-export { myProfileSchema } from "./MyProfileSchema";
+export {
+  myProfileSchema,
+  accountMyProfileSchema,
+  addressSchema,
+} from "./MyProfileSchema";
 
 export { requestModalSchema } from "./RequestModalSchema";
 
