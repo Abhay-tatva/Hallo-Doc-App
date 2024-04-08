@@ -19,7 +19,7 @@ const SendLinkModal = ({ open, handleClose, handleOpen }) => {
     initialValues: {
       firstName: "",
       lastName: "",
-      phoneNumber: "",
+      mobile_no: "",
       email: "",
     },
 
@@ -29,7 +29,7 @@ const SendLinkModal = ({ open, handleClose, handleOpen }) => {
         sendLink({
           firstname: formik.values.firstName,
           lastname: formik.values.lastName,
-          mobile_no: formik.values.phoneNumber,
+          mobile_no: formik.values.mobile_no,
           email: formik.values.email,
         }),
       );
@@ -67,16 +67,14 @@ const SendLinkModal = ({ open, handleClose, handleOpen }) => {
             helperText={formik.touched.lastName && formik.errors.lastName}
           />
           <PhoneInput
-            name="phoneNumber"
+            name="mobile_no"
             country={"in"}
             inputStyle={{ width: "100%", height: "3.438rem" }}
-            value={formik.values.phoneNumber}
-            onChange={(value) => formik.setFieldValue("phoneNumber", value)}
+            value={formik.values.mobile_no}
+            onChange={(value) => formik.setFieldValue("mobile_no", value)}
             onBlur={formik.handleBlur}
-            error={
-              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
-            }
-            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+            error={formik.touched.mobile_no && Boolean(formik.errors.mobile_no)}
+            helperText={formik.touched.mobile_no && formik.errors.mobile_no}
           />
 
           <FormInput

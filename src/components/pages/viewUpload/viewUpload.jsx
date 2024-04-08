@@ -133,38 +133,48 @@ const ViewUpload = () => {
     setSelectedFile(null);
   };
 
-  const handleDownload = (document) => {
+  const handleDownload = (documentId) => {
     dispatch(
       singleDownload({
         confirmation_no: confirmationNo,
-        document_id: document,
+        document_id: documentId,
       }),
     )
       .then((response) => {
-        if (response.type === "downloadFile/fulfilled") {
+        if (response.type === "singleDownload/fulfilled") {
+          // Assuming the binary data you received is an image,
+          // we set the MIME type to 'image/jpeg' for a JPG file.
           const blob = new Blob([response.payload], {
-            type: "application/octet-stream",
+            type: "image/jpeg",
           });
 
-          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(blob, `download.jpg`);
-          } else {
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = `downloaded-files.jpg`;
-            document.body.appendChild;
-            link.click();
+          // Create a new link element for downloading
+          const downloadLink = document.createElement("a");
+          document.body.appendChild(downloadLink);
+          const url = URL.createObjectURL(blob);
+
+          // Set the download attribute with a filename
+          downloadLink.href = url;
+          downloadLink.download = `downloaded-image.jpg`;
+
+          // Programmatically click the link to trigger the download
+          downloadLink.click();
+
+          // Revoke the object URL and remove the link element after the download
+          setTimeout(() => {
             URL.revokeObjectURL(url);
-            document.body.removeChild;
-          }
-          // toast.success(response.payload.message);
+            document.body.removeChild(downloadLink);
+          }, 100);
+
+          // Optionally, display a success message
+          // toast.success("Image downloaded successfully.");
         } else {
-          console.error("File download failed.");
+          // Handle any other action types like errors
+          console.error("Image download failed.");
         }
       })
       .catch((error) => {
-        console.error("Error downloading file:", error);
+        console.error("Error downloading image:", error);
       });
   };
 

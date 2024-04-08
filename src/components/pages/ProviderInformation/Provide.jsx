@@ -50,7 +50,7 @@ const Provide = () => {
   };
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const { providerData } = useSelector(
-    (state) => state.root.providerMenureducer,
+    (state) => state.root.providerMenuReducer,
   );
 
   useEffect(() => setTableData(providerData), [providerData]);
@@ -63,13 +63,13 @@ const Provide = () => {
   // };
 
   const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
+    const stabilizedThis = array?.map((el, index) => [el, index]);
+    stabilizedThis?.sort((a, b) => {
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
       return a[1] - b[1];
     });
-    return stabilizedThis.map((el) => el[0]);
+    return stabilizedThis?.map((el) => el[0]);
   };
 
   const getComparator = (order, orderBy) => {
@@ -146,7 +146,9 @@ const Provide = () => {
               </FormInput>
               <Button
                 name="Create Provider Account"
-                onClick={() => navigate(AppRoutes.CREATEPROVIDER)}
+                onClick={() => {
+                  navigate(AppRoutes.CREATEPROVIDER);
+                }}
               />
             </Box>
 
@@ -175,7 +177,10 @@ const Provide = () => {
 
                 <TableBody align="left">
                   {stableSort(tableData, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    ?.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage,
+                    )
                     ?.map((row) => {
                       return (
                         <TableRow key={row.user_id}>

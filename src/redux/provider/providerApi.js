@@ -6,6 +6,7 @@ import {
   GETPROVIDERINFORMATION_API,
   GETPROVIDERPHYSICIANDATA_API,
   POSTCONTACTPROVIDER_API,
+  POSTCREATEPROVIDER_API,
   PROVIDEREDIT_API,
 } from "../../constant/apis";
 
@@ -98,6 +99,43 @@ export const deleteProvider = createAsyncThunk(
       const response = await Axios.delete(
         `${DELETEPROVIDER_API.replace(":user_id", params)}`,
       );
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const postCreateProvider = createAsyncThunk(
+  "postCreateProvider",
+  async (params, { rejectWithValue }) => {
+    const { data } = params;
+    console.log(data);
+    try {
+      const response = await Axios.post(`${POSTCREATEPROVIDER_API}`, {
+        username: data?.userName,
+        password: data?.password,
+        role: data?.role,
+        firstname: data?.firstName,
+        lastname: data?.lastName,
+        email: data?.email,
+        mobile_no: data?.administratorPhone.toString(),
+        medical_licence: data?.medicalLicense,
+        NPI_no: data?.npiNumber,
+        district_of_columbia: data?.district_of_columbia,
+        new_york: data?.new_york,
+        virginia: data?.virginia,
+        maryland: data?.maryland,
+        address_1: data?.address1,
+        address_2: data?.address2,
+        city: data?.city,
+        state: data?.state,
+        zip: data?.zip,
+        billing_mobile_no: data?.mailingPhone,
+        business_name: data?.businessName,
+        business_website: data?.businessWebsite,
+        admin_notes: data?.adminNotes,
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

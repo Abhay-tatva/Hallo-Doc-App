@@ -91,6 +91,10 @@ export const GETACCOUNTACCESSEDIT_API =
   "/admin/access/accountaccess/:role_id/edit";
 export const DELETEACCOUNTACCESS_API =
   "/admin/access/accountaccess/:role_id/delete";
+export const PUTACCOUNTACCESS_API =
+  "/admin/access/accountaccess/:role_id/save_edit";
+
+export const GETUSERACCESS_API = "/admin/access/useraccess";
 export const SINGLEEXPORT_API = "/commonroute/export_single";
 
 export const EXPORTALL_API = "/commonroute/export_all";
@@ -102,8 +106,11 @@ export const POSTCONTACTPROVIDER_API =
 
 export const GETPROVIDERPHYSICIANDATA_API =
   "/admin/providermenu/provider_list/:user_id/view_edit_physician_account";
+
 export const PROVIDEREDIT_API =
   "/admin/providermenu/provider_list/save_user_information";
 
 export const DELETEPROVIDER_API =
   "/admin/providermenu/provider_list/:user_id/delete_provider_account";
+export const POSTCREATEPROVIDER_API =
+  "/admin/providermenu/provider_list/create_provider_account";

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Checkbox,
@@ -18,18 +20,18 @@ import {
 import React, { useEffect, useState } from "react";
 import "./userAccess.css";
 import { FormInput } from "../../TextField/FormInput";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Button } from "../../Button/ButtonInput";
-
+import { getUserAccess } from "../../../redux/userAccess/userAccessApi";
 const rows = [
   {
     id: 1,
-    acoountType: "Ain",
-    acoountPoc: "Test, Admin",
+    account_type: "Ain",
+    account_poc: "Test, Admin",
     phone: "91082006 99203",
     status: "Active",
-    openRequests: "2133",
+    open_requests: "2133",
     action: "Actions",
   },
   {
@@ -59,10 +61,21 @@ const UserAccess = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = React.useState(0);
-  const [orderBy, setOrderBy] = useState("accountType");
+  const [orderBy, setOrderBy] = useState("account_type");
+  const dispatch = useDispatch();
+
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const { userAccessData } = useSelector(
+    (state) => state.root.userAccessReducer,
+  );
   const isSelected = (id) => selected.indexOf(id) !== -1;
-  useEffect(() => setTableData(rows), [rows]);
+
+  useEffect(() => setTableData(userAccessData), [userAccessData]);
+  useEffect(() => {
+    dispatch(getUserAccess());
+    return undefined;
+  }, []);
+
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
   };
@@ -183,9 +196,9 @@ const UserAccess = () => {
                     </TableCell>
                     <TableCell>
                       <TableSortLabel
-                        active={orderBy === "accountType"}
+                        active={orderBy === "account_type"}
                         direction={order}
-                        onClick={() => handleRequestSort("accountType")}
+                        onClick={() => handleRequestSort("account_type")}
                       >
                         Account Type
                       </TableSortLabel>
@@ -198,7 +211,7 @@ const UserAccess = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {stableSort(rows, getComparator(order, orderBy)).map(
+                  {stableSort(tableData, getComparator(order, orderBy)).map(
                     (row) => (
                       <TableRow key={row.id} hover>
                         <TableCell padding="checkbox">
@@ -207,11 +220,11 @@ const UserAccess = () => {
                             onClick={(event) => handleClick(event, row.id)}
                           />
                         </TableCell>
-                        <TableCell>{row.acoountType}</TableCell>
-                        <TableCell>{row.acoountPoc}</TableCell>
+                        <TableCell>{row.account_type}</TableCell>
+                        <TableCell>{row.account_poc}</TableCell>
                         <TableCell>{row.phone}</TableCell>
                         <TableCell>{row.status}</TableCell>
-                        <TableCell>{row.openRequests}</TableCell>
+                        <TableCell>{row.open_requests}</TableCell>
                         <TableCell>
                           <Button name="edit" variant="outlined"></Button>
                         </TableCell>

@@ -21,12 +21,14 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/loginSlice";
 import { getMyProfile } from "../../redux/myProfile/myProfileApi";
-import { getAccountAccess } from "../../redux/accountAccess/accountAccessApi";
+// import { getAccountAccess } from "../../redux/accountAccess/accountAccessApi";
+import { getUserAccess } from "../../redux/userAccess/userAccessApi";
 
 const Header = ({ isDarktheme, handleDarkMode }) => {
   const [open, setOpen] = useState(false);
   const [providerMenuOpen, setProviderMenuOpen] = useState(false);
   const [recordsMenuOpen, setRecordsMenuOpen] = useState(false);
+  const [accessMenuOpen, setAccessMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,6 +44,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
     setAnchorEl(null);
     setProviderMenuOpen(false);
     setRecordsMenuOpen(false);
+    setAccessMenuOpen(false);
   };
 
   const handleNavLinkHover = (event, menuType) => {
@@ -49,9 +52,15 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
     if (menuType === "provider") {
       setProviderMenuOpen(true);
       setRecordsMenuOpen(false);
+      setAccessMenuOpen(false);
     } else if (menuType === "records") {
       setProviderMenuOpen(false);
       setRecordsMenuOpen(true);
+      setAccessMenuOpen(false);
+    } else if (menuType === "access") {
+      setAccessMenuOpen(true);
+      setProviderMenuOpen(false);
+      setRecordsMenuOpen(false);
     }
   };
 
@@ -166,14 +175,40 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             Partners
           </NavLink>
         </li>
-        <li>
+        <li
+          onMouseEnter={(e) => handleNavLinkHover(e, "access")}
+          onMouseLeave={handleMenuClose}
+        >
           <NavLink
             to={AppRoutes.ACCESSACCOUNT}
             className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={() => dispatch(getAccountAccess())}
           >
             Access
           </NavLink>
+          {accessMenuOpen && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  dispatch(getUserAccess());
+                  navigate(AppRoutes.USERACCESS);
+                }}
+              >
+                User Access
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  // dispatch(getAccountAccess());
+                  navigate(AppRoutes.ACCESSACCOUNT);
+                }}
+              >
+                Account Access
+              </MenuItem>
+            </Menu>
+          )}
         </li>
         <li
           onMouseEnter={(e) => handleNavLinkHover(e, "records")}

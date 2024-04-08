@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import * as Yup from "yup";
 
 export const sendLinkModalSchema = Yup.object({
@@ -9,6 +11,6 @@ export const sendLinkModalSchema = Yup.object({
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Last Name must be required"),
-  phoneNumber: Yup.number().required("Phone number is required"),
+  mobile_no: Yup.number().required("Phone number is required"),
   email: Yup.string().email("Invalid email").required("pls enter your email"),
 });

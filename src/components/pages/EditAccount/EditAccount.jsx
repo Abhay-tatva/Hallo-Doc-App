@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 const EditAccount = () => {
   const { physicianData } = useSelector(
-    (state) => state.root.providerMenureducer,
+    (state) => state.root.providerMenuReducer,
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();

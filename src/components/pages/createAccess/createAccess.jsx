@@ -16,9 +16,13 @@ import { FormInput } from "../../TextField/FormInput";
 import "./createAccess.css";
 import { useFormik } from "formik";
 import { CreateAccessSchema } from "../../ValidationSchema";
+import { useDispatch } from "react-redux";
+import { accountAccessPut } from "../../../redux/accountAccess/accountAccessApi";
 
 const CreateAccess = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       rolename: "",
@@ -32,7 +36,7 @@ const CreateAccess = () => {
   return (
     <>
       <Box className="main-createaccess-container">
-        <form>
+        <form onSubmit={formik.handleSubmit}>
           <Container maxWidth="lg" className="createacess-conatiner-wrapper">
             <Box display="flex" justifyContent="space-between" mb="8px">
               <Box display="flex">
@@ -255,7 +259,11 @@ const CreateAccess = () => {
                 </Grid>
               </Grid>
               <Box display="flex" justifyContent="flex-end" gap={2} mt={4}>
-                <Button name="Save" />
+                <Button
+                  type="submit"
+                  name="Save"
+                  onClick={() => dispatch(accountAccessPut({}))}
+                />
                 <Button name="Cancel" variant="outlined" />
               </Box>
             </Paper>

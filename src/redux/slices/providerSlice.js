@@ -16,7 +16,6 @@ const providerMenu = createSlice({
       }
     });
     builder.addCase(getProviderPhysician.fulfilled, (state, action) => {
-      console.log("action.payload", action.payload);
       if (action.payload) {
         state.physicianData = action.payload.data[0];
       }

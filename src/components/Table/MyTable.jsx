@@ -346,7 +346,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
                           variant="outlined"
                           color="inherit"
                           onClick={(e) => {
-                            handleClick(e, row.confirmationNo);
+                            handleClick(e, row.confirmation_no);
                           }}
                         />
                         {
@@ -356,7 +356,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
                               "aria-labelledby": "fade-button",
                             }}
                             anchorEl={anchorEl}
-                            open={open && row.confirmationNo === confirmno}
+                            open={open && row.confirmation_no === confirmno}
                             onClose={handleClose}
                             TransitionComponent={Fade}
                           >

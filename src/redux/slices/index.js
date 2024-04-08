@@ -14,6 +14,7 @@ import closeCaseSlice from "./closeCaseSlice";
 import myProfileSlice from "./myProfileSlice";
 import accountAccessSlice from "./accountAccessSlice";
 import providerSlice from "./providerSlice";
+import userAccessSlice from "./userAccessSlice";
 
 export const rootReducer = combineReducers({
   loginReducer: loginSlice,
@@ -30,5 +31,6 @@ export const rootReducer = combineReducers({
   closeCaseReducer: closeCaseSlice,
   myProfileReducer: myProfileSlice,
   accountAccessReducer: accountAccessSlice,
-  providerMenureducer: providerSlice,
+  providerMenuReducer: providerSlice,
+  userAccessReducer: userAccessSlice,
 });

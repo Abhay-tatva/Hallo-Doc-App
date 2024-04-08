@@ -6,6 +6,7 @@ import {
   DELETEACCOUNTACCESS_API,
   GETACCOUNTACCESSEDIT_API,
   GETACCOUNTACCESS_API,
+  PUTACCOUNTACCESS_API,
 } from "../../constant/apis";
 
 export const getAccountAccess = createAsyncThunk(
@@ -42,6 +43,26 @@ export const accountAccessDelete = createAsyncThunk(
     try {
       const response = await Axios.delete(
         `${DELETEACCOUNTACCESS_API.replace(":role_id", params)}`,
+      );
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const accountAccessPut = createAsyncThunk(
+  "accountAccessPut",
+  async (params, { rejectWithValue }) => {
+    const { role_name, account_type, access_ids } = params;
+    try {
+      const response = await Axios.put(
+        `${PUTACCOUNTACCESS_API.replace(":role_id", params)}`,
+        {
+          role_name,
+          account_type,
+          access_ids,
+        },
       );
       return response?.data;
     } catch (error) {

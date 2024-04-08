@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Checkbox,
@@ -15,11 +17,16 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import "./createProvider.css";
 import PhoneFormInput from "react-phone-input-2";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FormInput } from "../../TextField/FormInput";
 import { Button } from "../../Button/ButtonInput";
 import { createProviderSchema } from "../../ValidationSchema";
 import { useFormik } from "formik";
+import {
+  getProvider,
+  postCreateProvider,
+} from "../../../redux/provider/providerApi";
+import { AppRoutes } from "../../../constant/route";
 
 const initialValues = {
   userName: "",
@@ -31,7 +38,7 @@ const initialValues = {
   administratorPhone: "",
   medicalLicense: "",
   npiNumber: "",
-  selectedRegions: [],
+  // selectedRegions: [],
   address1: "",
   address2: "",
   city: "",
@@ -49,15 +56,17 @@ const initialValues = {
 
 const CreateProvider = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const formik = useFormik({
     initialValues,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, onSubmitProps) => {
+      onSubmitProps.resetForm();
     },
     validationSchema: createProviderSchema,
   });
-
+  console.log(formik);
   return (
     <>
       <Box className="createprovider-main-container">
@@ -111,6 +120,7 @@ const CreateProvider = () => {
                     label="Password"
                     fullWidth
                     type="password"
+                    value={formik.values.password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={
@@ -134,7 +144,7 @@ const CreateProvider = () => {
                     helperText={formik.touched.role && formik.errors.role}
                   >
                     <MenuItem value="masterAdmin">Master Admin</MenuItem>
-                    <MenuItem value="admin">Admin</MenuItem>
+                    <MenuItem value="dashboard">Dashboard</MenuItem>
                     <MenuItem value="provider">Provider</MenuItem>
                     <MenuItem value="patient">Patient</MenuItem>
                   </FormInput>
@@ -311,7 +321,7 @@ const CreateProvider = () => {
                   <FormInput
                     name="state"
                     label="State"
-                    select
+                    // select
                     fullWidth
                     value={formik.values.state}
                     onChange={formik.handleChange}
@@ -319,11 +329,11 @@ const CreateProvider = () => {
                     error={formik.touched.state && Boolean(formik.errors.state)}
                     helperText={formik.touched.state && formik.errors.state}
                   >
-                    {regions.map((region) => (
+                    {/* {regions.map((region) => (
                       <MenuItem key={region.id} value={region.name}>
                         {region.name}
                       </MenuItem>
-                    ))}
+                    ))} */}
                   </FormInput>
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -500,7 +510,21 @@ const CreateProvider = () => {
                 sx={{ backgroundColor: "#413f3f85", marginTop: "1.5rem" }}
               />
               <Box display="flex" justifyContent="flex-end" mt={2}>
-                <Button name="Create Account" color="success" type="submit" />
+                <Button
+                  name="Create Account"
+                  color="success"
+                  type="submit"
+                  onClick={() => {
+                    dispatch(postCreateProvider({ data: formik.values })).then(
+                      (response) => {
+                        if (response.type === "postCreateProvider/fulfilled") {
+                          dispatch(getProvider({ page: 1, page_size: 20 }));
+                          navigate(AppRoutes.PROVIDER);
+                        }
+                      },
+                    );
+                  }}
+                />
               </Box>
             </form>
           </Paper>
