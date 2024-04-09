@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Checkbox,
@@ -18,7 +20,9 @@ import React, { useEffect, useState } from "react";
 import "./blockHistory.css";
 import { FormInput } from "../../TextField/FormInput";
 import { Button } from "../../Button/ButtonInput";
-import { columns, rows } from "../../../constant/blockHistory";
+import { columns } from "../../../constant/blockHistory";
+import { useDispatch, useSelector } from "react-redux";
+import { getBlockHistory } from "../../../redux/records/recordsApi";
 
 const BlockHistory = () => {
   const [page, setPage] = useState(0);
@@ -26,8 +30,23 @@ const BlockHistory = () => {
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("email");
+  const dispatch = useDispatch();
 
-  useEffect(() => setTableData(rows), [rows]);
+  const { blockHistory } = useSelector((state) => state.root.recordsReducer);
+
+  useEffect(() => setTableData(blockHistory), [blockHistory]);
+
+  useEffect(() => {
+    dispatch(
+      getBlockHistory({
+        page: 1,
+        page_size: 10,
+        type_of_history: "cancelled",
+        date: "05 - 12 - 2002",
+      }),
+    );
+  }, [dispatch]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -108,7 +127,7 @@ const BlockHistory = () => {
                 <Table>
                   <TableHead style={{ backgroundColor: "#f6f6f6" }}>
                     <TableRow>
-                      {columns.map((column) => (
+                      {columns?.map((column) => (
                         <TableCell
                           key={column.id}
                           align="left"

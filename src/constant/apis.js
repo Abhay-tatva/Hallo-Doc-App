@@ -123,3 +123,6 @@ export const POSTCREATEPROVIDER_API =
 export const GETPATIENTHISTORY_API = "/admin/records/patienthistory";
 export const GETPATIENRECORDS_API = "/admin/records/patient_records";
 export const GETSEARCHRECORD_API = "/admin/records/search_records";
+export const DELETESEARCHRECORD_API =
+  "/admin/records/:confirmation_no/search_records_delete";
+export const GETBLOCKHISTORY_API = "/admin/records/cancel_block_history";

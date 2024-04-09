@@ -88,7 +88,7 @@ export const rows = [
 
 export const columns = [
   {
-    id: "patientName",
+    id: "patient_name",
     label: "Patient Name",
   },
   {
@@ -96,11 +96,11 @@ export const columns = [
     label: "Requestor",
   },
   {
-    id: "dateOfService",
+    id: "date_of_service",
     label: "Date Of Service",
   },
   {
-    id: "closeCaseDate",
+    id: "closed_date",
     label: "Close Case Date",
   },
   {
@@ -108,7 +108,7 @@ export const columns = [
     label: "Email",
   },
   {
-    id: "phoneNumber",
+    id: "phone_no",
     label: "Phone Number",
   },
   {
@@ -120,7 +120,7 @@ export const columns = [
     label: "Zip",
   },
   {
-    id: "requestStatus",
+    id: "request_status",
     label: "Request Status",
   },
   {
@@ -136,11 +136,11 @@ export const columns = [
     label: "Cancelled By Provider Note",
   },
   {
-    id: "adminNote",
+    id: "admin_notes",
     label: "Admin Note",
   },
   {
-    id: "patientNote",
+    id: "patient_notes",
     label: "Patient Note",
   },
   {

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Container,
@@ -18,24 +20,58 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../../Button/ButtonInput";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import { FormInput } from "../../TextField/FormInput";
-import { columns, rows } from "../../../constant/searchRecordsData";
+import { columns } from "../../../constant/searchRecordsData";
 import "./searchRecords.css";
+import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteSearchRecords,
+  getSearchRecords,
+} from "../../../redux/records/recordsApi";
+import { toast } from "react-toastify";
 
+const initialValues = {
+  requestStatus: "",
+  patientName: "",
+  requetType: "",
+  serviceDate: "",
+  toServiceDate: "",
+  providerName: "",
+  phoneNumber: "",
+};
 const SearchRecords = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
+  const dispatch = useDispatch();
+
   const [orderBy, setOrderBy] = useState("email");
 
-  useEffect(() => setTableData(rows), [rows]);
+  const { searchRecord } = useSelector((state) => state.root.recordsReducer);
+
+  useEffect(() => setTableData(searchRecord), [searchRecord]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  useEffect(() => {
+    dispatch(getSearchRecords({ page: 1, page_size: 10 }));
+  }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit: (values, onSubmitProps) => {
+      onSubmitProps.resetForm();
+    },
+    // validationSchema: createProviderSchema,
+  });
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
   const stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
@@ -90,6 +126,17 @@ const SearchRecords = () => {
                     name="requestStatus"
                     fullWidth
                     select
+                    value={formik.values.requestStatus}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.requestStatus &&
+                      Boolean(formik.errors.requestStatus)
+                    }
+                    helperText={
+                      formik.touched.requestStatus &&
+                      formik.errors.requestStatus
+                    }
                   >
                     <MenuItem>fullfill</MenuItem>
                     <MenuItem>reject</MenuItem>
@@ -188,23 +235,54 @@ const SearchRecords = () => {
                       )
                       ?.map((row) => {
                         return (
-                          <TableRow key={row.id}>
+                          <TableRow key={row.sr_no}>
                             {columns.map((column) => {
                               return (
                                 <TableCell key={column.id} align="left">
-                                  {column.id === "delete" ? (
-                                    // <Box
-                                    //   display="flex"
-                                    //   gap={1}
-                                    //   alignItems="left"
-                                    // >
+                                  {column.id === "physicianNote" ||
+                                  column.id === "cancelledByProviderNote" ||
+                                  column.id === "admin_notes" ||
+                                  column.id === "patient_notes" ? (
+                                    row.notes
+                                      .filter(
+                                        (note) =>
+                                          note.type_of_note === column.id,
+                                      )
+                                      .map((note, index) => (
+                                        <span key={index}>
+                                          {note.description}
+                                        </span>
+                                      ))
+                                  ) : column.id === "delete" ? (
                                     <Button
                                       name="delete"
                                       variant="outlined"
                                       size="small"
+                                      onClick={() =>
+                                        dispatch(
+                                          deleteSearchRecords(
+                                            row.confirmation_no,
+                                          ),
+                                        ).then((response) => {
+                                          if (
+                                            response.type ===
+                                            "deleteSearchRecords/fulfilled"
+                                          ) {
+                                            toast.success(
+                                              "Records Deleted Successfully",
+                                            );
+
+                                            dispatch(
+                                              getSearchRecords({
+                                                page: 1,
+                                                page_size: 10,
+                                              }),
+                                            );
+                                          }
+                                        })
+                                      }
                                     />
                                   ) : (
-                                    // </Box>
                                     row[column.id]
                                   )}
                                 </TableCell>
