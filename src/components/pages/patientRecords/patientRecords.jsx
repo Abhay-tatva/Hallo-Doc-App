@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Container,
@@ -17,9 +19,14 @@ import {
 import React, { useEffect, useState } from "react";
 import "./patientRecords.css";
 import { Button } from "../../Button/ButtonInput";
-import { columns, rows } from "../../../constant/patientRecordsData";
+import { columns } from "../../../constant/patientRecordsData";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getPatientRecords } from "../../../redux/records/recordsApi";
+import { AppRoutes } from "../../../constant/route";
+import { viewUpload } from "../../../redux/viewUpload/viewUploadApi";
+import { viewCase } from "../../../redux/viewCase/viewCaseApi";
 
 const PatientRecords = () => {
   const [page, setPage] = useState(0);
@@ -28,8 +35,15 @@ const PatientRecords = () => {
   const navigate = useNavigate();
   const [rowId, setRowId] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+
+  const { patientRecordsData } = useSelector(
+    (state) => state.root.recordsReducer,
+  );
   const open = Boolean(anchorEl);
-  useEffect(() => setTableData(rows), [rows]);
+
+  useEffect(() => setTableData(patientRecordsData), [patientRecordsData]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -45,6 +59,10 @@ const PatientRecords = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    dispatch(getPatientRecords({ page: 1, page_size: 10 }));
+  }, [dispatch]);
   return (
     <>
       <form>
@@ -87,7 +105,7 @@ const PatientRecords = () => {
                       )
                       ?.map((row) => {
                         return (
-                          <TableRow key={row.id}>
+                          <TableRow key={row.sr_no}>
                             {columns.map((column) => {
                               return (
                                 <TableCell key={column.id} align="left">
@@ -96,7 +114,9 @@ const PatientRecords = () => {
                                       <Button
                                         name="Action"
                                         variant="outlined"
-                                        onClick={(e) => handleClick(e, row.id)}
+                                        onClick={(e) =>
+                                          handleClick(e, row.sr_no)
+                                        }
                                       />
                                       <Menu
                                         id="fade-menu"
@@ -104,13 +124,18 @@ const PatientRecords = () => {
                                           "aria-labelledby": "fade-button",
                                         }}
                                         anchorEl={anchorEl}
-                                        open={open && row.id === rowId}
+                                        open={open && row.sr_no === rowId}
                                         onClose={handleClose}
                                         TransitionComponent={Fade}
                                       >
                                         <MenuItem
                                           disableRipple
-                                          onClick={handleClose}
+                                          onClick={() => {
+                                            dispatch(
+                                              viewCase(row.confirmation_no),
+                                            );
+                                            navigate(AppRoutes.RESERVATION);
+                                          }}
                                         >
                                           View Case
                                         </MenuItem>
@@ -122,7 +147,12 @@ const PatientRecords = () => {
                                         </MenuItem>
                                         <MenuItem
                                           disableRipple
-                                          onClick={handleClose}
+                                          onClick={() => {
+                                            dispatch(
+                                              viewUpload(row.confirmation_no),
+                                            );
+                                            navigate(AppRoutes.VIEWUPLOAD);
+                                          }}
                                         >
                                           0 Documents
                                         </MenuItem>

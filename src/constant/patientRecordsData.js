@@ -113,24 +113,24 @@ export const rows = [
 
 export const columns = [
   {
-    id: "client",
+    id: "client_member",
     label: "Client/Member",
   },
 
   {
-    id: "createDate",
+    id: "created_at",
     label: "Create Date",
   },
   {
-    id: "confirmation",
+    id: "confirmation_no",
     label: "Conformation",
   },
   {
-    id: "providerName",
+    id: "provider_name",
     label: "Provider Name ",
   },
   {
-    id: "concludeDate",
+    id: "concluded_date",
     label: "Conclude Date",
   },
   {
@@ -138,7 +138,7 @@ export const columns = [
     label: "Status",
   },
   {
-    id: "finalReport",
+    id: "final_report",
     label: "Final Report",
   },
   {

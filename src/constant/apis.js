@@ -121,3 +121,5 @@ export const POSTCREATEPROVIDER_API =
 // .........................................Record Api......................................../
 
 export const GETPATIENTHISTORY_API = "/admin/records/patienthistory";
+export const GETPATIENRECORDS_API = "/admin/records/patient_records";
+export const GETSEARCHRECORD_API = "/admin/records/search_records";

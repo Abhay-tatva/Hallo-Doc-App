@@ -63,7 +63,7 @@ const Records = () => {
   };
   return (
     <>
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <Box className="records-main-container">
           <Container maxWidth="xl" className="records-wrapper-conatiner">
             <Typography variant="h5" gutterBottom>
@@ -145,7 +145,7 @@ const Records = () => {
                 pb={2}
               >
                 <Button name="Clear" variant="outlined" />
-                <Button name="Search" />
+                <Button name="Search" type="submit" />
               </Box>
               <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
                 <Table>

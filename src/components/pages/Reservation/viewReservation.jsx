@@ -14,7 +14,7 @@ import { Button } from "../../Button/ButtonInput";
 import { FormInput } from "../../TextField/FormInput";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../constant/route";
 import { viewReservationSchema } from "../../ValidationSchema/index";
 import PhoneInput from "react-phone-input-2";
@@ -88,15 +88,14 @@ const ViewReservation = () => {
               </Typography>
               <span className="patient-btn">Patient</span>
             </Box>
-            <Link to={AppRoutes.DASHBOARD}>
-              <Button
-                name="back"
-                variant="outlined"
-                startIcon={<ArrowBackIosOutlinedIcon />}
-                color="primary"
-                className="form-btn"
-              />
-            </Link>
+            <Button
+              name="back"
+              variant="outlined"
+              startIcon={<ArrowBackIosOutlinedIcon />}
+              color="primary"
+              className="form-btn"
+              onClick={() => navigate(-1)}
+            />
           </Box>
 
           <form>
