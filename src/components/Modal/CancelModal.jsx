@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React from "react";
 import { Box, MenuItem, Typography } from "@mui/material";
 import { FormInput } from "../TextField/FormInput";
@@ -8,6 +10,7 @@ import { cancelModalSchema } from "../ValidationSchema/index";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelCaseUpdate } from "../../redux/cancelCase/cancelCaseApi";
 import { requestCount } from "../../redux/requestCount/requestCountApi";
+import { toast } from "react-toastify";
 
 const CancelModal = ({ open, handleClose, handleOpen }) => {
   const state = useSelector((state) => state.root.cancelCaseReducer);
@@ -28,6 +31,7 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
         }),
       ).then((response) => {
         if (response.type === "cancelCaseUpdate/fulfilled") {
+          toast.success("Case Cancel successfully...");
           dispatch(requestCount());
         }
       });

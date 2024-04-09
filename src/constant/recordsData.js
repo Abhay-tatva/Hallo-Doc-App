@@ -56,12 +56,12 @@ export const rows = [
 ];
 export const columns = [
   {
-    id: "firstName",
+    id: "firstname",
     label: "First Name",
   },
 
   {
-    id: "lastName",
+    id: "lastname",
     label: "Last Name",
   },
   {

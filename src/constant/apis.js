@@ -93,8 +93,12 @@ export const DELETEACCOUNTACCESS_API =
   "/admin/access/accountaccess/:role_id/delete";
 export const PUTACCOUNTACCESS_API =
   "/admin/access/accountaccess/:role_id/save_edit";
+export const POSTACCOUNTACCESS_API =
+  "/admin/access/accountaccess/create_access";
 
 export const GETUSERACCESS_API = "/admin/access/useraccess";
+export const GETACCESSLIST_API = "/commonroute/accesses";
+
 export const SINGLEEXPORT_API = "/commonroute/export_single";
 
 export const EXPORTALL_API = "/commonroute/export_all";
@@ -114,3 +118,6 @@ export const DELETEPROVIDER_API =
   "/admin/providermenu/provider_list/:user_id/delete_provider_account";
 export const POSTCREATEPROVIDER_API =
   "/admin/providermenu/provider_list/create_provider_account";
+// .........................................Record Api......................................../
+
+export const GETPATIENTHISTORY_API = "/admin/records/patienthistory";

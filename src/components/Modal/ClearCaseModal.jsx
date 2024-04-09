@@ -8,6 +8,7 @@ import "./modal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCase } from "../../redux/clearCase/clearCaseApi";
 import { requestCount } from "../../redux/requestCount/requestCountApi";
+import { toast } from "react-toastify";
 
 const ClearCaseModal = ({ open, handleClose, handleOpen, rowId }) => {
   const dispatch = useDispatch();
@@ -16,6 +17,8 @@ const ClearCaseModal = ({ open, handleClose, handleOpen, rowId }) => {
   const handleClearButtonClick = () => {
     dispatch(clearCase(confirmation_no)).then((response) => {
       if (response.type === "clearCase/fulfilled") {
+        toast.success("Case Clear successfully...");
+
         dispatch(requestCount());
         handleClose();
       }

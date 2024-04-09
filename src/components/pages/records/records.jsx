@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Container,
@@ -16,16 +18,42 @@ import React, { useEffect, useState } from "react";
 import "./records.css";
 import { FormInput } from "../../TextField/FormInput";
 import { Button } from "../../Button/ButtonInput";
-import { columns, rows } from "../../../constant/recordsData";
+import { columns } from "../../../constant/recordsData";
 import { AppRoutes } from "../../../constant/route";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import { getPatientHistory } from "../../../redux/records/recordsApi";
 
+const initialValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  address: "",
+};
 const Records = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
   const navigate = useNavigate();
-  useEffect(() => setTableData(rows), [rows]);
+  const dispatch = useDispatch();
+  const { patientHistoryData } = useSelector(
+    (state) => state.root.recordsReducer,
+  );
+
+  useEffect(() => {
+    dispatch(getPatientHistory({ page: 1, page_size: 10 }));
+  }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit: (values, onSubmitProps) => {
+      onSubmitProps.resetForm();
+    },
+    // validationSchema: createProviderSchema,
+  });
+  useEffect(() => setTableData(patientHistoryData), [patientHistoryData]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -44,19 +72,67 @@ const Records = () => {
             <Paper className="records-full-paper">
               <Grid container spacing={{ xs: 1, md: 2 }}>
                 <Grid item xs={12} md={3}>
-                  <FormInput label="First Name" name="firstName" fullWidth />
+                  <FormInput
+                    label="First Name"
+                    name="firstName"
+                    fullWidth
+                    value={formik.values.firstName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.firstName &&
+                      Boolean(formik.errors.firstName)
+                    }
+                    helperText={
+                      formik.touched.firstName && formik.errors.firstName
+                    }
+                  />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <FormInput label="Last Name" name="lastName" fullWidth />
+                  <FormInput
+                    label="Last Name"
+                    name="lastName"
+                    fullWidth
+                    value={formik.values.lastName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.lastName && Boolean(formik.errors.lastName)
+                    }
+                    helperText={
+                      formik.touched.lastName && formik.errors.lastName
+                    }
+                  />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <FormInput label="Email" name="email" fullWidth />
+                  <FormInput
+                    label="Email"
+                    name="email"
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="Phone Number"
                     name="phoneNumber"
                     fullWidth
+                    value={formik.values.phoneNumber}
+                    onChange={(value) =>
+                      formik.setFieldValue("phoneNumber", value)
+                    }
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.phoneNumber &&
+                      Boolean(formik.errors.phoneNumber)
+                    }
+                    helperText={
+                      formik.touched.phoneNumber && formik.errors.phoneNumber
+                    }
                   />
                 </Grid>
               </Grid>

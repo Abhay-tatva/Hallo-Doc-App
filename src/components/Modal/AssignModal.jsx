@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { assignCase } from "../../redux/assignCase/assignCaseApi";
 import { requestCount } from "../../redux/requestCount/requestCountApi";
+import { toast } from "react-toastify";
 
 const AssignModal = ({ open, handleClose, handleOpen }) => {
   const { physicians } = useSelector(
@@ -39,6 +40,7 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
         }),
       ).then((response) => {
         if (response.type === "assignCase/fulfilled") {
+          toast.success("Case Assign Successfully...");
           dispatch(requestCount());
         }
       });

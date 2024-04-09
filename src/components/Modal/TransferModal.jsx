@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React from "react";
 import { Box, MenuItem, Typography } from "@mui/material";
 import { FormInput } from "../TextField/FormInput";
@@ -8,6 +10,7 @@ import { transferModalSchema } from "../ValidationSchema/index";
 import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { transferCase } from "../../redux/transferCase/transferCaseApi";
+import { toast } from "react-toastify";
 
 const TransferModal = ({ open, handleClose, handleOpen }) => {
   const { physicians } = useSelector(
@@ -35,7 +38,11 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
           lastname: name[1],
           description: values.description,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "transferCase/fulfilled") {
+          toast.success("Transfer Case Successfully...");
+        }
+      });
       onSubmitProps.resetForm();
       handleClose();
     },

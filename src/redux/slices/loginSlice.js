@@ -18,10 +18,10 @@ export const loginSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(userLogin.fulfilled, (state, action) => {
-      if (action.payload.jwtToken) {
+      if (action.payload.jwt_token) {
         state.isLoading = false;
         state.isLoggedIn = true;
-        state.jwtToken = action.payload.jwtToken;
+        state.jwtToken = action.payload.jwt_token;
       }
     });
     builder.addCase(userLogin.pending, (state, action) => {

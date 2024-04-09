@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Checkbox,
@@ -8,31 +10,88 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../Button/ButtonInput";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { useNavigate } from "react-router-dom";
 import { FormInput } from "../../TextField/FormInput";
 import "./createAccess.css";
 import { useFormik } from "formik";
-import { CreateAccessSchema } from "../../ValidationSchema";
-import { useDispatch } from "react-redux";
-import { accountAccessPut } from "../../../redux/accountAccess/accountAccessApi";
+// import { CreateAccessSchema } from "../../ValidationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  accountAccessPost,
+  accountAccessPut,
+  getAccountAccessList,
+} from "../../../redux/accountAccess/accountAccessApi";
+import { clearCreateData } from "../../../redux/slices/accountAccessSlice";
+import { AppRoutes } from "../../../constant/route";
+
+const INITIAL_VALUES = {
+  role_name: "",
+  account_type: "all",
+  access_ids: [],
+};
 
 const CreateAccess = () => {
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { accountListData, createData } = useSelector(
+    (state) => state.root.accountAccessReducer,
+  );
   const formik = useFormik({
-    initialValues: {
-      rolename: "",
-      role: "all",
-    },
-    validationSchema: CreateAccessSchema,
+    initialValues,
+    // validationSchema: CreateAccessSchema,
     onSubmit: (values) => {
       console.log("Form submitted", values);
     },
+    enableReinitialize: true,
   });
+
+  useEffect(() => {
+    dispatch(getAccountAccessList(formik.values.account_type));
+  }, [dispatch, formik.values.account_type]);
+
+  useEffect(() => {
+    setInitialValues({
+      role_name: createData.role_name || "",
+      account_type: createData.account_type || "all",
+      access_ids: createData.accesses?.map((access) => access.access_id) || [],
+    });
+  }, [createData]);
+
+  const handleChangeRoles = (id) => {
+    const newRoles = formik.values.access_ids.includes(id)
+      ? formik.values.access_ids.filter(
+          (selectedRoleId) => selectedRoleId !== id,
+        )
+      : [...formik.values.access_ids, id];
+    formik.setFieldValue("access_ids", newRoles);
+  };
+
+  const handleSave = () => {
+    if (createData?.role_id) {
+      dispatch(
+        accountAccessPut({ role_id: createData.role_id, data: formik.values }),
+      ).then((response) => {
+        if (response.type === "accountAccessPut/fulfilled") {
+          dispatch(clearCreateData());
+          navigate(AppRoutes.ACCESSACCOUNT);
+        }
+      });
+    } else {
+      dispatch(accountAccessPost(formik.values)).then((response) => {
+        if (response.type === "accountAccessPost/fulfilled") {
+          dispatch(clearCreateData());
+          navigate(AppRoutes.ACCESSACCOUNT);
+        }
+      });
+    }
+  };
+
   return (
     <>
       <Box className="main-createaccess-container">
@@ -49,40 +108,49 @@ const CreateAccess = () => {
                 variant="outlined"
                 startIcon={<ArrowBackIosOutlinedIcon />}
                 color="primary"
-                onClick={() => navigate(-1)}
+                onClick={() => {
+                  dispatch(clearCreateData());
+                  navigate(-1);
+                }}
               />
             </Box>
             <Paper className="createacces-full-paper">
               <Grid container spacing={{ xs: 1, md: 2 }} margin="2rem">
                 <Grid item xs={12} md={6} lg={6}>
                   <FormInput
-                    name="rolename"
+                    name="role_name"
                     label="Role Name"
                     fullWidth
                     className="form-input"
                     onChange={formik.handleChange}
-                    value={formik.values.rolename}
+                    value={formik.values.role_name}
                     onBlur={formik.handleBlur}
                     error={
-                      formik.touched.rolename && Boolean(formik.errors.rolename)
+                      formik.touched.role_name &&
+                      Boolean(formik.errors.role_name)
                     }
                     helperText={
-                      formik.touched.rolename && formik.errors.rolename
+                      formik.touched.role_name && formik.errors.role_name
                     }
                   />
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
                   <FormInput
-                    name="role"
+                    name="account_type"
                     label="Account Type"
                     select
                     fullWidth
                     className="form-input"
-                    value={formik.values.role}
+                    value={formik.values.account_type}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={formik.touched.role && Boolean(formik.errors.role)}
-                    helperText={formik.touched.role && formik.errors.role}
+                    error={
+                      formik.touched.account_type &&
+                      Boolean(formik.errors.account_type)
+                    }
+                    helperText={
+                      formik.touched.account_type && formik.errors.account_type
+                    }
                   >
                     <MenuItem value="all">All</MenuItem>
                     <MenuItem value="admin">Admin</MenuItem>
@@ -91,180 +159,34 @@ const CreateAccess = () => {
                   </FormInput>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                  {formik.values.role !== "patient" && (
-                    <>
-                      {(formik.values.role === "all" ||
-                        formik.values.role !== "physician" ||
-                        formik.values.role === "admin") && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="Regions"
-                        />
-                      )}
-                      {(formik.values.role === "all" ||
-                        formik.values.role !== "physician" ||
-                        formik.values.role === "admin") && (
-                        <>
-                          <FormControlLabel
-                            control={<Checkbox size="medium" />}
-                            label="Scheduling"
+                  {accountListData?.map((role) => {
+                    return (
+                      <FormControlLabel
+                        key={role.access_id}
+                        control={
+                          <Checkbox
+                            checked={formik.values.access_ids.includes(
+                              role.access_id,
+                            )}
+                            onChange={() => handleChangeRoles(role.access_id)}
                           />
-
-                          <FormControlLabel
-                            control={<Checkbox size="medium" />}
-                            label="History"
-                          />
-                          <FormControlLabel
-                            control={<Checkbox size="medium" />}
-                            label="Accounts"
-                          />
-                          <FormControlLabel
-                            control={<Checkbox size="medium" />}
-                            label="MyProfile"
-                          />
-                        </>
-                      )}
-                      {(formik.values.role === "physician" ||
-                        formik.values.role === "all" ||
-                        formik.values.role === "admin") && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="Dashboard"
-                        />
-                      )}
-
-                      {(formik.values.role !== "admin" ||
-                        formik.values.role === "all" ||
-                        formik.values.role === "physician") && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="History"
-                        />
-                      )}
-                      {(formik.values.role !== "admin" ||
-                        formik.values.role === "all" ||
-                        formik.values.role === "physician") && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="MySchedule"
-                        />
-                      )}
-
-                      {(formik.values.role == "admin" ||
-                        formik.values.role === "all" ||
-                        formik.values.role === "physician") && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="MyProfile"
-                        />
-                      )}
-                      {(formik.values.role == "admin" ||
-                        formik.values.role === "all" ||
-                        formik.values.role !== "physician") && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="Role"
-                        />
-                      )}
-                      {(formik.values.role == "admin" ||
-                        formik.values.role === "all" ||
-                        formik.values.role !== "physician") && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="Provider"
-                        />
-                      )}
-                      {(formik.values.role == "admin" ||
-                        formik.values.role === "all" ||
-                        formik.values.role !== "physician") && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="RequestData"
-                        />
-                      )}
-                      {formik.values.role !== "admin" && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="SendOrder"
-                        />
-                      )}
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="vendorsinfo"
+                        }
+                        label={role.access_name}
                       />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="Profession"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="SendOrder"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="EmailLogs"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="HaloAdministrators"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="HaloUsers"
-                      />
-                      {formik.values.role !== "admin" && (
-                        <FormControlLabel
-                          control={<Checkbox size="medium" />}
-                          label="Dashboard"
-                        />
-                      )}
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="CancelledHistory"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="ProviderLocation"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="HaloEmployee"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="HaloWorkPlace"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="Chat"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="PatientRecords"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="BlockedHistory"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="Invoicing"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox size="medium" />}
-                        label="SMSLogs"
-                      />
-                    </>
-                  )}
+                    );
+                  })}
                 </Grid>
               </Grid>
               <Box display="flex" justifyContent="flex-end" gap={2} mt={4}>
+                <Button type="submit" name="Save" onClick={handleSave} />
                 <Button
-                  type="submit"
-                  name="Save"
-                  onClick={() => dispatch(accountAccessPut({}))}
+                  name="Cancel"
+                  variant="outlined"
+                  onClick={() => {
+                    dispatch(clearCreateData());
+                    navigate(AppRoutes.ACCESSACCOUNT);
+                  }}
                 />
-                <Button name="Cancel" variant="outlined" />
               </Box>
             </Paper>
           </Container>
