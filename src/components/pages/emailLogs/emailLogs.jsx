@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Container,
@@ -18,13 +20,23 @@ import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { Button } from "../../Button/ButtonInput";
 import { FormInput } from "../../TextField/FormInput";
 import "./emailLogs.css";
-import { columns, rows } from "../../../constant/emailLogsData";
+import { columns } from "../../../constant/emailLogsData";
+import { useDispatch, useSelector } from "react-redux";
+import { getLogs } from "../../../redux/records/recordsApi";
 
 const EmailLogs = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
-  useEffect(() => setTableData(rows), [rows]);
+  const dispatch = useDispatch();
+  const { logs } = useSelector((state) => state.root.recordsReducer);
+
+  useEffect(() => setTableData(logs), [logs]);
+
+  useEffect(() => {
+    dispatch(getLogs({ page: 1, page_size: 10, type_of_log: "email" }));
+  }, [dispatch]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

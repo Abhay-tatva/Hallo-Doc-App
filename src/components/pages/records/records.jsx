@@ -26,16 +26,17 @@ import { useFormik } from "formik";
 import { getPatientHistory } from "../../../redux/records/recordsApi";
 
 const initialValues = {
-  firstName: "",
-  lastName: "",
+  firstname: "",
+  lastname: "",
   email: "",
-  phone: "",
+  phone_no: "",
   address: "",
 };
 const Records = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { patientHistoryData } = useSelector(
@@ -43,12 +44,27 @@ const Records = () => {
   );
 
   useEffect(() => {
-    dispatch(getPatientHistory({ page: 1, page_size: 10 }));
+    dispatch(
+      getPatientHistory({
+        page: 1,
+        page_size: 10,
+      }),
+    );
   }, [dispatch]);
 
   const formik = useFormik({
     initialValues,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(
+        getPatientHistory({
+          page: 1,
+          page_size: 10,
+          firstname: values.firstname,
+          lastname: values.lastname,
+          email: values.email,
+          phone_no: values.phone_no,
+        }),
+      );
       onSubmitProps.resetForm();
     },
     // validationSchema: createProviderSchema,
@@ -74,33 +90,33 @@ const Records = () => {
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="First Name"
-                    name="firstName"
+                    name="firstname"
                     fullWidth
-                    value={formik.values.firstName}
+                    value={formik.values.firstname}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={
-                      formik.touched.firstName &&
-                      Boolean(formik.errors.firstName)
+                      formik.touched.firstname &&
+                      Boolean(formik.errors.firstname)
                     }
                     helperText={
-                      formik.touched.firstName && formik.errors.firstName
+                      formik.touched.firstname && formik.errors.firstname
                     }
                   />
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="Last Name"
-                    name="lastName"
+                    name="lastname"
                     fullWidth
-                    value={formik.values.lastName}
+                    value={formik.values.lastname}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={
-                      formik.touched.lastName && Boolean(formik.errors.lastName)
+                      formik.touched.lastname && Boolean(formik.errors.lastname)
                     }
                     helperText={
-                      formik.touched.lastName && formik.errors.lastName
+                      formik.touched.lastname && formik.errors.lastname
                     }
                   />
                 </Grid>
@@ -119,20 +135,13 @@ const Records = () => {
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="Phone Number"
-                    name="phoneNumber"
+                    name="phone_no"
                     fullWidth
-                    value={formik.values.phoneNumber}
-                    onChange={(value) =>
-                      formik.setFieldValue("phoneNumber", value)
+                    value={formik.values?.phone_no?.toString()}
+                    onChange={(event) =>
+                      formik.setFieldValue("phone_no", event.target.value)
                     }
                     onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.phoneNumber &&
-                      Boolean(formik.errors.phoneNumber)
-                    }
-                    helperText={
-                      formik.touched.phoneNumber && formik.errors.phoneNumber
-                    }
                   />
                 </Grid>
               </Grid>

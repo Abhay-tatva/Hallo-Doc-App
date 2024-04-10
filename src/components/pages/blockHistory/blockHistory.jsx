@@ -22,8 +22,18 @@ import { FormInput } from "../../TextField/FormInput";
 import { Button } from "../../Button/ButtonInput";
 import { columns } from "../../../constant/blockHistory";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlockHistory } from "../../../redux/records/recordsApi";
+import {
+  getBlockHistory,
+  putUnblockHistory,
+} from "../../../redux/records/recordsApi";
+import { toast } from "react-toastify";
+import { useFormik } from "formik";
 
+const initialValues = {
+  name: "",
+  email: "",
+  phone_no: "",
+};
 const BlockHistory = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -41,11 +51,28 @@ const BlockHistory = () => {
       getBlockHistory({
         page: 1,
         page_size: 10,
-        type_of_history: "cancelled",
-        date: "05 - 12 - 2002",
+        type_of_history: "blocked",
+        // date: "05 - 12 - 2002",
       }),
     );
   }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit: (values, onSubmitProps) => {
+      dispatch(
+        getBlockHistory({
+          page: 1,
+          page_size: 10,
+          type_of_history: "blocked",
+          name: values.name,
+          email: values.email,
+          phone_no: values.phone_no,
+        }),
+      );
+      onSubmitProps.resetForm();
+    },
+  });
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -87,7 +114,7 @@ const BlockHistory = () => {
   };
   return (
     <>
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <Box className="records-main-container">
           <Container maxWidth="xl" className="records-wrapper-conatiner">
             <Typography variant="h5" gutterBottom>
@@ -96,19 +123,51 @@ const BlockHistory = () => {
             <Paper className="records-full-paper">
               <Grid container spacing={{ xs: 1, md: 2 }}>
                 <Grid item xs={12} md={3}>
-                  <FormInput label=" Name" name="name" fullWidth />
+                  <FormInput
+                    label="Name"
+                    name="name"
+                    fullWidth
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.name && Boolean(formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
+                  />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <FormInput name="date" fullWidth type="date" />
+                  <FormInput
+                    name="date"
+                    fullWidth
+                    type="date"
+                    value={formik.values.date}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.date && Boolean(formik.errors.date)}
+                    helperText={formik.touched.date && formik.errors.date}
+                  />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <FormInput label="Email" name="email" fullWidth />
+                  <FormInput
+                    label="Email"
+                    name="email"
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="Phone Number"
-                    name="phoneNumber"
+                    name="phone_no"
                     fullWidth
+                    value={formik.values?.phone_no?.toString()}
+                    onChange={(event) =>
+                      formik.setFieldValue("phone_no", event.target.value)
+                    }
+                    onBlur={formik.handleBlur}
                   />
                 </Grid>
               </Grid>
@@ -121,7 +180,7 @@ const BlockHistory = () => {
                 pb={2}
               >
                 <Button name="Clear" variant="outlined" />
-                <Button name="Search" />
+                <Button name="Search" type="submit" />
               </Box>
               <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
                 <Table>
@@ -154,7 +213,33 @@ const BlockHistory = () => {
                               return (
                                 <TableCell key={column.id} align="center">
                                   {column.id === "action" ? (
-                                    <Button name="Unblock" variant="outlined" />
+                                    <Button
+                                      name="Unblock"
+                                      variant="outlined"
+                                      onClick={() => {
+                                        dispatch(
+                                          putUnblockHistory(
+                                            row.request_confirmation_no,
+                                          ),
+                                        ).then((response) => {
+                                          if (
+                                            response.type ===
+                                            "putUnblockHistory/fulfilled"
+                                          ) {
+                                            toast.success(
+                                              "Case Unblock Successfully",
+                                            );
+                                            dispatch(
+                                              getBlockHistory({
+                                                page: 1,
+                                                page_size: 10,
+                                                type_of_history: "blocked",
+                                              }),
+                                            );
+                                          }
+                                        });
+                                      }}
+                                    />
                                   ) : column.id === "isActive" ? (
                                     <Checkbox
                                       size="large"

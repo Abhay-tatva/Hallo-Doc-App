@@ -38,7 +38,7 @@ export const PUTBLOCKCASE_API =
 export const CLEARCASE_API =
   "/admin/dashboard/requests/:confirmation_no/actions/clearcase";
 export const SENDAGREEMENT_API =
-  "/admin/dashboard/requests/:confirmation_no/actions/sendagreement";
+  "/common/dashboard/requests/:confirmation_no/actions/sendagreement";
 
 export const COMMON_API = "/commonroute/:confirmation_no/actions";
 
@@ -126,3 +126,16 @@ export const GETSEARCHRECORD_API = "/admin/records/search_records";
 export const DELETESEARCHRECORD_API =
   "/admin/records/:confirmation_no/search_records_delete";
 export const GETBLOCKHISTORY_API = "/admin/records/cancel_block_history";
+export const PUTUNBLOCKHISTORY_API =
+  "/admin/records/:confirmation_no/block_history_unblock";
+export const GETLOGS = "/admin/records/logs";
+
+// .......................................Partners Api.................................
+
+export const GETPARTNERSLIST_API = "/admin/partners/partners_vendorslist";
+export const POSTADDBUSSINESS_API = "/admin/partners/add_business";
+export const DELETEPARTNER_API = "/admin/partners/:business_id/delete_vendor";
+export const GETBUSINESSVIEW_API =
+  "/admin/partners/:business_id/update_business_view";
+export const PUTBUSINESSUPDATE_API =
+  "/admin/partners/:business_id/update_business";

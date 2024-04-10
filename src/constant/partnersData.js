@@ -68,7 +68,7 @@ export const columns = [
   },
 
   {
-    id: "bussinessName",
+    id: "business_name",
     label: "Bussiness Name",
   },
   {
@@ -76,15 +76,15 @@ export const columns = [
     label: "Email",
   },
   {
-    id: "faxNumber",
+    id: "fax_number",
     label: "Fax Number",
   },
   {
-    id: "phoneNumber",
+    id: "mobile_no",
     label: "Phone Number",
   },
   {
-    id: "bussinessContact",
+    id: "business_contact",
     label: "Bussiness Contact",
   },
   {

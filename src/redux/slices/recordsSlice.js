@@ -3,6 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getBlockHistory,
+  getLogs,
   getPatientHistory,
   getPatientRecords,
   getSearchRecords,
@@ -15,6 +16,7 @@ const records = createSlice({
     patientRecordsData: [],
     searchRecord: [],
     blockHistory: [],
+    logs: [],
   },
   extraReducers: (builder) => {
     builder.addCase(getPatientHistory.fulfilled, (state, action) => {
@@ -35,6 +37,11 @@ const records = createSlice({
     builder.addCase(getBlockHistory.fulfilled, (state, action) => {
       if (action.payload) {
         state.blockHistory = action.payload.data;
+      }
+    });
+    builder.addCase(getLogs.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.logs = action.payload.data;
       }
     });
   },

@@ -15,24 +15,40 @@ import {
   Typography,
 } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FormInput } from "../../TextField/FormInput";
 import { Button } from "../../Button/ButtonInput";
 import "./partners.css";
-import { columns, rows } from "../../../constant/partnersData";
+import { columns } from "../../../constant/partnersData";
 import { AppRoutes } from "../../../constant/route";
 import { useNavigate } from "react-router-dom";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import {
+  deletePartners,
+  getBusinessView,
+  getPartners,
+} from "../../../redux/partners/partnersApi";
+import { toast } from "react-toastify";
 
 const Partners = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
-  const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
-  useEffect(() => setTableData(rows), [rows]);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const { partnersList } = useSelector((state) => state.root.partnersReducer);
+
+  useEffect(() => setTableData(partnersList), [partnersList]);
+
+  useEffect(() => {
+    dispatch(getPartners());
+  }, [dispatch]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -129,7 +145,7 @@ const Partners = () => {
                       )
                       ?.map((row) => {
                         return (
-                          <TableRow key={row.id}>
+                          <TableRow key={row.business_id}>
                             {columns.map((column) => {
                               return (
                                 <TableCell key={column.id} align="left">
@@ -143,15 +159,38 @@ const Partners = () => {
                                         name="Edit"
                                         variant="outlined"
                                         size="small"
-                                        // onClick={handleOpen}
+                                        onClick={() =>
+                                          dispatch(
+                                            getBusinessView(row.business_id),
+                                          ).then((response) => {
+                                            if (
+                                              response.type ===
+                                              "getBusinessView/fulfilled"
+                                            ) {
+                                              navigate(AppRoutes.ADDBUSSINESS);
+                                            }
+                                          })
+                                        }
                                       />
                                       <Button
                                         name="Delete"
                                         variant="outlined"
                                         size="small"
-                                        // onClick={() =>
-                                        //   navigate(AppRoutes.EDITACCOUNT)
-                                        // }
+                                        onClick={() =>
+                                          dispatch(
+                                            deletePartners(row.business_id),
+                                          ).then((response) => {
+                                            if (
+                                              response.type ===
+                                              "deletePartners/fulfilled"
+                                            ) {
+                                              toast.success(
+                                                "business Deleted Successfully",
+                                              );
+                                              dispatch(getPartners());
+                                            }
+                                          })
+                                        }
                                       />
                                     </Box>
                                   ) : (
@@ -169,7 +208,7 @@ const Partners = () => {
               <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
-                count={tableData.length}
+                count={tableData?.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

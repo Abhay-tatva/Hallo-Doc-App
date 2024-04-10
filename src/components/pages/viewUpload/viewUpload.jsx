@@ -145,7 +145,7 @@ const ViewUpload = () => {
           // Assuming the binary data you received is an image,
           // we set the MIME type to 'image/jpeg' for a JPG file.
           const blob = new Blob([response.payload], {
-            type: "image/jpeg",
+            type: "image/png",
           });
 
           // Create a new link element for downloading
@@ -155,7 +155,7 @@ const ViewUpload = () => {
 
           // Set the download attribute with a filename
           downloadLink.href = url;
-          downloadLink.download = `downloaded-image.jpg`;
+          downloadLink.download = `downloaded-image.png`;
 
           // Programmatically click the link to trigger the download
           downloadLink.click();

@@ -48,11 +48,11 @@ export const rows = [
 
 export const columns = [
   {
-    id: "patientName",
+    id: "patient_name",
     label: "Patient Name",
   },
   {
-    id: "phoneNumber",
+    id: "phone",
     label: "Phone Number",
   },
   {
@@ -60,7 +60,7 @@ export const columns = [
     label: "Email",
   },
   {
-    id: "createDate",
+    id: "created_date",
     label: "Create Date",
   },
   {
@@ -68,7 +68,7 @@ export const columns = [
     label: "Notes",
   },
   {
-    id: "isActive",
+    id: "is_active",
     label: "isActive",
   },
   {

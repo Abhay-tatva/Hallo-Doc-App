@@ -31,13 +31,14 @@ import {
 import { toast } from "react-toastify";
 
 const initialValues = {
-  requestStatus: "",
-  patientName: "",
-  requetType: "",
-  serviceDate: "",
-  toServiceDate: "",
-  providerName: "",
-  phoneNumber: "",
+  request_status: "",
+  patient_name: "",
+  request_type: "",
+  from_date_of_service: "",
+  to_date_of_service: "",
+  provider_name: "",
+  phone_no: "",
+  email: "",
 };
 const SearchRecords = () => {
   const [page, setPage] = useState(0);
@@ -62,6 +63,19 @@ const SearchRecords = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(
+        getSearchRecords({
+          page: 1,
+          page_size: 10,
+          request_status: values.request_status,
+          patient_name: values.patient_name,
+          email: values.email,
+          phrequest_typeone_no: values.request_type,
+          from_date_of_service: values.from_date_of_service,
+          provider_name: values.provider_name,
+          phone_no: values.phone_no,
+        }),
+      );
       onSubmitProps.resetForm();
     },
     // validationSchema: createProviderSchema,
@@ -105,7 +119,7 @@ const SearchRecords = () => {
   };
   return (
     <>
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <Box className="searchrecord-main-container">
           <Container maxWidth="80%" className="searchrecord-wrapper-container">
             <Box display="flex" justifyContent="space-between " mb={2}>
@@ -123,19 +137,19 @@ const SearchRecords = () => {
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="Select Request Status"
-                    name="requestStatus"
+                    name="request_status"
                     fullWidth
                     select
-                    value={formik.values.requestStatus}
+                    value={formik.values.request_status}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={
-                      formik.touched.requestStatus &&
-                      Boolean(formik.errors.requestStatus)
+                      formik.touched.request_status &&
+                      Boolean(formik.errors.request_status)
                     }
                     helperText={
-                      formik.touched.requestStatus &&
-                      formik.errors.requestStatus
+                      formik.touched.request_status &&
+                      formik.errors.request_status
                     }
                   >
                     <MenuItem>fullfill</MenuItem>
@@ -145,16 +159,37 @@ const SearchRecords = () => {
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="Patient Name"
-                    name="patientName"
+                    name="patient_name"
                     fullWidth
+                    value={formik.values.patient_name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.patient_name &&
+                      Boolean(formik.errors.patient_name)
+                    }
+                    helperText={
+                      formik.touched.patient_name && formik.errors.patient_name
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="select Request Type"
-                    name="requetType"
+                    name="phrequest_typeone_no"
                     fullWidth
                     select
+                    value={formik.values.phrequest_typeone_no}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.phrequest_typeone_no &&
+                      Boolean(formik.errors.phrequest_typeone_no)
+                    }
+                    helperText={
+                      formik.touched.phrequest_typeone_no &&
+                      formik.errors.phrequest_typeone_no
+                    }
                   >
                     <MenuItem>completed</MenuItem>
                     <MenuItem>pending</MenuItem>
@@ -164,9 +199,20 @@ const SearchRecords = () => {
                 <Grid item xs={12} md={3}>
                   <FormInput
                     // label="Form data of service"
-                    name="serviceDate"
+                    name="from_date_of_service"
                     fullWidth
                     type="date"
+                    value={formik.values.from_date_of_service}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.from_date_of_service &&
+                      Boolean(formik.errors.from_date_of_service)
+                    }
+                    helperText={
+                      formik.touched.from_date_of_service &&
+                      formik.errors.from_date_of_service
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={3}>
@@ -175,23 +221,65 @@ const SearchRecords = () => {
                     name="toServiceDate"
                     fullWidth
                     type="date"
+                    value={formik.values.toServiceDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.toServiceDate &&
+                      Boolean(formik.errors.toServiceDate)
+                    }
+                    helperText={
+                      formik.touched.toServiceDate &&
+                      formik.errors.toServiceDate
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="Provider Name"
-                    name="providerName"
+                    name="provider_name"
                     fullWidth
+                    value={formik.values.provider_name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.provider_name &&
+                      Boolean(formik.errors.provider_name)
+                    }
+                    helperText={
+                      formik.touched.provider_name &&
+                      formik.errors.provider_name
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <FormInput label="Email" name="email" fullWidth />
+                  <FormInput
+                    label="Email"
+                    name="email"
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="Phone Number"
-                    name="phoneNumber"
+                    name="phone_no"
                     fullWidth
+                    value={formik.values?.phone_no?.toString()}
+                    onChange={(event) =>
+                      formik.setFieldValue("phone_no", event.target.value)
+                    }
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.phone_no && Boolean(formik.errors.phone_no)
+                    }
+                    helperText={
+                      formik.touched.phone_no && formik.errors.phone_no
+                    }
                   />
                 </Grid>
               </Grid>
@@ -203,7 +291,9 @@ const SearchRecords = () => {
                 mb={2}
               >
                 <Button variant="outlined">Clear</Button>
-                <Button variant="contained">Search</Button>
+                <Button variant="contained" type="submit">
+                  Search
+                </Button>
               </Box>
               <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
                 <Table>
