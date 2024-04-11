@@ -20,11 +20,17 @@ import { CreateModalSchema } from "../ValidationSchema/CreateShiftModalSchema";
 
 const CreateShift = ({ open, handleClose, handleOpen }) => {
   const [checked, setChecked] = useState(false);
+  // const [repeatDays, setRepeatDays] = useState("");
 
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
       physician: "",
+      date: "",
+      startTime: "",
+      endTime: "",
+      repeatDays: "",
+      repeatEnd: "",
     },
     validationSchema: CreateModalSchema,
     onSubmit: (values, onSubmitProps) => {

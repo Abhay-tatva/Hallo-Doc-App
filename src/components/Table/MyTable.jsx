@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -39,6 +41,7 @@ import { getCloseCase } from "../../redux/closeCase/closeCaseApi";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
 const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
+  const [pageNo, setPageNo] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [page, setPage] = React.useState(0);
@@ -48,6 +51,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   const navigate = useNavigate();
   const state = useSelector((state) => state.root.newStateReducer);
   const rows = state?.data?.data;
+
   const dispatch = useDispatch();
   const [confirmno, setConfirmNo] = useState("");
 
@@ -74,6 +78,8 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -99,9 +105,18 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
         state: stateButton,
         search: searchTerm,
         region: additionalFilter,
+        page_size: rowsPerPage,
+        page: pageNo,
       }),
     );
-  }, [stateButton, dispatch, additionalFilter, searchTerm]);
+  }, [
+    stateButton,
+    dispatch,
+    additionalFilter,
+    searchTerm,
+    rowsPerPage,
+    pageNo,
+  ]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -264,126 +279,124 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData
-                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                ?.map((row) => {
-                  return (
-                    <TableRow
-                      key={row.confirmationNo}
-                      className={`requestor-${row.requestor?.toLowerCase()}`}
-                    >
-                      <TableCell>{row.patient_data.name}</TableCell>
-                      <TableCell>
-                        <EmailOutlinedIcon />
-                      </TableCell>
+              {tableData?.map((row) => {
+                return (
+                  <TableRow
+                    key={row.confirmationNo}
+                    className={`requestor-${row.requestor?.toLowerCase()}`}
+                  >
+                    <TableCell>{row.patient_data.name}</TableCell>
+                    <TableCell>
+                      <EmailOutlinedIcon />
+                    </TableCell>
 
-                      {stateButton !== "unpaid" && (
-                        <TableCell>{row.patient_data.DOB}</TableCell>
-                      )}
-                      {stateButton === "toclose" && (
-                        <TableCell>{row.patient_data.region}</TableCell>
-                      )}
-                      {(stateButton === "new" ||
-                        stateButton === "pending" ||
-                        stateButton === "active") && (
-                        <TableCell>
-                          {row.requestor},{row?.requestor_data?.firstname}
-                          {row?.requestor_data?.last_name}
-                        </TableCell>
-                      )}
-                      {(stateButton === "pending" ||
-                        stateButton === "active" ||
-                        stateButton === "conclude" ||
-                        stateButton === "toclose" ||
-                        stateButton === "unpaid") && (
-                        <TableCell>{row?.physician_data?.name}</TableCell>
-                      )}
-                      {(stateButton === "pending" ||
-                        stateButton === "active" ||
-                        stateButton === "conclude" ||
-                        stateButton === "toclose" ||
-                        stateButton === "unpaid") && (
-                        <TableCell>{row?.date_of_service}</TableCell>
-                      )}
-                      {stateButton === "new" && (
-                        <TableCell>{row.requested_date}</TableCell>
-                      )}
-                      {stateButton !== "toclose" && (
-                        <TableCell>
-                          <Button
-                            className="phone-btn"
-                            name={row.patient_data.mobile_no}
-                            startIcon={<LocalPhoneOutlinedIcon />}
-                            variant="outlined"
-                            color="inherit"
-                            onClick={(e) => {
-                              copyButtonText(row.confirmationNo, e);
-                            }}
-                          />
-                          {copiedStates[row.request_id]}
-                        </TableCell>
-                      )}
-                      <TableCell>{row.patient_data.address}</TableCell>
-                      {(stateButton === "new" ||
-                        stateButton === "pending" ||
-                        stateButton === "active" ||
-                        stateButton === "toclose") && (
-                        <TableCell>{row.notes[0]?.description}</TableCell>
-                      )}
+                    {stateButton !== "unpaid" && (
+                      <TableCell>{row.patient_data.DOB}</TableCell>
+                    )}
+                    {stateButton === "toclose" && (
+                      <TableCell>{row.patient_data.region}</TableCell>
+                    )}
+                    {(stateButton === "new" ||
+                      stateButton === "pending" ||
+                      stateButton === "active") && (
                       <TableCell>
-                        <Button
-                          className="phone-btn"
-                          name="Provider"
-                          startIcon={<PersonOutlineOutlinedIcon />}
-                          variant="outlined"
-                          color="inherit"
-                        />
+                        {row.requestor},{row?.requestor_data?.firstname}
+                        {row?.requestor_data?.last_name}
                       </TableCell>
+                    )}
+                    {(stateButton === "pending" ||
+                      stateButton === "active" ||
+                      stateButton === "conclude" ||
+                      stateButton === "toclose" ||
+                      stateButton === "unpaid") && (
+                      <TableCell>{row?.physician_data?.name}</TableCell>
+                    )}
+                    {(stateButton === "pending" ||
+                      stateButton === "active" ||
+                      stateButton === "conclude" ||
+                      stateButton === "toclose" ||
+                      stateButton === "unpaid") && (
+                      <TableCell>{row?.date_of_service}</TableCell>
+                    )}
+                    {stateButton === "new" && (
+                      <TableCell>{row.requested_date}</TableCell>
+                    )}
+                    {stateButton !== "toclose" && (
                       <TableCell>
                         <Button
                           className="phone-btn"
-                          name="Action"
+                          name={row.patient_data.mobile_no}
+                          startIcon={<LocalPhoneOutlinedIcon />}
                           variant="outlined"
                           color="inherit"
                           onClick={(e) => {
-                            handleClick(e, row.confirmation_no);
+                            copyButtonText(row.confirmationNo, e);
                           }}
                         />
-                        {
-                          <Menu
-                            id="fade-menu"
-                            MenuListProps={{
-                              "aria-labelledby": "fade-button",
-                            }}
-                            anchorEl={anchorEl}
-                            open={open && row.confirmation_no === confirmno}
-                            onClose={handleClose}
-                            TransitionComponent={Fade}
-                          >
-                            {dropDown.map((data) => {
-                              return (
-                                <MenuItem
-                                  key={data.id}
-                                  onClick={() => handleClose(data.name)}
-                                  disableRipple
-                                >
-                                  {data.icon}&nbsp;{data.name}
-                                </MenuItem>
-                              );
-                            })}
-                          </Menu>
-                        }
+                        {copiedStates[row.request_id]}
                       </TableCell>
-                    </TableRow>
-                  );
-                })}
+                    )}
+                    <TableCell>{row.patient_data.address}</TableCell>
+                    {(stateButton === "new" ||
+                      stateButton === "pending" ||
+                      stateButton === "active" ||
+                      stateButton === "toclose") && (
+                      <TableCell>{row.notes[0]?.description}</TableCell>
+                    )}
+                    <TableCell>
+                      <Button
+                        className="phone-btn"
+                        name="Provider"
+                        startIcon={<PersonOutlineOutlinedIcon />}
+                        variant="outlined"
+                        color="inherit"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        className="phone-btn"
+                        name="Action"
+                        variant="outlined"
+                        color="inherit"
+                        onClick={(e) => {
+                          handleClick(e, row.confirmation_no);
+                        }}
+                      />
+                      {
+                        <Menu
+                          id="fade-menu"
+                          MenuListProps={{
+                            "aria-labelledby": "fade-button",
+                          }}
+                          anchorEl={anchorEl}
+                          open={open && row.confirmation_no === confirmno}
+                          onClose={handleClose}
+                          TransitionComponent={Fade}
+                        >
+                          {dropDown.map((data) => {
+                            return (
+                              <MenuItem
+                                key={data.id}
+                                onClick={() => handleClose(data.name)}
+                                disableRipple
+                              >
+                                {data.icon}&nbsp;{data.name}
+                              </MenuItem>
+                            );
+                          })}
+                        </Menu>
+                      }
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={tableData?.length}
+          count={state.data.total_count}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

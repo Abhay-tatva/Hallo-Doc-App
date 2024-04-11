@@ -12,8 +12,13 @@ import Axios from "../../Config/axios";
 export const getPartners = createAsyncThunk(
   "getPartners",
   async (params, { rejectWithValue }) => {
+    const newParams = {};
+    if (params.page) newParams.page = params.page;
+    if (params.page_size) newParams.page_size = params.page_size;
     try {
-      const response = await Axios.get(`${GETPARTNERSLIST_API}`);
+      const response = await Axios.get(`${GETPARTNERSLIST_API}`, {
+        params: newParams,
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

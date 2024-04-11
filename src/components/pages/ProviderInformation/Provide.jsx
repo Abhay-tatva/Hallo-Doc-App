@@ -33,6 +33,8 @@ import {
 } from "../../../redux/provider/providerApi";
 
 const Provide = () => {
+  const [pageNo, setPageNo] = useState(1);
+
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("providerName");
@@ -45,23 +47,32 @@ const Provide = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const { providerData } = useSelector(
     (state) => state.root.providerMenuReducer,
   );
 
-  useEffect(() => setTableData(providerData), [providerData]);
+  useEffect(() => setTableData(providerData.data), [providerData.data]);
   useEffect(() => {
-    dispatch(getProvider({ page: 1, page_size: 20 }));
-    return undefined;
-  }, []);
-  // const handleAdditionalFilterChange = (event) => {
-  //   setAdditionalFilter(event.target.value);
-  // };
+    dispatch(
+      getProvider({
+        page: pageNo,
+        page_size: rowsPerPage,
+        region: additionalFilter,
+      }),
+    );
+  }, [dispatch, additionalFilter, rowsPerPage, pageNo]);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
   const stableSort = (array, comparator) => {
     const stabilizedThis = array?.map((el, index) => [el, index]);
     stabilizedThis?.sort((a, b) => {
@@ -92,11 +103,6 @@ const Provide = () => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
   };
 
   const handleOpen = (id) => {
@@ -176,12 +182,8 @@ const Provide = () => {
                 </TableHead>
 
                 <TableBody align="left">
-                  {stableSort(tableData, getComparator(order, orderBy))
-                    ?.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage,
-                    )
-                    ?.map((row) => {
+                  {stableSort(tableData, getComparator(order, orderBy))?.map(
+                    (row) => {
                       return (
                         <TableRow key={row.user_id}>
                           {columns.map((column) => {
@@ -229,14 +231,15 @@ const Provide = () => {
                           })}
                         </TableRow>
                       );
-                    })}
+                    },
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={tableData.length}
+              count={providerData.total_count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

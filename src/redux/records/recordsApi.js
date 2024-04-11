@@ -123,11 +123,15 @@ export const putUnblockHistory = createAsyncThunk(
 export const getLogs = createAsyncThunk(
   "getLogs",
   async (params, { rejectWithValue }) => {
-    const { page, page_size, type_of_log } = params;
+    const newParams = {};
+
+    if (params.page) newParams.page = params.page;
+    if (params.page_size) newParams.page_size = params.page_size;
+    if (params.type_of_log) newParams.type_of_log = params.type_of_log;
     try {
-      const response = await Axios.get(
-        `${GETLOGS}?page=${page}&page_size=${page_size}&type_of_log=${type_of_log}`,
-      );
+      const response = await Axios.get(`${GETLOGS}`, {
+        params: newParams,
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

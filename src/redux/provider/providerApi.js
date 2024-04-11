@@ -13,11 +13,14 @@ import {
 export const getProvider = createAsyncThunk(
   "getProvider",
   async (params, { rejectWithValue }) => {
-    const { page, page_size } = params;
+    const newParams = {};
+    if (params.page) newParams.page = params.page;
+    if (params.page_size) newParams.page_size = params.page_size;
+    // if (params.region) newParams.region = params.region;
     try {
-      const response = await Axios.get(
-        `${GETPROVIDERINFORMATION_API}?page=${page}&page_size=${page_size}`,
-      );
+      const response = await Axios.get(`${GETPROVIDERINFORMATION_API}`, {
+        params: newParams,
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

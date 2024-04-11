@@ -22,31 +22,13 @@ import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import "./requestedShifts.css";
 import { FormInput } from "../../TextField/FormInput";
-import { useSelector } from "react-redux";
-
-const rows = [
-  {
-    id: 1,
-    staff: "Nikung Agola",
-    day: "Dec 09, 2023",
-    time: "8:15 PM- 9:15 PM",
-    region: "New York",
-  },
-  {
-    id: 2,
-    staff: "Bhavesh bhai Agola",
-    day: "Dec 10, 2023",
-    time: "8:15 PM- 9:15 PM",
-    region: "USA",
-  },
-  {
-    id: 3,
-    staff: "Chagan bhai Agola",
-    day: "Dec 11, 2023",
-    time: "8:15 PM- 9:15 PM",
-    region: "Thailand",
-  },
-];
+import { useSelector, useDispatch } from "react-redux";
+import {
+  deleteSelectedShift,
+  getRequestShift,
+  putApprovedShift,
+} from "../../../redux/Scheduling/schedulingApi";
+import { toast } from "react-toastify";
 
 const RequestedShifts = () => {
   const [selected, setSelected] = useState([]);
@@ -56,10 +38,21 @@ const RequestedShifts = () => {
   const [orderBy, setOrderBy] = useState("staff");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = useState([]);
-  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
-  const navigate = useNavigate();
-  useEffect(() => setTableData(rows), [rows]);
+  const dispatch = useDispatch();
 
+  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const { requestShiftData } = useSelector(
+    (state) => state?.root?.schedulingReducer,
+  );
+
+  const rows = requestShiftData;
+  const navigate = useNavigate();
+  useEffect(() => setTableData(requestShiftData), [requestShiftData]);
+
+  useEffect(() => {
+    dispatch(getRequestShift({ region: additionalFilter }));
+    return undefined;
+  }, [dispatch, additionalFilter]);
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
   };
@@ -131,6 +124,7 @@ const RequestedShifts = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
   return (
     <>
       <Box className="requested-shifts-container">
@@ -181,8 +175,39 @@ const RequestedShifts = () => {
               </FormInput>
               <Box display="flex" justifyContent="flex-end" gap={2}>
                 <Button color="success"> View Current Month Shifts</Button>
-                <Button color="success"> Approved Selected</Button>
-                <Button color="error"> Delete Selected</Button>
+                <Button
+                  color="success"
+                  onClick={() =>
+                    dispatch(
+                      putApprovedShift(
+                        requestShiftData?.map(
+                          (item) => item.shifts[0].shift_id,
+                        ),
+                      ),
+                    )
+                  }
+                >
+                  Approved Selected
+                </Button>
+                <Button
+                  color="error"
+                  onClick={() =>
+                    dispatch(
+                      deleteSelectedShift(
+                        requestShiftData?.map(
+                          (item) => item.shifts[0].shift_id,
+                        ),
+                      ),
+                    ).then((response) => {
+                      if (response.type === "deleteSelectedShift/fulfilled") {
+                        toast.success("shift Deleted Successfully");
+                        dispatch(getRequestShift({ region: additionalFilter }));
+                      }
+                    })
+                  }
+                >
+                  Delete Selected
+                </Button>
               </Box>
             </Box>
             <TableContainer component={Paper}>
@@ -223,9 +248,9 @@ const RequestedShifts = () => {
                           />
                         </TableCell>
                         <TableCell>{row.staff}</TableCell>
-                        <TableCell>{row.day}</TableCell>
-                        <TableCell>{row.time}</TableCell>
-                        <TableCell>{row.region}</TableCell>
+                        <TableCell>{row.shifts[0].shift_date}</TableCell>
+                        <TableCell>{row.shifts[0].time}</TableCell>
+                        <TableCell>{row.shifts[0].region}</TableCell>
                       </TableRow>
                     ),
                   )}

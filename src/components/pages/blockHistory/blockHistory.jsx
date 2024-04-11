@@ -35,6 +35,8 @@ const initialValues = {
   phone_no: "",
 };
 const BlockHistory = () => {
+  const [pageNo, setPageNo] = useState(1);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
@@ -44,18 +46,18 @@ const BlockHistory = () => {
 
   const { blockHistory } = useSelector((state) => state.root.recordsReducer);
 
-  useEffect(() => setTableData(blockHistory), [blockHistory]);
+  useEffect(() => setTableData(blockHistory.data), [blockHistory.data]);
 
   useEffect(() => {
     dispatch(
       getBlockHistory({
-        page: 1,
-        page_size: 10,
+        page: pageNo,
+        page_size: rowsPerPage,
         type_of_history: "blocked",
         // date: "05 - 12 - 2002",
       }),
     );
-  }, [dispatch]);
+  }, [dispatch, pageNo, rowsPerPage]);
 
   const formik = useFormik({
     initialValues,
@@ -76,7 +78,10 @@ const BlockHistory = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -261,7 +266,7 @@ const BlockHistory = () => {
               </TableContainer>
               <TablePagination
                 component="div"
-                count={tableData.length}
+                count={blockHistory.total_count}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

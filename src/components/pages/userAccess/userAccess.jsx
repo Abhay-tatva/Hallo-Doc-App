@@ -2,7 +2,6 @@
 
 import {
   Box,
-  Checkbox,
   Container,
   InputAdornment,
   MenuItem,
@@ -24,38 +23,8 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Button } from "../../Button/ButtonInput";
 import { getUserAccess } from "../../../redux/userAccess/userAccessApi";
-const rows = [
-  {
-    id: 1,
-    account_type: "Ain",
-    account_poc: "Test, Admin",
-    phone: "91082006 99203",
-    status: "Active",
-    open_requests: "2133",
-    action: "Actions",
-  },
-  {
-    id: 2,
-    acoountType: "Admin",
-    acoountPoc: "Test, Admin",
-    phone: "91082006 99203",
-    status: "Active",
-    openRequests: "2133",
-    action: "Actions",
-  },
-  {
-    id: 3,
-    acoountType: "Admin",
-    acoountPoc: "Test, Admin",
-    phone: "91082006 99203",
-    status: "Active",
-    openRequests: "2133",
-    action: "Actions",
-  },
-];
 
 const UserAccess = () => {
-  const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -68,26 +37,17 @@ const UserAccess = () => {
   const { userAccessData } = useSelector(
     (state) => state.root.userAccessReducer,
   );
-  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   useEffect(() => setTableData(userAccessData), [userAccessData]);
   useEffect(() => {
     dispatch(getUserAccess());
     return undefined;
-  }, []);
+  }, [dispatch]);
 
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((row) => row.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -123,25 +83,6 @@ const UserAccess = () => {
       return 1;
     }
     return 0;
-  };
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -185,15 +126,6 @@ const UserAccess = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        indeterminate={
-                          selected.length > 0 && selected.length < rows.length
-                        }
-                        checked={selected.length === rows.length}
-                        onChange={handleSelectAllClick}
-                      />
-                    </TableCell>
                     <TableCell>
                       <TableSortLabel
                         active={orderBy === "account_type"}
@@ -214,12 +146,6 @@ const UserAccess = () => {
                   {stableSort(tableData, getComparator(order, orderBy)).map(
                     (row) => (
                       <TableRow key={row.id} hover>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={isSelected(row.id)}
-                            onClick={(event) => handleClick(event, row.id)}
-                          />
-                        </TableCell>
                         <TableCell>{row.account_type}</TableCell>
                         <TableCell>{row.account_poc}</TableCell>
                         <TableCell>{row.phone}</TableCell>

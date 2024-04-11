@@ -12,8 +12,7 @@ import Address from "./components/Address";
 import { useSelector } from "react-redux";
 const MyProfile = () => {
   const navigate = useNavigate();
-  const state1 = useSelector((state) => state.root.myProfileReducer);
-  const data = state1?.data?.data[0];
+  const { data } = useSelector((state) => state.root.myProfileReducer);
   const { username, status, role } = data.admin_account_information;
   const { firstname, lastname, email, mobile_no, regions } =
     data.admin_administrator_information;

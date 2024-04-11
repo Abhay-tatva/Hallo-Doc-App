@@ -41,6 +41,8 @@ const initialValues = {
   email: "",
 };
 const SearchRecords = () => {
+  const [pageNo, setPageNo] = useState(1);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
@@ -51,15 +53,22 @@ const SearchRecords = () => {
 
   const { searchRecord } = useSelector((state) => state.root.recordsReducer);
 
-  useEffect(() => setTableData(searchRecord), [searchRecord]);
+  useEffect(() => setTableData(searchRecord.data), [searchRecord.data]);
+
+  useEffect(() => {
+    dispatch(getSearchRecords({ page: pageNo, page_size: rowsPerPage }));
+  }, [dispatch, rowsPerPage, pageNo]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
-  useEffect(() => {
-    dispatch(getSearchRecords({ page: 1, page_size: 10 }));
-  }, [dispatch]);
 
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
   const formik = useFormik({
     initialValues,
     onSubmit: (values, onSubmitProps) => {
@@ -80,11 +89,6 @@ const SearchRecords = () => {
     },
     // validationSchema: createProviderSchema,
   });
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   const stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -318,12 +322,8 @@ const SearchRecords = () => {
                   </TableHead>
 
                   <TableBody align="left">
-                    {stableSort(tableData, getComparator(order, orderBy))
-                      ?.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage,
-                      )
-                      ?.map((row) => {
+                    {stableSort(tableData, getComparator(order, orderBy))?.map(
+                      (row) => {
                         return (
                           <TableRow key={row.sr_no}>
                             {columns.map((column) => {
@@ -380,13 +380,14 @@ const SearchRecords = () => {
                             })}
                           </TableRow>
                         );
-                      })}
+                      },
+                    )}
                   </TableBody>
                 </Table>
               </TableContainer>
               <TablePagination
                 component="div"
-                count={tableData.length}
+                count={searchRecord.total_count}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

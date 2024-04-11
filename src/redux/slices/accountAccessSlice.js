@@ -17,6 +17,7 @@ const accountAccess = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAccountAccess.fulfilled, (state, action) => {
       if (action.payload) {
+        // console.log("accces account", action.payload);
         state.accountData = action.payload.data;
       }
     });

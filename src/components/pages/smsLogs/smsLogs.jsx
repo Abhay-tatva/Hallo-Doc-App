@@ -25,6 +25,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getLogs } from "../../../redux/records/recordsApi";
 
 const SmsLogs = () => {
+  const [pageNo, setPageNo] = useState(1);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
@@ -32,15 +34,20 @@ const SmsLogs = () => {
 
   const { logs } = useSelector((state) => state.root.recordsReducer);
 
-  useEffect(() => setTableData(logs), [logs]);
+  useEffect(() => setTableData(logs.data), [logs.data]);
 
   useEffect(() => {
-    dispatch(getLogs({ page: 1, page_size: 10, type_of_log: "sms" }));
-  }, [dispatch]);
+    dispatch(
+      getLogs({ page: pageNo, page_size: rowsPerPage, type_of_log: "sms" }),
+    );
+  }, [dispatch, pageNo, rowsPerPage]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -126,38 +133,33 @@ const SmsLogs = () => {
                   </TableHead>
 
                   <TableBody align="left">
-                    {tableData
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage,
-                      )
-                      ?.map((row) => {
-                        return (
-                          <TableRow key={row.id}>
-                            {columns.map((column) => {
-                              return (
-                                <TableCell key={column.id} align="left">
-                                  {column.id === "delete" ? (
-                                    // <Box
-                                    //   display="flex"
-                                    //   gap={1}
-                                    //   alignItems="left"
-                                    // >
-                                    <Button
-                                      name="delete"
-                                      variant="outlined"
-                                      size="small"
-                                    />
-                                  ) : (
-                                    // </Box>
-                                    row[column.id]
-                                  )}
-                                </TableCell>
-                              );
-                            })}
-                          </TableRow>
-                        );
-                      })}
+                    {tableData?.map((row) => {
+                      return (
+                        <TableRow key={row.id}>
+                          {columns.map((column) => {
+                            return (
+                              <TableCell key={column.id} align="left">
+                                {column.id === "delete" ? (
+                                  // <Box
+                                  //   display="flex"
+                                  //   gap={1}
+                                  //   alignItems="left"
+                                  // >
+                                  <Button
+                                    name="delete"
+                                    variant="outlined"
+                                    size="small"
+                                  />
+                                ) : (
+                                  // </Box>
+                                  row[column.id]
+                                )}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>

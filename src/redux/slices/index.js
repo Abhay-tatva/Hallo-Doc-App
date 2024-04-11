@@ -17,6 +17,7 @@ import providerSlice from "./providerSlice";
 import userAccessSlice from "./userAccessSlice";
 import recordsSlice from "./recordsSlice";
 import partnersSlice from "./partnersSlice";
+import schedulingSlice from "./schedulingSlice";
 
 export const rootReducer = combineReducers({
   loginReducer: loginSlice,
@@ -37,4 +38,5 @@ export const rootReducer = combineReducers({
   userAccessReducer: userAccessSlice,
   recordsReducer: recordsSlice,
   partnersReducer: partnersSlice,
+  schedulingReducer: schedulingSlice,
 });

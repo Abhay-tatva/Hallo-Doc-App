@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React, { useEffect, useState } from "react";
 import PhoneIcon from "@mui/icons-material/Phone";
 
@@ -138,13 +140,7 @@ const CloseCase = () => {
       email: documents[0].patient_data.email,
       date: documents[0].patient_data.DOB,
     });
-  }, [
-    documents[0].patient_data.first_name,
-    documents[0].patient_data.last_name,
-    documents[0].patient_data.mobile_no,
-    documents[0].patient_data.email,
-    documents[0].patient_data.DOB,
-  ]);
+  }, [documents]);
   return (
     <>
       <Box className="closecase-main-container">

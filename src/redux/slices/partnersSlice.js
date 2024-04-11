@@ -13,7 +13,7 @@ const partners = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getPartners.fulfilled, (state, action) => {
       if (action.payload) {
-        state.partnersList = action.payload.data;
+        state.partnersList = action.payload;
       }
     });
     builder.addCase(getBusinessView.fulfilled, (state, action) => {

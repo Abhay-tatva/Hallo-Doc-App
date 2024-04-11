@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -31,7 +33,9 @@ import {
 import { toast } from "react-toastify";
 
 const Partners = () => {
-  const [page, setPage] = useState(0);
+  const [pageNo, setPageNo] = useState(1);
+  const [page, setPage] = React.useState(0);
+
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,15 +47,24 @@ const Partners = () => {
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const { partnersList } = useSelector((state) => state.root.partnersReducer);
 
-  useEffect(() => setTableData(partnersList), [partnersList]);
+  useEffect(() => setTableData(partnersList.data), [partnersList.data]);
 
   useEffect(() => {
-    dispatch(getPartners());
-  }, [dispatch]);
+    dispatch(
+      getPartners({
+        page: pageNo,
+        page_size: rowsPerPage,
+        region: additionalFilter,
+      }),
+    );
+  }, [dispatch, additionalFilter, rowsPerPage, pageNo]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -208,7 +221,7 @@ const Partners = () => {
               <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
-                count={tableData?.length}
+                count={partnersList?.total_count}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

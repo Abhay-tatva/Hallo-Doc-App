@@ -61,7 +61,7 @@ export const POSTCLOSECASE_API =
 export const SENDLINK_API = "/admin/dashboard/requests/sendlink";
 
 export const REQUESTSUPPORT_API = "/admin/dashboard/requests/requestsupport";
-
+// ................................My Profile.........................................
 export const GETMYPROFILE_API = "/admin/myprofile/admin_profile/view";
 
 export const MYPROFILERESETPASS_API =
@@ -85,7 +85,7 @@ export const CREATEREQUEST_API = "/admin/dashboard/requests/createrequest";
 
 export const CREATEREQUESTVERIFY_API =
   "/admin/dashboard/requests/createrequestverify";
-
+// ...........................ACCOUNT Accesss.....................................................
 export const GETACCOUNTACCESS_API = "/admin/access/accountaccess";
 export const GETACCOUNTACCESSEDIT_API =
   "/admin/access/accountaccess/:role_id/edit";
@@ -95,7 +95,7 @@ export const PUTACCOUNTACCESS_API =
   "/admin/access/accountaccess/:role_id/save_edit";
 export const POSTACCOUNTACCESS_API =
   "/admin/access/accountaccess/create_access";
-
+// ....................................User Access.............................................
 export const GETUSERACCESS_API = "/admin/access/useraccess";
 export const GETACCESSLIST_API = "/commonroute/accesses";
 
@@ -103,6 +103,7 @@ export const SINGLEEXPORT_API = "/commonroute/export_single";
 
 export const EXPORTALL_API = "/commonroute/export_all";
 
+// .................................Provider Api...............................................
 export const GETPROVIDERINFORMATION_API = "/admin/providermenu/provider_list";
 
 export const POSTCONTACTPROVIDER_API =
@@ -118,6 +119,15 @@ export const DELETEPROVIDER_API =
   "/admin/providermenu/provider_list/:user_id/delete_provider_account";
 export const POSTCREATEPROVIDER_API =
   "/admin/providermenu/provider_list/create_provider_account";
+// ..........................................Scheduling Api..............................................
+export const POSTCREATESHIFT_API = "/admin/scheduling_menu/create_shift";
+export const GETPROVIDERONCALL_API =
+  "/admin/scheduling_menu/providers_on_call_list";
+export const GETREQUESTSHIFT_API = "/admin/scheduling_menu/requested_shifts";
+export const PUTAPPROVEDSHIFT_API =
+  "/admin/scheduling_menu/requested_shifts/approve_selected";
+export const DELETESELECTEDSHIFT_API =
+  "/admin/scheduling_menu/requested_shifts/delete_selected";
 // .........................................Record Api......................................../
 
 export const GETPATIENTHISTORY_API = "/admin/records/patienthistory";

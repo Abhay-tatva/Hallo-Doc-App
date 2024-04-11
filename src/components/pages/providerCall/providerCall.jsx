@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./providerCall.css";
 import { Container } from "@mui/system";
 import { Box, Grid, MenuItem, Paper, Typography } from "@mui/material";
@@ -7,13 +7,21 @@ import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { useNavigate } from "react-router-dom";
 import { FormInput } from "../../TextField/FormInput";
 import { AppRoutes } from "../../../constant/route";
-import { useSelector } from "react-redux";
-import { flower, mountain, person } from "../../assests/images";
+import { useSelector, useDispatch } from "react-redux";
+import { flower, mountain } from "../../assests/images";
+import { getProviderOnCall } from "../../../redux/Scheduling/schedulingApi";
 
 const ProviderCall = () => {
   const navigate = useNavigate();
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const dispatch = useDispatch();
 
+  const { providerOnCalls, providerOffDuties } = useSelector(
+    (state) => state.root.schedulingReducer,
+  );
+  useEffect(() => {
+    dispatch(getProviderOnCall());
+  }, [dispatch]);
   return (
     <>
       <Box className="call-main-container">
@@ -68,9 +76,22 @@ const ProviderCall = () => {
             </Box>
           </Box>
           <Paper className="call-container">
-            <Typography>
-              <b>MDs On call</b>
-            </Typography>
+            <Grid container spacing={{ xs: 2, md: 2 }} className="grid">
+              <Grid item xs={12} md={4}>
+                <Typography>
+                  <b>MDs On call</b>
+                </Typography>
+              </Grid>
+
+              {providerOnCalls?.map((providerOnCall) => (
+                <Grid key={providerOnCall.user_id} item xs={12} md={4}>
+                  <Box display="flex">
+                    <img src={flower} alt="user" height={70} />
+                    {`${providerOnCall.provider_name} ${providerOnCall.type_of_user}`}
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
             <Box className="physicians">
               <Typography>
                 <b>Physicians Off Duty</b>
@@ -78,56 +99,16 @@ const ProviderCall = () => {
               <Grid container spacing={{ xs: 1, md: 2 }} className="grid">
                 <Grid item xs={12} md={4}>
                   <Box display="flex">
-                    <img src={flower} height="80px" />
                     <Typography>Dr Brown</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <Box display="flex">
-                    <img src={mountain} height="80px" width="80px" />
-                    <Typography>Dr Parekh</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <Box display="flex">
-                    <img src={person} height="80px" width="80px" />
-                    <Typography>Dr AGOLA</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <Box display="flex">
-                    <img src={person} height="80px" width="80px" />
-                    <Typography>Dr P</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <Box display="flex">
-                    <img src={person} height="80px" width="80px" />
-                    <Typography>Dr AGOLA</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <Box display="flex">
-                    <img src={person} height="80px" width="80px" />
-                    <Typography>Dr AGOLA</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <Box display="flex">
-                    <img src={person} height="80px" width="80px" />
-                    <Typography>Dr AGOLA</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <Box display="flex">
-                    <img src={person} height="80px" width="80px" />
-                    <Typography>Dr AGOLA</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <Box display="flex">
-                    <img src={person} height="80px" width="80px" />
-                    <Typography>Dr AGOLA</Typography>
+                    <img src={mountain} height="80px" />
+                    {providerOffDuties?.map((providerOffDutie) => (
+                      <Grid key={providerOffDutie.user_id} item xs={12} md={4}>
+                        <Box display="flex">
+                          <img src={mountain} alt="user" height={70} />
+                          {`${providerOffDutie.provider_name} ${providerOffDutie.type_of_user}`}
+                        </Box>
+                      </Grid>
+                    ))}
                   </Box>
                 </Grid>
               </Grid>

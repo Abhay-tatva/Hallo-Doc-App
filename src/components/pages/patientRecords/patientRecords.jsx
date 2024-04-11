@@ -29,6 +29,7 @@ import { viewUpload } from "../../../redux/viewUpload/viewUploadApi";
 import { viewCase } from "../../../redux/viewCase/viewCaseApi";
 
 const PatientRecords = () => {
+  const [pageNo, setPageNo] = useState(1);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
@@ -42,11 +43,17 @@ const PatientRecords = () => {
   );
   const open = Boolean(anchorEl);
 
-  useEffect(() => setTableData(patientRecordsData), [patientRecordsData]);
+  useEffect(
+    () => setTableData(patientRecordsData.data),
+    [patientRecordsData.data],
+  );
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -61,8 +68,8 @@ const PatientRecords = () => {
   };
 
   useEffect(() => {
-    dispatch(getPatientRecords({ page: 1, page_size: 10 }));
-  }, [dispatch]);
+    dispatch(getPatientRecords({ page: pageNo, page_size: rowsPerPage }));
+  }, [dispatch, pageNo, rowsPerPage]);
   return (
     <>
       <form>
@@ -98,87 +105,80 @@ const PatientRecords = () => {
                   </TableHead>
 
                   <TableBody align="left">
-                    {tableData
-                      ?.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage,
-                      )
-                      ?.map((row) => {
-                        return (
-                          <TableRow key={row.sr_no}>
-                            {columns.map((column) => {
-                              return (
-                                <TableCell key={column.id} align="left">
-                                  {column.id === "actions" ? (
-                                    <>
-                                      <Button
-                                        name="Action"
-                                        variant="outlined"
-                                        onClick={(e) =>
-                                          handleClick(e, row.sr_no)
-                                        }
-                                      />
-                                      <Menu
-                                        id="fade-menu"
-                                        MenuListProps={{
-                                          "aria-labelledby": "fade-button",
+                    {tableData?.map((row) => {
+                      return (
+                        <TableRow key={row.sr_no}>
+                          {columns.map((column) => {
+                            return (
+                              <TableCell key={column.id} align="left">
+                                {column.id === "actions" ? (
+                                  <>
+                                    <Button
+                                      name="Action"
+                                      variant="outlined"
+                                      onClick={(e) => handleClick(e, row.sr_no)}
+                                    />
+                                    <Menu
+                                      id="fade-menu"
+                                      MenuListProps={{
+                                        "aria-labelledby": "fade-button",
+                                      }}
+                                      anchorEl={anchorEl}
+                                      open={open && row.sr_no === rowId}
+                                      onClose={handleClose}
+                                      TransitionComponent={Fade}
+                                    >
+                                      <MenuItem
+                                        disableRipple
+                                        onClick={() => {
+                                          dispatch(
+                                            viewCase(row.confirmation_no),
+                                          );
+                                          navigate(AppRoutes.RESERVATION);
                                         }}
-                                        anchorEl={anchorEl}
-                                        open={open && row.sr_no === rowId}
-                                        onClose={handleClose}
-                                        TransitionComponent={Fade}
                                       >
-                                        <MenuItem
-                                          disableRipple
-                                          onClick={() => {
-                                            dispatch(
-                                              viewCase(row.confirmation_no),
-                                            );
-                                            navigate(AppRoutes.RESERVATION);
-                                          }}
-                                        >
-                                          View Case
-                                        </MenuItem>
-                                        <MenuItem
-                                          disableRipple
-                                          onClick={handleClose}
-                                        >
-                                          Chat
-                                        </MenuItem>
-                                        <MenuItem
-                                          disableRipple
-                                          onClick={() => {
-                                            dispatch(
-                                              viewUpload(row.confirmation_no),
-                                            );
-                                            navigate(AppRoutes.VIEWUPLOAD);
-                                          }}
-                                        >
-                                          0 Documents
-                                        </MenuItem>
-                                      </Menu>
-                                    </>
-                                  ) : column.id === "finalReport" ? (
-                                    row.status === "Closed" ? (
-                                      <Button name="view" variant="outlined" />
-                                    ) : (
-                                      " - "
-                                    )
+                                        View Case
+                                      </MenuItem>
+                                      <MenuItem
+                                        disableRipple
+                                        onClick={handleClose}
+                                      >
+                                        Chat
+                                      </MenuItem>
+                                      <MenuItem
+                                        disableRipple
+                                        onClick={() => {
+                                          dispatch(
+                                            viewUpload(row.confirmation_no),
+                                          );
+                                          navigate(AppRoutes.VIEWUPLOAD);
+                                        }}
+                                      >
+                                        0 Documents
+                                      </MenuItem>
+                                    </Menu>
+                                  </>
+                                ) : column.id === "finalReport" ? (
+                                  row.status === "Closed" ? (
+                                    <Button name="view" variant="outlined" />
                                   ) : (
-                                    row[column.id]
-                                  )}
-                                </TableCell>
-                              );
-                            })}
-                          </TableRow>
-                        );
-                      })}
+                                    " - "
+                                  )
+                                ) : (
+                                  row[column.id]
+                                )}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>
               <TablePagination
                 component="div"
-                count={tableData.length}
+                count={patientRecordsData.total_count}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

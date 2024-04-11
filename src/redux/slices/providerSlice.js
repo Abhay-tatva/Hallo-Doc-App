@@ -6,13 +6,13 @@ import { getProvider, getProviderPhysician } from "../provider/providerApi";
 const providerMenu = createSlice({
   name: "providerMenu",
   initialState: {
-    providerData: [],
+    providerData: {},
     physicianData: {},
   },
   extraReducers: (builder) => {
     builder.addCase(getProvider.fulfilled, (state, action) => {
       if (action.payload) {
-        state.providerData = action.payload.data;
+        state.providerData = action.payload;
       }
     });
     builder.addCase(getProviderPhysician.fulfilled, (state, action) => {

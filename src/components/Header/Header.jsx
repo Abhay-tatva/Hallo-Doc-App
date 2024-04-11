@@ -195,6 +195,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
                 onClick={() => {
                   dispatch(getUserAccess());
                   navigate(AppRoutes.USERACCESS);
+                  handleMenuClose();
                 }}
               >
                 User Access
@@ -203,6 +204,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
                 onClick={() => {
                   // dispatch(getAccountAccess());
                   navigate(AppRoutes.ACCESSACCOUNT);
+                  handleMenuClose();
                 }}
               >
                 Account Access
