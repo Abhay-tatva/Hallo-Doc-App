@@ -73,13 +73,13 @@ const AddBussiness = () => {
       businessName: businessView.business_name,
       profession: businessView.profession,
       faxNumber: businessView.fax_number,
-      phoneNumber: businessView.mobile_no,
+      phoneNumber: businessView.phone_no,
       email: businessView.email,
       bussinessContact: businessView.business_contact,
       street: businessView.street,
       city: businessView.city,
       state: businessView.state,
-      zipPostal: businessView.zipPostal,
+      zipPostal: businessView.zip,
     });
   }, [businessView]);
 

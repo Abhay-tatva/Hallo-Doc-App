@@ -1,4 +1,6 @@
-import React from "react";
+/* eslint-disable camelcase */
+
+import React, { useEffect, useState } from "react";
 import BasicModal from "./Modal";
 import { Box, Grid, Input, MenuItem } from "@mui/material";
 import { FormInput } from "../TextField/FormInput";
@@ -7,25 +9,75 @@ import { useFormik } from "formik";
 import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { Button } from "../Button/ButtonInput";
 import { ViewModalSchema } from "../ValidationSchema";
+import {
+  deleteSelectedShift,
+  getProviderShift,
+  putEditShift,
+  putReturnShift,
+} from "../../redux/Scheduling/schedulingApi";
+import { toast } from "react-toastify";
 
+const INITIAL_VALUES = {
+  searchRegion: "",
+  physician: "",
+  date: "",
+  startTime: "",
+  endTime: "",
+};
 const ViewShift = ({ open, handleClose, handleOpen }) => {
-  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const dispatch = useDispatch();
+
+  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const { physicians } = useSelector(
+    (state) => state.root.regionPhysicianReducer,
+  );
+  const { viewShiftData } = useSelector(
+    (state) => state.root.schedulingReducer,
+  );
+
   const formik = useFormik({
-    initialValues: {
-      searchRegion: "",
-      physician: "",
-    },
+    initialValues,
     validationSchema: ViewModalSchema,
     onSubmit: (values, onSubmitProps) => {
       console.log("submitted", values);
       onSubmitProps.resetForm();
       handleClose();
     },
+    enableReinitialize: true,
   });
-  const { physicians } = useSelector(
-    (state) => state.root.regionPhysicianReducer,
-  );
+
+  useEffect(() => {
+    setInitialValues({
+      searchRegion: viewShiftData?.region,
+      physician: viewShiftData.physician,
+      date: viewShiftData.shift_date,
+      startTime: viewShiftData.start,
+      endTime: viewShiftData.end,
+    });
+  }, [viewShiftData]);
+
+  const handleSave = () => {
+    dispatch(
+      putEditShift({
+        shift_id: viewShiftData.shift_id,
+        region: formik.values.searchRegion,
+        physician: formik.values.physician,
+        shift_date: formik.values.date,
+        start: formik.values.startTime,
+        end: formik.values.endTime,
+      }),
+    ).then((response) => {
+      if (response.type === "putEditShift/fulfilled") {
+        toast.success("Shift Edited Successfully");
+        handleClose();
+        dispatch(getProviderShift({ region: "all" }));
+      }
+    });
+  };
+
   return (
     <BasicModal
       open={open}
@@ -33,11 +85,12 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
       handleClose={handleClose}
       header="View Shift"
     >
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <FormInput
             fullWidth
             name="searchRegion"
+            disabled
             label="Nerrow Search By Region"
             select
             onChange={formik.handleChange}
@@ -66,6 +119,7 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
           <FormInput
             name="physician"
             fullWidth
+            disabled
             label="Select Physician"
             select
             onChange={formik.handleChange}
@@ -90,26 +144,86 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
             <Grid item xs={12} md={12} lg={12}>
               <FormInput
                 type="date"
+                disabled={isDisabled}
                 fullWidth
-                // name="dob"
-                // onChange={formik.handleChange}
-                // onBlur={formik.handleBlur}
-                // value={formik.values.dob}
-                // error={formik.touched.dob && Boolean(formik.errors.dob)}
-                // helperText={formik.touched.dob && formik.errors.dob}
+                name="date"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.date}
+                error={formik.touched.date && Boolean(formik.errors.date)}
+                helperText={formik.touched.date && formik.errors.date}
               />
             </Grid>
             {/* <Grid item xs={6}> */}
             {/* </Grid> */}
           </Grid>
           <Box display="flex" justifyContent="space-between" gap={1.5}>
-            <Input label="Start" type="time" fullWidth />
-            <Input label="End" type="time" fullWidth />
+            <Input
+              name="startTime"
+              disabled={isDisabled}
+              label="Start"
+              type="time"
+              fullWidth
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.startTime}
+              error={
+                formik.touched.startTime && Boolean(formik.errors.startTime)
+              }
+              helperText={formik.touched.startTime && formik.errors.startTime}
+            />
+            <Input
+              name="endTime"
+              disabled={isDisabled}
+              label="End"
+              type="time"
+              fullWidth
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.endTime}
+              error={formik.touched.endTime && Boolean(formik.errors.endTime)}
+              helperText={formik.touched.endTime && formik.errors.endTime}
+            />
           </Box>
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Return" variant="contained" />
-            <Button name="Edit" variant="contained" />
-            <Button name="Delete" variant="contained" color="error" />
+            <Button
+              name="Return"
+              variant="contained"
+              onClick={() =>
+                dispatch(putReturnShift(viewShiftData.shift_id)).then(
+                  (response) => {
+                    if (response.type === "putReturnShift/fulfilled") {
+                      toast.success("Status Update Successfully");
+                      handleClose();
+                      dispatch(getProviderShift({ region: "all" }));
+                    }
+                  },
+                )
+              }
+            />
+            <Button
+              name={isDisabled ? "Edit" : "Save"}
+              onClick={
+                isDisabled ? () => setIsDisabled(false) : () => handleSave()
+              }
+            />
+            <Button
+              name="Delete"
+              variant="contained"
+              color="error"
+              onClick={() =>
+                dispatch(
+                  deleteSelectedShift({ shift_ids: [viewShiftData.shift_id] }),
+                ).then((response) => {
+                  if (response.type === "deleteSelectedShift/fulfilled") {
+                    toast.success("shift Deleted Successfully");
+                    setIsDisabled(true);
+                    handleClose();
+                    dispatch(getProviderShift({ region: "all" }));
+                  }
+                })
+              }
+            />
           </Box>
         </Box>
       </form>

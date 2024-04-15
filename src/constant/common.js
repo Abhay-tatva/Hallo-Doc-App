@@ -1,4 +1,3 @@
-import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import PageviewOutlinedIcon from "@mui/icons-material/PageviewOutlined";
@@ -10,364 +9,274 @@ import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import FindInPageOutlinedIcon from "@mui/icons-material/FindInPageOutlined";
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
 import LocalDiningOutlinedIcon from "@mui/icons-material/LocalDiningOutlined";
-export const rows = [
-  {
-    id: 1,
-    name: (
-      <div
-        className="flex"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <p>John Doe</p>
-        <MarkEmailUnreadOutlinedIcon />
-      </div>
-    ),
-    dateOfBirth: "Jun 16, 2023 (0)",
-    requestor: "Patient John Doe",
-    physicanName: "dotor ",
-    dateOfService: "June 2024 23",
-    region: "Gujarat",
-    requestedDate: "Nov 20, 2023 335h 2m 02m ",
-    phoneNumber: +1287834888,
-    address: "Room location : 101",
-    notes: "- ",
-    chatWith: "Provider",
-    action: "Actions",
-  },
-  {
-    id: 2,
-    name: (
-      <div
-        className="flex"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <p>Jane Smith</p>
-        <MarkEmailUnreadOutlinedIcon />
-      </div>
-    ),
-
-    dateOfBirth: "1985-08-22",
-    requestor: "Patient",
-    physicanName: "dotor ",
-    dateOfService: "June 2024 23",
-    region: "Gujarat",
-    requestedDate: "2024-02-14",
-    phoneNumber: +1287834888,
-    address: "456 Oak St, Townsville",
-    notes: "- ",
-    chatWith: "Provider",
-    action: "Actions",
-  },
-  {
-    id: 3,
-    name: (
-      <div
-        className="flex"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <p>Bob Johnson</p>
-        <MarkEmailUnreadOutlinedIcon />
-      </div>
-    ),
-
-    dateOfBirth: "1978-11-30",
-    requestor: "business Department",
-    physicanName: "dotor ",
-    dateOfService: "June 2024 23",
-    region: "Gujarat",
-    requestedDate: "2024-02-13",
-    phoneNumber: +1287834888,
-    address: "789 Pine St, Villagetown",
-    notes: "- ",
-    chatWith: "Provider",
-    action: "Actions",
-  },
-  {
-    id: 4,
-    name: (
-      <div
-        className="flex"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <p>Alice Brown</p>
-        <MarkEmailUnreadOutlinedIcon />
-      </div>
-    ),
-
-    dateOfBirth: "1995-04-18",
-    requestor: "concierge Department",
-    physicanName: "dotor ",
-    dateOfService: "June 2024 23",
-    region: "Gujarat",
-    requestedDate: "2024-02-12",
-    phoneNumber: +1287834888,
-    address: "101 Elm St, Hamletville",
-    notes: "Client-related request",
-    chatWith: "Provider",
-    action: "Actions",
-  },
-  {
-    id: 5,
-    name: (
-      <div
-        className="flex"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <p>Charlie Davis</p>
-        <MarkEmailUnreadOutlinedIcon />
-      </div>
-    ),
-    dateOfBirth: "1982-07-25",
-    requestor: "vip Department",
-    physicanName: "dotor ",
-    dateOfService: "June 2024 23",
-    region: "Gujarat",
-    requestedDate: "2024-02-11",
-    phoneNumber: +1287834888,
-    address: "202 Maple St, Countryside",
-    notes: "- ",
-    chatWith: "Provider",
-    action: "Actions",
-  },
-];
 
 export const newColumns = [
-  { id: "name", label: "Name", minWidth: 200 },
-  { id: "mail", label: "", minWidth: 50 },
-  { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
+  {
+    id: "name",
+    label: "Name",
+    minWidth: 200,
+    accountTypes: ["admin", "physician"],
+  },
+  { id: "mail", label: "", minWidth: 50, accountTypes: ["admin", "physician"] },
+  {
+    id: "dateOfBirth",
+    label: "Date Of Birth",
+    minWidth: 100,
+    accountTypes: ["admin"],
+  },
   {
     id: "requestor",
     label: "Requestor",
     align: "right",
     maxWidth: 100,
+    accountTypes: ["admin"],
   },
   {
     id: "requestedDate",
     label: "Requested Date",
     maxWidth: 95,
     align: "right",
+    accountTypes: ["admin"],
   },
   {
     id: "phoneNumber",
     label: "Phone",
     maxWidth: 175,
     align: "right",
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "address",
     label: "Address",
     minWidth: 250,
     align: "right",
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "notes",
     label: "Notes",
     minWidth: 130,
-    align: "right",
-  },
-  {
-    id: "chatWith",
-    label: "Chat With",
-    minWidth: 100,
-    align: "right",
-  },
-  {
-    id: "action",
-    label: "Actions",
-    minWidth: 100,
-    align: "right",
-  },
-];
-export const pendingColumns = [
-  { id: "name", label: "Name", minWidth: 200 },
-  { id: "mail", label: "", minWidth: 50 },
-  { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
-  {
-    id: "requestor",
-    label: "Requestor",
-    align: "right",
-    maxWidth: 100,
-  },
-  {
-    id: "physicanName",
-    label: "Physican Name",
-    align: "right",
-    maxWidth: 100,
-  },
-  {
-    id: "dateOfService",
-    label: "Date of Service",
-    maxWidth: 95,
-    align: "right",
-  },
-  {
-    id: "phoneNumber",
-    label: "Phone",
-    maxWidth: 175,
-    align: "right",
-  },
-  {
-    id: "address",
-    label: "Address",
-    minWidth: 250,
-    align: "right",
-  },
-  {
-    id: "notes",
-    label: "Notes",
-    minWidth: 250,
-    align: "right",
-  },
-  {
-    id: "chatWith",
-    label: "Chat With",
-    minWidth: 100,
-    align: "right",
-  },
-  {
-    id: "action",
-    label: "Actions",
-    minWidth: 100,
-    align: "right",
-  },
-];
-export const activeColumns = [
-  { id: "name", label: "Name", minWidth: 200 },
-  { id: "mail", label: "", minWidth: 50 },
-  { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
-  {
-    id: "requestor",
-    label: "Requestor",
-    align: "right",
-    maxWidth: 100,
-  },
-  {
-    id: "physicanName",
-    label: "Physican Name",
-    align: "right",
-    maxWidth: 100,
-  },
-  {
-    id: "dateOfService",
-    label: "Date of Service",
-    maxWidth: 95,
-    align: "right",
-  },
-  {
-    id: "phoneNumber",
-    label: "Phone",
-    maxWidth: 175,
-    align: "right",
-  },
-  {
-    id: "address",
-    label: "Address",
-    minWidth: 250,
-    align: "right",
-  },
-  {
-    id: "notes",
-    label: "Notes",
-    minWidth: 130,
-    align: "right",
-  },
-  {
-    id: "chatWith",
-    label: "Chat With",
-    minWidth: 100,
-    align: "right",
-  },
-  {
-    id: "action",
-    label: "Actions",
-    minWidth: 100,
-    align: "right",
-  },
-];
-export const concludeColumns = [
-  { id: "name", label: "Name", minWidth: 200 },
-  { id: "mail", label: "", minWidth: 50 },
-  { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
-  {
-    id: "physicanName",
-    label: "Physican Name",
-    align: "right",
-    maxWidth: 100,
-  },
-  {
-    id: "dateOfService",
-    label: "Date of Service",
-    maxWidth: 95,
-    align: "right",
-  },
-  {
-    id: "phoneNumber",
-    label: "Phone",
-    maxWidth: 175,
-    align: "right",
-  },
-  {
-    id: "address",
-    label: "Address",
-    minWidth: 250,
     align: "right",
   },
 
   {
-    id: "chatWith",
-    label: "Chat With",
+    id: "action",
+    label: "Actions",
     minWidth: 100,
     align: "right",
+    accountTypes: ["admin", "physician"],
   },
+];
+export const pendingColumns = [
+  {
+    id: "name",
+    label: "Name",
+    minWidth: 200,
+    accountTypes: ["admin", "physician"],
+  },
+  { id: "mail", label: "", minWidth: 50, accountTypes: ["admin", "physician"] },
+  {
+    id: "dateOfBirth",
+    label: "Date Of Birth",
+    minWidth: 100,
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "requestor",
+    label: "Requestor",
+    align: "right",
+    maxWidth: 100,
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "physicanName",
+    label: "Physican Name",
+    align: "right",
+    maxWidth: 100,
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "dateOfService",
+    label: "Date of Service",
+    maxWidth: 95,
+    align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "phoneNumber",
+    label: "Phone",
+    maxWidth: 175,
+    align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "address",
+    label: "Address",
+    minWidth: 250,
+    align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "notes",
+    label: "Notes",
+    minWidth: 250,
+    align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+
   {
     id: "action",
     label: "Actions",
     minWidth: 100,
     align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+];
+export const activeColumns = [
+  {
+    id: "name",
+    label: "Name",
+    minWidth: 200,
+    accountTypes: ["admin", "physician"],
+  },
+  { id: "mail", label: "", minWidth: 50, accountTypes: ["admin"] },
+  {
+    id: "dateOfBirth",
+    label: "Date Of Birth",
+    minWidth: 100,
+    accountTypes: ["admin"],
+  },
+  {
+    id: "requestor",
+    label: "Requestor",
+    align: "right",
+    maxWidth: 100,
+    accountTypes: ["admin"],
+  },
+  {
+    id: "physicanName",
+    label: "Physican Name",
+    align: "right",
+    maxWidth: 100,
+    accountTypes: ["admin"],
+  },
+  {
+    id: "dateOfService",
+    label: "Date of Service",
+    maxWidth: 95,
+    align: "right",
+    accountTypes: ["admin"],
+  },
+  {
+    id: "phoneNumber",
+    label: "Phone",
+    maxWidth: 175,
+    align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "address",
+    label: "Address",
+    minWidth: 250,
+    align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "notes",
+    label: "Notes",
+    minWidth: 130,
+    align: "right",
+  },
+
+  {
+    id: "action",
+    label: "Actions",
+    minWidth: 100,
+    align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+];
+export const concludeColumns = [
+  {
+    id: "name",
+    label: "Name",
+    minWidth: 200,
+    accountTypes: ["admin", "physician"],
+  },
+  { id: "mail", label: "", minWidth: 50, accountTypes: ["admin", "physician"] },
+  {
+    id: "dateOfBirth",
+    label: "Date Of Birth",
+    minWidth: 100,
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "physicanName",
+    label: "Physican Name",
+    align: "right",
+    maxWidth: 100,
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "dateOfService",
+    label: "Date of Service",
+    maxWidth: 95,
+    align: "right",
+    accountTypes: ["admin"],
+  },
+  {
+    id: "phoneNumber",
+    label: "Phone",
+    maxWidth: 175,
+    align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "address",
+    label: "Address",
+    minWidth: 250,
+    align: "right",
+    accountTypes: ["admin", "physician"],
+  },
+
+  {
+    id: "action",
+    label: "Actions",
+    minWidth: 100,
+    align: "right",
+    accountTypes: ["admin", "physician"],
   },
 ];
 export const toCloseColumns = [
-  { id: "name", label: "Name", minWidth: 200 },
-  { id: "mail", label: "", minWidth: 50 },
-  { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
+  { id: "name", label: "Name", minWidth: 200, accountTypes: ["admin"] },
+  { id: "mail", label: "", minWidth: 50, accountTypes: ["admin"] },
+  {
+    id: "dateOfBirth",
+    label: "Date Of Birth",
+    minWidth: 100,
+    accountTypes: ["admin"],
+  },
 
   {
     id: "region",
     label: "Region",
     maxWidth: 95,
     align: "right",
+    accountTypes: ["admin"],
   },
   {
     id: "physicanName",
     label: "Physican Name",
     align: "right",
     maxWidth: 100,
+    accountTypes: ["admin"],
   },
   {
     id: "dateOfService",
     label: "Date of Service",
     maxWidth: 95,
     align: "right",
+    accountTypes: ["admin"],
   },
 
   {
@@ -375,64 +284,62 @@ export const toCloseColumns = [
     label: "Address",
     minWidth: 250,
     align: "right",
+    accountTypes: ["admin"],
   },
   {
     id: "notes",
     label: "Notes",
     minWidth: 130,
     align: "right",
+    accountTypes: ["admin"],
   },
-  {
-    id: "chatWith",
-    label: "Chat With",
-    minWidth: 100,
-    align: "right",
-  },
+
   {
     id: "action",
     label: "Actions",
     minWidth: 100,
     align: "right",
+    accountTypes: ["admin"],
   },
 ];
 export const unpaidColumns = [
-  { id: "name", label: "Name", minWidth: 200 },
-  { id: "mail", label: "", minWidth: 50 },
+  { id: "name", label: "Name", minWidth: 200, accountTypes: ["admin"] },
+  { id: "mail", label: "", minWidth: 50, accountTypes: ["admin"] },
   {
     id: "physicanName",
     label: "Physican Name",
     align: "right",
     maxWidth: 100,
+    accountTypes: ["admin"],
   },
   {
     id: "dateOfService",
     label: "Date of Service",
     maxWidth: 95,
     align: "right",
+    accountTypes: ["admin"],
   },
   {
     id: "phoneNumber",
     label: "Phone",
     maxWidth: 175,
     align: "right",
+    accountTypes: ["admin"],
   },
   {
     id: "address",
     label: "Address",
     minWidth: 250,
     align: "right",
+    accountTypes: ["admin"],
   },
-  {
-    id: "chatWith",
-    label: "Chat With",
-    minWidth: 100,
-    align: "right",
-  },
+
   {
     id: "action",
     label: "Actions",
     minWidth: 100,
     align: "right",
+    accountTypes: ["admin"],
   },
 ];
 
@@ -624,5 +531,4 @@ export const indicator = [
   { name: "Family/Friend", color: "orange" },
   { name: "Business", color: "Pink" },
   { name: "Concierge", color: "blue" },
-  { name: "VIP", color: "purple" },
 ];

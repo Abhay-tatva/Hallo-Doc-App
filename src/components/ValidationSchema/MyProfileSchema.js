@@ -1,9 +1,9 @@
 import * as Yup from "yup";
 export const myProfileSchema = Yup.object({
-  username: Yup.string().required("Username is required"),
+  userName: Yup.string().required("Username is required"),
   password: Yup.string().required("Password is required"),
   status: Yup.string().required("status  is required"),
-  Role: Yup.string().required("Role  must be  required"),
+  role: Yup.string().required("Role  must be  required"),
 });
 
 export const accountMyProfileSchema = Yup.object({

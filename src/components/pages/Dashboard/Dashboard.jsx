@@ -27,7 +27,6 @@ import {
 import {
   newColumns,
   indicator,
-  rows,
   newDropdown,
   pendingColumns,
   pendingDropdown,
@@ -49,7 +48,6 @@ import SendAgreementModal from "../../Modal/SendAgreementModal";
 import RequestModal from "../../Modal/RequestModal";
 import SendLinkModal from "../../Modal/SendLinkModal";
 import { useDispatch, useSelector } from "react-redux";
-import { newState } from "../../../redux/newState/newStateApi";
 import { getRegions } from "../../../redux/regionPhysician/regionPhysicianApi";
 import { requestCount } from "../../../redux/requestCount/requestCountApi";
 import { sendOrderProfession } from "../../../redux/professionBussiness/getProfessionBussinessApi";
@@ -64,6 +62,7 @@ const cards = [
     icon: <NewReleasesIcon />,
     color: "primary",
     toolTip: primaryTriangle,
+    accountTypes: ["admin", "physician"],
   },
   {
     applicationState: "pending",
@@ -71,6 +70,7 @@ const cards = [
     icon: <PendingIcon />,
     color: "secondary",
     toolTip: secondaryTriangle,
+    accountTypes: ["admin", "physician"],
   },
   {
     applicationState: "active",
@@ -78,6 +78,7 @@ const cards = [
     icon: <CheckCircleOutlineIcon />,
     color: "success",
     toolTip: successTriangle,
+    accountTypes: ["admin", "physician"],
   },
   {
     applicationState: "conclude",
@@ -85,6 +86,7 @@ const cards = [
     icon: <CodeIcon />,
     color: "error",
     toolTip: errorTriangle,
+    accountTypes: ["admin", "physician"],
   },
   {
     applicationState: "toclose",
@@ -92,6 +94,7 @@ const cards = [
     icon: <CancelOutlinedIcon />,
     color: "info",
     toolTip: infoTriangle,
+    accountTypes: ["admin"],
   },
   {
     applicationState: "unpaid",
@@ -99,12 +102,13 @@ const cards = [
     icon: <AttachMoneyIcon />,
     color: "warning",
     toolTip: warningTriangle,
+    accountTypes: ["admin"],
   },
 ];
 
 const Dashboard = () => {
   const [isActive, setIsActive] = useState(true);
-  const [filterRows, setFilterRows] = useState(rows);
+  const [filterRows, setFilterRows] = useState();
   const [rowId, setRowId] = useState(null);
   const [activeButton, setActiveButton] = useState("new");
   const [columns, setColumns] = useState(newColumns);
@@ -114,6 +118,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const count = useSelector((state) => state.root.requestCountReducer);
+  const { accountType } = useSelector((state) => state.root.loginReducer);
   const caseCount = count.caseCount;
 
   const handleOpen = (name, rowId) => {
@@ -142,15 +147,6 @@ const Dashboard = () => {
     setActiveButton(name);
     setIsActive(true);
   };
-  useEffect(() => {
-    dispatch(
-      newState({
-        state: activeButton.toLowerCase(),
-        search: "",
-        region: "all",
-      }),
-    );
-  }, [activeButton, dispatch, caseCount]);
 
   useEffect(() => {
     switch (activeButton) {
@@ -200,39 +196,43 @@ const Dashboard = () => {
                 md={4}
                 lg={2}
               >
-                <Button
-                  color={card.color}
-                  variant={
-                    isActive && activeButton === card.applicationState
-                      ? "contained"
-                      : "outlined"
-                  }
-                  className="card-btn"
-                  fullWidth
-                  onClick={() => handleClick(card.applicationState)}
-                >
-                  <Box className="card-content-heading">
-                    {card.icon}
-                    <Typography variant="body1">
-                      {card.applicationState}
-                    </Typography>
-                  </Box>
-                  {caseCount?.map((count, index) => {
-                    return (
-                      <Typography variant="h5" key={index}>
-                        {count.request_state === card.applicationState && (
-                          <b>{count.counts}</b>
-                        )}
-                      </Typography>
-                    );
-                  })}
-                </Button>
-                {isActive && activeButton === card.applicationState ? (
-                  <img
-                    src={card.toolTip}
-                    alt="triangle"
-                    className="btn-triangle"
-                  />
+                {card.accountTypes.includes(accountType) ? (
+                  <>
+                    <Button
+                      color={card.color}
+                      variant={
+                        isActive && activeButton === card.applicationState
+                          ? "contained"
+                          : "outlined"
+                      }
+                      className="card-btn"
+                      fullWidth
+                      onClick={() => handleClick(card.applicationState)}
+                    >
+                      <Box className="card-content-heading">
+                        {card.icon}
+                        <Typography variant="body1">
+                          {card.applicationState}
+                        </Typography>
+                      </Box>
+                      {caseCount?.map((count, index) => {
+                        return (
+                          <Typography variant="h5" key={index}>
+                            {count.request_state === card.applicationState && (
+                              <b>{count.counts}</b>
+                            )}
+                          </Typography>
+                        );
+                      })}
+                    </Button>
+                    {isActive && activeButton === card.applicationState ? (
+                      <img
+                        src={card.toolTip}
+                        alt="triangle"
+                        className="btn-triangle"
+                      />
+                    ) : null}
+                  </>
                 ) : null}
               </Grid>
             );
@@ -340,6 +340,7 @@ const Dashboard = () => {
           </Grid>
         </Box>
         <MyTable
+          caseCount={caseCount}
           stateButton={activeButton?.toLowerCase()}
           columns={columns}
           indicator={indicator}

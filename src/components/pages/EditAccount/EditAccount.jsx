@@ -63,6 +63,7 @@ const EditAccount = () => {
           <Paper className="edit-full-paper">
             {/* .................................................Account Information....................................... */}
             <Account
+              name="providerProfile"
               userId={data.user_id}
               userName={username}
               status={status}
@@ -84,6 +85,7 @@ const EditAccount = () => {
             />
             {/* ..............................................Address Information........................................... */}
             <Address
+              userId={data.user_id}
               name="providerProfile"
               add1={address_1}
               add2={address_2}

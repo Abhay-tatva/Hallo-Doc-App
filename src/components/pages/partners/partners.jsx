@@ -33,12 +33,11 @@ import {
 import { toast } from "react-toastify";
 
 const Partners = () => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [pageNo, setPageNo] = useState(1);
   const [page, setPage] = React.useState(0);
-
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [additionalFilter, setAdditionalFilter] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
   const [tableData, setTableData] = useState([]);
 
   const dispatch = useDispatch();
@@ -55,9 +54,10 @@ const Partners = () => {
         page: pageNo,
         page_size: rowsPerPage,
         region: additionalFilter,
+        vendor: searchTerm,
       }),
     );
-  }, [dispatch, additionalFilter, rowsPerPage, pageNo]);
+  }, [dispatch, additionalFilter, rowsPerPage, pageNo, searchTerm]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -200,7 +200,13 @@ const Partners = () => {
                                               toast.success(
                                                 "business Deleted Successfully",
                                               );
-                                              dispatch(getPartners());
+                                              dispatch(
+                                                getPartners({
+                                                  page: pageNo,
+                                                  page_size: rowsPerPage,
+                                                  region: additionalFilter,
+                                                }),
+                                              );
                                             }
                                           })
                                         }

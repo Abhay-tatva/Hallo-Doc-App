@@ -19,7 +19,6 @@ import "./table.css";
 import { FormInput } from "../TextField/FormInput";
 import { Box } from "@mui/system";
 import { Button } from "../Button/ButtonInput";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -39,8 +38,16 @@ import { blockcaseGet } from "../../redux/blockCaseApi.js/blockCaseApi";
 import { commonApi } from "../../redux/commonApi/commonApi";
 import { getCloseCase } from "../../redux/closeCase/closeCaseApi";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import { providerDashBoard } from "../../redux/Provider Site/providerDashBoard/providerDashBoardApi";
 
-const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
+const MyTable = ({
+  stateButton,
+  columns,
+  indicator,
+  dropDown,
+  onClick,
+  caseCount,
+}) => {
   const [pageNo, setPageNo] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [additionalFilter, setAdditionalFilter] = useState("all");
@@ -60,6 +67,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
   const notify = () => toast("Phone number Copyied successfully!");
 
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const copyButtonText = (btnId, event) => {
     const textToCopy = event.target.innerText;
@@ -100,22 +108,28 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
     }
   };
   useEffect(() => {
-    dispatch(
-      newState({
-        state: stateButton,
-        search: searchTerm,
-        region: additionalFilter,
-        page_size: rowsPerPage,
-        page: pageNo,
-      }),
-    );
+    if (accountType == "admin") {
+      dispatch(
+        newState({
+          state: stateButton,
+          search: searchTerm,
+          region: additionalFilter,
+          page_size: rowsPerPage,
+          page: pageNo,
+        }),
+      );
+    } else if (accountType == "physician") {
+      dispatch(providerDashBoard({ state: stateButton }));
+    }
   }, [
+    accountType,
     stateButton,
     dispatch,
     additionalFilter,
     searchTerm,
     rowsPerPage,
     pageNo,
+    caseCount,
   ]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -343,15 +357,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
                       stateButton === "toclose") && (
                       <TableCell>{row.notes[0]?.description}</TableCell>
                     )}
-                    <TableCell>
-                      <Button
-                        className="phone-btn"
-                        name="Provider"
-                        startIcon={<PersonOutlineOutlinedIcon />}
-                        variant="outlined"
-                        color="inherit"
-                      />
-                    </TableCell>
+
                     <TableCell>
                       <Button
                         className="phone-btn"
@@ -396,7 +402,7 @@ const MyTable = ({ stateButton, columns, indicator, dropDown, onClick }) => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={state.data.total_count}
+          count={state.data?.total_count}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

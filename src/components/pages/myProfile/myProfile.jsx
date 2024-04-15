@@ -44,6 +44,7 @@ const MyProfile = () => {
             {/* ............................/ Account Information............  */}
 
             <Account
+              name="myProfile"
               userName={username}
               status={status}
               role={role}

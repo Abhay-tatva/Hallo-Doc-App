@@ -6,6 +6,6 @@ export const CreateModalSchema = Yup.object({
   date: Yup.string().required("date  must be required"),
   startTime: Yup.string().required("startTime  must be required"),
   endTime: Yup.string().required("endTime  must be required"),
-  repeatDays: Yup.string().required("repeatDays  must be required"),
+  // repeatDays: Yup.string().required("repeatDays  must be required"),
   repeatEnd: Yup.string().required("repeatEnd  must be required"),
 });

@@ -8,6 +8,7 @@ import {
   POSTCONTACTPROVIDER_API,
   POSTCREATEPROVIDER_API,
   PROVIDEREDIT_API,
+  PUTRESETPROVIDERPASSWORD_API,
 } from "../../constant/apis";
 
 export const getProvider = createAsyncThunk(
@@ -16,7 +17,7 @@ export const getProvider = createAsyncThunk(
     const newParams = {};
     if (params.page) newParams.page = params.page;
     if (params.page_size) newParams.page_size = params.page_size;
-    // if (params.region) newParams.region = params.region;
+    if (params.region !== "all") newParams.region = params.region;
     try {
       const response = await Axios.get(`${GETPROVIDERINFORMATION_API}`, {
         params: newParams,
@@ -60,6 +61,23 @@ export const getProviderPhysician = createAsyncThunk(
   },
 );
 
+export const putProviderResetPassword = createAsyncThunk(
+  "putProviderResetPassword",
+  async (params, { rejectWithValue }) => {
+    const { user_id, password } = params;
+
+    try {
+      const response = await Axios.put(PUTRESETPROVIDERPASSWORD_API, {
+        user_id,
+        password,
+      });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
 export const putProviderInfo = createAsyncThunk(
   "putProviderInfo",
   async (params, { rejectWithValue }) => {
@@ -70,7 +88,7 @@ export const putProviderInfo = createAsyncThunk(
         firstname: data?.firstName,
         lastname: data?.lastName,
         email: data?.email,
-        mobile_no: data?.phoneNumber.toString(),
+        mobile_no: data?.phoneNumber?.toString(),
         medical_licence: data?.medicalLicence,
         NPI_no: data?.npiNumber,
         synchronization_email: data?.synEmail,
@@ -90,6 +108,7 @@ export const putProviderInfo = createAsyncThunk(
       });
       return response?.data;
     } catch (error) {
+      console.log("error", error);
       return rejectWithValue(error?.response);
     }
   },

@@ -40,19 +40,20 @@ const RequestedShifts = () => {
   const [tableData, setTableData] = useState([]);
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const { requestShiftData } = useSelector(
     (state) => state?.root?.schedulingReducer,
   );
 
   const rows = requestShiftData;
-  const navigate = useNavigate();
   useEffect(() => setTableData(requestShiftData), [requestShiftData]);
 
   useEffect(() => {
     dispatch(getRequestShift({ region: additionalFilter }));
     return undefined;
   }, [dispatch, additionalFilter]);
+
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
   };

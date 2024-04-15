@@ -37,6 +37,7 @@ import EmailLogs from "./components/pages/emailLogs/emailLogs";
 import SmsLogs from "./components/pages/smsLogs/smsLogs";
 import BlockHistory from "./components/pages/blockHistory/blockHistory";
 import CreateRequest from "./components/pages/createRequest/createRequest";
+import PageNotFound from "./components/pages/pageNotFound/pageNotFound";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -47,6 +48,7 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={halloDocTheme(isDarktheme)}>
         <Routes>
+          <Route path="*" element={<PageNotFound />} />
           <Route element={<BackLoginAuth />}>
             <Route path="/" element={<LoginPage />} />
             <Route path={AppRoutes.LOGIN} element={<LoginPage />} />

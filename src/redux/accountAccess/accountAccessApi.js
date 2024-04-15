@@ -14,11 +14,13 @@ import {
 export const getAccountAccess = createAsyncThunk(
   "getAccountAccess",
   async (params, { rejectWithValue }) => {
-    const { page, page_size } = params;
+    const newParams = {};
+    if (params.page) newParams.page = params.page;
+    if (params.page_size) newParams.page_size = params.page_size;
     try {
-      const response = await Axios.get(
-        `${GETACCOUNTACCESS_API}?page=${page}&page_size=${page_size}`,
-      );
+      const response = await Axios.get(`${GETACCOUNTACCESS_API}`, {
+        params: newParams,
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

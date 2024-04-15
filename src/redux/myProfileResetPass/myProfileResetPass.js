@@ -7,8 +7,8 @@ import { MYPROFILERESETPASS_API } from "../../constant/apis";
 export const resetPass = createAsyncThunk(
   "resetPass",
   async (params, { rejectWithValue }) => {
+    console.log(params);
     const { user_id, password } = params;
-    console.log("resspas", params);
 
     try {
       const response = await Axios.put(MYPROFILERESETPASS_API, {

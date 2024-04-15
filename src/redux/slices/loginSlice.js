@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "../loginApi/loginApi";
 
@@ -6,6 +8,8 @@ const initialState = {
   isLoading: false,
   error: null,
   jwtToken: "",
+  user: "",
+  accountType: "",
 };
 
 export const loginSlice = createSlice({
@@ -22,6 +26,8 @@ export const loginSlice = createSlice({
         state.isLoading = false;
         state.isLoggedIn = true;
         state.jwtToken = action.payload.jwt_token;
+        state.user = action.payload.user;
+        state.accountType = action.payload.type_of_user;
       }
     });
     builder.addCase(userLogin.pending, (state, action) => {

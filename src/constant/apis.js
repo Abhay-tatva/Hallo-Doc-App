@@ -111,7 +111,8 @@ export const POSTCONTACTPROVIDER_API =
 
 export const GETPROVIDERPHYSICIANDATA_API =
   "/admin/providermenu/provider_list/:user_id/view_edit_physician_account";
-
+export const PUTRESETPROVIDERPASSWORD_API =
+  "/admin/providermenu/provider_list/physician_account_reset_password";
 export const PROVIDEREDIT_API =
   "/admin/providermenu/provider_list/save_user_information";
 
@@ -128,6 +129,12 @@ export const PUTAPPROVEDSHIFT_API =
   "/admin/scheduling_menu/requested_shifts/approve_selected";
 export const DELETESELECTEDSHIFT_API =
   "/admin/scheduling_menu/requested_shifts/delete_selected";
+export const GETPROVIDERSHIFTA_API =
+  "/admin/scheduling_menu/provider_shifts_lists";
+export const GETVIEWSHIFT =
+  "/admin/scheduling_menu/provider_shifts_lists/view_shift";
+export const PUTRETURNSHIFT =
+  "/admin/scheduling_menu/provider_shifts_lists/:shift_id/edit_shift_return";
 // .........................................Record Api......................................../
 
 export const GETPATIENTHISTORY_API = "/admin/records/patienthistory";
@@ -139,6 +146,8 @@ export const GETBLOCKHISTORY_API = "/admin/records/cancel_block_history";
 export const PUTUNBLOCKHISTORY_API =
   "/admin/records/:confirmation_no/block_history_unblock";
 export const GETLOGS = "/admin/records/logs";
+export const PUTEDITSHIFT =
+  "/admin/scheduling_menu/provider_shifts_lists/edit_shift";
 
 // .......................................Partners Api.................................
 
@@ -149,3 +158,6 @@ export const GETBUSINESSVIEW_API =
   "/admin/partners/:business_id/update_business_view";
 export const PUTBUSINESSUPDATE_API =
   "/admin/partners/:business_id/update_business";
+
+// ..........................................Physician Site .....................................
+export const GETPROVIDERREQUESTBYSTATE_API = "/provider/dashboard/requests";

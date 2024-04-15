@@ -15,6 +15,8 @@ export const getPartners = createAsyncThunk(
     const newParams = {};
     if (params.page) newParams.page = params.page;
     if (params.page_size) newParams.page_size = params.page_size;
+    if (params.region !== "all") newParams.region = params.region;
+    if (params.vendor) newParams.vendor = params.vendor;
     try {
       const response = await Axios.get(`${GETPARTNERSLIST_API}`, {
         params: newParams,

@@ -9,26 +9,50 @@ import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 
 import { useDispatch } from "react-redux";
 import { resetPass } from "../../../../redux/myProfileResetPass/myProfileResetPass";
+import { toast } from "react-toastify";
+import { putProviderResetPassword } from "../../../../redux/provider/providerApi";
+
 const INITIAL_VALUES = {
   userName: "",
   status: "",
   role: "",
 };
-const Account = ({ userName, status, role, userId }) => {
+const Account = ({ userName, status, role, userId, name }) => {
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
 
-  console.log("userid", userId);
   const dispatch = useDispatch();
   const accountformik = useFormik({
     initialValues,
     validationSchema: myProfileSchema,
     onSubmit: (values) => {
-      dispatch(
-        resetPass({
-          user_id: userId,
-          password: values.password,
-        }),
-      );
+      console.log("vsal", values);
+      if (name === "myProfile") {
+        console.log("abhayeyysyys", name);
+
+        dispatch(
+          resetPass({
+            user_id: userId,
+            password: values.password,
+          }),
+        ).then((response) => {
+          if (response.type === "resetPass/fulfilled") {
+            toast.success("password reset successfully.....");
+          }
+        });
+      }
+
+      if (name === "providerProfile") {
+        dispatch(
+          putProviderResetPassword({
+            user_id: userId,
+            password: values.password,
+          }),
+        ).then((response) => {
+          if (response.type === "putProviderResetPassword/fulfilled") {
+            toast.success("provider password reset successfully....");
+          }
+        });
+      }
     },
     enableReinitialize: true,
   });
@@ -52,7 +76,16 @@ const Account = ({ userName, status, role, userId }) => {
             label="User Name"
             fullWidth
             className="form-input"
-            value={userName}
+            onChange={accountformik.handleChange}
+            onBlur={accountformik.handleBlur}
+            value={accountformik.values.userName}
+            error={
+              accountformik.touched.userName &&
+              Boolean(accountformik.errors.userName)
+            }
+            helperText={
+              accountformik.touched.userName && accountformik.errors.userName
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -80,10 +113,19 @@ const Account = ({ userName, status, role, userId }) => {
             select
             fullWidth
             className="form-input"
-            value={status}
+            onChange={accountformik.handleChange}
+            onBlur={accountformik.handleBlur}
+            value={accountformik.values.status}
+            error={
+              accountformik.touched.status &&
+              Boolean(accountformik.errors.status)
+            }
+            helperText={
+              accountformik.touched.status && accountformik.errors.status
+            }
           >
-            <MenuItem value="active">Active</MenuItem>
-            <MenuItem value="unactive">UnActive</MenuItem>
+            <MenuItem value="pending">Pending</MenuItem>
+            <MenuItem value="active">active</MenuItem>
           </FormInput>
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -93,7 +135,13 @@ const Account = ({ userName, status, role, userId }) => {
             select
             fullWidth
             className="form-input"
-            value={role}
+            onChange={accountformik.handleChange}
+            onBlur={accountformik.handleBlur}
+            value={accountformik.values.role}
+            error={
+              accountformik.touched.role && Boolean(accountformik.errors.role)
+            }
+            helperText={accountformik.touched.role && accountformik.errors.role}
           >
             <MenuItem value="send_order">Send Order</MenuItem>
             <MenuItem value="dashboard">Dashboard</MenuItem>

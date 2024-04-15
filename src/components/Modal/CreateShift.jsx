@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React, { useState } from "react";
 import BasicModal from "./Modal";
 import {
@@ -17,6 +19,11 @@ import { useFormik } from "formik";
 import { Button } from "../Button/ButtonInput";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import { CreateModalSchema } from "../ValidationSchema/CreateShiftModalSchema";
+import {
+  getProviderShift,
+  postCreateShift,
+} from "../../redux/Scheduling/schedulingApi";
+import { toast } from "react-toastify";
 
 const CreateShift = ({ open, handleClose, handleOpen }) => {
   const [checked, setChecked] = useState(false);
@@ -34,7 +41,22 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
     },
     validationSchema: CreateModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submitted", values);
+      dispatch(
+        postCreateShift({
+          region: values.searchRegion,
+          physician: values.physician,
+          shift_date: values.date,
+          start: values.startTime,
+          end: values.endTime,
+          repeat_days: values.repeatDays,
+          repeat_end: values.repeatEnd,
+        }),
+      ).then((response) => {
+        if (response.type === "postCreateShift/fulfilled") {
+          toast.success("Shift Created Successfully");
+          dispatch(getProviderShift({ region: "all" }));
+        }
+      });
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -44,7 +66,6 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
   );
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const dispatch = useDispatch();
-
   return (
     <BasicModal
       open={open}
@@ -52,7 +73,7 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
       handleClose={handleClose}
       header="Create Shift"
     >
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <FormInput
             fullWidth
@@ -106,20 +127,42 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
               <FormInput
                 type="date"
                 fullWidth
-                name="dob"
+                name="date"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.dob}
-                error={formik.touched.dob && Boolean(formik.errors.dob)}
-                helperText={formik.touched.dob && formik.errors.dob}
+                value={formik.values.date}
+                error={formik.touched.date && Boolean(formik.errors.date)}
+                helperText={formik.touched.date && formik.errors.date}
               />
             </Grid>
             {/* <Grid item xs={6}> */}
             {/* </Grid> */}
           </Grid>
           <Box display="flex" justifyContent="space-between" gap={1.5}>
-            <Input label="Start" type="time" fullWidth />
-            <Input label="End" type="time" fullWidth />
+            <Input
+              name="startTime"
+              label="Start"
+              type="time"
+              fullWidth
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.startTime}
+              error={
+                formik.touched.startTime && Boolean(formik.errors.startTime)
+              }
+              helperText={formik.touched.startTime && formik.errors.startTime}
+            />
+            <Input
+              name="endTime"
+              label="End"
+              type="time"
+              fullWidth
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.endTime}
+              error={formik.touched.endTime && Boolean(formik.errors.endTime)}
+              helperText={formik.touched.endTime && formik.errors.endTime}
+            />
           </Box>
           <Box display="flex">
             <FormControlLabel
@@ -174,20 +217,22 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
               fullWidth
               disabled={!checked}
               select
-              name="dob"
+              name="repeatEnd"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.dob}
-              error={formik.touched.dob && Boolean(formik.errors.dob)}
-              helperText={formik.touched.dob && formik.errors.dob}
+              value={formik.values.repeatEnd}
+              error={
+                formik.touched.repeatEnd && Boolean(formik.errors.repeatEnd)
+              }
+              helperText={formik.touched.repeatEnd && formik.errors.repeatEnd}
             >
-              <MenuItem>2-times</MenuItem>
-              <MenuItem>1-times</MenuItem>
-              <MenuItem>0-times</MenuItem>
+              <MenuItem value="2">2-times</MenuItem>
+              <MenuItem value="1">1-times</MenuItem>
+              <MenuItem value="0">0-times</MenuItem>
             </FormInput>
           </Grid>
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Save" variant="contained" Type="submit" />
+            <Button name="Save" variant="contained" type="submit" />
             <Button name="Cancel" variant="outlined" onClick={handleClose} />
           </Box>
         </Box>

@@ -25,8 +25,11 @@ import {
   accountAccessEdit,
   getAccountAccess,
 } from "../../../redux/accountAccess/accountAccessApi";
+import { toast } from "react-toastify";
 
 const AccessAccount = () => {
+  const [pageNo, setPageNo] = useState(1);
+
   const [orderBy, setOrderBy] = useState("accountType");
   const [order, setOrder] = useState("asc");
   const [page, setPage] = React.useState(0);
@@ -42,11 +45,14 @@ const AccessAccount = () => {
   useEffect(() => setTableData(accountData), [accountData]);
 
   useEffect(() => {
-    dispatch(getAccountAccess({ page: 1, page_size: 20 }));
+    dispatch(getAccountAccess({ page: pageNo, page_size: rowsPerPage }));
     return undefined;
-  }, []);
+  }, [dispatch, pageNo, rowsPerPage]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -168,7 +174,22 @@ const AccessAccount = () => {
                                       onClick={() =>
                                         dispatch(
                                           accountAccessDelete(row.role_id),
-                                        )
+                                        ).then((response) => {
+                                          if (
+                                            response.type ===
+                                            "accountAccessDelete/fulfilled"
+                                          ) {
+                                            toast.success(
+                                              "data Deleted Successfully",
+                                            );
+                                            dispatch(
+                                              getAccountAccess({
+                                                page: 1,
+                                                page_size: 20,
+                                              }),
+                                            );
+                                          }
+                                        })
                                       }
                                     />
                                   </Box>
@@ -187,7 +208,7 @@ const AccessAccount = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={tableData.length}
+              count={accountData.total_count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Container,
@@ -6,11 +8,11 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../Button/ButtonInput";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FormInput } from "../../TextField/FormInput";
 import "./scheduling.css";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -25,13 +27,26 @@ import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import { AppRoutes } from "../../../constant/route";
 import CreateShift from "../../Modal/CreateShift";
 import ViewShift from "../../Modal/ViewShift";
+import {
+  getProviderShift,
+  getViewShift,
+} from "../../../redux/Scheduling/schedulingApi";
 
 const Scheduling = () => {
   const navigate = useNavigate();
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [open, setOpen] = React.useState(false);
   const [modalName, setModalName] = useState("");
+  const dispatch = useDispatch();
+
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+
+  const { providerShift } = useSelector(
+    (state) => state.root.schedulingReducer,
+  );
+  useEffect(() => {
+    dispatch(getProviderShift({ region: additionalFilter }));
+  }, [dispatch, additionalFilter]);
 
   const handleOpen = (name) => {
     setModalName(name);
@@ -44,6 +59,28 @@ const Scheduling = () => {
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
   };
+
+  const events = providerShift
+    ?.map((provider) => {
+      return provider.shifts.map((shift) => {
+        return {
+          id: shift.shift_id,
+          title: `Shift ID: ${shift.shift_id}`,
+          start: `${shift.shift_date}T${shift.start}`,
+          end: `${shift.shift_date}T${shift.end}`,
+          resourceId: provider.user_id,
+          backgroundColor:
+            shift.status === "pending" ? "lightpink" : "lightgreen",
+        };
+      });
+    })
+    .flat(); // Use flat() to flatten the array of arrays into a single array
+
+  const resources = providerShift?.map((shift) => ({
+    id: shift?.user_id,
+    title: `${shift?.provider_name}`,
+  }));
+
   return (
     <>
       <Box className="main-scheduling-container">
@@ -102,23 +139,44 @@ const Scheduling = () => {
             </Box>
           </Box>
           <Box className="calendar">
+            <Box display="flex" justifyContent="flex-end" mt={2} gap={2}>
+              <Box className="indicators_scheduling pending" />
+              Pending Shifts
+              <Box className="indicators_scheduling approved" />
+              Approved Shifts
+            </Box>
             <FullCalendar
               plugins={[
                 dayGridPlugin,
                 interactionPlugin,
-                // timeGridPlugin,
                 resourceTimelinePlugin,
               ]}
-              dateClick={() => handleOpen("View Shift")}
-              initialView="resourceTimelineWeek"
+              initialView="dayGridMonth"
               headerToolbar={{
                 left: "title prev next",
                 right: "resourceTimelineDay resourceTimelineWeek dayGridMonth",
               }}
-              events={[
-                { title: "event 1", date: "2024-03-15" },
-                { title: "event 2", date: "2019-04-02" },
-              ]}
+              events={events}
+              resources={resources}
+              eventContent={(eventInfo) => {
+                return (
+                  <div
+                    style={{
+                      width: "100%",
+                      backgroundColor: eventInfo.backgroundColor,
+                      borderRadius: "0.3rem",
+                      cursor: "pointer",
+                      height: "auto",
+                    }}
+                    onClick={() => {
+                      dispatch(getViewShift(eventInfo.event.id));
+                      handleOpen("View Shift");
+                    }}
+                  >
+                    {eventInfo.timeText}
+                  </div>
+                );
+              }}
               editable={true}
               selectable={true}
               selectMirror={true}
