@@ -164,3 +164,10 @@ export const PUTBUSINESSUPDATE_API =
 
 // ..........................................Physician Site .....................................
 export const GETPROVIDERREQUESTBYSTATE_API = "/provider/dashboard/requests";
+export const PUTACCEPTREQUEST =
+  "/provider/dashboard/requests/:confirmation_no/actions/accept_request";
+export const PROVIDERSITECOUNT_API = "/provider/dashboard/requests_count";
+export const PHYSICIANTRANSFER_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/transfer_request";
+export const PHYSICIANVIEWNOTES_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/view_notes";

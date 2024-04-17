@@ -39,4 +39,5 @@ export const rootReducer = combineReducers({
   recordsReducer: recordsSlice,
   partnersReducer: partnersSlice,
   schedulingReducer: schedulingSlice,
+  // .................................physican SixteenMp............................
 });

@@ -26,7 +26,6 @@ import { getLogs } from "../../../redux/records/recordsApi";
 
 const EmailLogs = () => {
   const [pageNo, setPageNo] = useState(1);
-
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);

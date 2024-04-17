@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Checkbox,
@@ -31,6 +33,7 @@ import {
 import { toast } from "react-toastify";
 
 const RequestedShifts = () => {
+  const [pageNo, setPageNo] = useState(1);
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [additionalFilter, setAdditionalFilter] = useState("all");
@@ -50,9 +53,15 @@ const RequestedShifts = () => {
   useEffect(() => setTableData(requestShiftData), [requestShiftData]);
 
   useEffect(() => {
-    dispatch(getRequestShift({ region: additionalFilter }));
+    dispatch(
+      getRequestShift({
+        page: pageNo,
+        page_size: rowsPerPage,
+        region: additionalFilter,
+      }),
+    );
     return undefined;
-  }, [dispatch, additionalFilter]);
+  }, [dispatch, additionalFilter, rowsPerPage, pageNo]);
 
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
@@ -118,14 +127,16 @@ const RequestedShifts = () => {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
+  };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
   const approvedShift = () => {
     const shiftIds = requestShiftData?.map((item) => item.shifts[0].shift_id);
     dispatch(putApprovedShift(shiftIds));
@@ -233,7 +244,7 @@ const RequestedShifts = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {stableSort(rows, getComparator(order, orderBy)).map(
+                  {stableSort(tableData, getComparator(order, orderBy)).map(
                     (row) => (
                       <TableRow key={row.id} hover>
                         <TableCell padding="checkbox">
@@ -255,7 +266,7 @@ const RequestedShifts = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={tableData?.length}
+              count={requestShiftData.total_count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

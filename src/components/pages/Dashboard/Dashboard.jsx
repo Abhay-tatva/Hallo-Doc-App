@@ -54,6 +54,8 @@ import { sendOrderProfession } from "../../../redux/professionBussiness/getProfe
 import { AppRoutes } from "../../../constant/route";
 import { useNavigate } from "react-router-dom";
 import { exportAll, singleExport } from "../../../redux/export/exportApi";
+// import { providerDashBoard } from "../../../redux/Provider Site/providerDashBoard/providerDashBoardApi";
+import { physicianCount } from "../../../redux/Provider Site/countApi/countApi";
 
 const cards = [
   {
@@ -131,8 +133,11 @@ const Dashboard = () => {
       dispatch(getRegions());
       dispatch(requestCount());
       dispatch(sendOrderProfession());
+    } else if (accountType === "physician") {
+      // dispatch(providerDashBoard({ state: activeButton }));
+      dispatch(physicianCount());
     }
-  }, [accountType, dispatch]);
+  }, [accountType, dispatch, activeButton]);
 
   const handleClose = () => {
     setOpen(false);
@@ -220,9 +225,15 @@ const Dashboard = () => {
                       {caseCount?.map((count, index) => {
                         return (
                           <Typography variant="h5" key={index}>
-                            {count.request_state === card.applicationState && (
-                              <b>{count.counts}</b>
-                            )}
+                            {accountType === "admin"
+                              ? count.request_state ===
+                                  card.applicationState && <b>{count.counts}</b>
+                              : accountType === "physician"
+                                ? count.request_state ===
+                                    card.applicationState && (
+                                    <b>{count.counts}</b>
+                                  )
+                                : null}
                           </Typography>
                         );
                       })}
@@ -255,6 +266,7 @@ const Dashboard = () => {
             <Grid item xs={12} lg={7}>
               <Box className="btn-2">
                 <Button
+                  accountType={accountType}
                   name="Send Link"
                   variant="contained"
                   startIcon={<SendOutlinedIcon />}
@@ -349,7 +361,7 @@ const Dashboard = () => {
           stateButton={activeButton?.toLowerCase()}
           columns={columns}
           indicator={indicator}
-          dropDown={dropDown}
+          tableDropDown={dropDown}
           onClick={handleOpen}
         />
       </Box>

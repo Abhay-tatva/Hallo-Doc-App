@@ -57,24 +57,27 @@ const ViewReservation = () => {
   const handleOpen = (name, rowId) => {
     setModalName(name);
     setOpen(true);
-    dispatch(cancelCase(data.confirmation_no));
+    dispatch(cancelCase(data?.confirmation_no));
   };
   const handleClose = () => {
     setOpen(false);
     setModalName("");
   };
   useEffect(() => {
-    setInitialValues({
-      patientNotes: data?.patient_data.patient_notes[0].description,
-      firstName: data?.patient_data.first_name,
-      lastName: data?.patient_data.last_name,
-      dob: data?.patient_data.DOB,
-      phonenumber: data?.patient_data.mobile_no,
-      email: data?.patient_data.email,
-      region: data?.patient_data.location_information.region,
-      business: data?.patient_data.location_information.business_name,
-      room: data?.patient_data.location_information.room,
-    });
+    setInitialValues(
+      {
+        patientNotes: data?.patient_data.patient_notes[0].description,
+        firstName: data?.patient_data.first_name,
+        lastName: data?.patient_data.last_name,
+        dob: data?.patient_data.DOB,
+        phonenumber: data?.patient_data.mobile_no,
+        email: data?.patient_data.email,
+        region: data?.patient_data.location_information.region,
+        business: data?.patient_data.location_information.business_name,
+        room: data?.patient_data.location_information.room,
+      },
+      [setInitialValues, data],
+    );
   });
 
   return (
@@ -108,7 +111,7 @@ const ViewReservation = () => {
                   Conformation Number
                 </Typography>
                 <Typography variant="subtitle1" color="#39B3C3">
-                  <b>{data.confirmation_no}</b>
+                  <b>{data?.confirmation_no}</b>
                 </Typography>
               </Box>
               <FormInput
@@ -304,7 +307,7 @@ const ViewReservation = () => {
                 mt={4}
                 className="end-btn"
               >
-                {data.request_state === "new" && (
+                {data?.request_state === "new" && (
                   <Button
                     name="Assign"
                     variant="contained"

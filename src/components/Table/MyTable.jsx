@@ -39,12 +39,14 @@ import { commonApi } from "../../redux/commonApi/commonApi";
 import { getCloseCase } from "../../redux/closeCase/closeCaseApi";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { providerDashBoard } from "../../redux/Provider Site/providerDashBoard/providerDashBoardApi";
+import { putAcceptRequest } from "../../redux/Provider Site/acceptRequest/acceptRequestApi";
+import { physicianViewNotes } from "../../redux/Provider Site/ViewNotes/physicianViewNotesApi";
 
 const MyTable = ({
   stateButton,
   columns,
   indicator,
-  dropDown,
+  tableDropDown,
   onClick,
   caseCount,
 }) => {
@@ -55,12 +57,12 @@ const MyTable = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
   const [tableData, setTableData] = useState([]);
+  const [confirmno, setConfirmNo] = useState("");
+  const [dropDown, setDropDown] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const state = useSelector((state) => state.root.newStateReducer);
   const rows = state?.data?.data;
-
-  const dispatch = useDispatch();
-  const [confirmno, setConfirmNo] = useState("");
 
   useEffect(() => setTableData(rows), [rows]);
 
@@ -117,7 +119,13 @@ const MyTable = ({
         }),
       );
     } else if (accountType === "physician") {
-      dispatch(providerDashBoard({ state: stateButton }));
+      dispatch(
+        providerDashBoard({
+          state: stateButton,
+          page_size: rowsPerPage,
+          page: pageNo,
+        }),
+      );
     }
   }, [
     accountType,
@@ -130,6 +138,14 @@ const MyTable = ({
     caseCount,
   ]);
 
+  useEffect(() => {
+    setDropDown(
+      tableDropDown?.filter((dropdown) =>
+        dropdown.accountTypes?.includes(accountType),
+      ),
+    );
+  }, [accountType, tableDropDown]);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -137,7 +153,6 @@ const MyTable = ({
     setConfirmNo(confirmnumber);
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = (action) => {
     dispatch(commonApi(confirmno));
     setAnchorEl(null);
@@ -150,12 +165,33 @@ const MyTable = ({
         onClick(action);
         break;
       case "View Case":
-        dispatch(viewCase(confirmno));
-        navigate(AppRoutes.RESERVATION);
+        {
+          if (accountType == "admin") {
+            dispatch(viewCase(confirmno));
+            navigate(AppRoutes.RESERVATION);
+          } else if (accountType == "physician") {
+            // dispatch(physicianViewNotes(confirmno));
+          }
+        }
         break;
       case "View Notes":
-        dispatch(viewNotes(confirmno));
-        navigate(AppRoutes.NOTES);
+        {
+          if (accountType == "admin") {
+            dispatch(viewNotes(confirmno));
+            navigate(AppRoutes.NOTES);
+          } else if (accountType == "physician") {
+            dispatch(physicianViewNotes(confirmno));
+            navigate(AppRoutes.NOTES);
+          }
+        }
+        break;
+      case "Accept":
+        dispatch(putAcceptRequest(confirmno)).then((response) => {
+          if (response.type === "putAcceptRequest/fulfilled") {
+            toast.success(" Request Accept Successfully...");
+            dispatch(providerDashBoard({ state: stateButton }));
+          }
+        });
         break;
       case "Block Patient":
         dispatch(blockcaseGet(confirmno));
@@ -164,6 +200,10 @@ const MyTable = ({
       case "View Upload":
         dispatch(viewUpload(confirmno));
         navigate(AppRoutes.VIEWUPLOAD);
+        break;
+      case "Conclude Care":
+        // dispatch(viewUpload(confirmno));
+        navigate(AppRoutes.CONCLUDECARE);
         break;
       case "Orders":
         navigate(AppRoutes.ORDER);
@@ -282,16 +322,21 @@ const MyTable = ({
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                    className="table-head-label"
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
+                {columns.map((column) => {
+                  if (column.accountTypes.includes(accountType)) {
+                    return (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                        className="table-head-label"
+                      >
+                        {column.label}
+                      </TableCell>
+                    );
+                  }
+                  return null;
+                })}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -306,35 +351,38 @@ const MyTable = ({
                       <EmailOutlinedIcon />
                     </TableCell>
 
-                    {stateButton !== "unpaid" && (
+                    {accountType == "admin" && stateButton !== "unpaid" && (
                       <TableCell>{row.patient_data.DOB}</TableCell>
                     )}
-                    {stateButton === "toclose" && (
+                    {accountType == "admin" && stateButton === "toclose" && (
                       <TableCell>{row.patient_data.region}</TableCell>
                     )}
-                    {(stateButton === "new" ||
-                      stateButton === "pending" ||
-                      stateButton === "active") && (
-                      <TableCell>
-                        {row.requestor},{row?.requestor_data?.firstname}
-                        {row?.requestor_data?.last_name}
-                      </TableCell>
-                    )}
-                    {(stateButton === "pending" ||
-                      stateButton === "active" ||
-                      stateButton === "conclude" ||
-                      stateButton === "toclose" ||
-                      stateButton === "unpaid") && (
-                      <TableCell>{row?.physician_data?.name}</TableCell>
-                    )}
-                    {(stateButton === "pending" ||
-                      stateButton === "active" ||
-                      stateButton === "conclude" ||
-                      stateButton === "toclose" ||
-                      stateButton === "unpaid") && (
-                      <TableCell>{row?.date_of_service}</TableCell>
-                    )}
-                    {stateButton === "new" && (
+                    {accountType == "admin" &&
+                      (stateButton === "new" ||
+                        stateButton === "pending" ||
+                        stateButton === "active") && (
+                        <TableCell>
+                          {row.requestor},{row?.requestor_data?.firstname}
+                          {row?.requestor_data?.last_name}
+                        </TableCell>
+                      )}
+                    {accountType == "admin" &&
+                      (stateButton === "pending" ||
+                        stateButton === "active" ||
+                        stateButton === "conclude" ||
+                        stateButton === "toclose" ||
+                        stateButton === "unpaid") && (
+                        <TableCell>{row?.physician_data?.name}</TableCell>
+                      )}
+                    {accountType == "admin" &&
+                      (stateButton === "pending" ||
+                        stateButton === "active" ||
+                        stateButton === "conclude" ||
+                        stateButton === "toclose" ||
+                        stateButton === "unpaid") && (
+                        <TableCell>{row?.date_of_service}</TableCell>
+                      )}
+                    {accountType == "admin" && stateButton === "new" && (
                       <TableCell>{row.requested_date}</TableCell>
                     )}
                     {stateButton !== "toclose" && (
@@ -353,12 +401,30 @@ const MyTable = ({
                       </TableCell>
                     )}
                     <TableCell>{row.patient_data.address}</TableCell>
-                    {(stateButton === "new" ||
-                      stateButton === "pending" ||
-                      stateButton === "active" ||
-                      stateButton === "toclose") && (
-                      <TableCell>{row.notes?.[0]?.description}</TableCell>
+                    {accountType == "physician" && stateButton == "active" && (
+                      <TableCell>
+                        {row.patient_data.status ? (
+                          <Button
+                            className="phone-btn"
+                            name={row.patient_data.status}
+                            variant="outlined"
+                            color="inherit"
+                            // onClick={(e) => {
+                            //   handleClick(e, row.confirmation_no);
+                            // }}
+                          />
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
                     )}
+                    {accountType == "admin" &&
+                      (stateButton === "new" ||
+                        stateButton === "pending" ||
+                        stateButton === "active" ||
+                        stateButton === "toclose") && (
+                        <TableCell>{row.notes?.[0]?.description}</TableCell>
+                      )}
 
                     <TableCell>
                       <Button
@@ -370,30 +436,29 @@ const MyTable = ({
                           handleClick(e, row.confirmation_no);
                         }}
                       />
-                      {
-                        <Menu
-                          id="fade-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "fade-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={open && row.confirmation_no === confirmno}
-                          onClose={handleClose}
-                          TransitionComponent={Fade}
-                        >
-                          {dropDown.map((data) => {
-                            return (
-                              <MenuItem
-                                key={data.id}
-                                onClick={() => handleClose(data.name)}
-                                disableRipple
-                              >
-                                {data.icon}&nbsp;{data.name}
-                              </MenuItem>
-                            );
-                          })}
-                        </Menu>
-                      }
+
+                      <Menu
+                        id="fade-menu"
+                        MenuListProps={{
+                          "aria-labelledby": "fade-button",
+                        }}
+                        anchorEl={anchorEl}
+                        open={open && row.confirmation_no === confirmno}
+                        onClose={handleClose}
+                        TransitionComponent={Fade}
+                      >
+                        {dropDown.map((data) => {
+                          return (
+                            <MenuItem
+                              key={data.id}
+                              onClick={() => handleClose(data.name)}
+                              disableRipple
+                            >
+                              {data.icon}&nbsp;{data.name}
+                            </MenuItem>
+                          );
+                        })}
+                      </Menu>
                     </TableCell>
                   </TableRow>
                 );

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { transferCase } from "../../redux/transferCase/transferCaseApi";
 import { toast } from "react-toastify";
+import { physicianTransfer } from "../../redux/Provider Site/physicianTransfer/physicianTransferApi";
 
 const TransferModal = ({ open, handleClose, handleOpen }) => {
   const { physicians } = useSelector(
@@ -19,6 +20,8 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
 
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const { confirmation_no } = useSelector((state) => state.root.commonReducer);
+  const { accountType } = useSelector((state) => state.root.loginReducer);
+
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -30,19 +33,28 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
     validationSchema: transferModalSchema,
     onSubmit: (values, onSubmitProps) => {
       const name = values.physician.split(" ");
+      if (accountType === "admin") {
+        dispatch(
+          transferCase({
+            confirmationnumber: confirmation_no,
+            firstname: name[0],
+            lastname: name[1],
+            description: values.description,
+          }),
+        ).then((response) => {
+          if (response.type === "transferCase/fulfilled") {
+            toast.success("Transfer Case Successfully...");
+          }
+        });
+      } else if (accountType === "physician") {
+        dispatch(
+          physicianTransfer({
+            confirmationnumber: confirmation_no,
+            description: values.description,
+          }),
+        );
+      }
 
-      dispatch(
-        transferCase({
-          confirmationnumber: confirmation_no,
-          firstname: name[0],
-          lastname: name[1],
-          description: values.description,
-        }),
-      ).then((response) => {
-        if (response.type === "transferCase/fulfilled") {
-          toast.success("Transfer Case Successfully...");
-        }
-      });
       onSubmitProps.resetForm();
       handleClose();
     },

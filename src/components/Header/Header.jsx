@@ -37,6 +37,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
     dispatch(logout());
   };
   const { user } = useSelector((state) => state.root.loginReducer);
+  const { accountType } = useSelector((state) => state.root.loginReducer);
 
   // const handleMenuOpen = (event) => {
   //   setAnchorEl(event.currentTarget);
@@ -116,14 +117,16 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             Dashboard
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            to={AppRoutes.PROVIDERLOCATION}
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Provider Location
-          </NavLink>
-        </li>
+        {accountType == "admin" && (
+          <li>
+            <NavLink
+              to={AppRoutes.PROVIDERLOCATION}
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Provider Location
+            </NavLink>
+          </li>
+        )}
         <li>
           <NavLink
             to={AppRoutes.MYPROFILE}
@@ -133,136 +136,145 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             My Profile
           </NavLink>
         </li>
-        <li
-          onMouseEnter={(e) => handleNavLinkHover(e, "provider")}
-          onMouseLeave={handleMenuClose}
-        >
-          <NavLink
-            to={AppRoutes.PROVIDER}
-            className={({ isActive }) => (isActive ? "active" : "")}
+        {accountType == "admin" ? (
+          <li
+            onMouseEnter={(e) => handleNavLinkHover(e, "provider")}
+            onMouseLeave={handleMenuClose}
           >
-            Providers
-          </NavLink>
-          {providerMenuOpen && (
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
+            <NavLink
+              to={AppRoutes.PROVIDER}
+              className={({ isActive }) => (isActive ? "active" : "")}
             >
-              <MenuItem
-                onClick={() => {
-                  navigate(AppRoutes.PROVIDER);
-                  handleMenuClose();
-                }}
+              Providers
+            </NavLink>
+            {providerMenuOpen && (
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
               >
-                Provider
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  navigate(AppRoutes.SCHEDULING);
-                  handleMenuClose();
-                }}
-              >
-                Scheduling
-              </MenuItem>
-              <MenuItem onClick={() => navigate(-1)}>Invoicing</MenuItem>
-            </Menu>
-          )}
-        </li>
-        <li>
-          <NavLink
-            to={AppRoutes.PARTNERS}
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Partners
-          </NavLink>
-        </li>
-        <li
-          onMouseEnter={(e) => handleNavLinkHover(e, "access")}
-          onMouseLeave={handleMenuClose}
-        >
-          <NavLink
-            to={AppRoutes.ACCESSACCOUNT}
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Access
-          </NavLink>
-          {accessMenuOpen && (
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
+                <MenuItem
+                  onClick={() => {
+                    navigate(AppRoutes.PROVIDER);
+                    handleMenuClose();
+                  }}
+                >
+                  Provider
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    navigate(AppRoutes.SCHEDULING);
+                    handleMenuClose();
+                  }}
+                >
+                  Scheduling
+                </MenuItem>
+              </Menu>
+            )}
+          </li>
+        ) : (
+          <MenuItem onClick={() => navigate(-1)}>Invoicing</MenuItem>
+        )}
+        {accountType == "admin" && (
+          <li>
+            <NavLink
+              to={AppRoutes.PARTNERS}
+              className={({ isActive }) => (isActive ? "active" : "")}
             >
-              <MenuItem
-                onClick={() => {
-                  dispatch(getUserAccess());
-                  navigate(AppRoutes.USERACCESS);
-                  handleMenuClose();
-                }}
-              >
-                User Access
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  // dispatch(getAccountAccess());
-                  navigate(AppRoutes.ACCESSACCOUNT);
-                  handleMenuClose();
-                }}
-              >
-                Account Access
-              </MenuItem>
-            </Menu>
-          )}
-        </li>
-        <li
-          onMouseEnter={(e) => handleNavLinkHover(e, "records")}
-          onMouseLeave={handleMenuClose}
-        >
-          <NavLink
-            to={AppRoutes.RECORDS}
-            className={({ isActive }) => (isActive ? "active" : "")}
+              Partners
+            </NavLink>
+          </li>
+        )}
+        {accountType == "admin" ? (
+          <li
+            onMouseEnter={(e) => handleNavLinkHover(e, "access")}
+            onMouseLeave={handleMenuClose}
           >
-            Records
-          </NavLink>
-          {recordsMenuOpen && (
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
+            <NavLink
+              to={AppRoutes.ACCESSACCOUNT}
+              className={({ isActive }) => (isActive ? "active" : "")}
             >
-              <MenuItem
-                onClick={() => {
-                  navigate(AppRoutes.SEARCHRECORDS);
-                  handleMenuClose();
-                }}
+              Access
+            </NavLink>
+            {accessMenuOpen && (
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
               >
-                Search Records
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  navigate(AppRoutes.EMAILLOGS);
-                  handleMenuClose();
-                }}
+                <MenuItem
+                  onClick={() => {
+                    dispatch(getUserAccess());
+                    navigate(AppRoutes.USERACCESS);
+                    handleMenuClose();
+                  }}
+                >
+                  User Access
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    // dispatch(getAccountAccess());
+                    navigate(AppRoutes.ACCESSACCOUNT);
+                    handleMenuClose();
+                  }}
+                >
+                  Account Access
+                </MenuItem>
+              </Menu>
+            )}
+          </li>
+        ) : null}
+        {accountType == "admin" ? (
+          <li
+            onMouseEnter={(e) => handleNavLinkHover(e, "records")}
+            onMouseLeave={handleMenuClose}
+          >
+            <NavLink
+              to={AppRoutes.RECORDS}
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Records
+            </NavLink>
+            {recordsMenuOpen && (
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
               >
-                Email Logs
-              </MenuItem>
-              <MenuItem onClick={() => navigate(AppRoutes.SMSLOGS)}>
-                SMS Logs
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  navigate(AppRoutes.PATIENTHISTORY);
-                  handleMenuClose();
-                }}
-              >
-                Patients Records
-              </MenuItem>
-              <MenuItem onClick={() => navigate(AppRoutes.BLOCKHISTORY)}>
-                Blocked History
-              </MenuItem>
-            </Menu>
-          )}
-        </li>
+                <MenuItem
+                  onClick={() => {
+                    navigate(AppRoutes.SEARCHRECORDS);
+                    handleMenuClose();
+                  }}
+                >
+                  Search Records
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    navigate(AppRoutes.EMAILLOGS);
+                    handleMenuClose();
+                  }}
+                >
+                  Email Logs
+                </MenuItem>
+                <MenuItem onClick={() => navigate(AppRoutes.SMSLOGS)}>
+                  SMS Logs
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    navigate(AppRoutes.PATIENTHISTORY);
+                    handleMenuClose();
+                  }}
+                >
+                  Patients Records
+                </MenuItem>
+                <MenuItem onClick={() => navigate(AppRoutes.BLOCKHISTORY)}>
+                  Blocked History
+                </MenuItem>
+              </Menu>
+            )}
+          </li>
+        ) : null}
       </Box>
 
       <Drawer open={open} onClose={() => setOpen(false)} className="sidebar">

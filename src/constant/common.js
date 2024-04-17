@@ -9,7 +9,8 @@ import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import FindInPageOutlinedIcon from "@mui/icons-material/FindInPageOutlined";
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
 import LocalDiningOutlinedIcon from "@mui/icons-material/LocalDiningOutlined";
-
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import DiamondIcon from "@mui/icons-material/Diamond";
 export const newColumns = [
   {
     id: "name",
@@ -80,28 +81,28 @@ export const pendingColumns = [
     id: "dateOfBirth",
     label: "Date Of Birth",
     minWidth: 100,
-    accountTypes: ["admin", "physician"],
+    accountTypes: ["admin"],
   },
   {
     id: "requestor",
     label: "Requestor",
     align: "right",
     maxWidth: 100,
-    accountTypes: ["admin", "physician"],
+    accountTypes: ["admin"],
   },
   {
     id: "physicanName",
     label: "Physican Name",
     align: "right",
     maxWidth: 100,
-    accountTypes: ["admin", "physician"],
+    accountTypes: ["admin"],
   },
   {
     id: "dateOfService",
     label: "Date of Service",
     maxWidth: 95,
     align: "right",
-    accountTypes: ["admin", "physician"],
+    accountTypes: ["admin"],
   },
   {
     id: "phoneNumber",
@@ -183,6 +184,13 @@ export const activeColumns = [
     accountTypes: ["admin", "physician"],
   },
   {
+    id: "status",
+    label: "Status",
+    minWidth: 200,
+    align: "right",
+    accountTypes: ["physician"],
+  },
+  {
     id: "notes",
     label: "Notes",
     minWidth: 130,
@@ -210,14 +218,14 @@ export const concludeColumns = [
     id: "dateOfBirth",
     label: "Date Of Birth",
     minWidth: 100,
-    accountTypes: ["admin", "physician"],
+    accountTypes: ["admin"],
   },
   {
     id: "physicanName",
     label: "Physican Name",
     align: "right",
     maxWidth: 100,
-    accountTypes: ["admin", "physician"],
+    accountTypes: ["admin"],
   },
   {
     id: "dateOfService",
@@ -350,26 +358,37 @@ export const newDropdown = [
     id: "1",
     name: "Assign Case",
     icon: <AssignmentOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "2",
     name: "Cancel Case",
     icon: <HighlightOffOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "3",
-    name: "View Case",
-    icon: <PageviewOutlinedIcon />,
+    name: "Accept",
+    icon: <FormatListBulletedIcon />,
+    accountTypes: ["physician"],
   },
   {
     id: "4",
-    name: "View Notes",
-    icon: <DocumentScannerOutlinedIcon />,
+    name: "View Case",
+    icon: <PageviewOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "5",
+    name: "View Notes",
+    icon: <DocumentScannerOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
+  },
+  {
+    id: "6",
     name: "Block Patient",
     icon: <BlockOutlinedIcon />,
+    accountTypes: ["admin"],
   },
 ];
 export const pendingDropdown = [
@@ -377,31 +396,37 @@ export const pendingDropdown = [
     id: "1",
     name: "View Case",
     icon: <PageviewOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "2",
     name: "View Upload",
     icon: <DriveFolderUploadOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "3",
     name: "View Notes",
     icon: <DocumentScannerOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "4",
     name: "Transfer",
     icon: <FormatListNumberedOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "5",
     name: "Clear Case",
     icon: <HighlightOffOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "6",
     name: "Send Agreement",
     icon: <IosShareOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
 ];
 export const activeDropdown = [
@@ -409,31 +434,37 @@ export const activeDropdown = [
     id: "1",
     name: "View Case",
     icon: <PageviewOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "2",
     name: "View Upload",
     icon: <DriveFolderUploadOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "3",
     name: "View Notes",
     icon: <DocumentScannerOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "4",
     name: "Orders",
     icon: <FindInPageOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "5",
     name: "Doctors Notes",
     icon: <LocalHospitalOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "6",
     name: "Encounter",
     icon: <LocalDiningOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
 ];
 export const concludeDropdown = [
@@ -441,31 +472,43 @@ export const concludeDropdown = [
     id: "1",
     name: "View Case",
     icon: <PageviewOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "2",
-    name: "View Upload",
-    icon: <DriveFolderUploadOutlinedIcon />,
+    name: "Conclude Care",
+    icon: <DiamondIcon />,
+    accountTypes: ["physician"],
   },
   {
     id: "3",
-    name: "View Notes",
-    icon: <DocumentScannerOutlinedIcon />,
+    name: "View Upload",
+    icon: <DriveFolderUploadOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "4",
-    name: "Orders",
-    icon: <FindInPageOutlinedIcon />,
+    name: "View Notes",
+    icon: <DocumentScannerOutlinedIcon />,
+    accountTypes: ["admin", "physician"],
   },
   {
     id: "5",
-    name: "Doctors Notes",
-    icon: <LocalHospitalOutlinedIcon />,
+    name: "Orders",
+    icon: <FindInPageOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "6",
+    name: "Doctors Notes",
+    icon: <LocalHospitalOutlinedIcon />,
+    accountTypes: ["admin"],
+  },
+  {
+    id: "7",
     name: "Encounter",
     icon: <LocalDiningOutlinedIcon />,
+    accountTypes: ["admin"],
   },
 ];
 export const toCloseDropdown = [
@@ -473,41 +516,49 @@ export const toCloseDropdown = [
     id: "1",
     name: "View Case",
     icon: <PageviewOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "2",
     name: "View Upload",
     icon: <DriveFolderUploadOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "3",
     name: "View Notes",
     icon: <DocumentScannerOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "4",
     name: "Orders",
     icon: <FindInPageOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "5",
     name: "Close Case",
     icon: <HighlightOffOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "6",
     name: "Doctors Notes",
     icon: <LocalHospitalOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "7",
     name: "Clear Case",
     icon: <HighlightOffOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "8",
     name: "Encounter",
     icon: <LocalDiningOutlinedIcon />,
+    accountTypes: ["admin"],
   },
 ];
 export const unpaidDropdown = [
@@ -515,16 +566,19 @@ export const unpaidDropdown = [
     id: "1",
     name: "View Case",
     icon: <PageviewOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "2",
     name: "View Upload",
     icon: <DriveFolderUploadOutlinedIcon />,
+    accountTypes: ["admin"],
   },
   {
     id: "3",
     name: "View Notes",
     icon: <DocumentScannerOutlinedIcon />,
+    accountTypes: ["admin"],
   },
 ];
 

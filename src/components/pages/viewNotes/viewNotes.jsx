@@ -80,7 +80,7 @@ const ViewNotes = () => {
                     <b>Transfer Notes</b>
                   </Typography>
                   <Typography variant="caption">
-                    {data.transfer_notes.notes[0]?.description}
+                    {data?.transfer_notes.notes[0]?.description}
                   </Typography>
                 </Box>
               </Paper>
@@ -95,7 +95,7 @@ const ViewNotes = () => {
                     <b>Physician Notes</b>
                   </Typography>
                   <Typography>
-                    {data.physician_notes.notes[0]?.description}
+                    {data?.physician_notes.notes[0]?.description}
                   </Typography>
                 </Box>
               </Paper>
@@ -110,7 +110,7 @@ const ViewNotes = () => {
                     <b>Admin Notes</b>
                   </Typography>
                   <Typography>
-                    {data.admin_notes.notes[0]?.description}
+                    {data?.admin_notes.notes[0]?.description}
                   </Typography>
                 </Box>
               </Paper>
