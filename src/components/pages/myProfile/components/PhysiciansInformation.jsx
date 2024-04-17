@@ -27,6 +27,7 @@ const INITIAL_VALUES = {
   medicalLicence: "",
   npiNumber: "",
   synEmail: "",
+  regions: [],
 };
 
 const PhysiciansInformation = ({
@@ -38,8 +39,6 @@ const PhysiciansInformation = ({
   npiNumber,
   synchronizationEmail,
   serviceAreasAvailability,
-  districtOfColumbia,
-  newYork,
   userId,
 }) => {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -65,6 +64,9 @@ const PhysiciansInformation = ({
       medicalLicence: medicalLicence,
       npiNumber,
       synEmail: synchronizationEmail,
+      regions: serviceAreasAvailability.regions.map(
+        (region) => region.region_name,
+      ),
     });
   }, [
     firstName,
@@ -74,7 +76,16 @@ const PhysiciansInformation = ({
     medicalLicence,
     npiNumber,
     synchronizationEmail,
+    serviceAreasAvailability,
   ]);
+  const handleChangeRegions = (name) => {
+    const newRegions = physicianformik.values.regions?.includes(name)
+      ? physicianformik.values.regions?.filter(
+          (selectedName) => selectedName !== name,
+        )
+      : [...physicianformik.values.regions, name];
+    physicianformik.setFieldValue("regions", newRegions);
+  };
 
   return (
     <form onSubmit={physicianformik.handleSubmit}>
@@ -229,16 +240,20 @@ const PhysiciansInformation = ({
 
         <Grid item xs={12} md={6}>
           {regions.map((region, index) => {
-            const isChecked = serviceAreasAvailability?.regions?.some(
-              (selectedRegion) =>
-                selectedRegion.region_name === region.region_name,
-            );
             return (
               <FormControlLabel
                 className="checkbox-padding"
                 disabled={isDisabled}
                 key={index}
-                control={<Checkbox size="small" checked={isChecked} />}
+                control={
+                  <Checkbox
+                    size="small"
+                    checked={physicianformik.values.regions?.includes(
+                      region?.region_name,
+                    )}
+                    onChange={() => handleChangeRegions(region?.region_name)}
+                  />
+                }
                 label={region.region_name}
               />
             );

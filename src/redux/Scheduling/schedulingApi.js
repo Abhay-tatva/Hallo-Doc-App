@@ -71,10 +71,12 @@ export const getRequestShift = createAsyncThunk(
 export const putApprovedShift = createAsyncThunk(
   "putApprovedShift",
   async (params, { rejectWithValue }) => {
+    const { shiftIds } = params;
     try {
-      const response = await Axios.put(
-        `${PUTAPPROVEDSHIFT_API}?shift_id=${params}`,
-      );
+      const response = await Axios.put(`${PUTAPPROVEDSHIFT_API}`, {
+        shift_ids: shiftIds,
+      });
+
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

@@ -303,7 +303,7 @@ const SearchRecords = () => {
                 <Table>
                   <TableHead style={{ backgroundColor: "#f6f6f6" }}>
                     <TableRow>
-                      {columns.map((column) => (
+                      {columns?.map((column) => (
                         <TableCell
                           key={column.id}
                           align="left"
@@ -326,7 +326,7 @@ const SearchRecords = () => {
                       (row) => {
                         return (
                           <TableRow key={row.sr_no}>
-                            {columns.map((column) => {
+                            {columns?.map((column) => {
                               return (
                                 <TableCell key={column.id} align="left">
                                   {column.id === "physicianNote" ||
@@ -338,7 +338,7 @@ const SearchRecords = () => {
                                         (note) =>
                                           note.type_of_note === column.id,
                                       )
-                                      .map((note, index) => (
+                                      ?.map((note, index) => (
                                         <span key={index}>
                                           {note.description}
                                         </span>

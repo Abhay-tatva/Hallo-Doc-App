@@ -126,6 +126,11 @@ const RequestedShifts = () => {
     setPage(newPage);
   };
 
+  const approvedShift = () => {
+    const shiftIds = requestShiftData?.map((item) => item.shifts[0].shift_id);
+    dispatch(putApprovedShift(shiftIds));
+  };
+  console.log("requestShiftData", requestShiftData);
   return (
     <>
       <Box className="requested-shifts-container">
@@ -176,18 +181,7 @@ const RequestedShifts = () => {
               </FormInput>
               <Box display="flex" justifyContent="flex-end" gap={2}>
                 <Button color="success"> View Current Month Shifts</Button>
-                <Button
-                  color="success"
-                  onClick={() =>
-                    dispatch(
-                      putApprovedShift(
-                        requestShiftData?.map(
-                          (item) => item.shifts[0].shift_id,
-                        ),
-                      ),
-                    )
-                  }
-                >
+                <Button color="success" onClick={() => approvedShift("all")}>
                   Approved Selected
                 </Button>
                 <Button

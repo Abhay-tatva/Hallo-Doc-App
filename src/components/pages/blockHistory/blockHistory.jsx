@@ -54,7 +54,6 @@ const BlockHistory = () => {
         page: pageNo,
         page_size: rowsPerPage,
         type_of_history: "blocked",
-        // date: "05 - 12 - 2002",
       }),
     );
   }, [dispatch, pageNo, rowsPerPage]);
@@ -64,8 +63,8 @@ const BlockHistory = () => {
     onSubmit: (values, onSubmitProps) => {
       dispatch(
         getBlockHistory({
-          page: 1,
-          page_size: 10,
+          page: pageNo,
+          page_size: rowsPerPage,
           type_of_history: "blocked",
           name: values.name,
           email: values.email,
@@ -87,13 +86,13 @@ const BlockHistory = () => {
     setPage(0);
   };
   const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
+    const stabilizedThis = array?.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
       return a[1] - b[1];
     });
-    return stabilizedThis.map((el) => el[0]);
+    return stabilizedThis?.map((el) => el[0]);
   };
 
   const getComparator = (order, orderBy) => {
@@ -236,8 +235,8 @@ const BlockHistory = () => {
                                             );
                                             dispatch(
                                               getBlockHistory({
-                                                page: 1,
-                                                page_size: 10,
+                                                page: pageNo,
+                                                page_size: rowsPerPage,
                                                 type_of_history: "blocked",
                                               }),
                                             );

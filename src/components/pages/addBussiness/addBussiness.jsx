@@ -48,7 +48,7 @@ const AddBussiness = () => {
           business_name: values.businessName,
           profession: values.profession,
           fax_number: values.faxNumber,
-          mobile_no: values.phoneNumber,
+          mobile_no: values.phoneNumber?.toString(),
           email: values.email,
           business_contact: values.bussinessContact,
           street: values.street,
@@ -69,6 +69,7 @@ const AddBussiness = () => {
   });
 
   useEffect(() => {
+    console.log("businessView.mobile_no,", businessView);
     setInitialValues({
       businessName: businessView.business_name,
       profession: businessView.profession,
@@ -107,6 +108,7 @@ const AddBussiness = () => {
       );
     }
   };
+  console.log("ooooooo", businessFormik);
 
   return (
     <>

@@ -34,7 +34,7 @@ import {
 
 const Provide = () => {
   const [pageNo, setPageNo] = useState(1);
-
+  const [selectedIds, setSelectedIds] = useState([]);
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("providerName");
@@ -63,6 +63,21 @@ const Provide = () => {
     );
   }, [dispatch, additionalFilter, rowsPerPage, pageNo]);
 
+  useEffect(() => {
+    const initialSelectedIds = providerData?.data
+      ?.filter((data) => data?.stop_notification === "yes")
+      ?.map((data) => data?.user_id);
+    setSelectedIds(initialSelectedIds);
+  }, [providerData]);
+
+  const handleCheckboxChange = (id) => {
+    if (selectedIds?.includes(id)) {
+      setSelectedIds(selectedIds?.filter((selectedId) => selectedId !== id));
+    } else {
+      setSelectedIds([...selectedIds, id]);
+    }
+    // setShowSaveButton(true);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
     if (newPage > page) setPageNo(pageNo + 1);
@@ -191,7 +206,12 @@ const Provide = () => {
                               <TableCell key={column.id} align="left">
                                 {column.id === "stop_notification" ? (
                                   <Checkbox
-                                    checked={row.stop_notification === "yes"}
+                                    checked={selectedIds?.includes(
+                                      row?.user_id,
+                                    )}
+                                    onChange={() =>
+                                      handleCheckboxChange(row?.user_id)
+                                    }
                                   />
                                 ) : column.id === "actions" ? (
                                   <Box

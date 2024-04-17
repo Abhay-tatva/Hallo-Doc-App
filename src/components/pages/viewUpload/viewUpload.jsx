@@ -34,16 +34,20 @@ import {
   downloadAll,
   singleDownload,
 } from "../../../redux/downloadCase/downloadApi";
-import { deleteAll, singleDelete } from "../../../redux/deleteCase/deleteApi";
+import {
+  deleteAll,
+  sendMail,
+  singleDelete,
+} from "../../../redux/deleteCase/deleteApi";
 
 const ViewUpload = () => {
-  const [selectedFile, setSelectedFile] = useState({});
+  const [selectedFile, setSelectedFile] = useState([]);
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("uploadDate");
   const navigate = useNavigate();
   const selector = useSelector((state) => state.root.viewuploadReducer);
-  const rows = selector.uploadFile[0]?.documents;
+  const rows = selector?.uploadFile[0]?.documents;
   const dispatch = useDispatch();
 
   const { confirmationNo, patientData } = selector.uploadFile[0];
@@ -192,21 +196,32 @@ const ViewUpload = () => {
   };
 
   const handleDeleteAll = () => {
-    dispatch(deleteAll(confirmationNo)).then((response) => {
-      console.log("abhay", response);
-      if (response.type === "deleteAll/fulfilled") {
-        dispatch(viewUpload(confirmationNo));
-      }
-    });
+    const confirmationNumber = selector?.uploadFile[0].confirmationNo;
+    const documentIds = rows?.map((item) => item?.document_id);
+
+    dispatch(deleteAll({ confirmationNumber, documentIds })).then(
+      (response) => {
+        if (response.type === "deleteAll/fulfilled") {
+          dispatch(viewUpload(confirmationNo));
+        }
+      },
+    );
   };
 
   const handleDownloadAll = () => {
     dispatch(downloadAll(confirmationNo));
   };
 
-  // const handleSendMail = () => {
-  //   console.log("Sending mail...");
-  // };
+  const handleSendMail = () => {
+    const confirmationNumber = selector?.uploadFile[0].confirmationNo;
+    const documentIds = rows?.map((item) => item?.document_id);
+
+    dispatch(sendMail({ confirmationNumber, documentIds })).then((response) => {
+      if (response.type === "sendMail/fulfilled") {
+        dispatch(viewUpload(confirmationNo));
+      }
+    });
+  };
   return (
     <>
       <Box className="upload-main-container">
@@ -244,34 +259,38 @@ const ViewUpload = () => {
             </Typography>
 
             <form onSubmit={handleUpload}>
-              <Box position="relative" mb={2} mt={2}>
-                <Box display="flex">
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    component="label"
-                    className="upload-btn"
-                    title="Upload-files"
-                  >
-                    <input
-                      // accept="image/*"
-                      onChange={(e) => {
-                        e.preventDefault();
-                        setSelectedFile(e.target.files[0]);
-                      }}
-                      multiple
-                      type="file"
-                    />
-                  </Button>
-
-                  <Button
-                    name="Upload"
-                    variant="contained"
-                    size="large"
-                    startIcon={<CloudUploadOutlinedIcon />}
-                    type="submit"
+              <Box display="flex" position="relative" mb={2} mt={2}>
+                <Button
+                  style={{
+                    color: "#000000",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    backgroundColor: "#f6f6f6",
+                  }}
+                  fullWidth
+                  variant="outlined"
+                  component="label"
+                  title="Upload-files"
+                >
+                  <input
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setSelectedFile(e.target.files[0]);
+                    }}
+                    type="file"
                   />
-                </Box>
+                  <label htmlFor="selectFile">
+                    {selectedFile !== null ? selectedFile?.name : "Select File"}
+                  </label>
+                </Button>
+
+                <Button
+                  name="Upload"
+                  variant="contained"
+                  size="large"
+                  startIcon={<CloudUploadOutlinedIcon />}
+                  type="submit"
+                />
               </Box>
             </form>
             <Box
@@ -298,7 +317,12 @@ const ViewUpload = () => {
                   color="primary"
                   onClick={() => handleDeleteAll("all")}
                 />
-                <Button name="Send Mail" variant="outlined" color="primary" />
+                <Button
+                  name="Send Mail"
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleSendMail("all")}
+                />
               </Box>
             </Box>
             <TableContainer component={Paper}>

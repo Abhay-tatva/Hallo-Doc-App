@@ -130,19 +130,19 @@ export const columns = [
     label: "Action",
   },
   {
-    id: "roleName",
+    id: "role_name",
     label: "Role Name",
   },
   {
-    id: "email",
+    id: "email_id",
     label: "Email Id",
   },
   {
-    id: "createDate",
+    id: "created_date",
     label: "Create Date",
   },
   {
-    id: "sentDate",
+    id: "sent_date",
     label: "Sent Date",
   },
   {

@@ -38,6 +38,7 @@ import SmsLogs from "./components/pages/smsLogs/smsLogs";
 import BlockHistory from "./components/pages/blockHistory/blockHistory";
 import CreateRequest from "./components/pages/createRequest/createRequest";
 import PageNotFound from "./components/pages/pageNotFound/pageNotFound";
+import ConcludeCare from "./components/pages/concludeCare/concludeCare";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -117,6 +118,7 @@ function App() {
                 path={AppRoutes.CREATEREQUEST}
                 element={<CreateRequest />}
               />
+              <Route path={AppRoutes.CONCLUDECARE} element={<ConcludeCare />} />
             </Route>
           </Route>
         </Routes>

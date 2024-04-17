@@ -127,10 +127,12 @@ const Dashboard = () => {
     setOpen(true);
   };
   useEffect(() => {
-    dispatch(getRegions());
-    dispatch(requestCount());
-    dispatch(sendOrderProfession());
-  }, [dispatch]);
+    if (accountType === "admin") {
+      dispatch(getRegions());
+      dispatch(requestCount());
+      dispatch(sendOrderProfession());
+    }
+  }, [accountType, dispatch]);
 
   const handleClose = () => {
     setOpen(false);
@@ -267,74 +269,77 @@ const Dashboard = () => {
                   className="btn"
                   onClick={() => navigate(AppRoutes.CREATEREQUEST)}
                 />
+                {accountType === "admin" ? (
+                  <>
+                    <Button
+                      name="Export"
+                      variant="contained"
+                      startIcon={<ExitToAppIcon />}
+                      className="btn"
+                      onClick={() =>
+                        dispatch(singleExport(activeButton.toLowerCase()))
+                          .then((response) => {
+                            if (response.type === "singleExport/fulfilled") {
+                              const blob = new Blob([response.payload], {
+                                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                              });
+                              const url = window.URL.createObjectURL(blob);
+                              const link = document.createElement("a");
+                              link.href = url;
+                              link.download = `${activeButton}State-patients.xlsx`;
+                              document.body.appendChild;
+                              link.click();
+                              window.URL.revokeObjectURL(url);
+                              link.remove();
+                            } else {
+                              console.error("File download failed.");
+                            }
+                          })
+                          .catch((error) => {
+                            console.error("Error downloading file:", error);
+                          })
+                      }
+                    />
 
-                <Button
-                  name="Export"
-                  variant="contained"
-                  startIcon={<ExitToAppIcon />}
-                  className="btn"
-                  onClick={() =>
-                    dispatch(singleExport(activeButton.toLowerCase()))
-                      .then((response) => {
-                        if (response.type === "singleExport/fulfilled") {
-                          const blob = new Blob([response.payload], {
-                            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                          });
-                          const url = window.URL.createObjectURL(blob);
-                          const link = document.createElement("a");
-                          link.href = url;
-                          link.download = `${activeButton}State-patients.xlsx`;
-                          document.body.appendChild;
-                          link.click();
-                          window.URL.revokeObjectURL(url);
-                          link.remove();
-                        } else {
-                          console.error("File download failed.");
-                        }
-                      })
-                      .catch((error) => {
-                        console.error("Error downloading file:", error);
-                      })
-                  }
-                />
+                    <Button
+                      name="Export All"
+                      variant="contained"
+                      startIcon={<IosShareIcon />}
+                      className="btn"
+                      onClick={() =>
+                        dispatch(exportAll())
+                          .then((response) => {
+                            if (response.type === "exportAll/fulfilled") {
+                              const blob = new Blob([response.payload], {
+                                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                              });
+                              const url = window.URL.createObjectURL(blob);
+                              const link = document.createElement("a");
+                              link.href = url;
+                              link.download = `All-patients.xlsx`;
+                              document.body.appendChild;
+                              link.click();
+                              window.URL.revokeObjectURL(url);
+                              link.remove();
+                            } else {
+                              console.error("File download failed.");
+                            }
+                          })
+                          .catch((error) => {
+                            console.error("Error downloading file:", error);
+                          })
+                      }
+                    />
 
-                <Button
-                  name="Export All"
-                  variant="contained"
-                  startIcon={<IosShareIcon />}
-                  className="btn"
-                  onClick={() =>
-                    dispatch(exportAll())
-                      .then((response) => {
-                        if (response.type === "exportAll/fulfilled") {
-                          const blob = new Blob([response.payload], {
-                            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                          });
-                          const url = window.URL.createObjectURL(blob);
-                          const link = document.createElement("a");
-                          link.href = url;
-                          link.download = `All-patients.xlsx`;
-                          document.body.appendChild;
-                          link.click();
-                          window.URL.revokeObjectURL(url);
-                          link.remove();
-                        } else {
-                          console.error("File download failed.");
-                        }
-                      })
-                      .catch((error) => {
-                        console.error("Error downloading file:", error);
-                      })
-                  }
-                />
-
-                <Button
-                  name="Request DTY Support"
-                  variant="contained"
-                  startIcon={<PersonIcon />}
-                  className="btn"
-                  onClick={() => handleOpen("Request Modal")}
-                />
+                    <Button
+                      name="Request DTY Support"
+                      variant="contained"
+                      startIcon={<PersonIcon />}
+                      className="btn"
+                      onClick={() => handleOpen("Request Modal")}
+                    />
+                  </>
+                ) : null}
               </Box>
             </Grid>
           </Grid>

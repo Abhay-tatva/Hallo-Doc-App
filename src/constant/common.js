@@ -57,6 +57,7 @@ export const newColumns = [
     label: "Notes",
     minWidth: 130,
     align: "right",
+    accountTypes: ["admin"],
   },
 
   {
@@ -121,7 +122,7 @@ export const pendingColumns = [
     label: "Notes",
     minWidth: 250,
     align: "right",
-    accountTypes: ["admin", "physician"],
+    accountTypes: ["admin"],
   },
 
   {
@@ -139,7 +140,7 @@ export const activeColumns = [
     minWidth: 200,
     accountTypes: ["admin", "physician"],
   },
-  { id: "mail", label: "", minWidth: 50, accountTypes: ["admin"] },
+  { id: "mail", label: "", minWidth: 50, accountTypes: ["admin", "physician"] },
   {
     id: "dateOfBirth",
     label: "Date Of Birth",
@@ -186,6 +187,7 @@ export const activeColumns = [
     label: "Notes",
     minWidth: 130,
     align: "right",
+    accountTypes: ["admin"],
   },
 
   {

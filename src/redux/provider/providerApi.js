@@ -82,6 +82,12 @@ export const putProviderInfo = createAsyncThunk(
   "putProviderInfo",
   async (params, { rejectWithValue }) => {
     const { user_id, data } = params;
+    const district_of_columbia = data?.regions?.includes("District Of Columbia")
+      ? true
+      : false;
+    const new_york = data?.regions?.includes("New York") ? true : false;
+    const virginia = data?.regions?.includes("Virginia") ? true : false;
+    const maryland = data?.regions?.includes("Maryland") ? true : false;
     try {
       const response = await Axios.put(`${PROVIDEREDIT_API}`, {
         user_id,
@@ -90,12 +96,12 @@ export const putProviderInfo = createAsyncThunk(
         email: data?.email,
         mobile_no: data?.phoneNumber?.toString(),
         medical_licence: data?.medicalLicence,
-        NPI_no: data?.npiNumber,
+        NPI_no: data?.npiNumber?.toString(),
         synchronization_email: data?.synEmail,
-        district_of_columbia: data?.district_of_columbia,
-        new_york: data?.new_york,
-        virginia: data?.virginia,
-        maryland: data?.maryland,
+        district_of_columbia,
+        new_york,
+        virginia,
+        maryland,
         address_1: data?.address_1,
         address_2: data?.address_2,
         city: data?.city,

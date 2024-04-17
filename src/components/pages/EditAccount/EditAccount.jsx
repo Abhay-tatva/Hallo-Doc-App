@@ -77,7 +77,7 @@ const EditAccount = () => {
               email={email}
               mobileNo={mobile_no}
               medicalLicence={medical_licence}
-              npiNumber={NPI_number}
+              npiNumber={NPI_number?.toString()}
               synchronizationEmail={synchronization_email}
               serviceAreasAvailability={service_areas_availability}
               districtOfColumbia={district_of_columbia}

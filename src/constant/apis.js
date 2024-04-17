@@ -81,6 +81,9 @@ export const SINGLEDELETE_API =
 export const DELETEALL_API =
   "/common/dashboard/requests/:confirmation_no/actions/viewuploads/deleteall";
 
+export const SENDMAIL_API =
+  "/common/dashboard/requests/:confirmation_no/actions/viewuploads/sendmail";
+
 export const CREATEREQUEST_API = "/admin/dashboard/requests/createrequest";
 
 export const CREATEREQUESTVERIFY_API =

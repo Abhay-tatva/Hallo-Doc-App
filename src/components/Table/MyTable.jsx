@@ -64,8 +64,6 @@ const MyTable = ({
 
   useEffect(() => setTableData(rows), [rows]);
 
-  const notify = () => toast("Phone number Copyied successfully!");
-
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const { accountType } = useSelector((state) => state.root.loginReducer);
 
@@ -76,7 +74,7 @@ const MyTable = ({
       .writeText(textToCopy)
       .then(() => {
         setCopiedStates((prev) => ({ ...prev, [btnId]: true }));
-        notify();
+        toast.success("Phone number Copyied successfully!");
         setTimeout(() => {
           setCopiedStates((prev) => ({ ...prev, [btnId]: false }));
         }, 1000);
@@ -108,7 +106,7 @@ const MyTable = ({
     }
   };
   useEffect(() => {
-    if (accountType == "admin") {
+    if (accountType === "admin") {
       dispatch(
         newState({
           state: stateButton,
@@ -118,7 +116,7 @@ const MyTable = ({
           page: pageNo,
         }),
       );
-    } else if (accountType == "physician") {
+    } else if (accountType === "physician") {
       dispatch(providerDashBoard({ state: stateButton }));
     }
   }, [
@@ -184,6 +182,10 @@ const MyTable = ({
         dispatch(getCloseCase(confirmno));
         navigate(AppRoutes.CLOSECASE);
         break;
+      case "Conclude Case":
+        // dispatch(getCloseCase(confirmno));
+        navigate(AppRoutes.CONCLUDECARE);
+        break;
       default:
         break;
     }
@@ -203,7 +205,7 @@ const MyTable = ({
             <div className="search-bar">
               <FormInput
                 className="search-text"
-                placeholder="Search"
+                placeholder="Search By Name"
                 variant="outlined"
                 value={searchTerm}
                 InputProps={{
@@ -355,7 +357,7 @@ const MyTable = ({
                       stateButton === "pending" ||
                       stateButton === "active" ||
                       stateButton === "toclose") && (
-                      <TableCell>{row.notes[0]?.description}</TableCell>
+                      <TableCell>{row.notes?.[0]?.description}</TableCell>
                     )}
 
                     <TableCell>

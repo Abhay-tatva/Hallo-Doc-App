@@ -18,7 +18,7 @@ import { AppRoutes } from "../../constant/route";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slices/loginSlice";
 import { getMyProfile } from "../../redux/myProfile/myProfileApi";
 // import { getAccountAccess } from "../../redux/accountAccess/accountAccessApi";
@@ -36,6 +36,8 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
     navigate(AppRoutes.LOGIN);
     dispatch(logout());
   };
+  const { user } = useSelector((state) => state.root.loginReducer);
+
   // const handleMenuOpen = (event) => {
   //   setAnchorEl(event.currentTarget);
   // };
@@ -74,7 +76,7 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
         </Link>
 
         <Box className="header-user-detail">
-          <Typography>Welcome</Typography>
+          <Typography>{`Welcome ${user}`}</Typography>
           <Button
             name="Log Out"
             variant="outlined"

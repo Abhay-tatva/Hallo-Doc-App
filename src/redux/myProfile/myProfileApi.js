@@ -34,7 +34,7 @@ export const putMyProfile = createAsyncThunk(
         address_2: data?.address_2,
         city: data?.city,
         state: data?.state,
-        zip: data?.zip,
+        zip: data?.zip?.toString(),
         billing_mobile_no: data?.billing_mobile_no,
       });
       return response?.data;

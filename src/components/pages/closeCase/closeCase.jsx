@@ -61,7 +61,7 @@ const CloseCase = () => {
   console.log(confirmation_no);
 
   const { documents } = useSelector((state) => state.root.closeCaseReducer);
-  const rows = documents[0].patient_data.documents;
+  const rows = documents[0]?.patient_data?.documents;
 
   const handleEdit = () => {
     setIsDisabled(false);
@@ -75,7 +75,7 @@ const CloseCase = () => {
         firstname: formik.values.firstName,
         lastname: formik.values.lastName,
         dob: formik.values.date,
-        mobile_no: formik.values.phoneNumber,
+        mobile_no: formik.values.phoneNumber?.toString(),
         email: formik.values.email,
       }),
     ).then((response) => {
@@ -297,7 +297,17 @@ const CloseCase = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
-                  <FormInput type="date" fullWidth className="form-input" />
+                  <FormInput
+                    name="date"
+                    type="date"
+                    fullWidth
+                    className="form-input"
+                    disabled
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.date}
+                    error={formik.touched.date && Boolean(formik.errors.date)}
+                  />
                 </Grid>
                 <Grid item sm={12} md={5} lg={5}>
                   <Box

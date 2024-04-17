@@ -3,6 +3,7 @@ export const AppRoutes = {
   FORGOTPASS: "/forgot-password",
   RESETPASS: "/resetPassword/:reset_token",
   DASHBOARD: "/dashboard",
+  CONCLUDECARE: "/dashboard/concludeCare",
   CREATEREQUEST: "/dashboard/createRequest",
   RESERVATION: "/dashboard/viewreservation",
   NOTES: "/dashboard/viewnotes",
