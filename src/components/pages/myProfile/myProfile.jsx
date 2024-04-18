@@ -10,9 +10,17 @@ import Account from "./components/Account";
 import Administrator from "./components/Administrator";
 import Address from "./components/Address";
 import { useSelector } from "react-redux";
+
 const MyProfile = () => {
+  // const [open, setOpen] = useState(false);
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { data } = useSelector((state) => state.root.myProfileReducer);
+  // const { physicianData } = useSelector(
+  //   (state) => state.root.providerMenuReducer,
+  // );
+
   const { username, status, role } = data.admin_account_information;
   const { firstname, lastname, email, mobile_no, regions } =
     data.admin_administrator_information;

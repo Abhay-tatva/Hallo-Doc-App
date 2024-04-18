@@ -31,7 +31,6 @@ export const postBusiness = createAsyncThunk(
   "postBusiness",
   async (params, { rejectWithValue }) => {
     const { data } = params;
-    console.log("params55555555555", data);
     try {
       const response = await Axios.post(`${POSTADDBUSSINESS_API}`, {
         business_name: data.businessName,

@@ -41,6 +41,9 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { providerDashBoard } from "../../redux/Provider Site/providerDashBoard/providerDashBoardApi";
 import { putAcceptRequest } from "../../redux/Provider Site/acceptRequest/acceptRequestApi";
 import { physicianViewNotes } from "../../redux/Provider Site/ViewNotes/physicianViewNotesApi";
+import { putHouseCall } from "../../redux/Provider Site/Encounter/encounterApi";
+import { physicianCount } from "../../redux/Provider Site/countApi/countApi";
+import { getConcludeCare } from "../../redux/Provider Site/concludeCare/concludeCareApi";
 
 const MyTable = ({
   stateButton,
@@ -176,10 +179,10 @@ const MyTable = ({
         break;
       case "View Notes":
         {
-          if (accountType == "admin") {
+          if (accountType === "admin") {
             dispatch(viewNotes(confirmno));
             navigate(AppRoutes.NOTES);
-          } else if (accountType == "physician") {
+          } else if (accountType === "physician") {
             dispatch(physicianViewNotes(confirmno));
             navigate(AppRoutes.NOTES);
           }
@@ -197,12 +200,21 @@ const MyTable = ({
         dispatch(blockcaseGet(confirmno));
         onClick(action);
         break;
+      case "Type of Care":
+        onClick(action);
+        break;
+      case "Encounter Modal":
+        onClick(action);
+        break;
+      case "Encounter Form":
+        navigate(AppRoutes.ENCOUNTERFORM);
+        break;
       case "View Upload":
         dispatch(viewUpload(confirmno));
         navigate(AppRoutes.VIEWUPLOAD);
         break;
       case "Conclude Care":
-        // dispatch(viewUpload(confirmno));
+        dispatch(getConcludeCare(confirmno));
         navigate(AppRoutes.CONCLUDECARE);
         break;
       case "Orders":
@@ -222,10 +234,7 @@ const MyTable = ({
         dispatch(getCloseCase(confirmno));
         navigate(AppRoutes.CLOSECASE);
         break;
-      case "Conclude Case":
-        // dispatch(getCloseCase(confirmno));
-        navigate(AppRoutes.CONCLUDECARE);
-        break;
+
       default:
         break;
     }
@@ -403,15 +412,26 @@ const MyTable = ({
                     <TableCell>{row.patient_data.address}</TableCell>
                     {accountType == "physician" && stateButton == "active" && (
                       <TableCell>
-                        {row.patient_data.status ? (
+                        {row.request_status === "md_on_site" ? (
                           <Button
                             className="phone-btn"
-                            name={row.patient_data.status}
-                            variant="outlined"
-                            color="inherit"
-                            // onClick={(e) => {
-                            //   handleClick(e, row.confirmation_no);
-                            // }}
+                            name={
+                              row.request_status === "md_on_site" && "HouseCall"
+                            }
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                              dispatch(putHouseCall(row.confirmation_no)).then(
+                                (response) => {
+                                  if (response === "putHouseCall/fulfilled") {
+                                    toast.success(
+                                      "House On call add Successful...",
+                                    );
+                                    dispatch(physicianCount());
+                                  }
+                                },
+                              );
+                            }}
                           />
                         ) : (
                           "-"
@@ -451,7 +471,16 @@ const MyTable = ({
                           return (
                             <MenuItem
                               key={data.id}
-                              onClick={() => handleClose(data.name)}
+                              onClick={() => {
+                                data.name === "Encounter"
+                                  ? row?.is_finalized === "true"
+                                    ? handleClose("Encounter Modal")
+                                    : row.request_status === "md_on_site" &&
+                                        "HouseCall"
+                                      ? handleClose("Encounter Form")
+                                      : handleClose("Type of Care")
+                                  : handleClose(data.name);
+                              }}
                               disableRipple
                             >
                               {data.icon}&nbsp;{data.name}

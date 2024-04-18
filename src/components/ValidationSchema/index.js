@@ -45,3 +45,5 @@ export { createProviderSchema } from "./createProviderSchema";
 export { businessSchema } from "./businessSchema";
 
 export { createRequestSchema } from "./createRequestSchema";
+
+export { encounterFormSchema } from "./encounterFormSchema";

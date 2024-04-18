@@ -171,3 +171,13 @@ export const PHYSICIANTRANSFER_API =
   "/provider/dashboard/requests/:confirmation_no/actions/transfer_request";
 export const PHYSICIANVIEWNOTES_API =
   "/provider/dashboard/requests/:confirmation_no/actions/view_notes";
+export const PUTPHYSICIANVIEWNOTES_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/save_view_notes";
+export const PUTTYPEOFCARE_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/encounter";
+export const PUTHOUSECALL =
+  "/provider/dashboard/requests/:confirmation_no/actions/housecall";
+export const POSTCONCLUDECAREUPLOAD_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/conclude_care_upload";
+export const GETCONCLUDECARE_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/conclude_care_view";

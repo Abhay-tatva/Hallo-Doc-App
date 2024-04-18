@@ -39,6 +39,7 @@ import BlockHistory from "./components/pages/blockHistory/blockHistory";
 import CreateRequest from "./components/pages/createRequest/createRequest";
 import PageNotFound from "./components/pages/pageNotFound/pageNotFound";
 import ConcludeCare from "./components/pages/concludeCare/concludeCare";
+import EncounterForm from "./components/pages/encounterForm/encounterForm";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -119,6 +120,10 @@ function App() {
                 element={<CreateRequest />}
               />
               <Route path={AppRoutes.CONCLUDECARE} element={<ConcludeCare />} />
+              <Route
+                path={AppRoutes.ENCOUNTERFORM}
+                element={<EncounterForm />}
+              />
             </Route>
           </Route>
         </Routes>

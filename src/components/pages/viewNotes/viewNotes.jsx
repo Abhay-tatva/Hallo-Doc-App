@@ -17,34 +17,56 @@ import {
   viewNotesUpdate,
 } from "../../../redux/viewNotes/viewNotesApi";
 import { toast } from "react-toastify";
+import {
+  physicianViewNotes,
+  putphysicianViewNotes,
+} from "../../../redux/Provider Site/ViewNotes/physicianViewNotesApi";
 
 const ViewNotes = () => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.root.viewNotesReducer);
-  const data = state?.data?.data[0];
-
   const navigate = useNavigate();
+  const state = useSelector((state) => state.root.viewNotesReducer);
+  const { accountType } = useSelector((state) => state.root.loginReducer);
 
+  const data = state?.data?.data?.[0];
+  // console.log("dddddddd", data.confirmation_no);
   const formik = useFormik({
     initialValues: {
       adminNotes: "",
     },
     validationSchema: viewNotesSchema,
     onSubmit: (values, onSubmitProps) => {
-      dispatch(
-        viewNotesUpdate({
-          value: values.adminNotes,
-          confirmnumber: data.confirmation_no,
-        }),
-      ).then((response) => {
-        if (response.type === "viewNotesUpdate/fulfilled") {
-          toast.success("You are successfully save changes");
-          onSubmitProps.resetForm();
-          dispatch(viewNotes(data.confirmation_no));
-        } else {
-          toast.error(response?.error?.message);
-        }
-      });
+      if (accountType === "admin") {
+        dispatch(
+          viewNotesUpdate({
+            value: values.adminNotes,
+            confirmnumber: data.confirmation_no,
+          }),
+        ).then((response) => {
+          if (response.type === "viewNotesUpdate/fulfilled") {
+            toast.success("You have successfully saved changes");
+            onSubmitProps.resetForm();
+            dispatch(viewNotes(data.confirmation_no));
+          } else {
+            toast.error(response?.error?.message);
+          }
+        });
+      } else if (accountType === "physician") {
+        dispatch(
+          putphysicianViewNotes({
+            value: values?.adminNotes,
+            confirmnumber: data?.confirmation_no,
+          }),
+        ).then((response) => {
+          if (response.type === "putphysicianViewNotes/fulfilled") {
+            toast.success("Notes updated successfully!");
+            onSubmitProps.resetForm();
+            dispatch(physicianViewNotes(data.confirmation_no));
+          } else if (response.type === "putphysicianViewNotes/rejected") {
+            toast.error(response?.error?.message);
+          }
+        });
+      }
     },
   });
   return (

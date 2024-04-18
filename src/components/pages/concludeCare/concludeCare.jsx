@@ -17,24 +17,35 @@ import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import "./concludeCare.css";
+import { useState } from "react";
+import {
+  getConcludeCare,
+  postConcludeCare,
+} from "../../../redux/Provider Site/concludeCare/concludeCareApi";
 
 const ConcludeCare = () => {
   const navigate = useNavigate();
-  //   const [selectedFile, setSelectedFile] = useState({});
+  const dispatch = useDispatch();
+
+  const [selectedFile, setSelectedFile] = useState({});
   const selector = useSelector((state) => state.root.viewuploadReducer);
-  const rows = selector.uploadFile[0]?.documents;
-  //   const handleUpload = (e) => {
-  //     e.preventDefault();
-  //     const formData = new FormData();
-  //     formData.append("file", selectedFile);
-  //     dispatch(viewUpdate({ confirmationNo, formData })).then((response) => {
-  //       if (response.type === "viewUpdate/fulfilled") {
-  //         dispatch(viewUpload(confirmationNo));
-  //       }
-  //     });
-  //     setSelectedFile(null);
-  //   };
+  const rows = selector?.uploadFile[0]?.documents;
+  const { confirmationNo, physicianData } = selector.uploadFile[0];
+  const handleUpload = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    dispatch(postConcludeCare({ confirmationNo, formData })).then(
+      (response) => {
+        if (response.type === "postConcludeCare/fulfilled") {
+          dispatch(getConcludeCare(confirmationNo));
+        }
+      },
+    );
+    setSelectedFile(null);
+  };
   const handleDownload = (documentId) => {
     // dispatch(
     //   singleDownload({
@@ -115,22 +126,23 @@ const ConcludeCare = () => {
           <Paper className="conlcude-paper-container">
             <Typography variant="caption">Patient Name</Typography>
             <Typography variant="h6">
-              <b className="patient-name">Test Concierge</b>
+              <b className="patient-name">{physicianData?.patient_name}</b>
             </Typography>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              mb={2}
-              flexWrap="wrap"
-            >
-              <Box display="flex" flexWrap="wrap">
-                <Typography variant="h6" gutterBottom>
-                  <b>Encounter Forms</b>
-                </Typography>
-              </Box>
+            <form onSubmit={handleUpload}>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                mb={2}
+                flexWrap="wrap"
+              >
+                <Box display="flex" flexWrap="wrap">
+                  <Typography variant="h6" gutterBottom>
+                    <b>Encounter Forms</b>
+                  </Typography>
+                </Box>
 
-              {/* <Box display="flex"> */}
-              {/* <Button
+                {/* <Box display="flex"> */}
+                {/* <Button
                     fullWidth
                     variant="outlined"
                     component="label"
@@ -138,41 +150,42 @@ const ConcludeCare = () => {
                     title="Upload-files"
                   > */}
 
-              {/* </Button> */}
+                {/* </Button> */}
 
-              <Button
-                name="Upload"
-                variant="contained"
-                size="large"
-                startIcon={<CloudUploadOutlinedIcon />}
-                type="submit"
-              >
-                {/* <input
-                      // accept="image/*"
-                      onChange={(e) => {
-                        e.preventDefault();
-                        setSelectedFile(e.target.files[0]);
-                      }}
-                      multiple
-                      type="file"
-                    /> */}
-              </Button>
-              {/* </Box> */}
-            </Box>
+                <Button
+                  name="Upload"
+                  variant="contained"
+                  size="large"
+                  startIcon={<CloudUploadOutlinedIcon />}
+                  type="submit"
+                >
+                  <input
+                    // accept="image/*"
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setSelectedFile(e.target.files[0]);
+                    }}
+                    multiple
+                    type="file"
+                  />
+                </Button>
+                {/* </Box> */}
+              </Box>
+            </form>
+
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell className="document-cl">Documents</TableCell>
-
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {rows?.map((row) => (
                     <TableRow key={row.document_id} hover>
                       <TableCell>{row.document_path}</TableCell>
-                      <TableCell>{row.createdAt}</TableCell>
+                      {/* <TableCell>{row.createdAt}</TableCell> */}
                       <TableCell>
                         <Button
                           variant="outlined"

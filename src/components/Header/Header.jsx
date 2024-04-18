@@ -136,6 +136,17 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             My Profile
           </NavLink>
         </li>
+        {accountType == "physician" ? (
+          <li>
+            <NavLink
+              to={AppRoutes.MYSCHEDULE}
+              className={({ isActive }) => (isActive ? "active" : "")}
+              // onClick={() => dispatch(getMyProfile())}
+            >
+              My Schedule
+            </NavLink>
+          </li>
+        ) : null}
         {accountType == "admin" ? (
           <li
             onMouseEnter={(e) => handleNavLinkHover(e, "provider")}
@@ -173,7 +184,12 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             )}
           </li>
         ) : (
-          <MenuItem onClick={() => navigate(-1)}>Invoicing</MenuItem>
+          <MenuItem
+            onClick={() => navigate(-1)}
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Invoicing
+          </MenuItem>
         )}
         {accountType == "admin" && (
           <li>

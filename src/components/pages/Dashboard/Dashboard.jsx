@@ -56,6 +56,8 @@ import { useNavigate } from "react-router-dom";
 import { exportAll, singleExport } from "../../../redux/export/exportApi";
 // import { providerDashBoard } from "../../../redux/Provider Site/providerDashBoard/providerDashBoardApi";
 import { physicianCount } from "../../../redux/Provider Site/countApi/countApi";
+import TypeOfCareModal from "../../Modal/TypeOfCareModal";
+import EncounterModal from "../../Modal/EncounterModal";
 
 const cards = [
   {
@@ -409,6 +411,16 @@ const Dashboard = () => {
         open={open && modalName === "Send Link"}
         handleClose={handleClose}
         handleOpen={modalName === "Send Link" ? handleOpen : null}
+      />
+      <TypeOfCareModal
+        open={open && modalName === "Type of Care"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Type of Care" ? handleOpen : null}
+      />
+      <EncounterModal
+        open={open && modalName === "Encounter Modal"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Encounter Modal" ? handleOpen : null}
       />
     </>
   );
