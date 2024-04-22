@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import * as Yup from "yup";
 
 export const ResetPassSchema = Yup.object({

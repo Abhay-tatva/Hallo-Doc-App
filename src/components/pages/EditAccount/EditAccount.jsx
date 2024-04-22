@@ -20,6 +20,7 @@ const EditAccount = () => {
   const { physicianData } = useSelector(
     (state) => state.root.providerMenuReducer,
   );
+  console.log("helllooo here", physicianData);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const data = physicianData;

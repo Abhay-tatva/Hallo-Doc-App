@@ -181,3 +181,22 @@ export const POSTCONCLUDECAREUPLOAD_API =
   "/provider/dashboard/requests/:confirmation_no/actions/conclude_care_upload";
 export const GETCONCLUDECARE_API =
   "/provider/dashboard/requests/:confirmation_no/actions/conclude_care_view";
+export const PUTENCOUNTERFORM_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/encounter_form";
+export const GETENCOUNTERFORM_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/get_encounter_form";
+export const PUTFINALIZE_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/encounter_form_finalize";
+export const GETDOWNLOADENCOUNTERFORM_API =
+  "/provider/dashboard/requests/:confirmation_no/actions/download_encounter_form";
+export const GETPHYSICIANMYPORFILE_API =
+  "/provider/myprofile/provider_profile/view";
+export const PUTREQUESTTOADMIN_API =
+  "/provider/myprofile/provider_profile/request_to_admin";
+
+// ......................................My Schedule................................
+export const GETMYSHIFT_API = "/provider/scheduling_menu/provider_shifts_lists";
+export const POSTMYSCHEDULECREATESHIFT_API =
+  "/provider/scheduling_menu/provider_create_shift";
+
+// ........................................Patient Site....................................

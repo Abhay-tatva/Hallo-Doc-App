@@ -38,7 +38,6 @@ const AddBussiness = () => {
   const dispatch = useDispatch();
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const { businessView } = useSelector((state) => state.root.partnersReducer);
-
   const businessFormik = useFormik({
     initialValues,
     validationSchema: businessSchema,
@@ -69,7 +68,6 @@ const AddBussiness = () => {
   });
 
   useEffect(() => {
-    console.log("businessView.mobile_no,", businessView);
     setInitialValues({
       businessName: businessView.business_name,
       profession: businessView.profession,

@@ -12,6 +12,7 @@ export const AppRoutes = {
   ORDER: "/dashboard/order",
   CLOSECASE: "/dashboard/closecase",
   MYPROFILE: "/myprofile",
+  PROVIDERMYPROFILE: "/providerMyProfile",
   MYSCHEDULE: "/mySchedule",
   PROVIDER: "/provider",
   EDITACCOUNT: "/provider/editAccount",
@@ -32,4 +33,6 @@ export const AppRoutes = {
   EMAILLOGS: "/records/emailLogs",
   SMSLOGS: "/records/smsLogs",
   BLOCKHISTORY: "/records/BlockHistory",
+  PATIENTSITE: "/patientSite",
+  SUBMITREQUEST: "/patientSite/submitRequest",
 };

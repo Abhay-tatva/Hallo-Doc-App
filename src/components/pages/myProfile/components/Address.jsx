@@ -7,7 +7,7 @@ import { Button } from "../../../Button/ButtonInput";
 import { useFormik } from "formik";
 import { addressSchema } from "../../../ValidationSchema/MyProfileSchema";
 import PhoneInput from "react-phone-input-2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import {
@@ -31,6 +31,7 @@ const Address = ({ add1, add2, city, state, zip, billNo, userId, name }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const dispatch = useDispatch();
+  const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const billformik = useFormik({
     initialValues,
@@ -157,67 +158,69 @@ const Address = ({ add1, add2, city, state, zip, billNo, userId, name }) => {
           />
         </Grid>
       </Grid>
-      <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
-        {isDisabled ? (
-          <Button
-            name="Edit"
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              setIsDisabled(false);
-            }}
-          />
-        ) : (
-          <>
+      {accountType === "admin" && (
+        <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
+          {isDisabled ? (
             <Button
-              name="Save"
-              type="submit"
+              name="Edit"
               variant="contained"
+              color="primary"
               onClick={() => {
-                if (name === "myProfile") {
-                  dispatch(
-                    putMyProfile({
-                      user_id: userId,
-                      data: billformik.values,
-                    }),
-                  ).then((response) => {
-                    if (response.type === "putMyProfile/fulfilled") {
-                      dispatch(getMyProfile(userId));
-                      toast.success(response.payload.message);
-                    } else if (response.type === "putMyProfile/rejected") {
-                      toast.error(
-                        response.payload.data.validation.body.message,
-                      );
-                    }
-                  });
-                  setIsDisabled(true);
-                }
+                setIsDisabled(false);
+              }}
+            />
+          ) : (
+            <>
+              <Button
+                name="Save"
+                type="submit"
+                variant="contained"
+                onClick={() => {
+                  if (name === "myProfile") {
+                    dispatch(
+                      putMyProfile({
+                        user_id: userId,
+                        data: billformik.values,
+                      }),
+                    ).then((response) => {
+                      if (response.type === "putMyProfile/fulfilled") {
+                        dispatch(getMyProfile(userId));
+                        toast.success(response.payload.message);
+                      } else if (response.type === "putMyProfile/rejected") {
+                        toast.error(
+                          response.payload.data.validation.body.message,
+                        );
+                      }
+                    });
+                    setIsDisabled(true);
+                  }
 
-                if (name === "providerProfile") {
-                  dispatch(
-                    putProviderInfo({
-                      user_id: userId,
-                      data: billformik.values,
-                    }),
-                  ).then((response) => {
-                    if (response.type === "putProviderInfo/fulfilled") {
-                      dispatch(getProviderPhysician(userId));
-                    }
-                  });
+                  if (name === "providerProfile") {
+                    dispatch(
+                      putProviderInfo({
+                        user_id: userId,
+                        data: billformik.values,
+                      }),
+                    ).then((response) => {
+                      if (response.type === "putProviderInfo/fulfilled") {
+                        dispatch(getProviderPhysician(userId));
+                      }
+                    });
+                    setIsDisabled(true);
+                  }
+                }}
+              />
+              <Button
+                name="Cancel"
+                variant="outlined"
+                onClick={() => {
                   setIsDisabled(true);
-                }
-              }}
-            />
-            <Button
-              name="Cancel"
-              variant="outlined"
-              onClick={() => {
-                setIsDisabled(true);
-              }}
-            />
-          </>
-        )}
-      </Box>
+                }}
+              />
+            </>
+          )}
+        </Box>
+      )}
     </form>
   );
 };

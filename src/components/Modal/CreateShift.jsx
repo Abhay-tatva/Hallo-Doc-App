@@ -24,13 +24,16 @@ import {
   postCreateShift,
 } from "../../redux/Scheduling/schedulingApi";
 import { toast } from "react-toastify";
+import { postMyScheduleCreateShift } from "../../redux/Provider Site/mySchedule/myScheduleApi";
 
 const CreateShift = ({ open, handleClose, handleOpen }) => {
   const [checked, setChecked] = useState(false);
   // const [repeatDays, setRepeatDays] = useState("");
+  const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const formik = useFormik({
     initialValues: {
+      isAdmin: accountType === "admin",
       searchRegion: "",
       physician: "",
       date: "",
@@ -41,22 +44,40 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
     },
     validationSchema: CreateModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      dispatch(
-        postCreateShift({
-          region: values.searchRegion,
-          physician: values.physician,
-          shift_date: values.date,
-          start: values.startTime,
-          end: values.endTime,
-          repeat_days: values.repeatDays,
-          repeat_end: values.repeatEnd,
-        }),
-      ).then((response) => {
-        if (response.type === "postCreateShift/fulfilled") {
-          toast.success("Shift Created Successfully");
-          dispatch(getProviderShift({ region: "all" }));
-        }
-      });
+      if (accountType === "admin") {
+        dispatch(
+          postCreateShift({
+            region: values.searchRegion,
+            physician: values.physician,
+            shift_date: values.date,
+            start: values.startTime,
+            end: values.endTime,
+            repeat_days: values.repeatDays,
+            repeat_end: values.repeatEnd,
+          }),
+        ).then((response) => {
+          if (response.type === "postCreateShift/fulfilled") {
+            toast.success("Shift Created Successfully");
+            dispatch(getProviderShift({ region: "all" }));
+          }
+        });
+      } else if (accountType === "physician") {
+        dispatch(
+          postMyScheduleCreateShift({
+            region: values.searchRegion,
+            shift_date: values.date,
+            start: values.startTime,
+            end: values.endTime,
+            repeat_days: values.repeatDays,
+            repeat_end: values.repeatEnd,
+          }).then((response) => {
+            if (response.type === "postMyScheduleCreateShift/fulfilled") {
+              toast.success("Shift Created Successfully");
+            }
+          }),
+        );
+      }
+
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -100,28 +121,32 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
               );
             })}
           </FormInput>
-          <FormInput
-            name="physician"
-            fullWidth
-            label="Select Physician"
-            select
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.physician}
-            error={formik.touched.physician && Boolean(formik.errors.physician)}
-          >
-            {physicians &&
-              physicians.map((physician) => {
-                return (
-                  <MenuItem
-                    key={physician.sr_no}
-                    value={`${physician.physician_name}`}
-                  >
-                    {`${physician.physician_name}`}
-                  </MenuItem>
-                );
-              })}
-          </FormInput>
+          {accountType === "admin" && (
+            <FormInput
+              name="physician"
+              fullWidth
+              label="Select Physician"
+              select
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.physician}
+              error={
+                formik.touched.physician && Boolean(formik.errors.physician)
+              }
+            >
+              {physicians &&
+                physicians.map((physician) => {
+                  return (
+                    <MenuItem
+                      key={physician.sr_no}
+                      value={`${physician.physician_name}`}
+                    >
+                      {`${physician.physician_name}`}
+                    </MenuItem>
+                  );
+                })}
+            </FormInput>
+          )}
           <Grid container gap={3}>
             <Grid item xs={12} md={12} lg={12}>
               <FormInput

@@ -1,43 +1,50 @@
+/* eslint-disable camelcase */
+
 import React from "react";
 import Modal from "./Modal";
 import { Box, Typography } from "@mui/material";
 import { Button } from "../Button/ButtonInput";
-// import { useDispatch, useSelector } from "react-redux";
-// import { download } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
-// import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { getDownload } from "../../redux/Provider Site/Encounter/encounterApi";
 
 const EncounterModal = ({ open, handleClose }) => {
-  //   const dispatch = useDispatch();
-  //   const { id } = useSelector((state) => state.root.patientName);
+  const dispatch = useDispatch();
+  const { confirmation_no } = useSelector((state) => state.root.commonReducer);
 
   const handleDownload = () => {
-    // dispatch(download(id))
-    //   .then((response) => {
-    //     if (response.type === "download/fulfilled") {
-    //       const blob = new Blob([response.payload], {
-    //         type: "application/pdf",
-    //       });
+    console.log("Confirmation Number:", confirmation_no);
+    dispatch(getDownload(confirmation_no))
+      .then((response) => {
+        console.log("Download Response:", response);
+        if (response.type === "getDownload/fulfilled") {
+          const blob = new Blob([response.payload], {
+            type: "application/pdf",
+          });
+          console.log("Blob Created:", blob);
 
-    //       if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-    //         window.navigator.msSaveOrOpenBlob(blob, `encounter_form.pdf`);
-    //       } else {
-    //         const link = document.createElement("a");
-    //         const url = URL.createObjectURL(blob);
-    //         link.href = url;
-    //         link.download = `encounter_form.pdf`;
-    //         document.body.appendChild(link);
-    //         link.click();
-    //         URL.revokeObjectURL(url);
-    //         document.body.removeChild(link);
-    //       }
-    //       toast.success(response.payload.message);
-    //     } else {
-    //       toast.error("No files selected!");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     toast.error("Error downloading file:", error);
-    //   });
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, `Fullform.pdf`);
+            toast.success("File downloaded successfully");
+          } else {
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `Fullform.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+            toast.success("File downloaded successfully");
+          }
+        } else {
+          toast.error("No files selected!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+        toast.error("Error downloading file:", error);
+      });
     handleClose();
   };
 

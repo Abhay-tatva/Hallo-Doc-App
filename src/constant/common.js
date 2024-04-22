@@ -508,7 +508,7 @@ export const concludeDropdown = [
     id: "7",
     name: "Encounter",
     icon: <LocalDiningOutlinedIcon />,
-    accountTypes: ["admin"],
+    accountTypes: ["admin", "physician"],
   },
 ];
 export const toCloseDropdown = [

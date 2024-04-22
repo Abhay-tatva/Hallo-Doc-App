@@ -45,6 +45,7 @@ const PhysiciansInformation = ({
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const dispatch = useDispatch();
+  const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const physicianformik = useFormik({
     initialValues,
@@ -64,9 +65,9 @@ const PhysiciansInformation = ({
       medicalLicence: medicalLicence,
       npiNumber,
       synEmail: synchronizationEmail,
-      regions: serviceAreasAvailability.regions.map(
-        (region) => region.region_name,
-      ),
+      // regions: serviceAreasAvailability.regions.map(
+      //   (region) => region.region_name,
+      // ),
     });
   }, [
     firstName,
@@ -260,46 +261,48 @@ const PhysiciansInformation = ({
           })}
         </Grid>
       </Grid>
-      <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
-        {isDisabled ? (
-          <Button
-            name="Edit"
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              setIsDisabled(false);
-            }}
-          />
-        ) : (
-          <>
+      {accountType === "admin" && (
+        <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
+          {isDisabled ? (
             <Button
-              name="Save"
+              name="Edit"
               variant="contained"
-              type="submit"
+              color="primary"
               onClick={() => {
-                dispatch(
-                  putProviderInfo({
-                    user_id: userId,
-                    data: physicianformik.values,
-                  }),
-                ).then((response) => {
-                  if (response.type === "putProviderInfo/fulfilled") {
-                    dispatch(getProviderPhysician(userId));
-                  }
-                });
-                setIsDisabled(true);
+                setIsDisabled(false);
               }}
             />
-            <Button
-              name="Cancel"
-              variant="outlined"
-              onClick={() => {
-                setIsDisabled(true);
-              }}
-            />
-          </>
-        )}
-      </Box>
+          ) : (
+            <>
+              <Button
+                name="Save"
+                variant="contained"
+                type="submit"
+                onClick={() => {
+                  dispatch(
+                    putProviderInfo({
+                      user_id: userId,
+                      data: physicianformik.values,
+                    }),
+                  ).then((response) => {
+                    if (response.type === "putProviderInfo/fulfilled") {
+                      dispatch(getProviderPhysician(userId));
+                    }
+                  });
+                  setIsDisabled(true);
+                }}
+              />
+              <Button
+                name="Cancel"
+                variant="outlined"
+                onClick={() => {
+                  setIsDisabled(true);
+                }}
+              />
+            </>
+          )}
+        </Box>
+      )}
     </form>
   );
 };

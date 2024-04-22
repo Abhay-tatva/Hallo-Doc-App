@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { createSlice } from "@reduxjs/toolkit";
 import { getSendOrder } from "../sendOrder/sendOrderApi";
 

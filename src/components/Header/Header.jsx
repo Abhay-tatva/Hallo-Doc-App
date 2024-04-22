@@ -23,6 +23,7 @@ import { logout } from "../../redux/slices/loginSlice";
 import { getMyProfile } from "../../redux/myProfile/myProfileApi";
 // import { getAccountAccess } from "../../redux/accountAccess/accountAccessApi";
 import { getUserAccess } from "../../redux/userAccess/userAccessApi";
+import { getPhysicianMyProfile } from "../../redux/Provider Site/physicianMyProfile/physicianMyProfileApi";
 
 const Header = ({ isDarktheme, handleDarkMode }) => {
   const [open, setOpen] = useState(false);
@@ -129,9 +130,17 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
         )}
         <li>
           <NavLink
-            to={AppRoutes.MYPROFILE}
+            to={
+              accountType === "admin"
+                ? AppRoutes.MYPROFILE
+                : AppRoutes.PROVIDERMYPROFILE
+            }
             className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={() => dispatch(getMyProfile())}
+            onClick={() => {
+              if (accountType === "admin") dispatch(getMyProfile());
+              else if (accountType === "physician")
+                dispatch(getPhysicianMyProfile());
+            }}
           >
             My Profile
           </NavLink>

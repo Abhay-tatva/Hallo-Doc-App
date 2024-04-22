@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { useFormik } from "formik";
 import React from "react";
 import BasicModal from "./Modal";

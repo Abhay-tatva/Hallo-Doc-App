@@ -234,6 +234,9 @@ const MyTable = ({
         dispatch(getCloseCase(confirmno));
         navigate(AppRoutes.CLOSECASE);
         break;
+      case "Request To Admin":
+        onClick(action);
+        break;
 
       default:
         break;

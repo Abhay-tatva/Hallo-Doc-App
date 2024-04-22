@@ -9,6 +9,7 @@ import { provideProfileSchema } from "../../../ValidationSchema/ProvideProfileSc
 import "./provideProfile.css";
 import SignatureCanvas from "react-signature-canvas";
 import { useRef } from "react";
+import { useSelector } from "react-redux";
 
 const ProvideProfile = ({
   handleClose,
@@ -22,6 +23,7 @@ const ProvideProfile = ({
   const [selectedFile, setSelectedFile] = useState([]);
   const [imageURL, setImageURL] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
+  const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const sigCanvas = useRef();
 
@@ -210,36 +212,38 @@ const ProvideProfile = ({
             value={adminNotes}
             disabled={isDisabled}
           />
-          <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
-            {isDisabled ? (
-              <Button
-                name="Edit"
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  setIsDisabled(false);
-                }}
-              />
-            ) : (
-              <>
+          {accountType === "admin" && (
+            <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
+              {isDisabled ? (
                 <Button
-                  name="Save"
+                  name="Edit"
                   variant="contained"
-                  type="submit"
+                  color="primary"
                   onClick={() => {
-                    setIsDisabled(true);
+                    setIsDisabled(false);
                   }}
                 />
-                <Button
-                  name="Cancel"
-                  variant="outlined"
-                  onClick={() => {
-                    setIsDisabled(true);
-                  }}
-                />
-              </>
-            )}
-          </Box>
+              ) : (
+                <>
+                  <Button
+                    name="Save"
+                    variant="contained"
+                    type="submit"
+                    onClick={() => {
+                      setIsDisabled(true);
+                    }}
+                  />
+                  <Button
+                    name="Cancel"
+                    variant="outlined"
+                    onClick={() => {
+                      setIsDisabled(true);
+                    }}
+                  />
+                </>
+              )}
+            </Box>
+          )}
         </Grid>
       </Grid>
     </form>

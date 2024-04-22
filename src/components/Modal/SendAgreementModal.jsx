@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React from "react";
 import { useFormik } from "formik";
 import { sendAgreementModalSchema } from "../ValidationSchema/index";

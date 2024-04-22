@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React, { useEffect, useState } from "react";
 import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
@@ -19,19 +21,31 @@ import { FormInput } from "../../TextField/FormInput";
 import { AppRoutes } from "../../../constant/route";
 import { Button } from "../../Button/ButtonInput";
 import { encounterFormSchema } from "../../ValidationSchema";
+import {
+  getEncounterForm,
+  putEncounterForm,
+  putFinalize,
+} from "../../../redux/Provider Site/Encounter/encounterApi";
+import { toast } from "react-toastify";
 
 const INITIAL_VALUES = {
-  serviceDate: "",
-  presentIllnessHistory: "",
-  medicalHistory: "",
+  first_name: "",
+  last_name: "",
+  location: "",
+  date_of_birth: "",
+  date_of_service: "",
+  phone_no: "",
+  email: "",
+  history_of_present: "",
+  medical_history: "",
   medications: "",
   allergies: "",
   temperature: "",
-  heartRate: "",
-  repositoryRate: "",
-  sisBP: "",
-  diaBP: "",
-  oxygen: "",
+  heart_rate: "",
+  respiratory_rate: "",
+  blood_pressure_1: "",
+  blood_pressure_2: "",
+  o2: "",
   pain: "",
   heent: "",
   cv: "",
@@ -42,30 +56,21 @@ const INITIAL_VALUES = {
   neuro: "",
   other: "",
   diagnosis: "",
-  treatmentPlan: "",
-  medicationDispensed: "",
-  procedure: "",
-  followUp: "",
-  lastName: "",
-  location: "",
-  email: "",
-  street: "",
-  city: "",
-  state: "",
-  zipCode: "",
-  dob: "",
-  phoneNumber: "",
+  treatment_plan: "",
+  medication_dispensed: "",
+  procedures: "",
+  follow_up: "",
 };
 
 const EncounterForm = () => {
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  //   const { encounterFormData } = useSelector(
-  //     (state) => state.root.encounterForm,
-  //   );
-  const { accountType } = useSelector((state) => state.root.loginReducer);
+  const { encounterData } = useSelector((state) => state.root.encounterReducer);
+  const { confirmation_no } = useSelector((state) => state.root.commonReducer);
+
+  // const { accountType } = useSelector((state) => state.root.loginReducer);
 
   //   const {
   //     id,
@@ -80,21 +85,29 @@ const EncounterForm = () => {
   //     patientPhoneNumber,
   //   } = useSelector((state) => state.root.patientName);
 
-  //   useEffect(() => {
-  //     dispatch(getEncounterForm(id));
-  //   }, [dispatch, id]);
+  useEffect(() => {
+    dispatch(getEncounterForm(confirmation_no));
+  }, [dispatch, confirmation_no]);
 
+  // const encounterDataConfirm = {
+  //   confirmation_no: data[0].confirmation_no,
+  // };
   const formik = useFormik({
     initialValues,
     validationSchema: encounterFormSchema,
     onSubmit: (values) => {
-      //   if (encounterFormData?.id) {
-      //     dispatch(editEncounterForm({ id, data: values })).then((response) => {
-      //       if (response.type === "editEncounterForm/fulfilled") {
-      //         toast.success(response?.payload?.message);
-      //         navigate(AppRoutes.DASHBOARD);
-      //       }
-      //     });
+      //   if (encounterData?.id) {
+      dispatch(
+        putEncounterForm({
+          data: formik?.values,
+          confirmation_no,
+        }),
+      ).then((response) => {
+        if (response.type === "putEncounterForm/fulfilled") {
+          // toast.success(response?.payload?.message);
+          navigate(AppRoutes.DASHBOARD);
+        }
+      });
       //   } else {
       //     dispatch(saveEncounterForm({ id, data: values })).then((response) => {
       //       if (response.type === "saveEncounterForm/fulfilled") {
@@ -107,42 +120,49 @@ const EncounterForm = () => {
   });
 
   useEffect(() => {
-    // setInitialValues({
-    //   serviceDate: encounterFormData?.serviceDate,
-    //   presentIllnessHistory: encounterFormData?.presentIllnessHistory,
-    //   medicalHistory: encounterFormData?.medicalHistory,
-    //   medications: encounterFormData?.medications,
-    //   allergies: encounterFormData?.allergies,
-    //   temperature: encounterFormData?.temperature,
-    //   heartRate: encounterFormData?.heartRate,
-    //   repositoryRate: encounterFormData?.repositoryRate,
-    //   sisBP: encounterFormData?.sisBP,
-    //   diaBP: encounterFormData?.diaBP,
-    //   oxygen: encounterFormData?.oxygen,
-    //   pain: encounterFormData?.pain,
-    //   heent: encounterFormData?.heent,
-    //   cv: encounterFormData?.cv,
-    //   chest: encounterFormData?.chest,
-    //   abd: encounterFormData?.abd,
-    //   extr: encounterFormData?.extr,
-    //   skin: encounterFormData?.skin,
-    //   neuro: encounterFormData?.neuro,
-    //   other: encounterFormData?.other,
-    //   diagnosis: encounterFormData?.diagnosis,
-    //   treatmentPlan: encounterFormData?.treatmentPlan,
-    //   medicationDispensed: encounterFormData?.medicationDispensed,
-    //   procedure: encounterFormData?.procedure,
-    //   followUp: encounterFormData?.followUp,
-    // });
-  });
+    setInitialValues({
+      first_name: encounterData?.first_name,
+      last_name: encounterData?.last_name,
+      location: encounterData?.location,
+      date_of_birth: encounterData?.date_of_birth,
+      date_of_service: encounterData?.date_of_service,
+      phone_no: encounterData?.phone_no,
+      email: encounterData?.email,
+      history_of_present: encounterData?.history_of_present,
+      medical_history: encounterData?.medical_history,
+      medications: encounterData?.medication,
+      allergies: encounterData?.allergies,
+      temperature: encounterData?.temperature,
+      heart_rate: encounterData?.heart_rate,
+      respiratory_rate: encounterData?.respiratory_rate,
+      blood_pressure: encounterData?.blood_pressure,
+      o2: encounterData?.o2,
+      pain: encounterData?.pain,
+      heent: encounterData?.heent,
+      cv: encounterData?.cv,
+      chest: encounterData?.chest,
+      abd: encounterData?.abd,
+      extr: encounterData?.extr,
+      skin: encounterData?.skin,
+      neuro: encounterData?.neuro,
+      other: encounterData?.other,
+      diagnosis: encounterData?.diagnosis,
+      treatment_plan: encounterData?.treatment_plan,
+      medication_dispensed: encounterData?.medication_dispensed,
+      procedures: encounterData?.procedures,
+      follow_up: encounterData?.follow_up,
+    });
+  }, [encounterData]);
 
   const handleFinalize = () => {
-    // dispatch(finalizeForm(id)).then((response) => {
-    //   if (response.type === "finalizeForm/fulfilled") {
-    //     toast.success(response?.payload?.message);
-    //     navigate(AppRoutes.DASHBOARD);
-    //   }
-    // });
+    dispatch(putFinalize({ confirmation_no, finalize_status: true })).then(
+      (response) => {
+        if (response.type === "putFinalize/fulfilled") {
+          toast.success("Form Finalize Successfulyy......");
+          navigate(AppRoutes.DASHBOARD);
+        }
+      },
+    );
   };
 
   return (
@@ -188,20 +208,36 @@ const EncounterForm = () => {
               <Grid container spacing={{ xs: 1, md: 2 }}>
                 <Grid item xs={12} md={6}>
                   <FormInput
-                    name="firstName"
+                    name="first_name"
                     label="First Name"
                     fullWidth
-                    // value={}
-                    disabled
+                    value={formik.values.first_name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.first_name && formik.errors.first_name
+                    }
+                    error={
+                      formik.touched.first_name &&
+                      Boolean(formik.errors.first_name)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <FormInput
-                    name="lastName"
+                    name="last_name"
                     label="Last Name"
                     fullWidth
-                    // value={patientLastName}
-                    disabled
+                    value={formik.values.last_name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.last_name && formik.errors.last_name
+                    }
+                    error={
+                      formik.touched.last_name &&
+                      Boolean(formik.errors.last_name)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -209,46 +245,72 @@ const EncounterForm = () => {
                     name="location"
                     label="Location"
                     fullWidth
-                    // value={`${street} ,${city}, ${state}, ${zipCode}`}
-                    disabled
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <FormInput
-                    name="dateOfBirth"
-                    label="Date Of Birth"
-                    type="date"
-                    fullWidth
-                    // value={dob}
-                    disabled
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <FormInput
-                    name="serviceDate"
-                    label="Date"
-                    type="date"
-                    fullWidth
-                    value={formik.values.serviceDate}
+                    value={formik.values.location}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.serviceDate && formik.errors.serviceDate
+                      formik.touched.location && formik.errors.location
                     }
                     error={
-                      formik.touched.serviceDate &&
-                      Boolean(formik.errors.serviceDate)
+                      formik.touched.location && Boolean(formik.errors.location)
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <FormInput
+                    name="date_of_birth"
+                    // label="Date Of Birth"
+                    type="date"
+                    fullWidth
+                    value={formik.values.date_of_birth}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.date_of_birth &&
+                      formik.errors.date_of_birth
+                    }
+                    error={
+                      formik.touched.date_of_birth &&
+                      Boolean(formik.errors.date_of_birth)
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <FormInput
+                    name="date_of_service"
+                    type="date"
+                    fullWidth
+                    value={formik.values.date_of_service}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.date_of_service &&
+                      formik.errors.date_of_service
+                    }
+                    error={
+                      formik.touched.date_of_service &&
+                      Boolean(formik.errors.date_of_service)
                     }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <PhoneFormInput
                     label="Phone Number"
-                    name="phoneNumber"
+                    name="phone_no"
                     // value={patientPhoneNumber}
                     country={"in"}
-                    disabled
                     inputStyle={{ width: "100%", height: "3.438rem" }}
+                    value={formik.values?.phone_no?.toString()}
+                    onChange={(value) =>
+                      formik.setFieldValue("phone_no", value)
+                    }
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.phone_no && Boolean(formik.errors.phone_no)
+                    }
+                    helperText={
+                      formik.touched.phone_no && formik.errors.phone_no
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -256,47 +318,50 @@ const EncounterForm = () => {
                     name="email"
                     label="Email"
                     fullWidth
-                    // value={patientEmail}
-                    disabled
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={formik.touched.email && formik.errors.email}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <FormInput
-                    name="presentIllnessHistory"
+                    name="history_of_present"
                     label="History Of Present Illness Or Injury"
                     fullWidth
                     multiline
                     rows={2}
-                    value={formik.values.presentIllnessHistory}
+                    value={formik.values.history_of_present}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.presentIllnessHistory &&
-                      formik.errors.presentIllnessHistory
+                      formik.touched.history_of_present &&
+                      formik.errors.history_of_present
                     }
                     error={
-                      formik.touched.presentIllnessHistory &&
-                      Boolean(formik.errors.presentIllnessHistory)
+                      formik.touched.history_of_present &&
+                      Boolean(formik.errors.history_of_present)
                     }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <FormInput
-                    name="medicalHistory"
+                    name="medical_history"
                     label="Medical History"
                     fullWidth
                     multiline
                     rows={2}
-                    value={formik.values.medicalHistory}
+                    value={formik.values.medical_history}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.medicalHistory &&
-                      formik.errors.medicalHistory
+                      formik.touched.medical_history &&
+                      formik.errors.medical_history
                     }
                     error={
-                      formik.touched.medicalHistory &&
-                      Boolean(formik.errors.medicalHistory)
+                      formik.touched.medical_history &&
+                      Boolean(formik.errors.medical_history)
                     }
                   />
                 </Grid>
@@ -357,75 +422,85 @@ const EncounterForm = () => {
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <FormInput
-                    name="heartRate"
+                    name="heart_rate"
                     label="HR"
                     fullWidth
-                    value={formik.values.heartRate}
+                    value={formik.values.heart_rate}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.heartRate && formik.errors.heartRate
+                      formik.touched.heart_rate && formik.errors.heart_rate
                     }
                     error={
-                      formik.touched.heartRate &&
-                      Boolean(formik.errors.heartRate)
+                      formik.touched.heart_rate &&
+                      Boolean(formik.errors.heart_rate)
                     }
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <FormInput
-                    name="repositoryRate"
+                    name="respiratory_rate"
                     label="RR"
                     fullWidth
-                    value={formik.values.repositoryRate}
+                    value={formik.values.respiratory_rate}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.repositoryRate &&
-                      formik.errors.repositoryRate
+                      formik.touched.respiratory_rate &&
+                      formik.errors.respiratory_rate
                     }
                     error={
-                      formik.touched.repositoryRate &&
-                      Boolean(formik.errors.repositoryRate)
+                      formik.touched.respiratory_rate &&
+                      Boolean(formik.errors.respiratory_rate)
                     }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={2}>
                   <FormInput
-                    name="sisBP"
+                    name="blood_pressure_1"
                     label="Blood Pressure(Systolic)"
                     fullWidth
-                    value={formik.values.sisBP}
+                    value={formik.values.blood_pressure_1}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    helperText={formik.touched.sisBP && formik.errors.sisBP}
-                    error={formik.touched.sisBP && Boolean(formik.errors.sisBP)}
+                    helperText={
+                      formik.touched.blood_pressure_1 &&
+                      formik.errors.blood_pressure_1
+                    }
+                    error={
+                      formik.touched.blood_pressure_1 &&
+                      Boolean(formik.errors.blood_pressure_1)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={2}>
                   <FormInput
-                    name="diaBP"
+                    name="blood_pressure_2"
                     label="Blood Pressure(Diastolic)"
                     fullWidth
-                    value={formik.values.diaBP}
+                    value={formik.values.blood_pressure_2}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    helperText={formik.touched.diaBP && formik.errors.diaBP}
-                    error={formik.touched.diaBP && Boolean(formik.errors.diaBP)}
+                    helperText={
+                      formik.touched.blood_pressure_2 &&
+                      formik.errors.blood_pressure_2
+                    }
+                    error={
+                      formik.touched.blood_pressure_2 &&
+                      Boolean(formik.errors.blood_pressure_2)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <FormInput
-                    name="oxygen"
+                    name="o2"
                     label="O2"
                     fullWidth
-                    value={formik.values.oxygen}
+                    value={formik.values.o2}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    helperText={formik.touched.oxygen && formik.errors.oxygen}
-                    error={
-                      formik.touched.oxygen && Boolean(formik.errors.oxygen)
-                    }
+                    helperText={formik.touched.o2 && formik.errors.o2}
+                    error={formik.touched.o2 && Boolean(formik.errors.o2)}
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
@@ -573,78 +648,79 @@ const EncounterForm = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <FormInput
-                    name="treatmentPlan"
+                    name="treatment_plan"
                     label="Treatment Plan"
                     fullWidth
                     multiline
                     rows={2}
-                    value={formik.values.treatmentPlan}
+                    value={formik.values.treatment_plan}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.treatmentPlan &&
-                      formik.errors.treatmentPlan
+                      formik.touched.treatment_plan &&
+                      formik.errors.treatment_plan
                     }
                     error={
-                      formik.touched.treatmentPlan &&
-                      Boolean(formik.errors.treatmentPlan)
+                      formik.touched.treatment_plan &&
+                      Boolean(formik.errors.treatment_plan)
                     }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <FormInput
-                    name="medicationDispensed"
+                    name="medication_dispensed"
                     label="Medication Dispensed"
                     fullWidth
                     multiline
                     rows={2}
-                    value={formik.values.medicationDispensed}
+                    value={formik.values.medication_dispensed}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.medicationDispensed &&
-                      formik.errors.medicationDispensed
+                      formik.touched.medication_dispensed &&
+                      formik.errors.medication_dispensed
                     }
                     error={
-                      formik.touched.medicationDispensed &&
-                      Boolean(formik.errors.medicationDispensed)
+                      formik.touched.medication_dispensed &&
+                      Boolean(formik.errors.medication_dispensed)
                     }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <FormInput
-                    name="procedure"
+                    name="procedures"
                     label="Procedures"
                     fullWidth
                     multiline
                     rows={2}
-                    value={formik.values.procedure}
+                    value={formik.values.procedures}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.procedure && formik.errors.procedure
+                      formik.touched.procedures && formik.errors.procedures
                     }
                     error={
-                      formik.touched.procedure &&
-                      Boolean(formik.errors.procedure)
+                      formik.touched.procedures &&
+                      Boolean(formik.errors.procedures)
                     }
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <FormInput
-                    name="followUp"
+                    name="follow_up"
                     label="Follow Up"
                     fullWidth
                     multiline
                     rows={2}
-                    value={formik.values.followUp}
+                    value={formik.values.follow_up}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.followUp && formik.errors.followUp
+                      formik.touched.follow_up && formik.errors.follow_up
                     }
                     error={
-                      formik.touched.followUp && Boolean(formik.errors.followUp)
+                      formik.touched.follow_up &&
+                      Boolean(formik.errors.follow_up)
                     }
                   />
                 </Grid>

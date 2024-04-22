@@ -19,7 +19,6 @@ const scheduling = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getProviderOnCall.fulfilled, (state, action) => {
-      console.log(action.payload);
       if (action.payload) {
         state.providerOnCalls = action.payload.provider_on_call;
         state.providerOffDuties = action.payload.provider_off_duty;

@@ -7,7 +7,7 @@ import { Button } from "../../../Button/ButtonInput";
 import { useFormik } from "formik";
 import { myProfileSchema } from "../../../ValidationSchema/MyProfileSchema";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { resetPass } from "../../../../redux/myProfileResetPass/myProfileResetPass";
 import { toast } from "react-toastify";
 import { putProviderResetPassword } from "../../../../redux/provider/providerApi";
@@ -19,6 +19,7 @@ const INITIAL_VALUES = {
 };
 const Account = ({ userName, status, role, userId, name }) => {
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
+  const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const dispatch = useDispatch();
   const accountformik = useFormik({
@@ -106,48 +107,56 @@ const Account = ({ userName, status, role, userId, name }) => {
             }
           />
         </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <FormInput
-            name="status"
-            label="Status"
-            select
-            fullWidth
-            className="form-input"
-            onChange={accountformik.handleChange}
-            onBlur={accountformik.handleBlur}
-            value={accountformik.values.status}
-            error={
-              accountformik.touched.status &&
-              Boolean(accountformik.errors.status)
-            }
-            helperText={
-              accountformik.touched.status && accountformik.errors.status
-            }
-          >
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="active">active</MenuItem>
-          </FormInput>
-        </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <FormInput
-            name="role"
-            label="Role"
-            select
-            fullWidth
-            className="form-input"
-            onChange={accountformik.handleChange}
-            onBlur={accountformik.handleBlur}
-            value={accountformik.values.role}
-            error={
-              accountformik.touched.role && Boolean(accountformik.errors.role)
-            }
-            helperText={accountformik.touched.role && accountformik.errors.role}
-          >
-            <MenuItem value="send_order">Send Order</MenuItem>
-            <MenuItem value="dashboard">Dashboard</MenuItem>
-            <MenuItem value="localadmin">Local Admin</MenuItem>
-          </FormInput>
-        </Grid>
+
+        {accountType === "admin" && (
+          <>
+            <Grid item xs={12} md={6} lg={6}>
+              <FormInput
+                name="status"
+                label="Status"
+                select
+                fullWidth
+                className="form-input"
+                onChange={accountformik.handleChange}
+                onBlur={accountformik.handleBlur}
+                value={accountformik.values.status}
+                error={
+                  accountformik.touched.status &&
+                  Boolean(accountformik.errors.status)
+                }
+                helperText={
+                  accountformik.touched.status && accountformik.errors.status
+                }
+              >
+                <MenuItem value="pending">Pending</MenuItem>
+                <MenuItem value="active">active</MenuItem>
+              </FormInput>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+              <FormInput
+                name="role"
+                label="Role"
+                select
+                fullWidth
+                className="form-input"
+                onChange={accountformik.handleChange}
+                onBlur={accountformik.handleBlur}
+                value={accountformik.values.role}
+                error={
+                  accountformik.touched.role &&
+                  Boolean(accountformik.errors.role)
+                }
+                helperText={
+                  accountformik.touched.role && accountformik.errors.role
+                }
+              >
+                <MenuItem value="send_order">Send Order</MenuItem>
+                <MenuItem value="dashboard">Dashboard</MenuItem>
+                <MenuItem value="localadmin">Local Admin</MenuItem>
+              </FormInput>
+            </Grid>{" "}
+          </>
+        )}
       </Grid>
       <Box display="flex" justifyContent="flex-end" mt={4}>
         <Button

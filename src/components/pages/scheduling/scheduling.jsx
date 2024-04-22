@@ -40,10 +40,12 @@ const Scheduling = () => {
   const dispatch = useDispatch();
 
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  //   const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const { providerShift } = useSelector(
     (state) => state.root.schedulingReducer,
   );
+  console.log("provider shift", providerShift);
   useEffect(() => {
     dispatch(getProviderShift({ region: additionalFilter }));
   }, [dispatch, additionalFilter]);
@@ -74,8 +76,7 @@ const Scheduling = () => {
         };
       });
     })
-    .flat(); // Use flat() to flatten the array of arrays into a single array
-
+    .flat();
   const resources = providerShift?.map((shift) => ({
     id: shift?.user_id,
     title: `${shift?.provider_name}`,

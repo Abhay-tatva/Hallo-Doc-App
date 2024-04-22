@@ -1,8 +1,13 @@
 import * as Yup from "yup";
 
 export const CreateModalSchema = Yup.object({
+  idAdmin: "admin",
   searchRegion: Yup.string().required("region must be required"),
-  physician: Yup.string().required("Physician  must be required"),
+  physician: Yup.string().when("accountType", {
+    is: "admin",
+    then: Yup.string().required("Physician is required for admin accounts"),
+    otherwise: Yup.string().nullable(),
+  }),
   date: Yup.string().required("date  must be required"),
   startTime: Yup.string().required("Start Time is required"),
   endTime: Yup.string()

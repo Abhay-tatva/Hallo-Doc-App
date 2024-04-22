@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Config/axios";
 import { GETBLOACKCASE_API, PUTBLOCKCASE_API } from "../../constant/apis";

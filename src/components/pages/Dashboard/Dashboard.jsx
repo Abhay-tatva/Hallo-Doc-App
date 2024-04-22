@@ -136,7 +136,7 @@ const Dashboard = () => {
       dispatch(requestCount());
       dispatch(sendOrderProfession());
     } else if (accountType === "physician") {
-      // dispatch(providerDashBoard({ state: activeButton }));
+      dispatch(getRegions());
       dispatch(physicianCount());
     }
   }, [accountType, dispatch, activeButton]);

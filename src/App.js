@@ -40,6 +40,10 @@ import CreateRequest from "./components/pages/createRequest/createRequest";
 import PageNotFound from "./components/pages/pageNotFound/pageNotFound";
 import ConcludeCare from "./components/pages/concludeCare/concludeCare";
 import EncounterForm from "./components/pages/encounterForm/encounterForm";
+import ProviderMyProfile from "./components/pages/providerMyProfile/providerMyProfile";
+import MySchedule from "./components/pages/mySchedule/mySchedule";
+import PatientPage from "./components/pages/patientPage/patientPage";
+import SubmitRequest from "./components/pages/submitRequest/submitRequest";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -79,6 +83,10 @@ function App() {
               <Route path={AppRoutes.ORDER} element={<Order />} />
               <Route path={AppRoutes.CLOSECASE} element={<CloseCase />} />
               <Route path={AppRoutes.MYPROFILE} element={<MyProfile />} />
+              <Route
+                path={AppRoutes.PROVIDERMYPROFILE}
+                element={<ProviderMyProfile />}
+              />
               <Route path={AppRoutes.PROVIDER} element={<Provide />} />
               <Route path={AppRoutes.EDITACCOUNT} element={<EditAccount />} />
               <Route
@@ -124,7 +132,10 @@ function App() {
                 path={AppRoutes.ENCOUNTERFORM}
                 element={<EncounterForm />}
               />
+              <Route path={AppRoutes.MYSCHEDULE} element={<MySchedule />} />
             </Route>
+            <Route path={AppRoutes.PATIENTSITE} element={<PatientPage />} />
+            <Route path={AppRoutes.SUBMITREQUEST} element={<SubmitRequest />} />
           </Route>
         </Routes>
       </ThemeProvider>
