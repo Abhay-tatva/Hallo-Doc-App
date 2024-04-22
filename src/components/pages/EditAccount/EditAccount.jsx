@@ -20,7 +20,6 @@ const EditAccount = () => {
   const { physicianData } = useSelector(
     (state) => state.root.providerMenuReducer,
   );
-  console.log("helllooo here", physicianData);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const data = physicianData;
@@ -92,7 +91,7 @@ const EditAccount = () => {
               add2={address_2}
               city={city}
               state={state}
-              Zip={zip}
+              zip={zip}
               billNo={billing_mobile_no}
             />
             {/* .......................................Provider Profile.................................. */}

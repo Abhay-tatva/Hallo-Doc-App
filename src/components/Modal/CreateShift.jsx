@@ -24,16 +24,27 @@ import {
   postCreateShift,
 } from "../../redux/Scheduling/schedulingApi";
 import { toast } from "react-toastify";
-import { postMyScheduleCreateShift } from "../../redux/Provider Site/mySchedule/myScheduleApi";
+import {
+  getMySchedule,
+  postMyScheduleCreateShift,
+} from "../../redux/Provider Site/mySchedule/myScheduleApi";
 
 const CreateShift = ({ open, handleClose, handleOpen }) => {
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   // const [repeatDays, setRepeatDays] = useState("");
   const { accountType } = useSelector((state) => state.root.loginReducer);
-
+  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const formik = useFormik({
     initialValues: {
       isAdmin: accountType === "admin",
+      sunday: false,
+      monday: false,
+      tuesday: false,
+      wednesday: false,
+      thursday: false,
+      friday: false,
+      saturday: false,
       searchRegion: "",
       physician: "",
       date: "",
@@ -62,6 +73,7 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
           }
         });
       } else if (accountType === "physician") {
+        console.log("valuess:", values);
         dispatch(
           postMyScheduleCreateShift({
             region: values.searchRegion,
@@ -70,12 +82,17 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
             end: values.endTime,
             repeat_days: values.repeatDays,
             repeat_end: values.repeatEnd,
-          }).then((response) => {
+          }),
+        )
+          .then((response) => {
             if (response.type === "postMyScheduleCreateShift/fulfilled") {
               toast.success("Shift Created Successfully");
+              dispatch(getMySchedule());
             }
-          }),
-        );
+          })
+          .catch((error) => {
+            // Handle error
+          });
       }
 
       onSubmitProps.resetForm();
@@ -85,8 +102,10 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
   const { physicians } = useSelector(
     (state) => state.root.regionPhysicianReducer,
   );
-  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
-  const dispatch = useDispatch();
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    formik.setFieldValue(name, checked);
+  };
   return (
     <BasicModal
       open={open}
@@ -208,31 +227,88 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
               <b>Repeat Days</b>
             </Typography>
             <FormControlLabel
-              control={<Checkbox disabled={!checked} size="medium" />}
+              control={
+                <Checkbox
+                  name="sunday"
+                  disabled={!checked}
+                  checked={formik.values.sunday}
+                  onChange={handleCheckboxChange}
+                  size="medium"
+                />
+              }
               label="Every Sunday"
             />
             <FormControlLabel
-              control={<Checkbox disabled={!checked} size="medium" />}
+              control={
+                <Checkbox
+                  name="monday"
+                  disabled={!checked}
+                  checked={formik.values.monday}
+                  onChange={handleCheckboxChange}
+                  size="medium"
+                />
+              }
               label="Every Monday"
             />
+            {console.log("checked::", formik.values)}
             <FormControlLabel
-              control={<Checkbox disabled={!checked} size="medium" />}
+              control={
+                <Checkbox
+                  name="tuesday"
+                  disabled={!checked}
+                  checked={formik.values.tuesday}
+                  onChange={handleCheckboxChange}
+                  size="medium"
+                />
+              }
               label="Every Tuesday"
             />
             <FormControlLabel
-              control={<Checkbox disabled={!checked} size="medium" />}
+              control={
+                <Checkbox
+                  name="wednesday"
+                  disabled={!checked}
+                  size="medium"
+                  checked={formik.values.wednesday}
+                  onChange={handleCheckboxChange}
+                />
+              }
               label="Every Wednesday"
             />
             <FormControlLabel
-              control={<Checkbox disabled={!checked} size="medium" />}
+              control={
+                <Checkbox
+                  name="thursday"
+                  disabled={!checked}
+                  size="medium"
+                  checked={formik.values.thursday}
+                  onChange={handleCheckboxChange}
+                />
+              }
               label="Every thursday"
             />
             <FormControlLabel
-              control={<Checkbox disabled={!checked} size="medium" />}
+              control={
+                <Checkbox
+                  name="friday"
+                  disabled={!checked}
+                  size="medium"
+                  checked={formik.values.friday}
+                  onChange={handleCheckboxChange}
+                />
+              }
               label="Every Friday"
             />
             <FormControlLabel
-              control={<Checkbox disabled={!checked} size="medium" />}
+              control={
+                <Checkbox
+                  name="saturday"
+                  disabled={!checked}
+                  size="medium"
+                  checked={formik.values.saturday}
+                  onChange={handleCheckboxChange}
+                />
+              }
               label="Every Saturday"
             />
           </Grid>

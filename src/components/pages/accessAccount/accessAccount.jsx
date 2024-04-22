@@ -29,7 +29,6 @@ import { toast } from "react-toastify";
 
 const AccessAccount = () => {
   const [pageNo, setPageNo] = useState(1);
-
   const [orderBy, setOrderBy] = useState("accountType");
   const [order, setOrder] = useState("asc");
   const [page, setPage] = React.useState(0);
@@ -101,7 +100,7 @@ const AccessAccount = () => {
       <Box className="acess-main-container">
         <Container maxWidth="lg" className="access-wrapper-container">
           <Typography variant="h5" gutterBottom>
-            <b>Account Access</b>
+            <b>Account Acess</b>
           </Typography>
           <Paper className="acess-full-paper">
             <Box display="flex" justifyContent="end" p={3}>

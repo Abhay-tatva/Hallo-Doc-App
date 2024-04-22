@@ -198,5 +198,8 @@ export const PUTREQUESTTOADMIN_API =
 export const GETMYSHIFT_API = "/provider/scheduling_menu/provider_shifts_lists";
 export const POSTMYSCHEDULECREATESHIFT_API =
   "/provider/scheduling_menu/provider_create_shift";
-
+export const GETMYSCHEDULEVIEWSHIFT_API =
+  "/provider/scheduling_menu/provider_shifts_lists/view_shift";
+export const PUTMYSCHEDULEEDIT_API =
+  "/provider/scheduling_menu/provider_shifts_lists/edit_shift";
 // ........................................Patient Site....................................

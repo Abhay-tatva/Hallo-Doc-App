@@ -95,8 +95,18 @@ const ProvideProfile = ({
             label="Business Name"
             fullWidth
             className="form-input"
-            value={businessName}
+            value={provideProfile.values.businessName}
             disabled={isDisabled}
+            onChange={provideProfile.handleChange}
+            onBlur={provideProfile.handleBlur}
+            error={
+              provideProfile.touched.businessName &&
+              Boolean(provideProfile.errors.businessName)
+            }
+            helperText={
+              provideProfile.touched.businessName &&
+              provideProfile.errors.businessName
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -105,8 +115,18 @@ const ProvideProfile = ({
             label="Business Website"
             fullWidth
             className="form-input"
+            value={provideProfile.values.businessWebsite}
             disabled={isDisabled}
-            value={businessWebsite}
+            onChange={provideProfile.handleChange}
+            onBlur={provideProfile.handleBlur}
+            error={
+              provideProfile.touched.businessWebsite &&
+              Boolean(provideProfile.errors.businessWebsite)
+            }
+            helperText={
+              provideProfile.touched.businessWebsite &&
+              provideProfile.errors.businessWebsite
+            }
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>

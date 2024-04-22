@@ -25,6 +25,7 @@ const INITIAL_VALUES = {
   email: "",
   confirmeMail: "",
   mobileNo: "",
+  regions: [],
 };
 const Administrator = ({
   firstName,
@@ -53,8 +54,18 @@ const Administrator = ({
       email: email,
       confirmeMail: email,
       mobileNo: mobileNo,
+      regions: data.regions.map((region) => region.region_name),
     });
-  }, [firstName, lastName, email, mobileNo]);
+  }, [firstName, lastName, email, mobileNo, regions]);
+
+  const handleChangeRegions = (name) => {
+    const newRegions = administratorformik.values.regions?.includes(name)
+      ? administratorformik.values.regions?.filter(
+          (selectedName) => selectedName !== name,
+        )
+      : [...administratorformik.values.regions, name];
+    administratorformik.setFieldValue("regions", newRegions);
+  };
   return (
     <form onSubmit={administratorformik.handleSubmit}>
       <Typography variant="h6" className="account">
@@ -170,16 +181,20 @@ const Administrator = ({
         </Grid>
         <Grid item xs={12} md={6}>
           {data.regions.map((region, index) => {
-            const isChecked = regions?.some(
-              (selectedRegion) =>
-                selectedRegion.region_name === region.region_name,
-            );
             return (
               <FormControlLabel
                 className="checkbox-padding"
                 disabled={isDisabled}
                 key={index}
-                control={<Checkbox size="small" checked={isChecked} />}
+                control={
+                  <Checkbox
+                    size="small"
+                    checked={administratorformik.values.regions?.includes(
+                      region?.region_name,
+                    )}
+                    onChange={() => handleChangeRegions(region?.region_name)}
+                  />
+                }
                 label={region.region_name}
               />
             );
@@ -200,6 +215,7 @@ const Administrator = ({
           <>
             <Button
               name="Save"
+              type="submit"
               variant="contained"
               onClick={() => {
                 dispatch(

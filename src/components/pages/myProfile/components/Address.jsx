@@ -27,7 +27,16 @@ const INITIAL_VALUES = {
   zip: "",
   billNumber: "",
 };
-const Address = ({ add1, add2, city, state, zip, billNo, userId, name }) => {
+const Address = ({
+  add1,
+  add2,
+  city,
+  state,
+  zip,
+  billNumber,
+  userId,
+  name,
+}) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const dispatch = useDispatch();
@@ -49,9 +58,9 @@ const Address = ({ add1, add2, city, state, zip, billNo, userId, name }) => {
       city: city,
       state: state,
       zip,
-      billNumber: billNo,
+      billNumber: billNumber,
     });
-  }, [add1, add2, city, state, zip, billNo]);
+  }, [add1, add2, city, state, zip, billNumber]);
 
   return (
     <form onSubmit={billformik.handleSubmit}>

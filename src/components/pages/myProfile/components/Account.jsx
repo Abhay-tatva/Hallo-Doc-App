@@ -129,7 +129,7 @@ const Account = ({ userName, status, role, userId, name }) => {
                 }
               >
                 <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="active">active</MenuItem>
+                <MenuItem value="active">Active</MenuItem>
               </FormInput>
             </Grid>
             <Grid item xs={12} md={6} lg={6}>

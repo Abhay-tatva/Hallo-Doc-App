@@ -16,6 +16,10 @@ import {
   putReturnShift,
 } from "../../redux/Scheduling/schedulingApi";
 import { toast } from "react-toastify";
+import {
+  getMySchedule,
+  putMyScheduleEdit,
+} from "../../redux/Provider Site/mySchedule/myScheduleApi";
 
 const INITIAL_VALUES = {
   searchRegion: "",
@@ -37,6 +41,11 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
   const { viewShiftData } = useSelector(
     (state) => state.root.schedulingReducer,
   );
+  const { myScheduleViewShiftData } = useSelector(
+    (state) => state.root.myScheduleReducer,
+  );
+
+  const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const formik = useFormik({
     initialValues,
@@ -60,22 +69,40 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
   }, [viewShiftData]);
 
   const handleSave = () => {
-    dispatch(
-      putEditShift({
-        shift_id: viewShiftData.shift_id,
-        region: formik.values.searchRegion,
-        physician: formik.values.physician,
-        shift_date: formik.values.date,
-        start: formik.values.startTime,
-        end: formik.values.endTime,
-      }),
-    ).then((response) => {
-      if (response.type === "putEditShift/fulfilled") {
-        toast.success("Shift Edited Successfully");
-        handleClose();
-        dispatch(getProviderShift({ region: "all" }));
-      }
-    });
+    if (accountType === "admin") {
+      dispatch(
+        putEditShift({
+          shift_id: viewShiftData.shift_id,
+          region: formik.values.searchRegion,
+          physician: formik.values.physician,
+          shift_date: formik.values.date,
+          start: formik.values.startTime,
+          end: formik.values.endTime,
+        }),
+      ).then((response) => {
+        if (response.type === "putEditShift/fulfilled") {
+          toast.success("Shift Edited Successfully");
+          handleClose();
+          dispatch(getProviderShift({ region: "all" }));
+        }
+      });
+    } else if (accountType === "physician") {
+      putMyScheduleEdit({
+        shift_id: myScheduleViewShiftData.shift_id,
+        region: formik.searchRegion,
+        shift_date: formik.date,
+        start: formik.startTime,
+        end: formik.endTime,
+        repeat_days: formik.repeatDays,
+        repeat_end: formik.repeatEnd,
+      })
+        .then((response) => {
+          if (response.type === "putMyScheduleEdit/fulfilled") {
+            dispatch(getMySchedule());
+          }
+        })
+        .catch((error) => {});
+    }
   };
 
   return (
@@ -116,30 +143,34 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
               );
             })}
           </FormInput>
-          <FormInput
-            name="physician"
-            fullWidth
-            disabled
-            label="Select Physician"
-            select
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.physician}
-            error={formik.touched.physician && Boolean(formik.errors.physician)}
-            helperText={formik.touched.physician && formik.errors.physician}
-          >
-            {physicians &&
-              physicians.map((physician) => {
-                return (
-                  <MenuItem
-                    key={physician.sr_no}
-                    value={`${physician.physician_name}`}
-                  >
-                    {`${physician.physician_name}`}
-                  </MenuItem>
-                );
-              })}
-          </FormInput>
+          {accountType === "admin" && (
+            <FormInput
+              name="physician"
+              fullWidth
+              disabled
+              label="Select Physician"
+              select
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.physician}
+              error={
+                formik.touched.physician && Boolean(formik.errors.physician)
+              }
+              helperText={formik.touched.physician && formik.errors.physician}
+            >
+              {physicians &&
+                physicians.map((physician) => {
+                  return (
+                    <MenuItem
+                      key={physician.sr_no}
+                      value={`${physician.physician_name}`}
+                    >
+                      {`${physician.physician_name}`}
+                    </MenuItem>
+                  );
+                })}
+            </FormInput>
+          )}
           <Grid container gap={3}>
             <Grid item xs={12} md={12} lg={12}>
               <FormInput

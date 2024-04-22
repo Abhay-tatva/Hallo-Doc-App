@@ -150,11 +150,11 @@ export const columns = [
     label: "Sent",
   },
   {
-    id: "sentTries",
+    id: "sent_tries",
     label: "Sent Tries",
   },
   {
-    id: "confirmationNumber",
+    id: "confirmation_no",
     label: "Confirmation Number",
   },
 ];

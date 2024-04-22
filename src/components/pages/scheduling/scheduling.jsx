@@ -45,7 +45,6 @@ const Scheduling = () => {
   const { providerShift } = useSelector(
     (state) => state.root.schedulingReducer,
   );
-  console.log("provider shift", providerShift);
   useEffect(() => {
     dispatch(getProviderShift({ region: additionalFilter }));
   }, [dispatch, additionalFilter]);

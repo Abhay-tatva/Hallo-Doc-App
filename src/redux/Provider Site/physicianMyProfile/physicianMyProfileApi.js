@@ -20,7 +20,6 @@ export const putRequestToadmin = createAsyncThunk(
   "putRequestToadmin",
   async (params, { rejectWithValue }) => {
     const { message } = params;
-    console.log("params", params);
     try {
       const response = await Axios.put(PUTREQUESTTOADMIN_API);
       {

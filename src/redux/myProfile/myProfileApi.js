@@ -26,6 +26,7 @@ export const putMyProfile = createAsyncThunk(
         firstname: data?.firstName,
         lastname: data?.lastName,
         email: data?.email,
+        mobile_no: data?.mobileNo,
         district_of_columbia: data?.district_of_columbia,
         new_york: data?.new_york,
         virginia: data?.virginia,
@@ -35,7 +36,7 @@ export const putMyProfile = createAsyncThunk(
         city: data?.city,
         state: data?.state,
         zip: data?.zip?.toString(),
-        billing_mobile_no: data?.billing_mobile_no,
+        billing_mobile_no: data?.billNumber,
       });
       return response?.data;
     } catch (error) {

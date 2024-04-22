@@ -7,7 +7,7 @@ import { AppRoutes } from "../../../constant/route";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import "./providerMyProfile.css";
 import { useSelector } from "react-redux";
-// import Account from "../myProfile/components/Account";
+import Account from "../myProfile/components/Account";
 import PhysiciansInformation from "../myProfile/components/PhysiciansInformation";
 import Address from "../myProfile/components/Address";
 import ProvideProfile from "../myProfile/components/ProvideProfile";
@@ -36,8 +36,7 @@ const ProviderMyProfile = () => {
     setModalName("");
   };
 
-  // const { username } =
-  //   myProfilePhysicianData.data[0].provider_account_information;
+  const { username } = myProfilePhysicianData.provider_account_information;
   const {
     firstname,
     medical_licence,
@@ -84,7 +83,7 @@ const ProviderMyProfile = () => {
               />
             </Box>
             {/* ............................/ Account Information............  */}
-            {/* <Account name="myProfile" userName={username} /> */}
+            <Account name="myProfile" userName={username} />
             {/* ............................/ Administration Information............  */}
             <PhysiciansInformation
               userId={myProfilePhysicianData?.user_id}

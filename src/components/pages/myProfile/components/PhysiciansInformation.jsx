@@ -38,7 +38,6 @@ const PhysiciansInformation = ({
   medicalLicence,
   npiNumber,
   synchronizationEmail,
-  serviceAreasAvailability,
   userId,
 }) => {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -65,9 +64,7 @@ const PhysiciansInformation = ({
       medicalLicence: medicalLicence,
       npiNumber,
       synEmail: synchronizationEmail,
-      // regions: serviceAreasAvailability.regions.map(
-      //   (region) => region.region_name,
-      // ),
+      regions: regions.map((region) => region.region_name),
     });
   }, [
     firstName,
@@ -77,7 +74,7 @@ const PhysiciansInformation = ({
     medicalLicence,
     npiNumber,
     synchronizationEmail,
-    serviceAreasAvailability,
+    regions,
   ]);
   const handleChangeRegions = (name) => {
     const newRegions = physicianformik.values.regions?.includes(name)

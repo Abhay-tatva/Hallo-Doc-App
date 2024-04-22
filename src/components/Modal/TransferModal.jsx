@@ -72,53 +72,60 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
           <Typography variant="caption">
             To assign this request, searach and select another Physician
           </Typography>
-          <FormInput
-            fullWidth
-            name="searchRegion"
-            label="Nerrow Search By Region"
-            select
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.searchRegion}
-            error={
-              formik.touched.searchRegion && Boolean(formik.errors.searchRegion)
-            }
-          >
-            <MenuItem value="all">All Regions</MenuItem>
-            {regions?.map((region, index) => {
-              return (
-                <MenuItem
-                  key={index}
-                  value={region.region_name}
-                  onClick={() => dispatch(getPhysician(region.region_name))}
-                >
-                  {region.region_name}
-                </MenuItem>
-              );
-            })}
-          </FormInput>
-          <FormInput
-            name="physician"
-            fullWidth
-            label="Select Physician"
-            select
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.physician}
-            error={formik.touched.physician && Boolean(formik.errors.physician)}
-          >
-            {physicians &&
-              physicians.map((physician) => {
-                return (
-                  <MenuItem
-                    key={physician.sr_no}
-                    value={`${physician.physician_name}`}
-                  >
-                    {`${physician.physician_name}`}
-                  </MenuItem>
-                );
-              })}
-          </FormInput>
+          {accountType === "admin" && (
+            <>
+              <FormInput
+                fullWidth
+                name="searchRegion"
+                label="Nerrow Search By Region"
+                select
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.searchRegion}
+                error={
+                  formik.touched.searchRegion &&
+                  Boolean(formik.errors.searchRegion)
+                }
+              >
+                <MenuItem value="all">All Regions</MenuItem>
+                {regions?.map((region, index) => {
+                  return (
+                    <MenuItem
+                      key={index}
+                      value={region.region_name}
+                      onClick={() => dispatch(getPhysician(region.region_name))}
+                    >
+                      {region.region_name}
+                    </MenuItem>
+                  );
+                })}
+              </FormInput>
+              <FormInput
+                name="physician"
+                fullWidth
+                label="Select Physician"
+                select
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.physician}
+                error={
+                  formik.touched.physician && Boolean(formik.errors.physician)
+                }
+              >
+                {physicians &&
+                  physicians.map((physician) => {
+                    return (
+                      <MenuItem
+                        key={physician.sr_no}
+                        value={`${physician.physician_name}`}
+                      >
+                        {`${physician.physician_name}`}
+                      </MenuItem>
+                    );
+                  })}
+              </FormInput>
+            </>
+          )}
           <FormInput
             name="description"
             label="Provide Addtional Notes"

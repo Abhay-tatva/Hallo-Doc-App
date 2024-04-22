@@ -419,7 +419,7 @@ const MyTable = ({
                           <Button
                             className="phone-btn"
                             name={
-                              row.request_status === "md_on_site" && "HouseCall"
+                              row.request_status === "md_on_site" && "houseCall"
                             }
                             variant="contained"
                             color="primary"
@@ -479,7 +479,7 @@ const MyTable = ({
                                   ? row?.is_finalized === "true"
                                     ? handleClose("Encounter Modal")
                                     : row.request_status === "md_on_site" &&
-                                        "HouseCall"
+                                        "houseCall"
                                       ? handleClose("Encounter Form")
                                       : handleClose("Type of Care")
                                   : handleClose(data.name);

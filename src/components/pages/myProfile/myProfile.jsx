@@ -77,7 +77,7 @@ const MyProfile = () => {
               city={city}
               state={state}
               zip={zip}
-              billNo={billing_mobile_no}
+              billNumber={billing_mobile_no}
             />
           </Paper>
         </Container>

@@ -15,7 +15,11 @@ import interactionPlugin from "@fullcalendar/interaction";
 // import timeGridPlugin from "@fullcalendar/timegrid";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import CreateShift from "../../Modal/CreateShift";
-import { getMySchedule } from "../../../redux/Provider Site/mySchedule/myScheduleApi";
+import {
+  getMySchedule,
+  getMyScheduleViewShift,
+} from "../../../redux/Provider Site/mySchedule/myScheduleApi";
+import ViewShift from "../../Modal/ViewShift";
 // import ViewShift from "../../Modal/ViewShift";
 // import { getViewShift } from "../../../redux/Scheduling/schedulingApi";
 
@@ -27,7 +31,6 @@ const MySchedule = () => {
   const dispatch = useDispatch();
 
   const { myShift } = useSelector((state) => state.root.myScheduleReducer);
-  console.log("myshift", myShift);
   useEffect(() => {
     dispatch(getMySchedule());
   }, [dispatch]);
@@ -110,6 +113,25 @@ const MySchedule = () => {
               }}
               events={events}
               resources={resources}
+              eventContent={(eventInfo) => {
+                return (
+                  <div
+                    style={{
+                      width: "100%",
+                      backgroundColor: eventInfo.backgroundColor,
+                      borderRadius: "0.3rem",
+                      cursor: "pointer",
+                      height: "auto",
+                    }}
+                    onClick={() => {
+                      dispatch(getMyScheduleViewShift(eventInfo.event.id));
+                      handleOpen("View Shift");
+                    }}
+                  >
+                    {eventInfo.timeText}
+                  </div>
+                );
+              }}
               editable={true}
               selectable={true}
               selectMirror={true}
@@ -122,10 +144,10 @@ const MySchedule = () => {
         open={open && modalName === "Create Shift"}
         handleClose={handleClose}
       />
-      {/* <ViewShift
+      <ViewShift
         open={open && modalName === "View Shift"}
         handleClose={handleClose}
-      /> */}
+      />
     </>
   );
 };
