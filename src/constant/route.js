@@ -35,4 +35,9 @@ export const AppRoutes = {
   BLOCKHISTORY: "/records/BlockHistory",
   PATIENTSITE: "/patientSite",
   SUBMITREQUEST: "/patientSite/submitRequest",
+  PATIENTCREATE: "/patientSite/patientCreate",
+  CREATEFAMILFRIEND: "/patientSite/familyFriend",
+  CONCIERGE: "/patientSite/concierge",
+  BUSINESS: "/patientSite/businessPage",
+  MEDICALHISTORY: "/patientSite/medicalHistory",
 };

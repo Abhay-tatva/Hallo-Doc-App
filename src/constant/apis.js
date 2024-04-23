@@ -203,3 +203,15 @@ export const GETMYSCHEDULEVIEWSHIFT_API =
 export const PUTMYSCHEDULEEDIT_API =
   "/provider/scheduling_menu/provider_shifts_lists/edit_shift";
 // ........................................Patient Site....................................
+export const ISPATIENTREGISTERED =
+  "/patient/create_request/is_patient_registered";
+export const CREATEFAMILYFRIEND =
+  "/patient/create_request/create_request_by_family_friend";
+export const CREATECONCIERGE =
+  "/patient/create_request/create_request_by_concierge";
+export const PATIENTBUSINESS =
+  "/patient/create_request/create_request_by_business";
+export const CREATEPATIENT =
+  "/patient/create_request/create_request_by_patient";
+
+export const GETMEDICALHISTORY = "/patient/dashboard/medical_history";

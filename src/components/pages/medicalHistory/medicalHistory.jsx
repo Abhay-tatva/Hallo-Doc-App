@@ -1,4 +1,7 @@
 /* eslint-disable camelcase */
+
+import React, { useEffect, useState } from "react";
+import "./medicalHistory.css";
 import {
   Box,
   Container,
@@ -13,38 +16,27 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import { Button } from "../../Button/ButtonInput";
-import { columns } from "../../../constant/accessData";
-import "./acessAccount.css";
-import { AppRoutes } from "../../../constant/route";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { columns } from "../../../constant/medicalData";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  accountAccessDelete,
-  accountAccessEdit,
-  getAccountAccess,
-} from "../../../redux/accountAccess/accountAccessApi";
-import { toast } from "react-toastify";
+import { getMedicalHistory } from "../../../redux/patientSite/patientDashboard/medicalHistoryApi";
 
-const AccessAccount = () => {
+const MedicalHistory = () => {
+  const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(1);
-  const [orderBy, setOrderBy] = useState("accountType");
-  const [order, setOrder] = useState("asc");
   const [page, setPage] = React.useState(0);
+  const [orderBy, setOrderBy] = useState("createdDate");
+  const [order, setOrder] = useState("asc");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = useState([]);
-  // const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const { accountData } = useSelector(
-    (state) => state.root.accountAccessReducer,
+  const { medicalData } = useSelector(
+    (state) => state.root.medicalHistoryReducer,
   );
-  useEffect(() => setTableData(accountData), [accountData]);
-
+  useEffect(() => setTableData(medicalData), [medicalData]);
   useEffect(() => {
-    dispatch(getAccountAccess({ page: pageNo, page_size: rowsPerPage }));
+    dispatch(getMedicalHistory({ page: pageNo, page_size: rowsPerPage }));
     return undefined;
   }, [dispatch, pageNo, rowsPerPage]);
 
@@ -83,13 +75,6 @@ const AccessAccount = () => {
     }
     return 0;
   };
-  // const handleOpen = () => {
-  //   setOpen(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -97,20 +82,19 @@ const AccessAccount = () => {
   };
   return (
     <>
-      <Box className="acess-main-container">
-        <Container maxWidth="lg" className="access-wrapper-container">
+      <Box className="medical-main-container">
+        <Container maxWidth="lg" className="medical-wrapper-container">
           <Typography variant="h5" gutterBottom>
-            <b>Account Access</b>
+            <b>Medical History</b>
           </Typography>
-          <Paper className="acess-full-paper">
+          <Paper className="medical-full-paper">
             <Box display="flex" justifyContent="end" p={3}>
               <Button
-                onClick={() => navigate(AppRoutes.CREATEACCESS)}
-                name="Create Access"
+                // onClick={() => navigate(-1)}
+                name="Create New Request"
                 variant="outlined"
               />
             </Box>
-
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
                 <TableHead style={{ backgroundColor: "#f6f6f6" }}>
@@ -143,53 +127,28 @@ const AccessAccount = () => {
                           {columns.map((column) => {
                             return (
                               <TableCell key={column.id} align="center">
-                                {column.id === "actions" ? (
+                                {column.id === "document" ? (
                                   <Box
                                     display="flex"
                                     gap={1}
                                     justifyContent="center"
                                   >
                                     <Button
-                                      name="Edit"
+                                      name="document"
                                       variant="outlined"
                                       size="small"
-                                      onClick={() => {
-                                        dispatch(
-                                          accountAccessEdit(row.role_id),
-                                        ).then((response) => {
-                                          if (
-                                            response.type ===
-                                            "accountAccessEdit/fulfilled"
-                                          ) {
-                                            navigate(AppRoutes.CREATEACCESS);
-                                          }
-                                        });
-                                      }}
-                                    />
-                                    <Button
-                                      name="delete"
-                                      variant="outlined"
-                                      size="small"
-                                      onClick={() =>
-                                        dispatch(
-                                          accountAccessDelete(row.role_id),
-                                        ).then((response) => {
-                                          if (
-                                            response.type ===
-                                            "accountAccessDelete/fulfilled"
-                                          ) {
-                                            toast.success(
-                                              "data Deleted Successfully",
-                                            );
-                                            dispatch(
-                                              getAccountAccess({
-                                                page: 1,
-                                                page_size: 20,
-                                              }),
-                                            );
-                                          }
-                                        })
-                                      }
+                                      //   onClick={() => {
+                                      //     dispatch(
+                                      //       accountAccessEdit(row.role_id),
+                                      //     ).then((response) => {
+                                      //       if (
+                                      //         response.type ===
+                                      //         "accountAccessEdit/fulfilled"
+                                      //       ) {
+                                      //         navigate(AppRoutes.CREATEACCESS);
+                                      //       }
+                                      //     });
+                                      //   }}
                                     />
                                   </Box>
                                 ) : (
@@ -207,7 +166,7 @@ const AccessAccount = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={accountData.total_count}
+              count={medicalData.total_count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -220,4 +179,4 @@ const AccessAccount = () => {
   );
 };
 
-export default AccessAccount;
+export default MedicalHistory;

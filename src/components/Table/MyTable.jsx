@@ -237,6 +237,9 @@ const MyTable = ({
       case "Request To Admin":
         onClick(action);
         break;
+      case "Patient Modal":
+        onClick(action);
+        break;
 
       default:
         break;

@@ -21,6 +21,7 @@ import schedulingSlice from "./schedulingSlice";
 import encounterSlice from "./physicianSlice/encounterSlice";
 import physicianMyProfileSlice from "./physicianSlice/physicianMyProfileSlice";
 import myScheduleSlice from "./physicianSlice/myScheduleSlice";
+import medicalHistorySlice from "./patientSlice/medicalHistorySlice";
 
 export const rootReducer = combineReducers({
   loginReducer: loginSlice,
@@ -46,4 +47,7 @@ export const rootReducer = combineReducers({
   encounterReducer: encounterSlice,
   physicanMyProfileReducer: physicianMyProfileSlice,
   myScheduleReducer: myScheduleSlice,
+
+  // ....................................patient Site...............................
+  medicalHistoryReducer: medicalHistorySlice,
 });

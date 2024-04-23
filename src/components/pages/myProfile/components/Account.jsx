@@ -28,8 +28,6 @@ const Account = ({ userName, status, role, userId, name }) => {
     onSubmit: (values) => {
       console.log("vsal", values);
       if (name === "myProfile") {
-        console.log("abhayeyysyys", name);
-
         dispatch(
           resetPass({
             user_id: userId,

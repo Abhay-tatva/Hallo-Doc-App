@@ -44,6 +44,11 @@ import ProviderMyProfile from "./components/pages/providerMyProfile/providerMyPr
 import MySchedule from "./components/pages/mySchedule/mySchedule";
 import PatientPage from "./components/pages/patientPage/patientPage";
 import SubmitRequest from "./components/pages/submitRequest/submitRequest";
+import { CreatePatient } from "./components/pages/createPatient/createPatient";
+import FamilyFriend from "./components/pages/familyFriend/familyFriend";
+import ConciergePage from "./components/pages/conciergePage/conciergePage";
+import BusinessPage from "./components/pages/businessPage/businessPage";
+import MedicalHistory from "./components/pages/medicalHistory/medicalHistory";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -136,6 +141,17 @@ function App() {
             </Route>
             <Route path={AppRoutes.PATIENTSITE} element={<PatientPage />} />
             <Route path={AppRoutes.SUBMITREQUEST} element={<SubmitRequest />} />
+            <Route path={AppRoutes.PATIENTCREATE} element={<CreatePatient />} />
+            <Route
+              path={AppRoutes.CREATEFAMILFRIEND}
+              element={<FamilyFriend />}
+            />
+            <Route path={AppRoutes.CONCIERGE} element={<ConciergePage />} />
+            <Route path={AppRoutes.BUSINESS} element={<BusinessPage />} />
+            <Route
+              path={AppRoutes.MEDICALHISTORY}
+              element={<MedicalHistory />}
+            />
           </Route>
         </Routes>
       </ThemeProvider>

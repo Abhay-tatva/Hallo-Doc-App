@@ -193,12 +193,14 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             )}
           </li>
         ) : (
-          <MenuItem
-            onClick={() => navigate(-1)}
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Invoicing
-          </MenuItem>
+          accountType !== "patient" && (
+            <MenuItem
+              onClick={() => navigate(-1)}
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Invoicing
+            </MenuItem>
+          )
         )}
         {accountType == "admin" && (
           <li>
