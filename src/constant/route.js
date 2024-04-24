@@ -40,4 +40,11 @@ export const AppRoutes = {
   CONCIERGE: "/patientSite/concierge",
   BUSINESS: "/patientSite/businessPage",
   MEDICALHISTORY: "/patientSite/medicalHistory",
+  MESUBMIT: "/patientSite/meSubmit",
+  SOMEONEELSE: "/patientSite/someOneElse",
+  PATIENTVIEWUPLOAD: "/patientSite/patientViewUpload",
+  PROFILE: "/patientSite/profile",
+
+  // ....................................agreement.....................
+  AGREEMENT: "/agreement",
 };

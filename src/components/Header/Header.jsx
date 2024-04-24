@@ -24,6 +24,7 @@ import { getMyProfile } from "../../redux/myProfile/myProfileApi";
 // import { getAccountAccess } from "../../redux/accountAccess/accountAccessApi";
 import { getUserAccess } from "../../redux/userAccess/userAccessApi";
 import { getPhysicianMyProfile } from "../../redux/Provider Site/physicianMyProfile/physicianMyProfileApi";
+import { viewProfile } from "../../redux/patientSite/patientDashboard/profileApi";
 
 const Header = ({ isDarktheme, handleDarkMode }) => {
   const [open, setOpen] = useState(false);
@@ -128,23 +129,37 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
             </NavLink>
           </li>
         )}
-        <li>
-          <NavLink
-            to={
-              accountType === "admin"
-                ? AppRoutes.MYPROFILE
-                : AppRoutes.PROVIDERMYPROFILE
-            }
-            className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={() => {
-              if (accountType === "admin") dispatch(getMyProfile());
-              else if (accountType === "physician")
-                dispatch(getPhysicianMyProfile());
-            }}
-          >
-            My Profile
-          </NavLink>
-        </li>
+        {accountType === "admin" || accountType === "physician" ? (
+          <li>
+            <NavLink
+              to={
+                accountType === "admin"
+                  ? AppRoutes.MYPROFILE
+                  : AppRoutes.PROVIDERMYPROFILE
+              }
+              className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={() => {
+                if (accountType === "admin") dispatch(getMyProfile());
+                else if (accountType === "physician")
+                  dispatch(getPhysicianMyProfile());
+              }}
+            >
+              My Profile
+            </NavLink>
+          </li>
+        ) : (
+          <li>
+            <NavLink
+              to={AppRoutes.PROFILE}
+              className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={() => {
+                dispatch(viewProfile());
+              }}
+            >
+              Profile
+            </NavLink>
+          </li>
+        )}
         {accountType == "physician" ? (
           <li>
             <NavLink

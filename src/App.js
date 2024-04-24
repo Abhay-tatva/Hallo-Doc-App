@@ -49,6 +49,11 @@ import FamilyFriend from "./components/pages/familyFriend/familyFriend";
 import ConciergePage from "./components/pages/conciergePage/conciergePage";
 import BusinessPage from "./components/pages/businessPage/businessPage";
 import MedicalHistory from "./components/pages/medicalHistory/medicalHistory";
+import MeSubmitInformation from "./components/pages/submitInformation/meSubmitInformation";
+import SomeOneElse from "./components/pages/submitInformation/someOneElse";
+import PatientViewUpload from "./components/pages/patientViewUpload/patientViewUpload";
+import Profile from "./components/pages/profile/profile";
+import Agreement from "./components/pages/agreement/agreement";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
@@ -68,6 +73,7 @@ function App() {
               element={<ForgotPasswordPage />}
             />
             <Route path={AppRoutes.RESETPASS} element={<ResetPass />} />
+            <Route path={AppRoutes.AGREEMENT} element={<Agreement />} />
           </Route>
           <Route element={<RequireAuth />}>
             <Route
@@ -138,6 +144,11 @@ function App() {
                 element={<EncounterForm />}
               />
               <Route path={AppRoutes.MYSCHEDULE} element={<MySchedule />} />
+              <Route
+                path={AppRoutes.PATIENTVIEWUPLOAD}
+                element={<PatientViewUpload />}
+              />
+              <Route path={AppRoutes.PROFILE} element={<Profile />} />
             </Route>
             <Route path={AppRoutes.PATIENTSITE} element={<PatientPage />} />
             <Route path={AppRoutes.SUBMITREQUEST} element={<SubmitRequest />} />
@@ -152,6 +163,11 @@ function App() {
               path={AppRoutes.MEDICALHISTORY}
               element={<MedicalHistory />}
             />
+            <Route
+              path={AppRoutes.MESUBMIT}
+              element={<MeSubmitInformation />}
+            />
+            <Route path={AppRoutes.SOMEONEELSE} element={<SomeOneElse />} />
           </Route>
         </Routes>
       </ThemeProvider>

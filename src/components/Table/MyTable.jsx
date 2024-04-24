@@ -44,6 +44,7 @@ import { physicianViewNotes } from "../../redux/Provider Site/ViewNotes/physicia
 import { putHouseCall } from "../../redux/Provider Site/Encounter/encounterApi";
 import { physicianCount } from "../../redux/Provider Site/countApi/countApi";
 import { getConcludeCare } from "../../redux/Provider Site/concludeCare/concludeCareApi";
+// import { physicianViewCase } from "../../redux/Provider Site/viewCase/physicianViewCaseApi";
 
 const MyTable = ({
   stateButton,
@@ -173,7 +174,8 @@ const MyTable = ({
             dispatch(viewCase(confirmno));
             navigate(AppRoutes.RESERVATION);
           } else if (accountType == "physician") {
-            // dispatch(physicianViewNotes(confirmno));
+            dispatch(viewCase(confirmno));
+            navigate(AppRoutes.RESERVATION);
           }
         }
         break;
@@ -238,6 +240,9 @@ const MyTable = ({
         onClick(action);
         break;
       case "Patient Modal":
+        onClick(action);
+        break;
+      case "Create New Request":
         onClick(action);
         break;
 

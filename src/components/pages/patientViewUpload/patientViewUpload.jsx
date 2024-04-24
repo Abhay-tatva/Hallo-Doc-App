@@ -12,7 +12,6 @@ import {
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import {
   Table,
   TableBody,
@@ -23,7 +22,7 @@ import {
   Checkbox,
 } from "@mui/material";
 
-import "./viewUpload.css";
+// import "./viewUpload.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -34,22 +33,20 @@ import {
   downloadAll,
   singleDownload,
 } from "../../../redux/downloadCase/downloadApi";
-import {
-  deleteAll,
-  sendMail,
-  singleDelete,
-} from "../../../redux/deleteCase/deleteApi";
 
-const ViewUpload = () => {
+const PatientViewUpload = () => {
   const [selectedFile, setSelectedFile] = useState([]);
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("uploadDate");
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state.root.viewuploadReducer);
-  const rows = selector?.uploadFile[0]?.documents;
-  const { confirmationNo, patientData } = selector.uploadFile[0];
+  const navigate = useNavigate();
+  const { patientViewData } = useSelector(
+    (state) => state.root.patientViewUploadReducer,
+  );
+  console.log("Confirmation Number:", patientViewData);
+  const rows = patientViewData?.documents;
+  const { confirmationNo, patient_name } = patientViewData;
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -82,13 +79,13 @@ const ViewUpload = () => {
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
+    const stabilizedThis = array?.map((el, index) => [el, index]);
+    stabilizedThis?.sort((a, b) => {
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
       return a[1] - b[1];
     });
-    return stabilizedThis.map((el) => el[0]);
+    return stabilizedThis?.map((el) => el[0]);
   };
 
   const getComparator = (order, orderBy) => {
@@ -122,7 +119,7 @@ const ViewUpload = () => {
   // };
   // Handle the upload functionality here with the selected file
   // const handleUpload = () => {
-  //   dispatch(viewUpdate({ confirmation_no, file: selectedFile }));
+  //   dispatch(viewUpdate({ confirmationNo, file: selectedFile }));
   // };
   const handleUpload = (e) => {
     e.preventDefault();
@@ -181,46 +178,10 @@ const ViewUpload = () => {
       });
   };
 
-  const handleDelete = (id) => {
-    dispatch(
-      singleDelete({
-        confirmation_no: confirmationNo,
-        document_id: id,
-      }),
-    ).then((response) => {
-      if (response.type === "singleDelete/fulfilled") {
-        dispatch(viewUpload(confirmationNo));
-      }
-    });
-  };
-
-  const handleDeleteAll = () => {
-    const confirmationNumber = selector?.uploadFile[0].confirmationNo;
-    const documentIds = rows?.map((item) => item?.document_id);
-
-    dispatch(deleteAll({ confirmationNumber, documentIds })).then(
-      (response) => {
-        if (response.type === "deleteAll/fulfilled") {
-          dispatch(viewUpload(confirmationNo));
-        }
-      },
-    );
-  };
-
   const handleDownloadAll = () => {
     dispatch(downloadAll(confirmationNo));
   };
 
-  const handleSendMail = () => {
-    const confirmationNumber = selector?.uploadFile[0].confirmationNo;
-    const documentIds = rows?.map((item) => item?.document_id);
-
-    dispatch(sendMail({ confirmationNumber, documentIds })).then((response) => {
-      if (response.type === "sendMail/fulfilled") {
-        dispatch(viewUpload(confirmationNo));
-      }
-    });
-  };
   return (
     <>
       <Box className="upload-main-container">
@@ -233,7 +194,7 @@ const ViewUpload = () => {
           >
             <Box display="flex" flexWrap="wrap">
               <Typography variant="h5" gutterBottom>
-                <b>Documents</b>
+                <b> patient Documents</b>
               </Typography>
             </Box>
             <Button
@@ -249,8 +210,8 @@ const ViewUpload = () => {
           <Paper className="upload-container">
             <Typography variant="caption">Patient Name</Typography>
             <Typography variant="h6">
-              <b className="patient-name">{patientData?.name}</b>(
-              {confirmationNo})
+              <b className="patient-name">{patient_name}</b>(
+              {patientViewData.confirmationNo})
             </Typography>
             <Typography variant="body2" marginTop="10px">
               Check here to review and add files that you or the Client/Member
@@ -310,18 +271,6 @@ const ViewUpload = () => {
                   color="primary"
                   onClick={() => handleDownloadAll("all")}
                 />
-                <Button
-                  name="Delete All"
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleDeleteAll("all")}
-                />
-                <Button
-                  name="Send Mail"
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleSendMail("all")}
-                />
               </Box>
             </Box>
             <TableContainer component={Paper}>
@@ -333,11 +282,12 @@ const ViewUpload = () => {
                         indeterminate={
                           selected.length > 0 && selected.length < rows.length
                         }
-                        checked={selected.length === rows.length}
+                        checked={selected?.length === rows?.length}
                         onChange={handleSelectAllClick}
                       />
                     </TableCell>
                     <TableCell className="document-cl">Documents</TableCell>
+                    <TableCell className="document-cl">Uploader</TableCell>
                     <TableCell className="date-cl">
                       <TableSortLabel
                         active={orderBy === "uploadDate"}
@@ -351,7 +301,7 @@ const ViewUpload = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {stableSort(rows, getComparator(order, orderBy)).map(
+                  {stableSort(rows, getComparator(order, orderBy))?.map(
                     (row) => (
                       <TableRow key={row.document_id} hover>
                         <TableCell padding="checkbox">
@@ -362,7 +312,9 @@ const ViewUpload = () => {
                             }
                           />
                         </TableCell>
-                        <TableCell>{row.document_path}</TableCell>
+                        <TableCell>{row.docuement_path}</TableCell>
+                        <TableCell> {row.uploader}</TableCell>
+
                         <TableCell>{row.createdAt}</TableCell>
                         <TableCell>
                           <Button
@@ -372,12 +324,6 @@ const ViewUpload = () => {
                             <CloudDownloadOutlinedIcon />
                           </Button>
                           &nbsp;
-                          <Button
-                            variant="outlined"
-                            onClick={() => handleDelete(row.document_id)}
-                          >
-                            <DeleteOutlinedIcon />
-                          </Button>
                         </TableCell>
                       </TableRow>
                     ),
@@ -392,4 +338,4 @@ const ViewUpload = () => {
   );
 };
 
-export default ViewUpload;
+export default PatientViewUpload;

@@ -21,8 +21,13 @@ import { Button } from "../../Button/ButtonInput";
 import { columns } from "../../../constant/medicalData";
 import { useDispatch, useSelector } from "react-redux";
 import { getMedicalHistory } from "../../../redux/patientSite/patientDashboard/medicalHistoryApi";
+import PatientCreateRequest from "../../Modal/patientCreateRequestModal";
+import { requestViewCase } from "../../../redux/patientSite/patientDashboard/requestViewDocument";
+import { AppRoutes } from "../../../constant/route";
+import { useNavigate } from "react-router-dom";
 
 const MedicalHistory = () => {
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(1);
   const [page, setPage] = React.useState(0);
@@ -30,11 +35,13 @@ const MedicalHistory = () => {
   const [order, setOrder] = useState("asc");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = useState([]);
+  const navigate = useNavigate();
 
   const { medicalData } = useSelector(
     (state) => state.root.medicalHistoryReducer,
   );
   useEffect(() => setTableData(medicalData), [medicalData]);
+
   useEffect(() => {
     dispatch(getMedicalHistory({ page: pageNo, page_size: rowsPerPage }));
     return undefined;
@@ -80,6 +87,13 @@ const MedicalHistory = () => {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
+  const handleOpen = (name) => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <>
       <Box className="medical-main-container">
@@ -90,9 +104,9 @@ const MedicalHistory = () => {
           <Paper className="medical-full-paper">
             <Box display="flex" justifyContent="end" p={3}>
               <Button
-                // onClick={() => navigate(-1)}
                 name="Create New Request"
                 variant="outlined"
+                onClick={() => handleOpen("Create New Request")}
               />
             </Box>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
@@ -137,18 +151,20 @@ const MedicalHistory = () => {
                                       name="document"
                                       variant="outlined"
                                       size="small"
-                                      //   onClick={() => {
-                                      //     dispatch(
-                                      //       accountAccessEdit(row.role_id),
-                                      //     ).then((response) => {
-                                      //       if (
-                                      //         response.type ===
-                                      //         "accountAccessEdit/fulfilled"
-                                      //       ) {
-                                      //         navigate(AppRoutes.CREATEACCESS);
-                                      //       }
-                                      //     });
-                                      //   }}
+                                      onClick={() => {
+                                        dispatch(
+                                          requestViewCase(row.confirmation_no),
+                                        ).then((response) => {
+                                          if (
+                                            response.type ===
+                                            "requestViewCase/fulfilled"
+                                          ) {
+                                            navigate(
+                                              AppRoutes.PATIENTVIEWUPLOAD,
+                                            );
+                                          }
+                                        });
+                                      }}
                                     />
                                   </Box>
                                 ) : (
@@ -175,6 +191,7 @@ const MedicalHistory = () => {
           </Paper>
         </Container>
       </Box>
+      <PatientCreateRequest open={open} handleClose={handleClose} />
     </>
   );
 };

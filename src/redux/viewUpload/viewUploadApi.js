@@ -20,6 +20,7 @@ export const viewUpdate = createAsyncThunk(
   "viewUpdate",
   async (params, { rejectWithValue }) => {
     const { confirmationNo, formData } = params;
+    console.log("object", params);
     try {
       const response = await Axios.post(
         `${VIEWUPDATE_API.replace(":confirmation_no", confirmationNo)}`,

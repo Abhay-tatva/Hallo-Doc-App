@@ -171,6 +171,8 @@ export const PHYSICIANTRANSFER_API =
   "/provider/dashboard/requests/:confirmation_no/actions/transfer_request";
 export const PHYSICIANVIEWNOTES_API =
   "/provider/dashboard/requests/:confirmation_no/actions/view_notes";
+export const PHYSICIANVIEWCASE_API =
+  "/common/dashboard/requests/:confirmation_no/actions/viewcase";
 export const PUTPHYSICIANVIEWNOTES_API =
   "/provider/dashboard/requests/:confirmation_no/actions/save_view_notes";
 export const PUTTYPEOFCARE_API =
@@ -215,3 +217,7 @@ export const CREATEPATIENT =
   "/patient/create_request/create_request_by_patient";
 
 export const GETMEDICALHISTORY = "/patient/dashboard/medical_history";
+export const REQUESTVIEWDOCUMENT =
+  "/patient/dashboard/request/:confirmation_no/view_documents";
+export const VIEWPROFILE = "/patient/my_profile/user_profile_view";
+export const PUTVIEWPROFILE = "/patient/my_profile/user_profile_edit";
