@@ -66,7 +66,7 @@ const ViewReservation = () => {
   useEffect(() => {
     setInitialValues(
       {
-        patientNotes: data?.patient_data.patient_notes[0].description,
+        patientNotes: data?.patient_data.patient_notes[0]?.description,
         firstName: data?.patient_data.first_name,
         lastName: data?.patient_data.last_name,
         dob: data?.patient_data.DOB,

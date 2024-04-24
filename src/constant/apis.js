@@ -221,3 +221,7 @@ export const REQUESTVIEWDOCUMENT =
   "/patient/dashboard/request/:confirmation_no/view_documents";
 export const VIEWPROFILE = "/patient/my_profile/user_profile_view";
 export const PUTVIEWPROFILE = "/patient/my_profile/user_profile_edit";
+export const PUTAGREEMENT =
+  "/common/dashboard/requests/:confirmation_no/actions/updateagreement_agree";
+export const CANCELAGREEMENT =
+  "/common/dashboard/requests/:confirmation_no/actions/updateagreement_cancel";
