@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { Box, Grid, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
@@ -9,7 +11,21 @@ import { provideProfileSchema } from "../../../ValidationSchema/ProvideProfileSc
 import "./provideProfile.css";
 import SignatureCanvas from "react-signature-canvas";
 import { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import {
+  getProviderPhysician,
+  putPhotoUpdate,
+  putProviderProfile,
+} from "../../../../redux/provider/providerApi";
+
+const INITIAL_VALUES = {
+  businessName: "",
+  businessWebsite: "",
+  photo: null,
+  signature: null,
+  adminNotes: "",
+};
 
 const ProvideProfile = ({
   handleClose,
@@ -17,12 +33,14 @@ const ProvideProfile = ({
   businessName,
   businessWebsite,
   adminNotes,
+  userId,
 }) => {
   // const [isDisabled, setIsDisabled] = useState(true);
   const [openModel, setOpenModal] = useState(false);
-  const [selectedFile, setSelectedFile] = useState([]);
   const [imageURL, setImageURL] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
+  const dispatch = useDispatch();
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const sigCanvas = useRef();
@@ -39,45 +57,27 @@ const ProvideProfile = ({
     dlink.click();
   };
 
-  // const handleFileChange = (event) => {
-  //   console.log("event", event.target.files);
-  //   event.preventDefault();
-  //   setSelectedFile(event.target.files);
-  // };
-
-  const handleUpload = () => {
-    // Handle the upload functionality here with the selected file
-    if (selectedFile) {
-      for (let i = 0; i < selectedFile.length; i++) {
-        const newFile = {
-          id: rows.length + 1,
-          document: selectedFile[i].name,
-          uploadDate: new Date().toISOString().split("T")[0],
-        };
-        console.log("New file", newFile);
-        rows.push(newFile);
-      }
-      setSelectedFile(null); // Reset selected file after upload
-    }
-  };
-
   const provideProfile = useFormik({
-    initialValues: {
-      businessName: "",
-      businessWebsite: "",
-      photo: {},
-      signature: {},
-      adminNotes: "",
-    },
+    initialValues,
     validationSchema: provideProfileSchema,
     onSubmit: (values, onSubmitProps) => {
       console.log("Form submitted", values);
       onSubmitProps.resetForm();
       handleClose();
     },
+    enableReinitialize: true,
   });
   console.log(provideProfile);
 
+  useEffect(() => {
+    setInitialValues({
+      businessName: businessName,
+      businessWebsite: businessWebsite,
+      photo: null,
+      signature: null,
+      adminNotes: adminNotes,
+    });
+  }, [businessName, businessWebsite, adminNotes]);
   return (
     <form onSubmit={provideProfile.handleSubmit}>
       <Typography variant="h6">
@@ -129,53 +129,84 @@ const ProvideProfile = ({
             }
           />
         </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <Box display="flex">
-            <Button
-              fullWidth
-              variant="outlined"
-              component="label"
-              className="upload-btn"
-              title="Upload-files"
-            >
-              <input
-                // accept="image/*"
-                // onChange={handleFileChange}
-                multiple
-                type="file"
-              />
-            </Button>
+        {accountType === "admin" || accountType === "physician" ? (
+          <>
+            <Grid item xs={12} md={6} lg={6}>
+              <Box display="flex">
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  component="label"
+                  className="upload-btn"
+                  title="Upload-files"
+                >
+                  <input
+                    // accept="image/*"
+                    onChange={(e) =>
+                      provideProfile.setFieldValue("photo", e.target.files[0])
+                    }
+                    multiple
+                    type="file"
+                  />
+                </Button>
 
-            <Button
-              name="Upload"
-              variant="contained"
-              size="large"
-              startIcon={<CloudUploadOutlinedIcon />}
-              onClick={handleUpload}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={10} md={4}>
-          <Box position="relative" mb={2}>
-            <Box display="flex">
-              <Button
-                fullWidth
-                variant="outlined"
-                component="label"
-                title="Upload-files"
-              >
-                <input accept="image/*" type="file" />
-              </Button>
+                <Button
+                  name="Upload"
+                  variant="contained"
+                  size="large"
+                  startIcon={<CloudUploadOutlinedIcon />}
+                  onClick={() => {
+                    console.log("userid", userId);
+                    const formData = new FormData();
+                    formData.append(
+                      "profile_picture",
+                      provideProfile.values.photo,
+                    );
+                    dispatch(putPhotoUpdate({ userId, formData }));
+                  }}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={10} md={4}>
+              <Box position="relative" mb={2}>
+                <Box display="flex">
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    component="label"
+                    title="Upload-files"
+                  >
+                    <input
+                      accept="image/*"
+                      type="file"
+                      onChange={(e) =>
+                        provideProfile.setFieldValue(
+                          "signature",
+                          e.target.files[0],
+                        )
+                      }
+                    />
+                  </Button>
 
-              <Button
-                name="Upload"
-                variant="contained"
-                size="large"
-                startIcon={<CloudUploadOutlinedIcon />}
-              />
-            </Box>
-          </Box>
-        </Grid>
+                  <Button
+                    name="Upload"
+                    variant="contained"
+                    size="large"
+                    startIcon={<CloudUploadOutlinedIcon />}
+                    onClick={() => {
+                      const formData = new FormData();
+                      formData.append(
+                        "signature_photo",
+                        provideProfile.values.signature,
+                      );
+                      dispatch(putPhotoUpdate({ userId, formData }));
+                    }}
+                  />
+                </Box>
+              </Box>
+            </Grid>
+          </>
+        ) : null}
         <Grid item xs={2}>
           <Button
             onClick={() => setOpenModal(true)}
@@ -229,8 +260,18 @@ const ProvideProfile = ({
             fullWidth
             multiline
             rows={5}
-            value={adminNotes}
+            value={provideProfile.values.adminNotes}
             disabled={isDisabled}
+            onChange={provideProfile.handleChange}
+            onBlur={provideProfile.handleBlur}
+            error={
+              provideProfile.touched.adminNotes &&
+              Boolean(provideProfile.errors.adminNotes)
+            }
+            helperText={
+              provideProfile.touched.adminNotes &&
+              provideProfile.errors.adminNotes
+            }
           />
           {accountType === "admin" && (
             <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
@@ -250,6 +291,16 @@ const ProvideProfile = ({
                     variant="contained"
                     type="submit"
                     onClick={() => {
+                      dispatch(
+                        putProviderProfile({
+                          user_id: userId.toString(),
+                          data: provideProfile.values,
+                        }),
+                      ).then((response) => {
+                        if (response.type === "putProviderProfile/fulfilled") {
+                          dispatch(getProviderPhysician(userId));
+                        }
+                      });
                       setIsDisabled(true);
                     }}
                   />

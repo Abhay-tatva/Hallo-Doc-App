@@ -123,6 +123,10 @@ export const DELETEPROVIDER_API =
   "/admin/providermenu/provider_list/:user_id/delete_provider_account";
 export const POSTCREATEPROVIDER_API =
   "/admin/providermenu/provider_list/create_provider_account";
+export const PUTPROVIDERPROFILE_API =
+  "/admin/providermenu/provider_list/save_provider_profile";
+export const PUTPHOTOUPDATE_API =
+  "/admin/providermenu/provider_list/:user_id/provider_profile_upload";
 // ..........................................Scheduling Api..............................................
 export const POSTCREATESHIFT_API = "/admin/scheduling_menu/create_shift";
 export const GETPROVIDERONCALL_API =
@@ -138,6 +142,7 @@ export const GETVIEWSHIFT =
   "/admin/scheduling_menu/provider_shifts_lists/view_shift";
 export const PUTRETURNSHIFT =
   "/admin/scheduling_menu/provider_shifts_lists/:shift_id/edit_shift_return";
+
 // .........................................Record Api......................................../
 
 export const GETPATIENTHISTORY_API = "/admin/records/patienthistory";
@@ -195,6 +200,8 @@ export const GETPHYSICIANMYPORFILE_API =
   "/provider/myprofile/provider_profile/view";
 export const PUTREQUESTTOADMIN_API =
   "/provider/myprofile/provider_profile/request_to_admin";
+export const PUTMYPROFILERESSPASS =
+  "/provider/myprofile/provider_profile/resetpassword";
 
 // ......................................My Schedule................................
 export const GETMYSHIFT_API = "/provider/scheduling_menu/provider_shifts_lists";

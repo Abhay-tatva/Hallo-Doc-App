@@ -1,27 +1,32 @@
 /* eslint-disable camelcase */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import { Button } from "../../Button/ButtonInput";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../constant/route";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import "./providerMyProfile.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Account from "../myProfile/components/Account";
 import PhysiciansInformation from "../myProfile/components/PhysiciansInformation";
 import Address from "../myProfile/components/Address";
 import ProvideProfile from "../myProfile/components/ProvideProfile";
 import OnBording from "../myProfile/components/onBoarding";
 import RequestToAdmin from "../../Modal/requestToAdminModal";
+import { getPhysicianMyProfile } from "../../../redux/Provider Site/physicianMyProfile/physicianMyProfileApi";
 
 const ProviderMyProfile = () => {
   const [open, setOpen] = useState(false);
   const [modalName, setModalName] = useState("");
+  const dispatch = useDispatch();
 
   // const [rowId, setRowId] = useState(null);
 
   const navigate = useNavigate();
   //   const { accountType } = useSelector((state) => state.root.loginReducer);
+  useEffect(() => {
+    dispatch(getPhysicianMyProfile());
+  }, [dispatch]);
 
   const { myProfilePhysicianData } = useSelector(
     (state) => state.root.physicanMyProfileReducer,
@@ -94,10 +99,6 @@ const ProviderMyProfile = () => {
               medicalLicence={medical_licence}
               npiNumber={NPI_number?.toString()}
               regions={regions}
-              // synchronizationEmail={synchronization_email}
-              // serviceAreasAvailability={service_areas_availability}
-              // districtOfColumbia={district_of_columbia}
-              // newYork={new_york}
             />
             {/* .............................Mailing and biling Information......................... */}
             <Address

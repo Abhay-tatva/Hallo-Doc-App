@@ -25,7 +25,6 @@ export const singleDelete = createAsyncThunk(
 export const deleteAll = createAsyncThunk(
   "deleteAll",
   async (params, { rejectWithValue }) => {
-    console.log("parmaaaaaa", params);
     const { confirmationNumber, documentIds } = params;
     try {
       const response = await Axios.delete(

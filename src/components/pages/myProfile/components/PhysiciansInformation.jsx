@@ -39,11 +39,12 @@ const PhysiciansInformation = ({
   npiNumber,
   synchronizationEmail,
   userId,
+  regions,
 }) => {
   const [isDisabled, setIsDisabled] = useState(true);
-  const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
-  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const dispatch = useDispatch();
+  const data = useSelector((state) => state.root.regionPhysicianReducer);
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const physicianformik = useFormik({
@@ -56,6 +57,10 @@ const PhysiciansInformation = ({
   });
 
   useEffect(() => {
+    dispatch(getProviderPhysician(userId));
+  }, [dispatch, userId]);
+
+  useEffect(() => {
     setInitialValues({
       firstName: firstName,
       lastName: lastName,
@@ -64,7 +69,7 @@ const PhysiciansInformation = ({
       medicalLicence: medicalLicence,
       npiNumber,
       synEmail: synchronizationEmail,
-      regions: regions.map((region) => region.region_name),
+      regions: regions.map((region) => region.region_id),
     });
   }, [
     firstName,
@@ -151,7 +156,6 @@ const PhysiciansInformation = ({
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
-          {console.log("phone:", physicianformik.values)}
           <PhoneInput
             inputStyle={{ height: "55px", width: "100%" }}
             name="phoneNumber"
@@ -237,7 +241,7 @@ const PhysiciansInformation = ({
         </Grid>
 
         <Grid item xs={12} md={6}>
-          {regions.map((region, index) => {
+          {data.regions.map((region, index) => {
             return (
               <FormControlLabel
                 className="checkbox-padding"
@@ -247,9 +251,9 @@ const PhysiciansInformation = ({
                   <Checkbox
                     size="small"
                     checked={physicianformik.values.regions?.includes(
-                      region?.region_name,
+                      region?.region_id,
                     )}
-                    onChange={() => handleChangeRegions(region?.region_name)}
+                    onChange={() => handleChangeRegions(region?.region_id)}
                   />
                 }
                 label={region.region_name}

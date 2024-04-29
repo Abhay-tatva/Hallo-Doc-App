@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { resetPass } from "../../../../redux/myProfileResetPass/myProfileResetPass";
 import { toast } from "react-toastify";
 import { putProviderResetPassword } from "../../../../redux/provider/providerApi";
+import { putMyProfileRessPass } from "../../../../redux/Provider Site/myProfile/myProfileApi";
 
 const INITIAL_VALUES = {
   userName: "",
@@ -26,31 +27,41 @@ const Account = ({ userName, status, role, userId, name }) => {
     initialValues,
     validationSchema: myProfileSchema,
     onSubmit: (values) => {
-      console.log("vsal", values);
-      if (name === "myProfile") {
-        dispatch(
-          resetPass({
-            user_id: userId,
-            password: values.password,
-          }),
-        ).then((response) => {
-          if (response.type === "resetPass/fulfilled") {
-            toast.success("password reset successfully.....");
-          }
-        });
-      }
+      if (accountType === "admin") {
+        if (name === "myProfile") {
+          dispatch(
+            resetPass({
+              user_id: userId,
+              password: values.password,
+            }),
+          ).then((response) => {
+            if (response.type === "resetPass/fulfilled") {
+              toast.success("password reset successfully.....");
+            }
+          });
+        }
 
-      if (name === "providerProfile") {
-        dispatch(
-          putProviderResetPassword({
-            user_id: userId,
-            password: values.password,
-          }),
-        ).then((response) => {
-          if (response.type === "putProviderResetPassword/fulfilled") {
-            toast.success("provider password reset successfully....");
-          }
-        });
+        if (name === "providerProfile") {
+          dispatch(
+            putProviderResetPassword({
+              user_id: userId,
+              password: values.password,
+            }),
+          ).then((response) => {
+            if (response.type === "putProviderResetPassword/fulfilled") {
+              toast.success("provider password reset successfully....");
+            }
+          });
+        }
+      } else {
+        console.log("Response:", accountType);
+        dispatch(putMyProfileRessPass({ password: values.password })).then(
+          (response) => {
+            if (response.type === "putMyProfileRessPass/fulfilled") {
+              toast.success("My Profile Pass reset successfully....");
+            }
+          },
+        );
       }
     },
     enableReinitialize: true,
@@ -152,7 +163,7 @@ const Account = ({ userName, status, role, userId, name }) => {
                 <MenuItem value="dashboard">Dashboard</MenuItem>
                 <MenuItem value="localadmin">Local Admin</MenuItem>
               </FormInput>
-            </Grid>{" "}
+            </Grid>
           </>
         )}
       </Grid>

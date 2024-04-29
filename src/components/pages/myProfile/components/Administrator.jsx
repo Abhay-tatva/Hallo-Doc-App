@@ -53,10 +53,10 @@ const Administrator = ({
       lastName: lastName,
       email: email,
       confirmeMail: email,
-      mobileNo: mobileNo,
-      regions: data.regions.map((region) => region.region_name),
+      mobileNo: mobileNo?.toString(),
+      regions: regions.map((region) => region.region_id),
     });
-  }, [firstName, lastName, email, mobileNo, regions]);
+  }, [firstName, lastName, email, mobileNo, data.regions]);
 
   const handleChangeRegions = (name) => {
     const newRegions = administratorformik.values.regions?.includes(name)
@@ -190,9 +190,9 @@ const Administrator = ({
                   <Checkbox
                     size="small"
                     checked={administratorformik.values.regions?.includes(
-                      region?.region_name,
+                      region?.region_id,
                     )}
-                    onChange={() => handleChangeRegions(region?.region_name)}
+                    onChange={() => handleChangeRegions(region?.region_id)}
                   />
                 }
                 label={region.region_name}

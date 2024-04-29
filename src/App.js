@@ -73,7 +73,6 @@ function App() {
               element={<ForgotPasswordPage />}
             />
             <Route path={AppRoutes.RESETPASS} element={<ResetPass />} />
-            <Route path={AppRoutes.AGREEMENT} element={<Agreement />} />
           </Route>
           <Route element={<RequireAuth />}>
             <Route
@@ -89,6 +88,7 @@ function App() {
                 path={AppRoutes.RESERVATION}
                 element={<ViewReservation />}
               />
+              <Route path={AppRoutes.AGREEMENT} element={<Agreement />} />
               <Route path={AppRoutes.NOTES} element={<ViewNotes />} />
               <Route path={AppRoutes.VIEWUPLOAD} element={<ViewUpload />} />
               <Route path={AppRoutes.ORDER} element={<Order />} />

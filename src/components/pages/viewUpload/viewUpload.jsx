@@ -50,10 +50,9 @@ const ViewUpload = () => {
   const selector = useSelector((state) => state.root.viewuploadReducer);
   const rows = selector?.uploadFile[0]?.documents;
   const { confirmationNo, patientData } = selector.uploadFile[0];
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((row) => row.id);
+      const newSelected = rows.map((row) => row.document_id);
       setSelected(newSelected);
       return;
     }
@@ -196,8 +195,7 @@ const ViewUpload = () => {
 
   const handleDeleteAll = () => {
     const confirmationNumber = selector?.uploadFile[0].confirmationNo;
-    const documentIds = rows?.map((item) => item?.document_id);
-
+    const documentIds = selected;
     dispatch(deleteAll({ confirmationNumber, documentIds })).then(
       (response) => {
         if (response.type === "deleteAll/fulfilled") {
@@ -208,7 +206,34 @@ const ViewUpload = () => {
   };
 
   const handleDownloadAll = () => {
-    dispatch(downloadAll(confirmationNo));
+    const confirmationNumber = selector?.uploadFile[0].confirmationNo;
+    const documentIds = selected;
+    console.log("object", documentIds);
+    dispatch(downloadAll({ confirmationNumber, documentIds })).then(
+      (response) => {
+        if (response.type === "downloadAll/fulfilled") {
+          const blob = new Blob([response.payload], {
+            type: "application/zip",
+          });
+
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, `${documentIds}.zip`);
+          } else {
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `downloaded-files.zip`;
+            document.body.appendChild(link);
+            link.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+          }
+          // toast.success(response.payload.message);
+        } else {
+          // toast.error("No files selected!");
+        }
+      },
+    );
   };
 
   const handleSendMail = () => {

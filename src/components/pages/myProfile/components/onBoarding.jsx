@@ -11,7 +11,14 @@ const initialValue = {
   licDoc: false,
 };
 
-const OnBording = () => {
+const OnBording = ({
+  userId,
+  contractAgree,
+  bgCheck,
+  hippa,
+  nonDisclosure,
+  licenceDocument,
+}) => {
   const [checked, setChecked] = useState(initialValue);
   const { accountType } = useSelector((state) => state.root.loginReducer);
 

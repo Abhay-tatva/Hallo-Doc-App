@@ -76,6 +76,7 @@ const Scheduling = () => {
       });
     })
     .flat();
+
   const resources = providerShift?.map((shift) => ({
     id: shift?.user_id,
     title: `${shift?.provider_name}`,

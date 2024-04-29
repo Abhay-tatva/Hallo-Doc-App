@@ -44,7 +44,6 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
   const { myScheduleViewShiftData } = useSelector(
     (state) => state.root.myScheduleReducer,
   );
-
   const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const formik = useFormik({
@@ -59,14 +58,24 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
   });
 
   useEffect(() => {
-    setInitialValues({
-      searchRegion: viewShiftData?.region,
-      physician: viewShiftData.physician,
-      date: viewShiftData.shift_date,
-      startTime: viewShiftData.start,
-      endTime: viewShiftData.end,
-    });
-  }, [viewShiftData]);
+    if (accountType === "admin") {
+      setInitialValues({
+        searchRegion: viewShiftData?.region,
+        physician: viewShiftData.physician,
+        date: viewShiftData.shift_date,
+        startTime: viewShiftData.start,
+        endTime: viewShiftData.end,
+      });
+    } else {
+      setInitialValues({
+        searchRegion: myScheduleViewShiftData?.region,
+        physician: myScheduleViewShiftData.physician,
+        date: myScheduleViewShiftData.shift_date,
+        startTime: myScheduleViewShiftData.start,
+        endTime: myScheduleViewShiftData.end,
+      });
+    }
+  }, [viewShiftData, accountType]);
 
   const handleSave = () => {
     if (accountType === "admin") {
@@ -87,17 +96,21 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
         }
       });
     } else if (accountType === "physician") {
-      putMyScheduleEdit({
-        shift_id: myScheduleViewShiftData.shift_id,
-        region: formik.searchRegion,
-        shift_date: formik.date,
-        start: formik.startTime,
-        end: formik.endTime,
-        repeat_days: formik.repeatDays,
-        repeat_end: formik.repeatEnd,
-      })
+      dispatch(
+        putMyScheduleEdit({
+          shift_id: myScheduleViewShiftData.shift_id,
+          region: formik.values.searchRegion,
+          shift_date: formik.values.date,
+          start: formik.values.startTime,
+          end: formik.values.endTime,
+          repeat_days: formik.values.repeatDays,
+          repeat_end: formik.values.repeatEnd,
+        }),
+      )
         .then((response) => {
           if (response.type === "putMyScheduleEdit/fulfilled") {
+            toast.success("Shift Edited Successfully");
+            handleClose();
             dispatch(getMySchedule());
           }
         })
@@ -242,18 +255,35 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
               name="Delete"
               variant="contained"
               color="error"
-              onClick={() =>
-                dispatch(
-                  deleteSelectedShift({ shift_ids: [viewShiftData.shift_id] }),
-                ).then((response) => {
-                  if (response.type === "deleteSelectedShift/fulfilled") {
-                    toast.success("shift Deleted Successfully");
-                    setIsDisabled(true);
-                    handleClose();
-                    dispatch(getProviderShift({ region: "all" }));
-                  }
-                })
-              }
+              onClick={() => {
+                if (accountType === "admin") {
+                  dispatch(
+                    deleteSelectedShift({
+                      shift_ids: [viewShiftData.shift_id],
+                    }),
+                  ).then((response) => {
+                    if (response.type === "deleteSelectedShift/fulfilled") {
+                      toast.success("shift Deleted Successfully");
+                      setIsDisabled(true);
+                      handleClose();
+                      dispatch(getProviderShift({ region: "all" }));
+                    }
+                  });
+                } else {
+                  dispatch(
+                    deleteSelectedShift({
+                      shift_ids: [myScheduleViewShiftData.shift_id],
+                    }),
+                  ).then((response) => {
+                    if (response.type === "deleteSelectedShift/fulfilled") {
+                      toast.success("shift Deleted Successfully");
+                      setIsDisabled(true);
+                      handleClose();
+                      dispatch(getMySchedule());
+                    }
+                  });
+                }
+              }}
             />
           </Box>
         </Box>

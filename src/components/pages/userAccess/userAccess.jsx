@@ -25,6 +25,8 @@ import { Button } from "../../Button/ButtonInput";
 import { getUserAccess } from "../../../redux/userAccess/userAccessApi";
 
 const UserAccess = () => {
+  const [pageNo, setPageNo] = useState(1);
+
   const [order, setOrder] = useState("asc");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -40,7 +42,13 @@ const UserAccess = () => {
 
   useEffect(() => setTableData(userAccessData), [userAccessData]);
   useEffect(() => {
-    dispatch(getUserAccess());
+    dispatch(
+      getUserAccess({
+        page: pageNo,
+        page_size: rowsPerPage,
+        region: additionalFilter,
+      }),
+    );
     return undefined;
   }, [dispatch]);
 
@@ -87,6 +95,8 @@ const UserAccess = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
 
   return (
@@ -163,7 +173,7 @@ const UserAccess = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={tableData?.length}
+              count={userAccessData?.total_count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

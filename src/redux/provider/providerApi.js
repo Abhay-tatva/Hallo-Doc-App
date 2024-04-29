@@ -8,6 +8,8 @@ import {
   POSTCONTACTPROVIDER_API,
   POSTCREATEPROVIDER_API,
   PROVIDEREDIT_API,
+  PUTPHOTOUPDATE_API,
+  PUTPROVIDERPROFILE_API,
   PUTRESETPROVIDERPASSWORD_API,
 } from "../../constant/apis";
 
@@ -82,12 +84,7 @@ export const putProviderInfo = createAsyncThunk(
   "putProviderInfo",
   async (params, { rejectWithValue }) => {
     const { user_id, data } = params;
-    const district_of_columbia = data?.regions?.includes("District Of Columbia")
-      ? true
-      : false;
-    const new_york = data?.regions?.includes("New York") ? true : false;
-    const virginia = data?.regions?.includes("Virginia") ? true : false;
-    const maryland = data?.regions?.includes("Maryland") ? true : false;
+
     try {
       const response = await Axios.put(`${PROVIDEREDIT_API}`, {
         user_id,
@@ -98,10 +95,7 @@ export const putProviderInfo = createAsyncThunk(
         medical_licence: data?.medicalLicence,
         NPI_no: data?.npiNumber?.toString(),
         synchronization_email: data?.synEmail,
-        district_of_columbia,
-        new_york,
-        virginia,
-        maryland,
+        region_ids: data?.regions,
         address_1: data?.address_1,
         address_2: data?.address_2,
         city: data?.city,
@@ -164,6 +158,48 @@ export const postCreateProvider = createAsyncThunk(
         business_website: data?.businessWebsite,
         admin_notes: data?.adminNotes,
       });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const putProviderProfile = createAsyncThunk(
+  "putProviderProfile",
+  async (params, { rejectWithValue }) => {
+    const { user_id, data } = params;
+    console.log("object", params);
+
+    try {
+      const response = await Axios.put(PUTPROVIDERPROFILE_API, {
+        user_id,
+        business_name: data?.businessName,
+        business_website: data?.businessWebsite,
+        admin_notes: data?.adminNotes,
+      });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const putPhotoUpdate = createAsyncThunk(
+  "putPhotoUpdate",
+  async (params, { rejectWithValue }) => {
+    const { userId, formData } = params;
+    try {
+      const response = await Axios.put(
+        `${PUTPHOTOUPDATE_API.replace(":user_id", userId)}`,
+        formData,
+
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

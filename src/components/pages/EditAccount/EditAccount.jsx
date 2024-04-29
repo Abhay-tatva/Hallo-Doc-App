@@ -33,13 +33,19 @@ const EditAccount = () => {
     NPI_number,
     synchronization_email,
     service_areas_availability,
-    district_of_columbia,
-    new_york,
   } = data.physician_information;
   const { address_1, address_2, city, state, zip, billing_mobile_no } =
     data.mailing_billing_information;
   const { business_name, business_website, admin_notes } =
     data.provider_profile;
+  const { regions } = service_areas_availability ?? {};
+  const {
+    independent_contractor_agreement,
+    background_check,
+    HIPAA,
+    non_disclosure,
+    licence_document,
+  } = data.onboarding;
   return (
     <>
       <Box className="edit-main-container">
@@ -79,9 +85,7 @@ const EditAccount = () => {
               medicalLicence={medical_licence}
               npiNumber={NPI_number?.toString()}
               synchronizationEmail={synchronization_email}
-              serviceAreasAvailability={service_areas_availability}
-              districtOfColumbia={district_of_columbia}
-              newYork={new_york}
+              regions={regions}
             />
             {/* ..............................................Address Information........................................... */}
             <Address
@@ -96,13 +100,21 @@ const EditAccount = () => {
             />
             {/* .......................................Provider Profile.................................. */}
             <ProvideProfile
+              userId={data.user_id}
               businessName={business_name}
               businessWebsite={business_website}
               adminNotes={admin_notes}
             />
             <Divider sx={{ backgroundColor: "black" }} />
             {/* ........................................On boarding........................................................ */}
-            <OnBording />
+            <OnBording
+              userId={data.user_id}
+              contractAgree={independent_contractor_agreement}
+              bgCheck={background_check}
+              hippa={HIPAA}
+              nonDisclosure={non_disclosure}
+              licenceDocument={licence_document}
+            />
             <Divider sx={{ backgroundColor: "black", marginTop: "20px" }} />
             <Box display="flex" justifyContent="end" gap={2} mt={2}>
               <Button name="save" variant="contained" />
