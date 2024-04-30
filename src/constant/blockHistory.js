@@ -63,10 +63,10 @@ export const columns = [
     id: "created_date",
     label: "Create Date",
   },
-  {
-    id: "notes",
-    label: "Notes",
-  },
+  // {
+  //   id: "notes",
+  //   label: "Notes",
+  // },
   {
     id: "is_active",
     label: "isActive",

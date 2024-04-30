@@ -48,7 +48,6 @@ const RequestedShifts = () => {
   const { requestShiftData } = useSelector(
     (state) => state?.root?.schedulingReducer,
   );
-
   const rows = requestShiftData;
   useEffect(() => setTableData(requestShiftData), [requestShiftData]);
 
@@ -69,7 +68,7 @@ const RequestedShifts = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((row) => row.id);
+      const newSelected = rows.map((row) => row.user_id);
       setSelected(newSelected);
       return;
     }
@@ -138,10 +137,9 @@ const RequestedShifts = () => {
     setPage(0);
   };
   const approvedShift = () => {
-    const shiftIds = requestShiftData?.map((item) => item.shifts[0].shift_id);
-    dispatch(putApprovedShift(shiftIds));
+    const shiftIds = selected;
+    dispatch(putApprovedShift({ shiftIds }));
   };
-  console.log("requestShiftData", requestShiftData);
   return (
     <>
       <Box className="requested-shifts-container">
@@ -197,20 +195,19 @@ const RequestedShifts = () => {
                 </Button>
                 <Button
                   color="error"
-                  onClick={() =>
-                    dispatch(
-                      deleteSelectedShift(
-                        requestShiftData?.map(
-                          (item) => item.shifts[0].shift_id,
-                        ),
-                      ),
-                    ).then((response) => {
-                      if (response.type === "deleteSelectedShift/fulfilled") {
-                        toast.success("shift Deleted Successfully");
-                        dispatch(getRequestShift({ region: additionalFilter }));
-                      }
-                    })
-                  }
+                  onClick={() => {
+                    const shiftIds = selected;
+                    dispatch(deleteSelectedShift({ shiftIds })).then(
+                      (response) => {
+                        if (response.type === "deleteSelectedShift/fulfilled") {
+                          toast.success("shift Deleted Successfully");
+                          dispatch(
+                            getRequestShift({ region: additionalFilter }),
+                          );
+                        }
+                      },
+                    );
+                  }}
                 >
                   Delete Selected
                 </Button>
@@ -246,11 +243,11 @@ const RequestedShifts = () => {
                 <TableBody>
                   {stableSort(tableData, getComparator(order, orderBy)).map(
                     (row) => (
-                      <TableRow key={row.id} hover>
+                      <TableRow key={row.user_id} hover>
                         <TableCell padding="checkbox">
                           <Checkbox
-                            checked={isSelected(row.id)}
-                            onClick={(event) => handleClick(event, row.id)}
+                            checked={isSelected(row.user_id)}
+                            onClick={(event) => handleClick(event, row.user_id)}
                           />
                         </TableCell>
                         <TableCell>{row.staff}</TableCell>
@@ -266,7 +263,7 @@ const RequestedShifts = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={requestShiftData.total_count}
+              count={requestShiftData.total_count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

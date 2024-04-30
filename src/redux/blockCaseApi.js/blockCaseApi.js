@@ -22,7 +22,6 @@ export const blockCasePut = createAsyncThunk(
   "blockCasePut",
   async (params, { rejectWithValue }) => {
     const { reason_for_block, confirmation_no } = params;
-    console.log("params", params);
 
     try {
       const response = await Axios.put(

@@ -23,13 +23,14 @@ const ContactModal = ({ open, handleClose, handleOpen, id }) => {
   const formik = useFormik({
     initialValues: {
       message: "",
+      communicationMethod: "email",
     },
     validationSchema: contactModalSchema,
     onSubmit: (values, onSubmitProps) => {
       dispatch(
         postContactProvider({
+          communicationMethod: formik.values.communicationMethod,
           message: formik.values.message,
-          email: "sample@yopmail.com",
           user_id: id,
         }),
       );
@@ -54,7 +55,10 @@ const ContactModal = ({ open, handleClose, handleOpen, id }) => {
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
               defaultValue="sms"
-              name="radio-buttons-group"
+              // name="radio-buttons-group"
+              name="communicationMethod"
+              value={formik.values.communicationMethod}
+              onChange={formik.handleChange}
             >
               <FormControlLabel value="sms" control={<Radio />} label="SMS" />
               <FormControlLabel

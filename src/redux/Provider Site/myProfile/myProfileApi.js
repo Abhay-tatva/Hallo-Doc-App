@@ -6,6 +6,7 @@ export const putMyProfileRessPass = createAsyncThunk(
   "putMyProfileRessPass",
   async (params, { rejectWithValue }) => {
     const { password } = params;
+    console.log("pass", params);
 
     try {
       const response = await Axios.put(PUTMYPROFILERESSPASS, {

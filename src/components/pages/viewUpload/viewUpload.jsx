@@ -111,18 +111,7 @@ const ViewUpload = () => {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  // console.log(selectedFile);
-  // }
 
-  // const handleFileChange = (event) => {
-  //   console.log("event", event.target.files);
-  //   event.preventDefault();
-  //   setSelectedFile(event.target.files);
-  // };
-  // Handle the upload functionality here with the selected file
-  // const handleUpload = () => {
-  //   dispatch(viewUpdate({ confirmation_no, file: selectedFile }));
-  // };
   const handleUpload = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -208,7 +197,6 @@ const ViewUpload = () => {
   const handleDownloadAll = () => {
     const confirmationNumber = selector?.uploadFile[0].confirmationNo;
     const documentIds = selected;
-    console.log("object", documentIds);
     dispatch(downloadAll({ confirmationNumber, documentIds })).then(
       (response) => {
         if (response.type === "downloadAll/fulfilled") {

@@ -50,7 +50,7 @@ const UserAccess = () => {
       }),
     );
     return undefined;
-  }, [dispatch]);
+  }, [dispatch, additionalFilter, pageNo, rowsPerPage]);
 
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
@@ -173,7 +173,7 @@ const UserAccess = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={userAccessData?.total_count}
+              count={userAccessData?.total_count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

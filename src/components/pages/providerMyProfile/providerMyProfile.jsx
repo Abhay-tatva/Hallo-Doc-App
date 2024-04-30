@@ -31,6 +31,7 @@ const ProviderMyProfile = () => {
   const { myProfilePhysicianData } = useSelector(
     (state) => state.root.physicanMyProfileReducer,
   );
+  console.log("myProfilePhysicianData", myProfilePhysicianData);
 
   const handleOpen = (name) => {
     setModalName(name);
@@ -91,7 +92,7 @@ const ProviderMyProfile = () => {
             <Account name="myProfile" userName={username} />
             {/* ............................/ Administration Information............  */}
             <PhysiciansInformation
-              userId={myProfilePhysicianData?.user_id}
+              userId={myProfilePhysicianData?.admin_user_id}
               firstName={firstname}
               lastName={lastname}
               email={email}
@@ -114,6 +115,8 @@ const ProviderMyProfile = () => {
               <ProvideProfile
                 businessName={business_name}
                 businessWebsite={business_website}
+                userId={myProfilePhysicianData?.admin_user_id}
+
                 // adminNotes={admin_notes}
               />
               <Divider sx={{ backgroundColor: "black" }} />

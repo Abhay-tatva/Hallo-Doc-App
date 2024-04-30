@@ -44,13 +44,13 @@ const PatientViewUpload = () => {
   const { patientViewData } = useSelector(
     (state) => state.root.patientViewUploadReducer,
   );
-  console.log("Confirmation Number:", patientViewData);
+  console.log(" patient data", patientViewData);
   const rows = patientViewData?.documents;
   const { confirmationNo, patient_name } = patientViewData;
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((row) => row.id);
+      const newSelected = rows.map((row) => row.document_id);
       setSelected(newSelected);
       return;
     }
@@ -109,18 +109,7 @@ const PatientViewUpload = () => {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  // console.log(selectedFile);
-  // }
 
-  // const handleFileChange = (event) => {
-  //   console.log("event", event.target.files);
-  //   event.preventDefault();
-  //   setSelectedFile(event.target.files);
-  // };
-  // Handle the upload functionality here with the selected file
-  // const handleUpload = () => {
-  //   dispatch(viewUpdate({ confirmationNo, file: selectedFile }));
-  // };
   const handleUpload = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -313,7 +302,7 @@ const PatientViewUpload = () => {
                           />
                         </TableCell>
                         <TableCell>{row.docuement_path}</TableCell>
-                        <TableCell> {row.uploader}</TableCell>
+                        <TableCell> {row.document_name}</TableCell>
 
                         <TableCell>{row.createdAt}</TableCell>
                         <TableCell>

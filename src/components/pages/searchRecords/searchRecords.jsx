@@ -156,8 +156,8 @@ const SearchRecords = () => {
                       formik.errors.request_status
                     }
                   >
-                    <MenuItem>fullfill</MenuItem>
-                    <MenuItem>reject</MenuItem>
+                    <MenuItem value="fullfill">fullfill</MenuItem>
+                    <MenuItem value="reject">reject</MenuItem>
                   </FormInput>
                 </Grid>
                 <Grid item xs={12} md={3}>

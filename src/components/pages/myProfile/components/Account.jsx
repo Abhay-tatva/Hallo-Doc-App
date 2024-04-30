@@ -54,14 +54,16 @@ const Account = ({ userName, status, role, userId, name }) => {
           });
         }
       } else {
-        console.log("Response:", accountType);
-        dispatch(putMyProfileRessPass({ password: values.password })).then(
-          (response) => {
+        dispatch(putMyProfileRessPass({ password: values.password }))
+          .then((response) => {
             if (response.type === "putMyProfileRessPass/fulfilled") {
               toast.success("My Profile Pass reset successfully....");
             }
-          },
-        );
+          })
+          .catch((error) => {
+            console.error("Error in putMyProfileRessPass:", error);
+            toast.error("Failed to reset My Profile Pass.");
+          });
       }
     },
     enableReinitialize: true,

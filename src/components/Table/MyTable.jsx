@@ -125,7 +125,9 @@ const MyTable = ({
     } else if (accountType === "physician") {
       dispatch(
         providerDashBoard({
+          search: searchTerm,
           state: stateButton,
+          region: additionalFilter,
           page_size: rowsPerPage,
           page: pageNo,
         }),

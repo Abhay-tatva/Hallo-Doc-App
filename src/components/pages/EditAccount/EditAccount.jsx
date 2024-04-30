@@ -12,16 +12,16 @@ import PhysiciansInformation from "../myProfile/components/PhysiciansInformation
 import ProvideProfile from "../myProfile/components/ProvideProfile";
 import "./editAccount.css";
 import OnBording from "../myProfile/components/onBoarding";
-import { useSelector, useDispatch } from "react-redux";
-import { deleteProvider } from "../../../redux/provider/providerApi";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+// import { deleteProvider } from "../../../redux/provider/providerApi";
+// import { useNavigate } from "react-router-dom";
 
 const EditAccount = () => {
   const { physicianData } = useSelector(
     (state) => state.root.providerMenuReducer,
   );
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
   const data = physicianData;
   const { username, status, role } = data.account_information;
   const {
@@ -39,13 +39,24 @@ const EditAccount = () => {
   const { business_name, business_website, admin_notes } =
     data.provider_profile;
   const { regions } = service_areas_availability ?? {};
-  const {
-    independent_contractor_agreement,
-    background_check,
-    HIPAA,
-    non_disclosure,
-    licence_document,
-  } = data.onboarding;
+  const { documents } = data.onboarding;
+
+  const IndeDoc = documents.filter(
+    (document) => document.document_name === "independent_contractor_agreement",
+  );
+  const bgCheck = documents.filter(
+    (document) => document.document_name === "background_check",
+  );
+  const hippa = documents.filter(
+    (document) => document.document_name === "HIPAA",
+  );
+  const nonDisclosure = documents.filter(
+    (document) => document.document_name === "non_disclosure",
+  );
+  const licenceDocument = documents.filter(
+    (document) => document.document_name === "licence_document",
+  );
+
   return (
     <>
       <Box className="edit-main-container">
@@ -96,7 +107,7 @@ const EditAccount = () => {
               city={city}
               state={state}
               zip={zip}
-              billNo={billing_mobile_no}
+              billNumber={billing_mobile_no}
             />
             {/* .......................................Provider Profile.................................. */}
             <ProvideProfile
@@ -109,29 +120,12 @@ const EditAccount = () => {
             {/* ........................................On boarding........................................................ */}
             <OnBording
               userId={data.user_id}
-              contractAgree={independent_contractor_agreement}
-              bgCheck={background_check}
-              hippa={HIPAA}
-              nonDisclosure={non_disclosure}
-              licenceDocument={licence_document}
+              contractAgree={IndeDoc?.[0]}
+              bgCheck={bgCheck?.[0]}
+              hippa={hippa?.[0]}
+              nonDisclosure={nonDisclosure?.[0]}
+              licenceDocument={licenceDocument?.[0]}
             />
-            <Divider sx={{ backgroundColor: "black", marginTop: "20px" }} />
-            <Box display="flex" justifyContent="end" gap={2} mt={2}>
-              <Button name="save" variant="contained" />
-              <Button
-                name="Delete Account"
-                variant="contained"
-                color="error"
-                mt={1}
-                onClick={() => {
-                  dispatch(deleteProvider(data.user_id)).then((response) => {
-                    if (response.type === "deleteProvider/fulfilled") {
-                      navigate(AppRoutes.PROVIDER);
-                    }
-                  });
-                }}
-              />
-            </Box>
           </Paper>
         </Container>
       </Box>

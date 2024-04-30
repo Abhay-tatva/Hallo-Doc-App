@@ -15,7 +15,7 @@ const records = createSlice({
     patientHistoryData: [],
     patientRecordsData: [],
     searchRecord: [],
-    blockHistory: [],
+    blockHistory: {},
     logs: [],
   },
   extraReducers: (builder) => {

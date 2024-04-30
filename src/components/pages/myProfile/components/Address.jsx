@@ -57,11 +57,11 @@ const Address = ({
       address2: add2,
       city: city,
       state: state,
-      zip,
+      zip: zip.toString(),
       billNumber: billNumber,
     });
   }, [add1, add2, city, state, zip, billNumber]);
-
+  console.log("bill formik", billformik);
   return (
     <form onSubmit={billformik.handleSubmit}>
       <Typography variant="h6" className="account">

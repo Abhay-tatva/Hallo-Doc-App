@@ -8,6 +8,7 @@ import {
   POSTCONTACTPROVIDER_API,
   POSTCREATEPROVIDER_API,
   PROVIDEREDIT_API,
+  PUTONBOARDING_API,
   PUTPHOTOUPDATE_API,
   PUTPROVIDERPROFILE_API,
   PUTRESETPROVIDERPASSWORD_API,
@@ -34,14 +35,16 @@ export const getProvider = createAsyncThunk(
 export const postContactProvider = createAsyncThunk(
   "postContactProvider",
   async (params, { rejectWithValue }) => {
-    const { email, message, user_id } = params;
+    const { message, user_id, communicationMethod } = params;
     try {
-      const response = await Axios.post(
-        `${POSTCONTACTPROVIDER_API.replace(":user_id", user_id)}?email=${email}`,
-        {
-          message,
-        },
-      );
+      let url = POSTCONTACTPROVIDER_API.replace(":user_id", user_id);
+      if (communicationMethod === "email") url += `?email=yes`;
+      if (communicationMethod === "sms") url += `?mobile_no=yes`;
+      if (communicationMethod === "both") url += `?email=yes&mobile_no=yes`;
+
+      const response = await Axios.post(url, {
+        message,
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);
@@ -101,7 +104,7 @@ export const putProviderInfo = createAsyncThunk(
         city: data?.city,
         state: data?.state,
         zip: data?.zip,
-        billing_mobile_no: data?.billing_mobile_no,
+        billing_mobile_no: data?.billNumber,
         business_name: data?.business_name,
         business_website: data?.business_website,
         admin_notes: data?.admin_notes,
@@ -132,7 +135,6 @@ export const postCreateProvider = createAsyncThunk(
   "postCreateProvider",
   async (params, { rejectWithValue }) => {
     const { data } = params;
-    console.log(data);
     try {
       const response = await Axios.post(`${POSTCREATEPROVIDER_API}`, {
         username: data?.userName,
@@ -169,7 +171,6 @@ export const putProviderProfile = createAsyncThunk(
   "putProviderProfile",
   async (params, { rejectWithValue }) => {
     const { user_id, data } = params;
-    console.log("object", params);
 
     try {
       const response = await Axios.put(PUTPROVIDERPROFILE_API, {
@@ -200,6 +201,18 @@ export const putPhotoUpdate = createAsyncThunk(
           },
         },
       );
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const putOnBoarding = createAsyncThunk(
+  "putOnBoarding",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.put(PUTONBOARDING_API, params);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

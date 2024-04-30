@@ -47,6 +47,7 @@ const BlockHistory = () => {
   const { blockHistory } = useSelector((state) => state.root.recordsReducer);
 
   useEffect(() => setTableData(blockHistory.data), [blockHistory.data]);
+  console.log("table data", blockHistory);
 
   useEffect(() => {
     dispatch(
@@ -212,7 +213,7 @@ const BlockHistory = () => {
                     {stableSort(tableData, getComparator(order, orderBy))?.map(
                       (row) => {
                         return (
-                          <TableRow key={row.id}>
+                          <TableRow key={row.sr_no}>
                             {columns?.map((column) => {
                               return (
                                 <TableCell key={column.id} align="center">

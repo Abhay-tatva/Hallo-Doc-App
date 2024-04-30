@@ -55,7 +55,6 @@ const PhysiciansInformation = ({
     },
     enableReinitialize: true,
   });
-
   useEffect(() => {
     dispatch(getProviderPhysician(userId));
   }, [dispatch, userId]);

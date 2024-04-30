@@ -75,7 +75,7 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
         endTime: myScheduleViewShiftData.end,
       });
     }
-  }, [viewShiftData, accountType]);
+  }, [viewShiftData, accountType, myScheduleViewShiftData]);
 
   const handleSave = () => {
     if (accountType === "admin") {
