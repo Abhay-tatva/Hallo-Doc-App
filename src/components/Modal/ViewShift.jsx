@@ -41,6 +41,8 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
   const { viewShiftData } = useSelector(
     (state) => state.root.schedulingReducer,
   );
+
+  console.log("object", viewShiftData);
   const { myScheduleViewShiftData } = useSelector(
     (state) => state.root.myScheduleReducer,
   );

@@ -48,8 +48,8 @@ const RequestedShifts = () => {
   const { requestShiftData } = useSelector(
     (state) => state?.root?.schedulingReducer,
   );
-  const rows = requestShiftData;
-  useEffect(() => setTableData(requestShiftData), [requestShiftData]);
+
+  useEffect(() => setTableData(requestShiftData.data), [requestShiftData]);
 
   useEffect(() => {
     dispatch(
@@ -68,7 +68,7 @@ const RequestedShifts = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((row) => row.user_id);
+      const newSelected = tableData.map((row) => row.user_id);
       setSelected(newSelected);
       return;
     }
@@ -137,8 +137,8 @@ const RequestedShifts = () => {
     setPage(0);
   };
   const approvedShift = () => {
-    const shiftIds = selected;
-    dispatch(putApprovedShift({ shiftIds }));
+    const shiftIds = requestShiftData?.map((item) => item.shifts[0].shift_id);
+    dispatch(putApprovedShift(shiftIds));
   };
   return (
     <>
@@ -195,9 +195,8 @@ const RequestedShifts = () => {
                 </Button>
                 <Button
                   color="error"
-                  onClick={() => {
-                    const shiftIds = selected;
-                    dispatch(deleteSelectedShift({ shiftIds })).then(
+                  onClick={() =>
+                    dispatch(deleteSelectedShift({ shiftIds: selected })).then(
                       (response) => {
                         if (response.type === "deleteSelectedShift/fulfilled") {
                           toast.success("shift Deleted Successfully");
@@ -206,8 +205,8 @@ const RequestedShifts = () => {
                           );
                         }
                       },
-                    );
-                  }}
+                    )
+                  }
                 >
                   Delete Selected
                 </Button>
@@ -220,9 +219,10 @@ const RequestedShifts = () => {
                     <TableCell padding="checkbox">
                       <Checkbox
                         indeterminate={
-                          selected.length > 0 && selected.length < rows.length
+                          selected.length > 0 &&
+                          selected.length < tableData.length
                         }
-                        checked={selected.length === rows.length}
+                        checked={selected.length === tableData.length}
                         onChange={handleSelectAllClick}
                       />
                     </TableCell>
@@ -263,7 +263,7 @@ const RequestedShifts = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={requestShiftData.total_count || 0}
+              count={requestShiftData.total_count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

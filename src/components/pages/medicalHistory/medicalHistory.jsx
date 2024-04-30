@@ -182,7 +182,7 @@ const MedicalHistory = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={medicalData.total_count}
+              count={medicalData?.total_count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

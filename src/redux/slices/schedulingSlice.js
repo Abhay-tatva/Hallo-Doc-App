@@ -13,7 +13,7 @@ const scheduling = createSlice({
   initialState: {
     providerOnCalls: [],
     providerOffDuties: [],
-    requestShiftData: [],
+    requestShiftData: {},
     providerShift: [],
     viewShiftData: {},
   },
@@ -26,7 +26,7 @@ const scheduling = createSlice({
     });
     builder.addCase(getRequestShift.fulfilled, (state, action) => {
       if (action.payload) {
-        state.requestShiftData = action.payload.data;
+        state.requestShiftData = action.payload;
       }
     });
     builder.addCase(getProviderShift.fulfilled, (state, action) => {

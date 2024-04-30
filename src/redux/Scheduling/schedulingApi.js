@@ -90,7 +90,7 @@ export const deleteSelectedShift = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const { shiftIds } = params;
-
+      console.log("object", shiftIds);
       const response = await Axios.delete(`${DELETESELECTEDSHIFT_API}`, {
         data: {
           shift_ids: shiftIds,
