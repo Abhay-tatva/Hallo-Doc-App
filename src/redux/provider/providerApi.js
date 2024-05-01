@@ -12,6 +12,7 @@ import {
   PUTPHOTOUPDATE_API,
   PUTPROVIDERPROFILE_API,
   PUTRESETPROVIDERPASSWORD_API,
+  PUTSTOPNOTIFICATION_API,
 } from "../../constant/apis";
 
 export const getProvider = createAsyncThunk(
@@ -213,6 +214,18 @@ export const putOnBoarding = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await Axios.put(PUTONBOARDING_API, params);
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const putStopNotification = createAsyncThunk(
+  "putStopNotification",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.put(PUTSTOPNOTIFICATION_API, params);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

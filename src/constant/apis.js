@@ -129,6 +129,8 @@ export const PUTPHOTOUPDATE_API =
   "/admin/providermenu/provider_list/:user_id/provider_profile_upload";
 export const PUTONBOARDING_API =
   "/admin/providermenu/provider_list/provider_onboarding_upload";
+export const PUTSTOPNOTIFICATION_API =
+  "/admin/providermenu/provider_list/stop_notification";
 // ..........................................Scheduling Api..............................................
 export const POSTCREATESHIFT_API = "/admin/scheduling_menu/create_shift";
 export const GETPROVIDERONCALL_API =

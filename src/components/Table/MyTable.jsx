@@ -365,7 +365,7 @@ const MyTable = ({
               {tableData?.map((row) => {
                 return (
                   <TableRow
-                    key={row.confirmationNo}
+                    key={row?.confirmationNo}
                     className={`requestor-${row.requestor?.toLowerCase()}`}
                   >
                     <TableCell>{row.patient_data.name}</TableCell>

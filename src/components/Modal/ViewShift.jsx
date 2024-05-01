@@ -42,7 +42,6 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
     (state) => state.root.schedulingReducer,
   );
 
-  console.log("object", viewShiftData);
   const { myScheduleViewShiftData } = useSelector(
     (state) => state.root.myScheduleReducer,
   );
@@ -63,18 +62,18 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
     if (accountType === "admin") {
       setInitialValues({
         searchRegion: viewShiftData?.region,
-        physician: viewShiftData.physician,
-        date: viewShiftData.shift_date,
-        startTime: viewShiftData.start,
-        endTime: viewShiftData.end,
+        physician: viewShiftData?.physician,
+        date: viewShiftData?.shift_date,
+        startTime: viewShiftData?.start,
+        endTime: viewShiftData?.end,
       });
     } else {
       setInitialValues({
         searchRegion: myScheduleViewShiftData?.region,
-        physician: myScheduleViewShiftData.physician,
-        date: myScheduleViewShiftData.shift_date,
-        startTime: myScheduleViewShiftData.start,
-        endTime: myScheduleViewShiftData.end,
+        // physician: myScheduleViewShiftData?.physician,
+        date: myScheduleViewShiftData?.shift_date,
+        startTime: myScheduleViewShiftData?.start,
+        endTime: myScheduleViewShiftData?.end,
       });
     }
   }, [viewShiftData, accountType, myScheduleViewShiftData]);
@@ -261,7 +260,7 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
                 if (accountType === "admin") {
                   dispatch(
                     deleteSelectedShift({
-                      shift_ids: [viewShiftData.shift_id],
+                      shift_ids: viewShiftData.shift_id,
                     }),
                   ).then((response) => {
                     if (response.type === "deleteSelectedShift/fulfilled") {

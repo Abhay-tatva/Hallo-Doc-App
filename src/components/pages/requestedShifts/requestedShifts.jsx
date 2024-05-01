@@ -49,7 +49,10 @@ const RequestedShifts = () => {
     (state) => state?.root?.schedulingReducer,
   );
 
-  useEffect(() => setTableData(requestShiftData.data), [requestShiftData]);
+  useEffect(
+    () => setTableData(requestShiftData.data.map((item) => item.shifts).flat()),
+    [requestShiftData],
+  );
 
   useEffect(() => {
     dispatch(
@@ -68,7 +71,7 @@ const RequestedShifts = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = tableData.map((row) => row.user_id);
+      const newSelected = tableData.map((row) => row.shift_id);
       setSelected(newSelected);
       return;
     }
@@ -137,8 +140,7 @@ const RequestedShifts = () => {
     setPage(0);
   };
   const approvedShift = () => {
-    const shiftIds = requestShiftData?.map((item) => item.shifts[0].shift_id);
-    dispatch(putApprovedShift(shiftIds));
+    dispatch(putApprovedShift({ shiftIds: selected }));
   };
   return (
     <>
@@ -243,17 +245,19 @@ const RequestedShifts = () => {
                 <TableBody>
                   {stableSort(tableData, getComparator(order, orderBy)).map(
                     (row) => (
-                      <TableRow key={row.user_id} hover>
+                      <TableRow key={row.shift_id} hover>
                         <TableCell padding="checkbox">
                           <Checkbox
-                            checked={isSelected(row.user_id)}
-                            onClick={(event) => handleClick(event, row.user_id)}
+                            checked={isSelected(row.shift_id)}
+                            onClick={(event) =>
+                              handleClick(event, row.shift_id)
+                            }
                           />
                         </TableCell>
                         <TableCell>{row.staff}</TableCell>
-                        <TableCell>{row.shifts[0].shift_date}</TableCell>
-                        <TableCell>{row.shifts[0].time}</TableCell>
-                        <TableCell>{row.shifts[0].region}</TableCell>
+                        <TableCell>{row.shift_date}</TableCell>
+                        <TableCell>{row.time}</TableCell>
+                        <TableCell>{row.region}</TableCell>
                       </TableRow>
                     ),
                   )}
