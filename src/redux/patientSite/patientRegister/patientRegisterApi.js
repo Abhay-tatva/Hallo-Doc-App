@@ -35,7 +35,8 @@ export const postCreatePatient = createAsyncThunk(
       state,
       zip,
       room,
-      file,
+      relation_with_patient,
+      // file,
     } = params;
     try {
       const response = await Axios.post(`${CREATEPATIENT}`, {
@@ -50,7 +51,8 @@ export const postCreatePatient = createAsyncThunk(
         state,
         zip,
         room,
-        file,
+        relation_with_patient,
+        // file,
       });
       return response?.data;
     } catch (error) {

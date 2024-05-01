@@ -26,15 +26,10 @@ export const downloadAll = createAsyncThunk(
   "downloadAll",
   async (params, { rejectWithValue }) => {
     const { confirmationNumber, documentIds } = params;
-    console.log("par", params);
+
     try {
       const response = await Axios.get(
-        `${DOWNLOADALL_API.replace(":confirmation_no", confirmationNumber)}`,
-        {
-          data: {
-            document_ids: documentIds,
-          },
-        },
+        `${DOWNLOADALL_API.replace(":confirmation_no", confirmationNumber)}?document_id=${documentIds}`,
       );
       return response?.data;
     } catch (error) {

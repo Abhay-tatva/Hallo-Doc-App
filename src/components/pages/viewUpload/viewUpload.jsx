@@ -59,6 +59,8 @@ const ViewUpload = () => {
     setSelected([]);
   };
 
+  console.log("if", selected);
+
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];

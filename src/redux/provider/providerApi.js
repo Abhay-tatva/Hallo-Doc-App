@@ -224,8 +224,12 @@ export const putOnBoarding = createAsyncThunk(
 export const putStopNotification = createAsyncThunk(
   "putStopNotification",
   async (params, { rejectWithValue }) => {
+    const { user_ids, stop_notification_status } = params;
     try {
-      const response = await Axios.put(PUTSTOPNOTIFICATION_API, params);
+      const response = await Axios.put(PUTSTOPNOTIFICATION_API, {
+        user_ids,
+        stop_notification_status,
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

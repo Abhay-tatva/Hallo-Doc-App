@@ -67,7 +67,6 @@ const OnBording = ({
       licDoc: licenceDocument || null,
     });
   }, [contractAgree, bgCheck, hippa, nonDisclosure, licenceDocument]);
-  console.log("nthi avtu", contractAgree, hippa);
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box

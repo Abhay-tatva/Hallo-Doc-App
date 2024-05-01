@@ -140,6 +140,8 @@ export const PUTAPPROVEDSHIFT_API =
   "/admin/scheduling_menu/requested_shifts/approve_selected";
 export const DELETESELECTEDSHIFT_API =
   "/admin/scheduling_menu/requested_shifts/delete_selected";
+export const DELETESHIFT_API =
+  "/admin/scheduling_menu/provider_shifts_lists/:shift_id/delete_shift";
 export const GETPROVIDERSHIFTA_API =
   "/admin/scheduling_menu/provider_shifts_lists";
 export const GETVIEWSHIFT =

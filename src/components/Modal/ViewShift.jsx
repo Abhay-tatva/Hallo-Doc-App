@@ -10,7 +10,7 @@ import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { Button } from "../Button/ButtonInput";
 import { ViewModalSchema } from "../ValidationSchema";
 import {
-  deleteSelectedShift,
+  deleteShift,
   getProviderShift,
   putEditShift,
   putReturnShift,
@@ -258,31 +258,27 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
               color="error"
               onClick={() => {
                 if (accountType === "admin") {
-                  dispatch(
-                    deleteSelectedShift({
-                      shift_ids: viewShiftData.shift_id,
-                    }),
-                  ).then((response) => {
-                    if (response.type === "deleteSelectedShift/fulfilled") {
-                      toast.success("shift Deleted Successfully");
-                      setIsDisabled(true);
-                      handleClose();
-                      dispatch(getProviderShift({ region: "all" }));
-                    }
-                  });
+                  dispatch(deleteShift(viewShiftData.shift_id)).then(
+                    (response) => {
+                      if (response.type === "deleteShift/fulfilled") {
+                        toast.success("shift Deleted Successfully");
+                        setIsDisabled(true);
+                        handleClose();
+                        dispatch(getProviderShift({ region: "all" }));
+                      }
+                    },
+                  );
                 } else {
-                  dispatch(
-                    deleteSelectedShift({
-                      shift_ids: [myScheduleViewShiftData.shift_id],
-                    }),
-                  ).then((response) => {
-                    if (response.type === "deleteSelectedShift/fulfilled") {
-                      toast.success("shift Deleted Successfully");
-                      setIsDisabled(true);
-                      handleClose();
-                      dispatch(getMySchedule());
-                    }
-                  });
+                  dispatch(deleteShift(myScheduleViewShiftData.shift_id)).then(
+                    (response) => {
+                      if (response.type === "deleteShift/fulfilled") {
+                        toast.success("shift Deleted Successfully");
+                        setIsDisabled(true);
+                        handleClose();
+                        dispatch(getMySchedule());
+                      }
+                    },
+                  );
                 }
               }}
             />

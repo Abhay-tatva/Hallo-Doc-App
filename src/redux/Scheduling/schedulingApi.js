@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../Config/axios";
 import {
   DELETESELECTEDSHIFT_API,
+  DELETESHIFT_API,
   GETPROVIDERONCALL_API,
   GETPROVIDERSHIFTA_API,
   GETREQUESTSHIFT_API,
@@ -97,6 +98,20 @@ export const deleteSelectedShift = createAsyncThunk(
         },
       });
 
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const deleteShift = createAsyncThunk(
+  "deleteShift",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.delete(
+        `${DELETESHIFT_API.replace(":shift_id", params)}`,
+      );
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

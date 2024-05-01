@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getProvider,
   getProviderPhysician,
+  putStopNotification,
 } from "../../../redux/provider/providerApi";
 
 const Provide = () => {
@@ -70,13 +71,24 @@ const Provide = () => {
     setSelectedIds(initialSelectedIds);
   }, [providerData]);
 
-  const handleCheckboxChange = (id) => {
-    if (selectedIds?.includes(id)) {
-      setSelectedIds(selectedIds?.filter((selectedId) => selectedId !== id));
-    } else {
-      setSelectedIds([...selectedIds, id]);
-    }
-    // setShowSaveButton(true);
+  const handleCheckboxChange = (id, stopNotificationStatus) => {
+    dispatch(
+      putStopNotification({
+        user_ids: [id],
+        stop_notification_status:
+          stopNotificationStatus !== "yes" ? "yes" : "no",
+      }),
+    ).then((response) => {
+      if (response.type === "putStopNotification/fulfilled") {
+        dispatch(
+          getProvider({
+            page: pageNo,
+            page_size: rowsPerPage,
+            region: additionalFilter,
+          }),
+        );
+      }
+    });
   };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -206,11 +218,15 @@ const Provide = () => {
                               <TableCell key={column.id} align="left">
                                 {column.id === "stop_notification" ? (
                                   <Checkbox
-                                    checked={selectedIds?.includes(
-                                      row?.user_id,
-                                    )}
+                                    checked={
+                                      selectedIds?.includes(row?.user_id) &&
+                                      row.stop_notification === "yes"
+                                    }
                                     onChange={() =>
-                                      handleCheckboxChange(row?.user_id)
+                                      handleCheckboxChange(
+                                        row?.user_id,
+                                        row?.stop_notification,
+                                      )
                                     }
                                   />
                                 ) : column.id === "actions" ? (

@@ -32,8 +32,9 @@ import { debounce } from "lodash";
 const debounceCall = debounce(async (email, setFieldValue, dispatch) => {
   try {
     const response = await dispatch(isPatientRegister({ email }));
+    console.log("response", response);
     if (response.type === "isPatientRegister/fulfilled") {
-      setFieldValue("status", response.payload?.data);
+      setFieldValue("status", response.payload?.status);
     }
   } catch (error) {
     toast.error("Failed to check email:", error);
@@ -79,7 +80,7 @@ export const CreatePatient = () => {
           state: patientformik.values.state,
           zip: patientformik.values.zipCode,
           room: patientformik.values.room,
-          file: patientformik.values.file,
+          // file: patientformik.values.file,
         }),
       );
       onSubmitProps.resetForm();
