@@ -41,7 +41,7 @@ const AccessAccount = () => {
   const { accountData } = useSelector(
     (state) => state.root.accountAccessReducer,
   );
-  useEffect(() => setTableData(accountData), [accountData]);
+  useEffect(() => setTableData(accountData.data), [accountData]);
 
   useEffect(() => {
     dispatch(getAccountAccess({ page: pageNo, page_size: rowsPerPage }));

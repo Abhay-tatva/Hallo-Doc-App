@@ -63,8 +63,8 @@ const Records = () => {
     onSubmit: (values, onSubmitProps) => {
       dispatch(
         getPatientHistory({
-          page: 1,
-          page_size: 10,
+          page: pageNo,
+          page_size: rowsPerPage,
           firstname: values.firstname,
           lastname: values.lastname,
           email: values.email,

@@ -50,7 +50,8 @@ const RequestedShifts = () => {
   );
 
   useEffect(
-    () => setTableData(requestShiftData.data.map((item) => item.shifts).flat()),
+    () =>
+      setTableData(requestShiftData.data?.map((item) => item.shifts).flat()),
     [requestShiftData],
   );
 
@@ -71,7 +72,7 @@ const RequestedShifts = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = tableData.map((row) => row.shift_id);
+      const newSelected = tableData?.map((row) => row.shift_id);
       setSelected(newSelected);
       return;
     }
@@ -191,7 +192,19 @@ const RequestedShifts = () => {
                 })}
               </FormInput>
               <Box display="flex" justifyContent="flex-end" gap={2}>
-                <Button color="success"> View Current Month Shifts</Button>
+                <Button
+                  color="success"
+                  onClick={() =>
+                    dispatch(
+                      getRequestShift({
+                        view_current_month_shift: "yes" || "no",
+                      }),
+                    )
+                  }
+                >
+                  {" "}
+                  View Current Month Shifts
+                </Button>
                 <Button color="success" onClick={() => approvedShift("all")}>
                   Approved Selected
                 </Button>

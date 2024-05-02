@@ -10,7 +10,7 @@ import {
 const accountAccess = createSlice({
   name: "accountAccess",
   initialState: {
-    accountData: [],
+    accountData: {},
     createData: {},
     accountListData: [],
   },
@@ -18,7 +18,7 @@ const accountAccess = createSlice({
     builder.addCase(getAccountAccess.fulfilled, (state, action) => {
       if (action.payload) {
         // console.log("accces account", action.payload);
-        state.accountData = action.payload.data;
+        state.accountData = action.payload;
       }
     });
     builder.addCase(accountAccessEdit.fulfilled, (state, action) => {

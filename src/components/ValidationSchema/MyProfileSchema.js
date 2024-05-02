@@ -7,11 +7,11 @@ export const myProfileSchema = Yup.object({
 });
 
 export const accountMyProfileSchema = Yup.object({
-  firstname: Yup.string().required("firstname  is required"),
-  lastname: Yup.string().required("lastname is required"),
+  firstName: Yup.string().required("firstname  is required"),
+  lastName: Yup.string().required("lastname is required"),
   email: Yup.string().required("email is required"),
-  confirmemail: Yup.string().required("confirmemail is required"),
-  phoneNumber: Yup.string().required("phoneNumber is required"),
+  confirmeMail: Yup.string().required("confirmemail is required"),
+  mobileNo: Yup.string().required("phoneNumber is required"),
 });
 
 export const addressSchema = Yup.object({

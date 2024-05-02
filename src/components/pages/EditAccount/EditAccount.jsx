@@ -92,7 +92,7 @@ const EditAccount = () => {
               firstName={firstname}
               lastName={lastname}
               email={email}
-              mobileNo={mobile_no}
+              mobileNo={mobile_no?.toString()}
               medicalLicence={medical_licence}
               npiNumber={NPI_number?.toString()}
               synchronizationEmail={synchronization_email}
@@ -107,7 +107,7 @@ const EditAccount = () => {
               city={city}
               state={state}
               zip={zip}
-              billNumber={billing_mobile_no}
+              billNumber={billing_mobile_no?.toString()}
             />
             {/* .......................................Provider Profile.................................. */}
             <ProvideProfile

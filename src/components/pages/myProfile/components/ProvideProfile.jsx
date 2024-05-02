@@ -18,6 +18,7 @@ import {
   putPhotoUpdate,
   putProviderProfile,
 } from "../../../../redux/provider/providerApi";
+import { toast } from "react-toastify";
 
 const INITIAL_VALUES = {
   businessName: "",
@@ -162,7 +163,14 @@ const ProvideProfile = ({
                       "profile_picture",
                       provideProfile.values.photo,
                     );
-                    dispatch(putPhotoUpdate({ userId, formData }));
+                    dispatch(putPhotoUpdate({ userId, formData })).then(
+                      (response) => {
+                        if (response.type === "putPhotoUpdate/fulfilled") {
+                          toast("profile photo updated Successfully..");
+                          dispatch(getProviderPhysician(userId));
+                        }
+                      },
+                    );
                   }}
                 />
               </Box>

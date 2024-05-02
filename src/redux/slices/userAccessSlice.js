@@ -4,12 +4,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const userAccess = createSlice({
   name: "userAccess",
   initialState: {
-    userAccessData: [],
+    userAccessData: {},
   },
   extraReducers: (builder) => {
     builder.addCase(getUserAccess.fulfilled, (state, action) => {
       if (action.payload) {
-        state.userAccessData = action.payload.data;
+        state.userAccessData = action.payload;
       }
     });
   },

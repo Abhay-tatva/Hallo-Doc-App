@@ -56,7 +56,7 @@ const Administrator = ({
       mobileNo: mobileNo?.toString(),
       regions: regions.map((region) => region.region_id),
     });
-  }, [firstName, lastName, email, mobileNo, data.regions]);
+  }, [firstName, lastName, email, mobileNo, regions]);
 
   const handleChangeRegions = (name) => {
     const newRegions = administratorformik.values.regions?.includes(name)
@@ -66,6 +66,7 @@ const Administrator = ({
       : [...administratorformik.values.regions, name];
     administratorformik.setFieldValue("regions", newRegions);
   };
+
   return (
     <form onSubmit={administratorformik.handleSubmit}>
       <Typography variant="h6" className="account">
@@ -218,6 +219,7 @@ const Administrator = ({
               type="submit"
               variant="contained"
               onClick={() => {
+                console.log("console", administratorformik);
                 dispatch(
                   putMyProfile({
                     user_id: userId,

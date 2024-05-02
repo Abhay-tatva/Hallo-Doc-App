@@ -61,7 +61,8 @@ const Address = ({
       billNumber: billNumber,
     });
   }, [add1, add2, city, state, zip, billNumber]);
-  console.log("bill formik", billformik);
+
+  console.log("bill", billformik.values.address1);
   return (
     <form onSubmit={billformik.handleSubmit}>
       <Typography variant="h6" className="account">

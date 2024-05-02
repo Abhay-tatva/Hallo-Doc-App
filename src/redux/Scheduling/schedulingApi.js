@@ -60,6 +60,8 @@ export const getRequestShift = createAsyncThunk(
     const newParams = {};
     if (params.page) newParams.page = params.page;
     if (params.page_size) newParams.page_size = params.page_size;
+    if (params.view_current_month_shift)
+      newParams.view_current_month_shift = params.view_current_month_shift;
     if (params.region !== "all") newParams.region = params.region;
     try {
       const response = await Axios.get(`${GETREQUESTSHIFT_API}`, {

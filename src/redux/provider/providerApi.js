@@ -88,7 +88,7 @@ export const putProviderInfo = createAsyncThunk(
   "putProviderInfo",
   async (params, { rejectWithValue }) => {
     const { user_id, data } = params;
-
+    console.log("paraa", data);
     try {
       const response = await Axios.put(`${PROVIDEREDIT_API}`, {
         user_id,
@@ -100,8 +100,8 @@ export const putProviderInfo = createAsyncThunk(
         NPI_no: data?.npiNumber?.toString(),
         synchronization_email: data?.synEmail,
         region_ids: data?.regions,
-        address_1: data?.address_1,
-        address_2: data?.address_2,
+        address_1: data?.address1,
+        address_2: data?.address2,
         city: data?.city,
         state: data?.state,
         zip: data?.zip,

@@ -23,7 +23,14 @@ import "./emailLogs.css";
 import { columns } from "../../../constant/emailLogsData";
 import { useDispatch, useSelector } from "react-redux";
 import { getLogs } from "../../../redux/records/recordsApi";
+import { useFormik } from "formik";
 
+const initialValues = {
+  reciverName: "",
+  email: "",
+  createDate: "",
+  sendate: "",
+};
 const EmailLogs = () => {
   const [pageNo, setPageNo] = useState(1);
   const [page, setPage] = useState(0);
@@ -31,15 +38,25 @@ const EmailLogs = () => {
   const [tableData, setTableData] = useState([]);
   const dispatch = useDispatch();
   const { logs } = useSelector((state) => state.root.recordsReducer);
-
   useEffect(() => setTableData(logs.data), [logs.data]);
 
-  useEffect(() => {
-    dispatch(
-      getLogs({ page: pageNo, page_size: rowsPerPage, type_of_log: "email" }),
-    );
-  }, [dispatch, pageNo, rowsPerPage]);
-
+  const formik = useFormik({
+    initialValues,
+    onSubmit: (values, onSubmitProps) => {
+      dispatch(
+        getLogs({
+          page: pageNo,
+          page_size: rowsPerPage,
+          type_of_log: "email",
+          sent_date: values.sendate,
+          // lastname: values.lastname,
+          // email: values.email,
+          // phone_no: values.phone_no,
+        }),
+      );
+      onSubmitProps.resetForm();
+    },
+  });
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
     if (newPage > page) setPageNo(pageNo + 1);
@@ -52,7 +69,7 @@ const EmailLogs = () => {
   };
   return (
     <>
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <Box className="email-main-conatiner">
           <Container maxWidth="90%" className="email-wrapper-container">
             <Box display="flex" justifyContent="space-between " mb={2}>
@@ -73,22 +90,51 @@ const EmailLogs = () => {
                     name="searchByRole"
                     fullWidth
                     select
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.searchByRole}
+                    error={
+                      formik.touched.searchByRole &&
+                      Boolean(formik.errors.searchByRole)
+                    }
+                    helperText={
+                      formik.touched.searchByRole && formik.errors.searchByRole
+                    }
                   >
-                    <MenuItem id="all">All</MenuItem>
-                    <MenuItem id="patient">Patient</MenuItem>
-                    <MenuItem id="doctor">Doctor</MenuItem>
-                    <MenuItem id="physician">Physician</MenuItem>
+                    <MenuItem value="all">All</MenuItem>
+                    <MenuItem value="patient">Patient</MenuItem>
+                    <MenuItem value="doctor">Doctor</MenuItem>
+                    <MenuItem value="physician">Physician</MenuItem>
                   </FormInput>
                 </Grid>
                 <Grid item xs={12} md={2}>
                   <FormInput
                     label="Receiver Name"
-                    name="receiverName"
+                    name="reciverName"
                     fullWidth
+                    value={formik.values.reciverName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.reciverName &&
+                      Boolean(formik.errors.reciverName)
+                    }
+                    helperText={
+                      formik.touched.reciverName && formik.errors.reciverName
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  <FormInput label="Email Id" name="emaiId" fullWidth />
+                  <FormInput
+                    label="Email Id"
+                    name="email"
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
                 </Grid>
                 <Grid item xs={12} md={2}>
                   <FormInput
@@ -96,6 +142,16 @@ const EmailLogs = () => {
                     name="createDate"
                     fullWidth
                     type="date"
+                    value={formik.values.createDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.createDate &&
+                      Boolean(formik.errors.createDate)
+                    }
+                    helperText={
+                      formik.touched.createDate && formik.errors.createDate
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={2}>
@@ -104,11 +160,20 @@ const EmailLogs = () => {
                     name="sendate"
                     fullWidth
                     type="date"
+                    value={formik.values.sendate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.sendate && Boolean(formik.errors.sendate)
+                    }
+                    helperText={formik.touched.sendate && formik.errors.sendate}
                   />
                 </Grid>
                 <Grid item xs={12} md={2}>
                   <Box display="flex" justifyContent="flex-end" gap={2}>
-                    <Button variant="contained">Search</Button>
+                    <Button variant="contained" type="submit">
+                      Search
+                    </Button>
                     <Button variant="outlined">Clear</Button>
                   </Box>
                 </Grid>

@@ -6,7 +6,6 @@ import { Box, Grid, Input, MenuItem } from "@mui/material";
 import { FormInput } from "../TextField/FormInput";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
-import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { Button } from "../Button/ButtonInput";
 import { ViewModalSchema } from "../ValidationSchema";
 import {
@@ -38,6 +37,7 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
   const { physicians } = useSelector(
     (state) => state.root.regionPhysicianReducer,
   );
+  console.log("object", physicians);
   const { viewShiftData } = useSelector(
     (state) => state.root.schedulingReducer,
   );
@@ -147,11 +147,7 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
             <MenuItem value="all">All Regions</MenuItem>
             {regions?.map((region, index) => {
               return (
-                <MenuItem
-                  key={index}
-                  value={region.region_name}
-                  onClick={() => dispatch(getPhysician(region.region_name))}
-                >
+                <MenuItem key={index} value={region.region_name}>
                   {region.region_name}
                 </MenuItem>
               );
@@ -163,7 +159,6 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
               fullWidth
               disabled
               label="Select Physician"
-              select
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.physician}
@@ -171,19 +166,7 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
                 formik.touched.physician && Boolean(formik.errors.physician)
               }
               helperText={formik.touched.physician && formik.errors.physician}
-            >
-              {physicians &&
-                physicians.map((physician) => {
-                  return (
-                    <MenuItem
-                      key={physician.sr_no}
-                      value={`${physician.physician_name}`}
-                    >
-                      {`${physician.physician_name}`}
-                    </MenuItem>
-                  );
-                })}
-            </FormInput>
+            />
           )}
           <Grid container gap={3}>
             <Grid item xs={12} md={12} lg={12}>

@@ -128,6 +128,7 @@ export const getLogs = createAsyncThunk(
     if (params.page) newParams.page = params.page;
     if (params.page_size) newParams.page_size = params.page_size;
     if (params.type_of_log) newParams.type_of_log = params.type_of_log;
+    if (params.sent_date) newParams.sent_date = params.sent_date;
     try {
       const response = await Axios.get(`${GETLOGS}`, {
         params: newParams,
