@@ -1,11 +1,13 @@
 import * as Yup from "yup";
 
 export const LoginSchema = Yup.object({
-  email: Yup.string().required("Username is required"),
+  email: Yup.string()
+    .email("Invalid email format")
+    .required("Email is required"),
   password: Yup.string()
     .matches(
       /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[0-9]).{8,16}$/,
-      "formate is invalid",
+      "Password format is invalid",
     )
-    .required("Password is required"),
+    .required("Password  is required"),
 });

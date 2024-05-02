@@ -177,6 +177,7 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                 value={formik.values.date}
                 error={formik.touched.date && Boolean(formik.errors.date)}
                 helperText={formik.touched.date && formik.errors.date}
+                min={new Date().toISOString().split("T")[0]}
               />
             </Grid>
             {/* <Grid item xs={6}> */}

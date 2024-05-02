@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../../Config/axios";
 import {
@@ -22,10 +24,10 @@ export const postConcludeCare = createAsyncThunk(
   "postConcludeCare",
   async (params, { rejectWithValue }) => {
     console.log("parmasss", params);
-    const { confirmationNo, formData } = params;
+    const { confirmation_no, formData } = params;
     try {
       const response = await Axios.post(
-        `${POSTCONCLUDECAREUPLOAD_API.replace(":confirmation_no", confirmationNo)}`,
+        `${POSTCONCLUDECAREUPLOAD_API.replace(":confirmation_no", confirmation_no)}`,
         formData,
         {
           headers: {

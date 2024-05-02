@@ -29,6 +29,7 @@ import {
   getSearchRecords,
 } from "../../../redux/records/recordsApi";
 import { toast } from "react-toastify";
+import { exportRecord } from "../../../redux/export/exportApi";
 
 const initialValues = {
   request_status: "",
@@ -121,6 +122,29 @@ const SearchRecords = () => {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+  const exportFunction = () => {
+    dispatch(exportRecord())
+      .then((response) => {
+        if (response.type === "exportRecord/fulfilled") {
+          const blob = new Blob([response.payload], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          });
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `All-patients.xlsx`;
+          document.body.appendChild;
+          link.click();
+          window.URL.revokeObjectURL(url);
+          link.remove();
+        } else {
+          console.error("File download failed.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
+  };
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -134,6 +158,7 @@ const SearchRecords = () => {
                 name="Export Data To Excel"
                 variant="contained"
                 startIcon={<ExitToAppOutlinedIcon />}
+                onClick={exportFunction}
               />
             </Box>
             <Paper className="searchrecord-full-paper">

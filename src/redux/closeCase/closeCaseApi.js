@@ -25,17 +25,9 @@ export const getCloseCase = createAsyncThunk(
 export const putCloseCase = createAsyncThunk(
   "putCloseCase",
   async (params, { rejectWithValue }) => {
-    const { confirmationNo, formData } = params;
     try {
       const response = await Axios.put(
-        `${PUTCLOSECASE_API.replace(":confirmation_no", confirmationNo)}`,
-        formData,
-
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
+        `${PUTCLOSECASE_API.replace(":confirmation_no", params)}`,
       );
       return response?.data;
     } catch (error) {
@@ -47,19 +39,11 @@ export const putCloseCase = createAsyncThunk(
 export const postCloseCase = createAsyncThunk(
   "postCloseCase",
   async (params, { rejectWithValue }) => {
-    const { firstname, lastname, dob, mobile_no, email, confirmation_no } =
-      params;
-
+    const { confirmation_no } = params;
+    console.log("par", confirmation_no);
     try {
-      const response = await Axios.post(
+      const response = await Axios.put(
         `${POSTCLOSECASE_API.replace(":confirmation_no", confirmation_no)}`,
-        {
-          firstname,
-          lastname,
-          dob,
-          mobile_no,
-          email,
-        },
       );
       return response?.data;
     } catch (error) {

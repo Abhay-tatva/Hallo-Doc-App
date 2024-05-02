@@ -34,14 +34,12 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
   const dispatch = useDispatch();
 
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
-  const { physicians } = useSelector(
-    (state) => state.root.regionPhysicianReducer,
-  );
-  console.log("object", physicians);
+  // const { physicians } = useSelector(
+  //   (state) => state.root.regionPhysicianReducer,
+  // );
   const { viewShiftData } = useSelector(
     (state) => state.root.schedulingReducer,
   );
-
   const { myScheduleViewShiftData } = useSelector(
     (state) => state.root.myScheduleReducer,
   );
@@ -57,6 +55,14 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
     },
     enableReinitialize: true,
   });
+
+  const checkShift = (shiftDate) => {
+    const today = new Date();
+    const shiftDateObj = new Date(shiftDate);
+    today.setHours(0, 0, 0, 0);
+    shiftDateObj.setHours(0, 0, 0, 0);
+    return shiftDateObj < today;
+  };
 
   useEffect(() => {
     if (accountType === "admin") {
@@ -213,59 +219,61 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
               helperText={formik.touched.endTime && formik.errors.endTime}
             />
           </Box>
-          <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button
-              name="Return"
-              variant="contained"
-              onClick={() =>
-                dispatch(putReturnShift(viewShiftData.shift_id)).then(
-                  (response) => {
-                    if (response.type === "putReturnShift/fulfilled") {
-                      toast.success("Status Update Successfully");
-                      handleClose();
-                      dispatch(getProviderShift({ region: "all" }));
-                    }
-                  },
-                )
-              }
-            />
-            <Button
-              name={isDisabled ? "Edit" : "Save"}
-              onClick={
-                isDisabled ? () => setIsDisabled(false) : () => handleSave()
-              }
-            />
-            <Button
-              name="Delete"
-              variant="contained"
-              color="error"
-              onClick={() => {
-                if (accountType === "admin") {
-                  dispatch(deleteShift(viewShiftData.shift_id)).then(
+          {!checkShift(formik.values.date) ? (
+            <Box display="flex" justifyContent="flex-end" gap={2}>
+              <Button
+                name="Return"
+                variant="contained"
+                onClick={() =>
+                  dispatch(putReturnShift(viewShiftData.shift_id)).then(
                     (response) => {
-                      if (response.type === "deleteShift/fulfilled") {
-                        toast.success("shift Deleted Successfully");
-                        setIsDisabled(true);
+                      if (response.type === "putReturnShift/fulfilled") {
+                        toast.success("Status Update Successfully");
                         handleClose();
                         dispatch(getProviderShift({ region: "all" }));
                       }
                     },
-                  );
-                } else {
-                  dispatch(deleteShift(myScheduleViewShiftData.shift_id)).then(
-                    (response) => {
+                  )
+                }
+              />
+              <Button
+                name={isDisabled ? "Edit" : "Save"}
+                onClick={
+                  isDisabled ? () => setIsDisabled(false) : () => handleSave()
+                }
+              />
+              <Button
+                name="Delete"
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  if (accountType === "admin") {
+                    dispatch(deleteShift(viewShiftData.shift_id)).then(
+                      (response) => {
+                        if (response.type === "deleteShift/fulfilled") {
+                          toast.success("shift Deleted Successfully");
+                          setIsDisabled(true);
+                          handleClose();
+                          dispatch(getProviderShift({ region: "all" }));
+                        }
+                      },
+                    );
+                  } else {
+                    dispatch(
+                      deleteShift(myScheduleViewShiftData.shift_id),
+                    ).then((response) => {
                       if (response.type === "deleteShift/fulfilled") {
                         toast.success("shift Deleted Successfully");
                         setIsDisabled(true);
                         handleClose();
                         dispatch(getMySchedule());
                       }
-                    },
-                  );
-                }
-              }}
-            />
-          </Box>
+                    });
+                  }
+                }}
+              />
+            </Box>
+          ) : null}
         </Box>
       </form>
     </BasicModal>

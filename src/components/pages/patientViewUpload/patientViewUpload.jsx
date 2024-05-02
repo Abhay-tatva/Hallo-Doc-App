@@ -44,7 +44,7 @@ const PatientViewUpload = () => {
   const { patientViewData } = useSelector(
     (state) => state.root.patientViewUploadReducer,
   );
-  console.log(" patient data", patientViewData);
+  console.log("patient", patientViewData);
   const rows = patientViewData?.documents;
   const { confirmationNo, patient_name } = patientViewData;
 
@@ -168,7 +168,33 @@ const PatientViewUpload = () => {
   };
 
   const handleDownloadAll = () => {
-    dispatch(downloadAll(confirmationNo));
+    const confirmationNumber = patientViewData?.confirmationNo;
+    const documentIds = selected;
+    dispatch(downloadAll({ confirmationNumber, documentIds })).then(
+      (response) => {
+        if (response.type === "downloadAll/fulfilled") {
+          const blob = new Blob([response.payload], {
+            type: "application/zip",
+          });
+
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, `${documentIds}.zip`);
+          } else {
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `downloaded-files.zip`;
+            document.body.appendChild(link);
+            link.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+          }
+          // toast.success(response.payload.message);
+        } else {
+          // toast.error("No files selected!");
+        }
+      },
+    );
   };
 
   return (

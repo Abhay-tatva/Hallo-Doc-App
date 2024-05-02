@@ -3,9 +3,6 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import { Box } from "@mui/material";
-// import { useDispatch, useSelector } from "react-redux";
-// import { typeOfCare } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
-// import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 import { Button } from "../Button/ButtonInput";
 import { useDispatch, useSelector } from "react-redux";
 import { putTypeOfCare } from "../../redux/Provider Site/Encounter/encounterApi";
@@ -14,9 +11,7 @@ import { physicianCount } from "../../redux/Provider Site/countApi/countApi";
 const TypeOfCareModal = ({ open, handleClose }) => {
   const [selectedType, setSelectedType] = useState("");
   const dispatch = useDispatch();
-  //   const { id } = useSelector((state) => state.root.patientName);
-  const state = useSelector((state) => state.root.newStateReducer);
-  const rows = state?.data?.data?.[0];
+  const { confirmation_no } = useSelector((state) => state.root.commonReducer);
 
   return (
     <Modal open={open} handleClose={handleClose} header="Select Type Of Care">
@@ -52,13 +47,14 @@ const TypeOfCareModal = ({ open, handleClose }) => {
           onClick={() => {
             dispatch(
               putTypeOfCare({
-                confirmation_no: rows.confirmation_no,
+                confirmation_no,
                 type_of_care: selectedType,
               }),
             ).then((response) => {
               if (response.type === "putTypeOfCare/fulfilled") {
                 dispatch(physicianCount());
                 handleClose();
+                setSelectedType("");
               }
             });
           }}

@@ -105,6 +105,7 @@ export const GETACCESSLIST_API = "/commonroute/accesses";
 export const SINGLEEXPORT_API = "/commonroute/export_single";
 
 export const EXPORTALL_API = "/commonroute/export_all";
+export const EXPORTRECORD_API = "/commonroute/export_records";
 
 // .................................Provider Api...............................................
 export const GETPROVIDERINFORMATION_API = "/admin/providermenu/provider_list";

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Container,
@@ -24,6 +26,11 @@ import {
   getConcludeCare,
   postConcludeCare,
 } from "../../../redux/Provider Site/concludeCare/concludeCareApi";
+import { singleDelete } from "../../../redux/deleteCase/deleteApi";
+import { singleDownload } from "../../../redux/downloadCase/downloadApi";
+// import { singleDownload } from "../../../redux/downloadCase/downloadApi";
+// import { singleDelete } from "../../../redux/deleteCase/deleteApi";
+// import { viewUpload } from "../../../redux/viewUpload/viewUploadApi";
 
 const ConcludeCare = () => {
   const navigate = useNavigate();
@@ -32,71 +39,72 @@ const ConcludeCare = () => {
   const [selectedFile, setSelectedFile] = useState({});
   const selector = useSelector((state) => state.root.viewuploadReducer);
   const rows = selector?.uploadFile[0]?.documents;
-  const { confirmationNo, physicianData } = selector.uploadFile[0];
+  const { confirmation_no, physicianData } = selector.uploadFile[0];
+  console.log("confirm", selector);
   const handleUpload = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", selectedFile);
-    dispatch(postConcludeCare({ confirmationNo, formData })).then(
+    dispatch(postConcludeCare({ confirmation_no, formData })).then(
       (response) => {
         if (response.type === "postConcludeCare/fulfilled") {
-          dispatch(getConcludeCare(confirmationNo));
+          dispatch(getConcludeCare(confirmation_no));
         }
       },
     );
     setSelectedFile(null);
   };
   const handleDownload = (documentId) => {
-    // dispatch(
-    //   singleDownload({
-    //     confirmation_no: confirmationNo,
-    //     document_id: documentId,
-    //   }),
-    // )
-    //   .then((response) => {
-    //     if (response.type === "singleDownload/fulfilled") {
-    //       // Assuming the binary data you received is an image,
-    //       // we set the MIME type to 'image/jpeg' for a JPG file.
-    //       const blob = new Blob([response.payload], {
-    //         type: "image/png",
-    //       });
-    //       // Create a new link element for downloading
-    //       const downloadLink = document.createElement("a");
-    //       document.body.appendChild(downloadLink);
-    //       const url = URL.createObjectURL(blob);
-    //       // Set the download attribute with a filename
-    //       downloadLink.href = url;
-    //       downloadLink.download = `downloaded-image.png`;
-    //       // Programmatically click the link to trigger the download
-    //       downloadLink.click();
-    //       // Revoke the object URL and remove the link element after the download
-    //       setTimeout(() => {
-    //         URL.revokeObjectURL(url);
-    //         document.body.removeChild(downloadLink);
-    //       }, 100);
-    //       // Optionally, display a success message
-    //       // toast.success("Image downloaded successfully.");
-    //     } else {
-    //       // Handle any other action types like errors
-    //       console.error("Image download failed.");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error downloading image:", error);
-    //   });
+    dispatch(
+      singleDownload({
+        confirmation_no,
+        document_id: documentId,
+      }),
+    )
+      .then((response) => {
+        if (response.type === "singleDownload/fulfilled") {
+          // Assuming the binary data you received is an image,
+          // we set the MIME type to 'image/jpeg' for a JPG file.
+          const blob = new Blob([response.payload], {
+            type: "image/png",
+          });
+          // Create a new link element for downloading
+          const downloadLink = document.createElement("a");
+          document.body.appendChild(downloadLink);
+          const url = URL.createObjectURL(blob);
+          // Set the download attribute with a filename
+          downloadLink.href = url;
+          downloadLink.download = `downloaded-image.png`;
+          // Programmatically click the link to trigger the download
+          downloadLink.click();
+          // Revoke the object URL and remove the link element after the download
+          setTimeout(() => {
+            URL.revokeObjectURL(url);
+            document.body.removeChild(downloadLink);
+          }, 100);
+          // Optionally, display a success message
+          // toast.success("Image downloaded successfully.");
+        } else {
+          // Handle any other action types like errors
+          console.error("Image download failed.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error downloading image:", error);
+      });
   };
 
   const handleDelete = (id) => {
-    // dispatch(
-    //   singleDelete({
-    //     confirmation_no: confirmationNo,
-    //     document_id: id,
-    //   }),
-    // ).then((response) => {
-    //   if (response.type === "singleDelete/fulfilled") {
-    //     dispatch(viewUpload(confirmationNo));
-    //   }
-    // });
+    dispatch(
+      singleDelete({
+        confirmation_no,
+        document_id: id,
+      }),
+    ).then((response) => {
+      if (response.type === "singleDelete/fulfilled") {
+        dispatch(getConcludeCare(confirmation_no));
+      }
+    });
   };
   return (
     <>
@@ -182,7 +190,7 @@ const ConcludeCare = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows?.map((row) => (
+                  {rows?.documents?.map((row) => (
                     <TableRow key={row.document_id} hover>
                       <TableCell>{row.document_path}</TableCell>
                       {/* <TableCell>{row.createdAt}</TableCell> */}

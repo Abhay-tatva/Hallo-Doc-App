@@ -26,6 +26,7 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
 
   const formik = useFormik({
     initialValues: {
+      isAdmin: accountType === "admin",
       searchRegion: "",
       description: "",
       physician: "",
@@ -59,6 +60,7 @@ const TransferModal = ({ open, handleClose, handleOpen }) => {
       handleClose();
     },
   });
+  console.log("formik", formik);
 
   return (
     <BasicModal

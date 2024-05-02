@@ -1,9 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./providerCall.css";
 import { Container } from "@mui/system";
-import { Box, Grid, MenuItem, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  InputAdornment,
+  MenuItem,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { Button } from "../../Button/ButtonInput";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { useNavigate } from "react-router-dom";
 import { FormInput } from "../../TextField/FormInput";
 import { AppRoutes } from "../../../constant/route";
@@ -12,6 +20,8 @@ import { flower, mountain } from "../../assests/images";
 import { getProviderOnCall } from "../../../redux/Scheduling/schedulingApi";
 
 const ProviderCall = () => {
+  const [additionalFilter, setAdditionalFilter] = useState("all");
+
   const navigate = useNavigate();
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const dispatch = useDispatch();
@@ -22,6 +32,10 @@ const ProviderCall = () => {
   useEffect(() => {
     dispatch(getProviderOnCall());
   }, [dispatch]);
+
+  const handleAdditionalFilterChange = (event) => {
+    setAdditionalFilter(event.target.value);
+  };
   return (
     <>
       <Box className="call-main-container">
@@ -45,15 +59,15 @@ const ProviderCall = () => {
               className="search-text drop-list"
               select
               placeholder="All Regions"
-              //   value={additionalFilter}
-              //   onChange={handleAdditionalFilterChange}
-              //   InputProps={{
-              //     startAdornment: (
-              //       <InputAdornment position="start">
-              //         <SearchOutlinedIcon />
-              //       </InputAdornment>
-              //     ),
-              //   }}
+              value={additionalFilter}
+              onChange={handleAdditionalFilterChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchOutlinedIcon />
+                  </InputAdornment>
+                ),
+              }}
             >
               <MenuItem value="all">All Regions</MenuItem>
               {regions.map((region, index) => {
@@ -67,7 +81,7 @@ const ProviderCall = () => {
             <Box display="flex" gap={2}>
               <Button
                 name="Calendar View"
-                // onClick={() => navigate(AppRoutes.PROVIDERCALL)}
+                onClick={() => navigate(AppRoutes.SCHEDULING)}
               ></Button>
               <Button
                 name="Shifts For Review"
