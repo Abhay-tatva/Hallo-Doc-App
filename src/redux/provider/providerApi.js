@@ -5,6 +5,7 @@ import {
   DELETEPROVIDER_API,
   GETPROVIDERINFORMATION_API,
   GETPROVIDERPHYSICIANDATA_API,
+  GETVIEWUPLOAD,
   POSTCONTACTPROVIDER_API,
   POSTCREATEPROVIDER_API,
   PROVIDEREDIT_API,
@@ -112,7 +113,6 @@ export const putProviderInfo = createAsyncThunk(
       });
       return response?.data;
     } catch (error) {
-      console.log("error", error);
       return rejectWithValue(error?.response);
     }
   },
@@ -214,6 +214,24 @@ export const putOnBoarding = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await Axios.put(PUTONBOARDING_API, params);
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const getViewUpload = createAsyncThunk(
+  "getViewUpload",
+  async (params, { rejectWithValue }) => {
+    const { userId, values } = params;
+    try {
+      const response = await Axios.get(
+        GETVIEWUPLOAD.replace(":user_id", userId),
+        {
+          params: values,
+        },
+      );
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

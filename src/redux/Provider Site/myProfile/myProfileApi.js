@@ -5,13 +5,8 @@ import Axios from "../../../Config/axios";
 export const putMyProfileRessPass = createAsyncThunk(
   "putMyProfileRessPass",
   async (params, { rejectWithValue }) => {
-    const { password } = params;
-    console.log("pass", params);
-
     try {
-      const response = await Axios.put(PUTMYPROFILERESSPASS, {
-        password,
-      });
+      const response = await Axios.put(PUTMYPROFILERESSPASS, params);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

@@ -47,7 +47,6 @@ const BlockHistory = () => {
   const { blockHistory } = useSelector((state) => state.root.recordsReducer);
 
   useEffect(() => setTableData(blockHistory.data), [blockHistory.data]);
-  console.log("table data", blockHistory);
 
   useEffect(() => {
     dispatch(
@@ -184,7 +183,23 @@ const BlockHistory = () => {
                 pt={2}
                 pb={2}
               >
-                <Button name="Clear" variant="outlined" />
+                <Button
+                  name="Clear"
+                  variant="outlined"
+                  onClick={(values) => {
+                    formik.resetForm();
+                    dispatch(
+                      getBlockHistory({
+                        page: pageNo,
+                        page_size: rowsPerPage,
+                        type_of_history: "blocked",
+                        name: values.name,
+                        email: values.email,
+                        phone_no: values.phone_no,
+                      }),
+                    );
+                  }}
+                />
                 <Button name="Search" type="submit" />
               </Box>
               <TableContainer sx={{ maxHeight: "none" }} component={Paper}>

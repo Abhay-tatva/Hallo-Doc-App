@@ -68,7 +68,6 @@ const ProvideProfile = ({
     },
     enableReinitialize: true,
   });
-  console.log(provideProfile);
 
   useEffect(() => {
     setInitialValues({
@@ -157,7 +156,6 @@ const ProvideProfile = ({
                   size="large"
                   startIcon={<CloudUploadOutlinedIcon />}
                   onClick={() => {
-                    console.log("userid", userId);
                     const formData = new FormData();
                     formData.append(
                       "profile_picture",

@@ -113,7 +113,11 @@ const Header = ({ isDarktheme, handleDarkMode }) => {
       <Box className="header-nav-links">
         <li>
           <NavLink
-            to={AppRoutes.DASHBOARD}
+            to={
+              accountType === "patient"
+                ? AppRoutes.MEDICALHISTORY
+                : AppRoutes.DASHBOARD
+            }
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Dashboard

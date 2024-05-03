@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   Box,
   Checkbox,
@@ -11,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import {
   deleteProvider,
+  getViewUpload,
   putOnBoarding,
 } from "../../../../redux/provider/providerApi";
 import { useNavigate } from "react-router-dom";
@@ -67,6 +70,57 @@ const OnBording = ({
       licDoc: licenceDocument || null,
     });
   }, [contractAgree, bgCheck, hippa, nonDisclosure, licenceDocument]);
+
+  const viewDownlaod = (name) => {
+    dispatch(
+      getViewUpload({
+        userId,
+        values: {
+          independent_contractor_agreement: name === "IndAggDoc",
+          background_check: name === "BacCheakDoc",
+          HIPAA: name === "HIPAA",
+          non_disclosure: name === "NonDisDoc",
+          licence_document: name === "LicDoc",
+        },
+      }),
+    )
+      .then((response) => {
+        if (response.type === "getViewUpload/fulfilled") {
+          // Assuming the binary data you received is an image,
+          // we set the MIME type to 'image/jpeg' for a JPG file.
+          const blob = new Blob([response.payload], {
+            type: "image/png",
+          });
+
+          // Create a new link element for downloading
+          const downloadLink = document.createElement("a");
+          document.body.appendChild(downloadLink);
+          const url = URL.createObjectURL(blob);
+
+          // Set the download attribute with a filename
+          downloadLink.href = url;
+          downloadLink.download = `downloaded-image.png`;
+
+          // Programmatically click the link to trigger the download
+          downloadLink.click();
+
+          // Revoke the object URL and remove the link element after the download
+          setTimeout(() => {
+            URL.revokeObjectURL(url);
+            document.body.removeChild(downloadLink);
+          }, 100);
+
+          // Optionally, display a success message
+          // toast.success("Image downloaded successfully.");
+        } else {
+          // Handle any other action types like errors
+          console.error("Image download failed.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error downloading image:", error);
+      });
+  };
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box
@@ -139,7 +193,9 @@ const OnBording = ({
                   document.getElementById("IndConAggFileInput").click()
                 }
               />
-              {formik.values.IndConAgg ? <Button name="View" /> : null}
+              {formik.values.IndConAgg ? (
+                <Button name="View" onClick={() => viewDownlaod("IndAggDoc")} />
+              ) : null}
             </Box>
             <Box display="flex" gap={2}>
               <FormControlLabel
@@ -159,7 +215,12 @@ const OnBording = ({
                   document.getElementById("BacCheckFileInput").click()
                 }
               />
-              {formik.values.BacCheak ? <Button name="View" /> : null}
+              {formik.values.BacCheak ? (
+                <Button
+                  name="View"
+                  onClick={() => viewDownlaod("BacCheakDoc")}
+                />
+              ) : null}
             </Box>
             <Box display="flex" gap={2}>
               <FormControlLabel
@@ -179,7 +240,9 @@ const OnBording = ({
                   document.getElementById("HIPAAFileInput").click()
                 }
               />
-              {formik.values.HIPAA ? <Button name="View" /> : null}
+              {formik.values.HIPAA ? (
+                <Button name="View" onClick={() => viewDownlaod("HIPAA")} />
+              ) : null}
             </Box>
             <Box display="flex" gap={2}>
               <FormControlLabel
@@ -199,7 +262,9 @@ const OnBording = ({
                   document.getElementById("NonDisAggFileInput").click()
                 }
               />
-              {formik.values.nonDisAgg ? <Button name="View" /> : null}
+              {formik.values.nonDisAgg ? (
+                <Button name="View" onClick={() => viewDownlaod("NonDisDoc")} />
+              ) : null}
             </Box>
             <Box display="flex" gap={2}>
               <FormControlLabel
@@ -219,7 +284,9 @@ const OnBording = ({
                   document.getElementById("LicenseDocFileInput").click()
                 }
               />
-              {formik.values.licDoc ? <Button name="View" /> : null}
+              {formik.values.licDoc ? (
+                <Button name="View" onClick={() => viewDownlaod("LicDoc")} />
+              ) : null}
             </Box>{" "}
           </>
         ) : (
@@ -236,7 +303,7 @@ const OnBording = ({
                 label="provider Agreement"
                 sx={{ width: "310px" }}
               />
-              <Button name="Upload" />
+              {contractAgree ? <Button name="view" /> : null}
               {/* {checked.provider ? <Button name="View" /> : null} */}
             </Box>
             <Box display="flex" gap={2}>
@@ -251,7 +318,7 @@ const OnBording = ({
                 label="HIPAA Compliance"
                 sx={{ width: "310px" }}
               />
-              <Button name="Upload" />
+              {hippa ? <Button name="view" /> : null}
               {/* {checked.HIPAA ? <Button name="View" /> : null} */}
             </Box>
           </>

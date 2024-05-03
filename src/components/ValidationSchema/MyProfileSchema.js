@@ -1,9 +1,16 @@
 import * as Yup from "yup";
 export const myProfileSchema = Yup.object({
+  isAdmin: Yup.boolean(),
   userName: Yup.string().required("Username is required"),
   password: Yup.string().required("Password is required"),
-  status: Yup.string().required("status  is required"),
-  role: Yup.string().required("Role  must be  required"),
+  status: Yup.string().when("isAdmin", {
+    is: true,
+    then: (schema) => schema.required("status  is required"),
+  }),
+  role: Yup.string().when("isAdmin", {
+    is: true,
+    then: (schema) => schema.required("Role  is required"),
+  }),
 });
 
 export const accountMyProfileSchema = Yup.object({

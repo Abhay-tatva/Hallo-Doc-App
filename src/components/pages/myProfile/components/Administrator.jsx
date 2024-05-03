@@ -216,16 +216,15 @@ const Administrator = ({
           <>
             <Button
               name="Save"
-              type="submit"
               variant="contained"
               onClick={() => {
-                console.log("console", administratorformik);
                 dispatch(
                   putMyProfile({
                     user_id: userId,
                     data: administratorformik.values,
                   }),
                 ).then((respons) => {
+                  console.log("object", respons);
                   if (respons.type === "putMyProfile/fulfilled") {
                     dispatch(getMyProfile(userId));
                   }

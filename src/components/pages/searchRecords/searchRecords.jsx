@@ -80,7 +80,7 @@ const SearchRecords = () => {
           request_status: values.request_status,
           patient_name: values.patient_name,
           email: values.email,
-          phrequest_typeone_no: values.request_type,
+          request_type: values.request_type,
           from_date_of_service: values.from_date_of_service,
           provider_name: values.provider_name,
           phone_no: values.phone_no,
@@ -181,8 +181,21 @@ const SearchRecords = () => {
                       formik.errors.request_status
                     }
                   >
-                    <MenuItem value="fullfill">fullfill</MenuItem>
-                    <MenuItem value="reject">reject</MenuItem>
+                    <MenuItem value="unassigned">Unassigned</MenuItem>
+                    <MenuItem value="assigned">Assigned</MenuItem>
+                    <MenuItem value="accepted">Accepted</MenuItem>
+                    <MenuItem value="md_on_route">md_on_route</MenuItem>
+                    <MenuItem value="md_on_site">md_on_site</MenuItem>
+                    <MenuItem value="closed">Closed</MenuItem>
+                    <MenuItem value="conclude">Conclude</MenuItem>
+                    <MenuItem value="blocked">Blocked</MenuItem>
+                    <MenuItem value="clear">Clear</MenuItem>
+                    <MenuItem value="cancelledbyadmin">
+                      Cancelled By Admin
+                    </MenuItem>
+                    <MenuItem value="cancelledbyprovider">
+                      Cancelled By Provider
+                    </MenuItem>
                   </FormInput>
                 </Grid>
                 <Grid item xs={12} md={3}>
@@ -205,24 +218,26 @@ const SearchRecords = () => {
                 <Grid item xs={12} md={3}>
                   <FormInput
                     label="select Request Type"
-                    name="phrequest_typeone_no"
+                    name="request_type"
                     fullWidth
                     select
-                    value={formik.values.phrequest_typeone_no}
+                    value={formik.values.request_type}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={
-                      formik.touched.phrequest_typeone_no &&
-                      Boolean(formik.errors.phrequest_typeone_no)
+                      formik.touched.request_type &&
+                      Boolean(formik.errors.request_type)
                     }
                     helperText={
-                      formik.touched.phrequest_typeone_no &&
-                      formik.errors.phrequest_typeone_no
+                      formik.touched.request_type && formik.errors.request_type
                     }
                   >
-                    <MenuItem>completed</MenuItem>
-                    <MenuItem>pending</MenuItem>
-                    <MenuItem>hold</MenuItem>
+                    <MenuItem value="new">New</MenuItem>
+                    <MenuItem value="active">Active</MenuItem>
+                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="conclude">Conclude</MenuItem>
+                    <MenuItem value="toclose">To Close</MenuItem>
+                    <MenuItem value="unpaid">Unpaid</MenuItem>
                   </FormInput>
                 </Grid>
                 <Grid item xs={12} md={3}>
@@ -319,7 +334,15 @@ const SearchRecords = () => {
                 gap={2}
                 mb={2}
               >
-                <Button variant="outlined">Clear</Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    formik.resetForm();
+                    dispatch(getSearchRecords({ page: 1, page_size: 10 }));
+                  }}
+                >
+                  Clear
+                </Button>
                 <Button variant="contained" type="submit">
                   Search
                 </Button>

@@ -14,9 +14,11 @@ import { putProviderResetPassword } from "../../../../redux/provider/providerApi
 import { putMyProfileRessPass } from "../../../../redux/Provider Site/myProfile/myProfileApi";
 
 const INITIAL_VALUES = {
+  isAdmin: true,
   userName: "",
   status: "",
   role: "",
+  password: "",
 };
 const Account = ({ userName, status, role, userId, name }) => {
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
@@ -53,7 +55,7 @@ const Account = ({ userName, status, role, userId, name }) => {
             }
           });
         }
-      } else {
+      } else if (name === "providerMyProfile") {
         dispatch(putMyProfileRessPass({ password: values.password }))
           .then((response) => {
             if (response.type === "putMyProfileRessPass/fulfilled") {
@@ -70,11 +72,12 @@ const Account = ({ userName, status, role, userId, name }) => {
   });
   useEffect(() => {
     setInitialValues({
+      isAdmin: accountType === "admin",
       userName: userName,
       status: status,
       role: role,
     });
-  }, [userName, status, role]);
+  }, [userName, status, role, accountType]);
 
   return (
     <form onSubmit={accountformik.handleSubmit}>

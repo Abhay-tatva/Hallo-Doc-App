@@ -30,7 +30,6 @@ export const putViewProfile = createAsyncThunk(
       state,
       zip,
     } = params;
-    console.log("params", params);
     try {
       const response = await Axios.put(`${PUTVIEWPROFILE}`, {
         firstname,

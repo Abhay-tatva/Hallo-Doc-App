@@ -23,6 +23,7 @@ const EditAccount = () => {
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
   const data = physicianData;
+  // console.log("data", data);
   const { username, status, role } = data.account_information;
   const {
     firstname,

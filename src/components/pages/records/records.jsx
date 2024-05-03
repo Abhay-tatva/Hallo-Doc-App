@@ -161,7 +161,23 @@ const Records = () => {
                 pt={2}
                 pb={2}
               >
-                <Button name="Clear" variant="outlined" />
+                <Button
+                  name="Clear"
+                  variant="outlined"
+                  onClick={(values) => {
+                    formik.resetForm();
+                    dispatch(
+                      getPatientHistory({
+                        page: pageNo,
+                        page_size: rowsPerPage,
+                        firstname: values.firstname,
+                        lastname: values.lastname,
+                        email: values.email,
+                        phone_no: values.phone_no,
+                      }),
+                    );
+                  }}
+                />
                 <Button name="Search" type="submit" />
               </Box>
               <TableContainer sx={{ maxHeight: "none" }} component={Paper}>

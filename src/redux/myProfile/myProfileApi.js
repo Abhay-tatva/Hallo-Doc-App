@@ -20,7 +20,10 @@ export const putMyProfile = createAsyncThunk(
   "putMyProfile",
   async (params, { rejectWithValue }) => {
     const { user_id, data } = params;
+    console.log("apraa", params);
+
     try {
+      console.log("Jay y6");
       const response = await Axios.put(`${PUTMYPROFILE_API}`, {
         user_id,
         firstname: data?.firstName,
@@ -33,8 +36,9 @@ export const putMyProfile = createAsyncThunk(
         city: data?.city,
         state: data?.state,
         zip: data?.zip?.toString(),
-        billing_mobile_no: data?.billNumber.toString(),
+        billing_mobile_no: data?.billNumber?.toString(),
       });
+      console.log("response", response);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

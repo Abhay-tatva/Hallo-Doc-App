@@ -56,11 +56,11 @@ const MyProfile = () => {
               userName={username}
               status={status}
               role={role}
-              userId={data.admin_user_id}
+              userId={data?.admin_user_id}
             />
             {/* ............................/ Administration Information............  */}
             <Administrator
-              userId={data.admin_user_id}
+              userId={data?.admin_user_id}
               firstName={firstname}
               lastName={lastname}
               email={email}
@@ -71,7 +71,7 @@ const MyProfile = () => {
             {/* .............................Mailing and biling Information......................... */}
             <Address
               name="myProfile"
-              userId={data.admin_user_id}
+              userId={data?.admin_user_id}
               add1={address_1}
               add2={address_2}
               city={city}

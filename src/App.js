@@ -54,12 +54,19 @@ import SomeOneElse from "./components/pages/submitInformation/someOneElse";
 import PatientViewUpload from "./components/pages/patientViewUpload/patientViewUpload";
 import Profile from "./components/pages/profile/profile";
 import Agreement from "./components/pages/agreement/agreement";
+import { AdminAuth } from "./adminAuth";
+import { PhysicianAuth } from "./physicianAuth";
+import { AdminPhysicianAuth } from "./adminPhysicianAuth";
+import { PatientAuth } from "./patientAuth";
+import { useSelector } from "react-redux";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
   const handleDarkMode = () => {
     setIsDarkTheme(!isDarktheme);
   };
+  const { accountType } = useSelector((state) => state.root.loginReducer);
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={halloDocTheme(isDarktheme)}>
@@ -74,82 +81,123 @@ function App() {
             />
             <Route path={AppRoutes.RESETPASS} element={<ResetPass />} />
           </Route>
-          <Route element={<RequireAuth />}>
-            <Route
-              element={
-                <Header
-                  isDarktheme={isDarktheme}
-                  handleDarkMode={handleDarkMode}
+          <Route
+            element={
+              <Header
+                isDarktheme={isDarktheme}
+                handleDarkMode={handleDarkMode}
+              />
+            }
+          >
+            <Route element={<RequireAuth />}>
+              {/* Only admin can access */}
+              <Route element={<AdminAuth />}>
+                <Route path={AppRoutes.CLOSECASE} element={<CloseCase />} />
+                <Route path={AppRoutes.MYPROFILE} element={<MyProfile />} />
+                <Route path={AppRoutes.PROVIDER} element={<Provide />} />
+                <Route path={AppRoutes.EDITACCOUNT} element={<EditAccount />} />
+                <Route
+                  path={AppRoutes.ACCESSACCOUNT}
+                  element={<AccessAccount />}
                 />
-              }
-            >
-              <Route path={AppRoutes.DASHBOARD} element={<Dashboard />} />
-              <Route
-                path={AppRoutes.RESERVATION}
-                element={<ViewReservation />}
-              />
-              <Route path={AppRoutes.AGREEMENT} element={<Agreement />} />
-              <Route path={AppRoutes.NOTES} element={<ViewNotes />} />
-              <Route path={AppRoutes.VIEWUPLOAD} element={<ViewUpload />} />
-              <Route path={AppRoutes.ORDER} element={<Order />} />
-              <Route path={AppRoutes.CLOSECASE} element={<CloseCase />} />
-              <Route path={AppRoutes.MYPROFILE} element={<MyProfile />} />
-              <Route
-                path={AppRoutes.PROVIDERMYPROFILE}
-                element={<ProviderMyProfile />}
-              />
-              <Route path={AppRoutes.PROVIDER} element={<Provide />} />
-              <Route path={AppRoutes.EDITACCOUNT} element={<EditAccount />} />
-              <Route
-                path={AppRoutes.ACCESSACCOUNT}
-                element={<AccessAccount />}
-              />
-              <Route path={AppRoutes.CREATEACCESS} element={<CreateAccess />} />
-              <Route path={AppRoutes.SCHEDULING} element={<Scheduling />} />
-              <Route
-                path={AppRoutes.REQUESTED_SHIFTS}
-                element={<RequestedShifts />}
-              />
-              <Route path={AppRoutes.USERACCESS} element={<UserAccess />} />
-              <Route path={AppRoutes.PROVIDERCALL} element={<ProviderCall />} />
-              <Route
-                path={AppRoutes.CREATEPROVIDER}
-                element={<CreateProvider />}
-              />
-              <Route
-                path={AppRoutes.PROVIDERLOCATION}
-                element={<ProviderLocation />}
-              />
-              <Route path={AppRoutes.PARTNERS} element={<Partners />} />
-              <Route path={AppRoutes.ADDBUSSINESS} element={<AddBussiness />} />
-              <Route path={AppRoutes.PATIENTHISTORY} element={<Records />} />
-              <Route
-                path={AppRoutes.PATIENTRECORDS}
-                element={<PatientRecords />}
-              />
-              <Route
-                path={AppRoutes.SEARCHRECORDS}
-                element={<SearchRecords />}
-              />
-              <Route path={AppRoutes.EMAILLOGS} element={<EmailLogs />} />
-              <Route path={AppRoutes.SMSLOGS} element={<SmsLogs />} />
-              <Route path={AppRoutes.BLOCKHISTORY} element={<BlockHistory />} />
-              <Route
-                path={AppRoutes.CREATEREQUEST}
-                element={<CreateRequest />}
-              />
-              <Route path={AppRoutes.CONCLUDECARE} element={<ConcludeCare />} />
-              <Route
-                path={AppRoutes.ENCOUNTERFORM}
-                element={<EncounterForm />}
-              />
-              <Route path={AppRoutes.MYSCHEDULE} element={<MySchedule />} />
-              <Route
-                path={AppRoutes.PATIENTVIEWUPLOAD}
-                element={<PatientViewUpload />}
-              />
-              <Route path={AppRoutes.PROFILE} element={<Profile />} />
+                <Route
+                  path={AppRoutes.CREATEACCESS}
+                  element={<CreateAccess />}
+                />
+                <Route path={AppRoutes.SCHEDULING} element={<Scheduling />} />
+                <Route
+                  path={AppRoutes.REQUESTED_SHIFTS}
+                  element={<RequestedShifts />}
+                />
+                <Route path={AppRoutes.USERACCESS} element={<UserAccess />} />
+                <Route
+                  path={AppRoutes.PROVIDERCALL}
+                  element={<ProviderCall />}
+                />
+                <Route
+                  path={AppRoutes.CREATEPROVIDER}
+                  element={<CreateProvider />}
+                />
+                <Route
+                  path={AppRoutes.PROVIDERLOCATION}
+                  element={<ProviderLocation />}
+                />
+                <Route path={AppRoutes.PARTNERS} element={<Partners />} />
+                <Route
+                  path={AppRoutes.ADDBUSSINESS}
+                  element={<AddBussiness />}
+                />
+                <Route path={AppRoutes.PATIENTHISTORY} element={<Records />} />
+                <Route
+                  path={AppRoutes.PATIENTRECORDS}
+                  element={<PatientRecords />}
+                />
+                <Route
+                  path={AppRoutes.SEARCHRECORDS}
+                  element={<SearchRecords />}
+                />
+                <Route path={AppRoutes.EMAILLOGS} element={<EmailLogs />} />
+                <Route path={AppRoutes.SMSLOGS} element={<SmsLogs />} />
+                <Route
+                  path={AppRoutes.BLOCKHISTORY}
+                  element={<BlockHistory />}
+                />
+              </Route>
+
+              {/* Only Physician can access */}
+              <Route element={<PhysicianAuth />}>
+                <Route
+                  path={AppRoutes.PROVIDERMYPROFILE}
+                  element={<ProviderMyProfile />}
+                />
+                <Route
+                  path={AppRoutes.CONCLUDECARE}
+                  element={<ConcludeCare />}
+                />
+                <Route path={AppRoutes.MYSCHEDULE} element={<MySchedule />} />
+              </Route>
+
+              {/* Only Admin and Physician both are access */}
+              <Route element={<AdminPhysicianAuth />}>
+                <Route path={AppRoutes.DASHBOARD} element={<Dashboard />} />
+                <Route
+                  path={AppRoutes.RESERVATION}
+                  element={<ViewReservation />}
+                />
+                <Route path={AppRoutes.NOTES} element={<ViewNotes />} />
+                <Route path={AppRoutes.VIEWUPLOAD} element={<ViewUpload />} />
+                <Route path={AppRoutes.ORDER} element={<Order />} />
+                <Route
+                  path={AppRoutes.CREATEREQUEST}
+                  element={<CreateRequest />}
+                />
+                <Route
+                  path={AppRoutes.ENCOUNTERFORM}
+                  element={<EncounterForm />}
+                />
+              </Route>
+
+              {/* Only patieent can access */}
+              <Route element={<PatientAuth />}>
+                {console.log("object", accountType)}
+                <Route
+                  path={AppRoutes.MEDICALHISTORY}
+                  element={<MedicalHistory />}
+                />
+                <Route
+                  path={AppRoutes.PATIENTVIEWUPLOAD}
+                  element={<PatientViewUpload />}
+                />
+                <Route path={AppRoutes.PROFILE} element={<Profile />} />
+
+                <Route
+                  path={AppRoutes.MESUBMIT}
+                  element={<MeSubmitInformation />}
+                />
+                <Route path={AppRoutes.SOMEONEELSE} element={<SomeOneElse />} />
+              </Route>
             </Route>
+            <Route path={AppRoutes.AGREEMENT} element={<Agreement />} />
             <Route path={AppRoutes.PATIENTSITE} element={<PatientPage />} />
             <Route path={AppRoutes.SUBMITREQUEST} element={<SubmitRequest />} />
             <Route path={AppRoutes.PATIENTCREATE} element={<CreatePatient />} />
@@ -159,15 +207,6 @@ function App() {
             />
             <Route path={AppRoutes.CONCIERGE} element={<ConciergePage />} />
             <Route path={AppRoutes.BUSINESS} element={<BusinessPage />} />
-            <Route
-              path={AppRoutes.MEDICALHISTORY}
-              element={<MedicalHistory />}
-            />
-            <Route
-              path={AppRoutes.MESUBMIT}
-              element={<MeSubmitInformation />}
-            />
-            <Route path={AppRoutes.SOMEONEELSE} element={<SomeOneElse />} />
           </Route>
         </Routes>
       </ThemeProvider>

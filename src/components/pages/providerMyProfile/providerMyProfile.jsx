@@ -59,6 +59,12 @@ const ProviderMyProfile = () => {
   const { address_1, address_2, city, state, zip, billing_mobile_no } =
     myProfilePhysicianData.mailing_billing_information;
 
+  const IndeDoc = myProfilePhysicianData?.documents?.documents?.filter(
+    (document) => document.document_name === "independent_contractor_agreement",
+  );
+  const hippa = myProfilePhysicianData?.documents?.documents?.filter(
+    (document) => document.document_name === "HIPAA",
+  );
   return (
     <>
       <Box className="main-profile-container">
@@ -89,7 +95,7 @@ const ProviderMyProfile = () => {
               />
             </Box>
             {/* ............................/ Account Information............  */}
-            <Account name="myProfile" userName={username} />
+            <Account userName={username} name="providerMyProfile" />
             {/* ............................/ Administration Information............  */}
             <PhysiciansInformation
               userId={myProfilePhysicianData?.admin_user_id}
@@ -120,7 +126,11 @@ const ProviderMyProfile = () => {
                 // adminNotes={admin_notes}
               />
               <Divider sx={{ backgroundColor: "black" }} />
-              <OnBording />
+              <OnBording
+                userId={myProfilePhysicianData?.admin_user_id}
+                contractAgree={IndeDoc?.[0]}
+                hippa={hippa?.[0]}
+              />
             </>
           </Paper>
         </Container>

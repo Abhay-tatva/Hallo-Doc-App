@@ -26,8 +26,13 @@ const LoginPage = () => {
   const onSubmit = (values) => {
     dispatch(userLogin(values)).then((response) => {
       if (response.type === "userLogin/fulfilled") {
+        console.log(response);
         toast.success("You are login Successfully");
-        navigate(AppRoutes.DASHBOARD);
+        if (response.payload.type_of_user === "patient") {
+          navigate(AppRoutes.MEDICALHISTORY);
+        } else {
+          navigate(AppRoutes.DASHBOARD);
+        }
       } else {
         toast.error("Invalid email or password");
       }
