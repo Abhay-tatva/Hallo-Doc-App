@@ -26,10 +26,11 @@ import { getLogs } from "../../../redux/records/recordsApi";
 import { useFormik } from "formik";
 
 const initialValues = {
-  reciverName: "",
   email: "",
   createDate: "",
   sendate: "",
+  searchByRole: "",
+  reciverName: "",
 };
 const EmailLogs = () => {
   const [pageNo, setPageNo] = useState(1);
@@ -49,14 +50,16 @@ const EmailLogs = () => {
           page_size: rowsPerPage,
           type_of_log: "email",
           sent_date: values.sendate,
-          // lastname: values.lastname,
-          // email: values.email,
+          search_by_role: values.searchByRole,
+          receiver_name: values.reciverName,
+          email_id: values.email,
           // phone_no: values.phone_no,
         }),
       );
       onSubmitProps.resetForm();
     },
   });
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
     if (newPage > page) setPageNo(pageNo + 1);
