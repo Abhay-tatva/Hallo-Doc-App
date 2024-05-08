@@ -18,7 +18,7 @@ import userAccessSlice from "./userAccessSlice";
 import recordsSlice from "./recordsSlice";
 import partnersSlice from "./partnersSlice";
 import schedulingSlice from "./schedulingSlice";
-import encounterSlice from "./physicianSlice/encounterSlice";
+// import encounterSlice from "./physicianSlice/encounterSlice";
 import physicianMyProfileSlice from "./physicianSlice/physicianMyProfileSlice";
 import myScheduleSlice from "./physicianSlice/myScheduleSlice";
 import medicalHistorySlice from "./patientSlice/medicalHistorySlice";
@@ -46,7 +46,7 @@ export const rootReducer = combineReducers({
   partnersReducer: partnersSlice,
   schedulingReducer: schedulingSlice,
   // .................................physican SixteenMp............................
-  encounterReducer: encounterSlice,
+  // encounterReducer: encounterSlice,
   physicanMyProfileReducer: physicianMyProfileSlice,
   myScheduleReducer: myScheduleSlice,
 

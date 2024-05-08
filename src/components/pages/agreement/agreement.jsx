@@ -22,8 +22,8 @@ const Agreement = () => {
     dispatch(agreement(confirmation_no))
       .then((response) => {
         if (response.type === "agreement/fulfilled") {
-          navigate(AppRoutes.LOGIN);
           toast.success("Agreement sent successfully...");
+          navigate(AppRoutes.LOGIN);
         }
       })
       .catch((error) => {

@@ -8,6 +8,7 @@ import {
   GETLOGS,
   GETPATIENRECORDS_API,
   GETPATIENTHISTORY_API,
+  GETROLES,
   GETSEARCHRECORD_API,
   PUTUNBLOCKHISTORY_API,
 } from "../../constant/apis";
@@ -124,7 +125,6 @@ export const getLogs = createAsyncThunk(
   "getLogs",
   async (params, { rejectWithValue }) => {
     const newParams = {};
-
     if (params.page) newParams.page = params.page;
     if (params.page_size) newParams.page_size = params.page_size;
     if (params.type_of_log) newParams.type_of_log = params.type_of_log;
@@ -136,6 +136,18 @@ export const getLogs = createAsyncThunk(
       const response = await Axios.get(`${GETLOGS}`, {
         params: newParams,
       });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const getRoles = createAsyncThunk(
+  "getRoles",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.get(`${GETROLES}`);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

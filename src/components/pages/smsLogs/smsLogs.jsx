@@ -22,8 +22,17 @@ import { FormInput } from "../../TextField/FormInput";
 import "./smsLogs.css";
 import { columns } from "../../../constant/smsLogs";
 import { useDispatch, useSelector } from "react-redux";
-import { getLogs } from "../../../redux/records/recordsApi";
+import { getLogs, getRoles } from "../../../redux/records/recordsApi";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 
+const initialValues = {
+  email: "",
+  createDate: "",
+  sendate: "",
+  searchByRole: "",
+  reciverName: "",
+};
 const SmsLogs = () => {
   const [pageNo, setPageNo] = useState(1);
 
@@ -31,16 +40,34 @@ const SmsLogs = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { logs } = useSelector((state) => state.root.recordsReducer);
+  const { rolesDate } = useSelector((state) => state.root.recordsReducer);
 
   useEffect(() => setTableData(logs.data), [logs.data]);
-
   useEffect(() => {
-    dispatch(
-      getLogs({ page: pageNo, page_size: rowsPerPage, type_of_log: "sms" }),
-    );
-  }, [dispatch, pageNo, rowsPerPage]);
+    dispatch(getRoles());
+  }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit: (values, onSubmitProps) => {
+      dispatch(
+        getLogs({
+          page: pageNo,
+          page_size: rowsPerPage,
+          type_of_log: "email",
+          sent_date: values.sendate,
+          search_by_role: values.searchByRole,
+          receiver_name: values.reciverName,
+          email_id: values.email,
+          // phone_no: values.phone_no,
+        }),
+      );
+      onSubmitProps.resetForm();
+    },
+  });
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -54,7 +81,7 @@ const SmsLogs = () => {
   };
   return (
     <>
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <Box className="email-main-conatiner">
           <Container maxWidth="90%" className="email-wrapper-container">
             <Box display="flex" justifyContent="space-between " mb={2}>
@@ -65,6 +92,7 @@ const SmsLogs = () => {
                 name="back"
                 variant="outlined"
                 startIcon={<ArrowBackIosOutlinedIcon />}
+                onClick={() => navigate(-1)}
               />
             </Box>
             <Paper className="email-full-paper">
@@ -75,22 +103,47 @@ const SmsLogs = () => {
                     name="searchByRole"
                     fullWidth
                     select
+                    onChange={(e) =>
+                      formik.setFieldValue("searchByRole", e.target.value)
+                    }
+                    onBlur={formik.handleBlur}
+                    value={formik.values.searchByRole}
                   >
-                    <MenuItem id="all">All</MenuItem>
-                    <MenuItem id="patient">Patient</MenuItem>
-                    <MenuItem id="doctor">Doctor</MenuItem>
-                    <MenuItem id="physician">Physician</MenuItem>
+                    {rolesDate?.map((role) => (
+                      <MenuItem key={role.role_id} value={role.role_name}>
+                        {role.role_name}
+                      </MenuItem>
+                    ))}
                   </FormInput>
                 </Grid>
                 <Grid item xs={12} md={2}>
                   <FormInput
                     label="Receiver Name"
-                    name="receiverName"
+                    name="reciverName"
                     fullWidth
+                    value={formik.values.reciverName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.reciverName &&
+                      Boolean(formik.errors.reciverName)
+                    }
+                    helperText={
+                      formik.touched.reciverName && formik.errors.reciverName
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  <FormInput label="Email Id" name="emaiId" fullWidth />
+                  <FormInput
+                    label="Email Id"
+                    name="email"
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
                 </Grid>
                 <Grid item xs={12} md={2}>
                   <FormInput
@@ -98,6 +151,16 @@ const SmsLogs = () => {
                     name="createDate"
                     fullWidth
                     type="date"
+                    value={formik.values.createDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.createDate &&
+                      Boolean(formik.errors.createDate)
+                    }
+                    helperText={
+                      formik.touched.createDate && formik.errors.createDate
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={2}>
@@ -106,12 +169,39 @@ const SmsLogs = () => {
                     name="sendate"
                     fullWidth
                     type="date"
+                    value={formik.values.sendate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.sendate && Boolean(formik.errors.sendate)
+                    }
+                    helperText={formik.touched.sendate && formik.errors.sendate}
                   />
                 </Grid>
                 <Grid item xs={12} md={2}>
                   <Box display="flex" justifyContent="flex-end" gap={2}>
-                    <Button variant="contained">Search</Button>
-                    <Button variant="outlined">Clear</Button>
+                    <Button variant="contained" type="submit">
+                      Search
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={(values) => {
+                        formik.resetForm();
+                        dispatch(
+                          getLogs({
+                            page: pageNo,
+                            page_size: rowsPerPage,
+                            type_of_log: "email",
+                            sent_date: values.sendate,
+                            search_by_role: values.searchByRole,
+                            receiver_name: values.reciverName,
+                            email_id: values.email,
+                          }),
+                        );
+                      }}
+                    >
+                      Clear
+                    </Button>
                   </Box>
                 </Grid>
               </Grid>

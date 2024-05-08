@@ -6,6 +6,7 @@ import {
   getLogs,
   getPatientHistory,
   getPatientRecords,
+  getRoles,
   getSearchRecords,
 } from "../records/recordsApi";
 
@@ -17,6 +18,7 @@ const records = createSlice({
     searchRecord: [],
     blockHistory: {},
     logs: [],
+    rolesDate: [],
   },
   extraReducers: (builder) => {
     builder.addCase(getPatientHistory.fulfilled, (state, action) => {
@@ -42,6 +44,11 @@ const records = createSlice({
     builder.addCase(getLogs.fulfilled, (state, action) => {
       if (action.payload) {
         state.logs = action.payload;
+      }
+    });
+    builder.addCase(getRoles.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.rolesDate = action.payload.data;
       }
     });
   },

@@ -10,10 +10,6 @@ export const singleDownload = createAsyncThunk(
     try {
       const response = await Axios.get(
         `${SINGLEDOWNLOAD_API.replace(":confirmation_no", confirmation_no).replace(":document_id", document_id)}`,
-        {},
-        {
-          responseType: "blob",
-        },
       );
       return response?.data;
     } catch (error) {

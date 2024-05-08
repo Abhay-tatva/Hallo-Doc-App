@@ -22,8 +22,9 @@ import { FormInput } from "../../TextField/FormInput";
 import "./emailLogs.css";
 import { columns } from "../../../constant/emailLogsData";
 import { useDispatch, useSelector } from "react-redux";
-import { getLogs } from "../../../redux/records/recordsApi";
+import { getLogs, getRoles } from "../../../redux/records/recordsApi";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   email: "",
@@ -38,9 +39,28 @@ const EmailLogs = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { logs } = useSelector((state) => state.root.recordsReducer);
-  useEffect(() => setTableData(logs.data), [logs.data]);
+  const { rolesDate } = useSelector((state) => state.root.recordsReducer);
 
+  useEffect(() => setTableData(logs.data), [logs.data]);
+  useEffect(() => {
+    dispatch(getRoles());
+  }, [dispatch]);
+  useEffect(
+    (values) => {
+      getLogs({
+        page: pageNo,
+        page_size: rowsPerPage,
+        type_of_log: "email",
+        sent_date: values?.sendate,
+        search_by_role: values?.searchByRole,
+        receiver_name: values?.reciverName,
+        email_id: values?.email,
+      });
+    },
+    [dispatch, pageNo, rowsPerPage],
+  );
   const formik = useFormik({
     initialValues,
     onSubmit: (values, onSubmitProps) => {
@@ -83,6 +103,7 @@ const EmailLogs = () => {
                 name="back"
                 variant="outlined"
                 startIcon={<ArrowBackIosOutlinedIcon />}
+                onClick={() => navigate(-1)}
               />
             </Box>
             <Paper className="email-full-paper">
@@ -93,21 +114,24 @@ const EmailLogs = () => {
                     name="searchByRole"
                     fullWidth
                     select
-                    onChange={formik.handleChange}
+                    onChange={(e) =>
+                      formik.setFieldValue("searchByRole", e.target.value)
+                    }
                     onBlur={formik.handleBlur}
                     value={formik.values.searchByRole}
-                    error={
-                      formik.touched.searchByRole &&
-                      Boolean(formik.errors.searchByRole)
-                    }
-                    helperText={
-                      formik.touched.searchByRole && formik.errors.searchByRole
-                    }
+                    // error={
+                    //   formik.touched.searchByRole &&
+                    //   Boolean(formik.errors.searchByRole)
+                    // }
+                    // helperText={
+                    //   formik.touched.searchByRole && formik.errors.searchByRole
+                    // }
                   >
-                    <MenuItem value="all">All</MenuItem>
-                    <MenuItem value="patient">Patient</MenuItem>
-                    <MenuItem value="doctor">Doctor</MenuItem>
-                    <MenuItem value="physician">Physician</MenuItem>
+                    {rolesDate?.map((role) => (
+                      <MenuItem key={role.role_id} value={role.role_name}>
+                        {role.role_name}
+                      </MenuItem>
+                    ))}
                   </FormInput>
                 </Grid>
                 <Grid item xs={12} md={2}>
@@ -177,7 +201,25 @@ const EmailLogs = () => {
                     <Button variant="contained" type="submit">
                       Search
                     </Button>
-                    <Button variant="outlined">Clear</Button>
+                    <Button
+                      variant="outlined"
+                      onClick={(values) => {
+                        formik.resetForm();
+                        dispatch(
+                          getLogs({
+                            page: pageNo,
+                            page_size: rowsPerPage,
+                            type_of_log: "email",
+                            sent_date: values.sendate,
+                            search_by_role: values.searchByRole,
+                            receiver_name: values.reciverName,
+                            email_id: values.email,
+                          }),
+                        );
+                      }}
+                    >
+                      Clear
+                    </Button>
                   </Box>
                 </Grid>
               </Grid>

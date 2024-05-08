@@ -58,14 +58,14 @@ import { AdminAuth } from "./adminAuth";
 import { PhysicianAuth } from "./physicianAuth";
 import { AdminPhysicianAuth } from "./adminPhysicianAuth";
 import { PatientAuth } from "./patientAuth";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 function App() {
   const [isDarktheme, setIsDarkTheme] = useState(false);
   const handleDarkMode = () => {
     setIsDarkTheme(!isDarktheme);
   };
-  const { accountType } = useSelector((state) => state.root.loginReducer);
+  // const { accountType } = useSelector((state) => state.root.loginReducer);
 
   return (
     <BrowserRouter>
@@ -179,7 +179,6 @@ function App() {
 
               {/* Only patieent can access */}
               <Route element={<PatientAuth />}>
-                {console.log("object", accountType)}
                 <Route
                   path={AppRoutes.MEDICALHISTORY}
                   element={<MedicalHistory />}

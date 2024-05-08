@@ -25,6 +25,7 @@ import { useState } from "react";
 import {
   getConcludeCare,
   postConcludeCare,
+  putConcludeCare,
 } from "../../../redux/Provider Site/concludeCare/concludeCareApi";
 import { singleDelete } from "../../../redux/deleteCase/deleteApi";
 import { singleDownload } from "../../../redux/downloadCase/downloadApi";
@@ -40,7 +41,6 @@ const ConcludeCare = () => {
   const selector = useSelector((state) => state.root.viewuploadReducer);
   const rows = selector?.uploadFile[0]?.documents;
   const { confirmation_no, physicianData } = selector.uploadFile[0];
-  console.log("confirm", selector);
   const handleUpload = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -214,6 +214,21 @@ const ConcludeCare = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              mt={4}
+              className="end-btn"
+            >
+              <Button
+                name="Conclude Care"
+                variant="contained"
+                type="submit"
+                onClick={() => {
+                  dispatch(putConcludeCare(confirmation_no));
+                }}
+              />
+            </Box>
           </Paper>
         </Container>
       </Box>

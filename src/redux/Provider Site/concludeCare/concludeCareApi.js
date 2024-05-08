@@ -5,6 +5,7 @@ import Axios from "../../../Config/axios";
 import {
   GETCONCLUDECARE_API,
   POSTCONCLUDECAREUPLOAD_API,
+  PUTCONCLUDECARE,
 } from "../../../constant/apis";
 
 export const getConcludeCare = createAsyncThunk(
@@ -34,6 +35,20 @@ export const postConcludeCare = createAsyncThunk(
             "Content-Type": "multipart/form-data",
           },
         },
+      );
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const putConcludeCare = createAsyncThunk(
+  "putConcludeCare",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.get(
+        `${PUTCONCLUDECARE.replace(":confirmation_no", params)}`,
       );
       return response?.data;
     } catch (error) {

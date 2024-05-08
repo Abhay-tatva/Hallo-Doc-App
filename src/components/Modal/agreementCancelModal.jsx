@@ -10,9 +10,13 @@ import { requestModalSchema } from "../ValidationSchema/index";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelAgreement } from "../../redux/patientSite/patientDashboard/cancelAgreementApi";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../constant/route";
 
 const AgreementCancel = ({ open, handleClose, handleOpen }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { confirmation_no } = useSelector((state) => state.root.commonReducer);
   const formik = useFormik({
     initialValues: {
@@ -20,7 +24,6 @@ const AgreementCancel = ({ open, handleClose, handleOpen }) => {
     },
     validationSchema: requestModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("object", confirmation_no);
       dispatch(
         cancelAgreement({
           cancel_confirmation: formik.values.message,
@@ -29,6 +32,7 @@ const AgreementCancel = ({ open, handleClose, handleOpen }) => {
       ).then((response) => {
         if (response.type === "cancelAgreement/fulfilled") {
           toast.success("Agreement Cancel successfully...");
+          navigate(AppRoutes.LOGIN);
         }
       });
       onSubmitProps.resetForm();

@@ -165,6 +165,7 @@ export const PUTUNBLOCKHISTORY_API =
 export const GETLOGS = "/admin/records/logs";
 export const PUTEDITSHIFT =
   "/admin/scheduling_menu/provider_shifts_lists/edit_shift";
+export const GETROLES = "/commonroute/roles";
 
 // .......................................Partners Api.................................
 
@@ -197,6 +198,8 @@ export const POSTCONCLUDECAREUPLOAD_API =
   "/provider/dashboard/requests/:confirmation_no/actions/conclude_care_upload";
 export const GETCONCLUDECARE_API =
   "/provider/dashboard/requests/:confirmation_no/actions/conclude_care_view";
+export const PUTCONCLUDECARE =
+  "/provider/dashboard/requests/:confirmation_no/actions/conclude_care";
 export const PUTENCOUNTERFORM_API =
   "/provider/dashboard/requests/:confirmation_no/actions/encounter_form";
 export const GETENCOUNTERFORM_API =

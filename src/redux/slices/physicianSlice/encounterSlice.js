@@ -8,6 +8,9 @@ const encounterForm = createSlice({
   initialState: {
     encounterData: {},
   },
+  reducers: {
+    clearForm: (state) => void (state.encounterData = {}),
+  },
   extraReducers: (builder) => {
     builder.addCase(getEncounterForm.fulfilled, (state, action) => {
       if (action.payload) {
@@ -18,3 +21,4 @@ const encounterForm = createSlice({
 });
 
 export default encounterForm.reducer;
+export const { clearForm } = encounterForm.actions;

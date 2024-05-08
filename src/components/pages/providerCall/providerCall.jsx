@@ -107,24 +107,20 @@ const ProviderCall = () => {
               ))}
             </Grid>
             <Box className="physicians">
-              <Typography>
-                <b>Physicians Off Duty</b>
-              </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }} className="grid">
-                <Grid item xs={12} md={4}>
-                  <Box display="flex">
-                    <Typography>Dr Brown</Typography>
-                    <img src={mountain} height="80px" />
-                    {providerOffDuties?.map((providerOffDutie) => (
-                      <Grid key={providerOffDutie.user_id} item xs={12} md={4}>
-                        <Box display="flex">
-                          <img src={mountain} alt="user" height={70} />
-                          {`${providerOffDutie.provider_name} ${providerOffDutie.type_of_user}`}
-                        </Box>
-                      </Grid>
-                    ))}
-                  </Box>
+                <Grid item xs={12}>
+                  <Typography>
+                    <b>Physicians Off Duty</b>
+                  </Typography>
                 </Grid>
+                {providerOffDuties?.map((providerOffDutie) => (
+                  <Grid key={providerOffDutie.user_id} item xs={12} md={4}>
+                    <Box display="flex">
+                      <img src={mountain} alt="user" height={70} />
+                      {`${providerOffDutie.provider_name} ${providerOffDutie.type_of_user}`}
+                    </Box>
+                  </Grid>
+                ))}
               </Grid>
             </Box>
           </Paper>

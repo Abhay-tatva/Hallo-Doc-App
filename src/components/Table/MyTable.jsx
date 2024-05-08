@@ -488,10 +488,12 @@ const MyTable = ({
                                 data.name === "Encounter"
                                   ? row?.is_finalized === "true"
                                     ? handleClose("Encounter Modal")
-                                    : row.request_status === "md_on_site" &&
-                                        "houseCall"
+                                    : row.request_status === "conclude"
                                       ? handleClose("Encounter Form")
-                                      : handleClose("Type of Care")
+                                      : row?.request_status === "md_on_site" &&
+                                          "houseCall"
+                                        ? handleClose("Encounter Form")
+                                        : handleClose("Type of Care")
                                   : handleClose(data.name);
                               }}
                               disableRipple

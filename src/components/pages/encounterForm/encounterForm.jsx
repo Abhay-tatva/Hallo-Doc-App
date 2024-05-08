@@ -27,6 +27,7 @@ import {
   putFinalize,
 } from "../../../redux/Provider Site/Encounter/encounterApi";
 import { toast } from "react-toastify";
+import { clearForm } from "../../../redux/slices/physicianSlice/encounterSlice";
 
 const INITIAL_VALUES = {
   first_name: "",
@@ -67,7 +68,7 @@ const EncounterForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { encounterData } = useSelector((state) => state.root.encounterReducer);
+  const { encounterData } = useSelector((state) => state.encounterReducer);
   const { confirmation_no } = useSelector((state) => state.root.commonReducer);
 
   // const { accountType } = useSelector((state) => state.root.loginReducer);
@@ -188,6 +189,7 @@ const EncounterForm = () => {
               color="primary"
               onClick={() => {
                 formik.resetForm();
+                dispatch(clearForm());
                 navigate(-1);
               }}
               className="back-btn"
@@ -748,6 +750,7 @@ const EncounterForm = () => {
                   variant="outlined"
                   onClick={() => {
                     formik.resetForm();
+                    dispatch(clearForm());
                     // dispatch(clearEncounterForm());
                     navigate(AppRoutes.DASHBOARD);
                   }}
