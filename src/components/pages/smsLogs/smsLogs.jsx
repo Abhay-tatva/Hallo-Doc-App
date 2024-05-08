@@ -165,7 +165,7 @@ const SmsLogs = () => {
               </TableContainer>
               <TablePagination
                 component="div"
-                count={tableData.length}
+                count={tableData?.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

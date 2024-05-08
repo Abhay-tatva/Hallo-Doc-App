@@ -32,25 +32,17 @@ import {
 const CreateShift = ({ open, handleClose, handleOpen }) => {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  // const [repeatDays, setRepeatDays] = useState("");
   const { accountType } = useSelector((state) => state.root.loginReducer);
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
   const formik = useFormik({
     initialValues: {
       isAdmin: accountType === "admin",
-      sunday: false,
-      monday: false,
-      tuesday: false,
-      wednesday: false,
-      thursday: false,
-      friday: false,
-      saturday: false,
       searchRegion: "",
       physician: "",
       date: "",
       startTime: "",
       endTime: "",
-      repeatDays: "",
+      repeatDays: [],
       repeatEnd: "",
     },
     validationSchema: CreateModalSchema,
@@ -63,7 +55,7 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
             shift_date: values.date,
             start: values.startTime,
             end: values.endTime,
-            repeat_days: values.repeatDays,
+            repeat_days: values.repeatDays.join(","),
             repeat_end: values.repeatEnd,
           }),
         ).then((response) => {
@@ -73,14 +65,13 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
           }
         });
       } else if (accountType === "physician") {
-        console.log("valuess:", values);
         dispatch(
           postMyScheduleCreateShift({
             region: values.searchRegion,
             shift_date: values.date,
             start: values.startTime,
             end: values.endTime,
-            repeat_days: values.repeatDays,
+            repeat_days: values.repeatDays.join(","),
             repeat_end: values.repeatEnd,
           }),
         )
@@ -102,10 +93,13 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
   const { physicians } = useSelector(
     (state) => state.root.regionPhysicianReducer,
   );
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    formik.setFieldValue(name, checked);
+  const handleCheckboxChange = (name) => {
+    const newRepeatDays = formik.values.repeatDays.includes(name)
+      ? formik.values.repeatDays.filter((selectedName) => selectedName !== name)
+      : [...formik.values.repeatDays, name];
+    formik.setFieldValue("repeatDays", newRepeatDays);
   };
+
   return (
     <BasicModal
       open={open}
@@ -232,8 +226,8 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                 <Checkbox
                   name="sunday"
                   disabled={!checked}
-                  checked={formik.values.sunday}
-                  onChange={handleCheckboxChange}
+                  checked={formik.values.repeatDays.includes("sunday")}
+                  onChange={() => handleCheckboxChange("sunday")}
                   size="medium"
                 />
               }
@@ -244,21 +238,20 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                 <Checkbox
                   name="monday"
                   disabled={!checked}
-                  checked={formik.values.monday}
-                  onChange={handleCheckboxChange}
+                  checked={formik.values.repeatDays.includes("monday")}
+                  onChange={() => handleCheckboxChange("monday")}
                   size="medium"
                 />
               }
               label="Every Monday"
             />
-            {console.log("checked::", formik.values)}
             <FormControlLabel
               control={
                 <Checkbox
                   name="tuesday"
                   disabled={!checked}
-                  checked={formik.values.tuesday}
-                  onChange={handleCheckboxChange}
+                  checked={formik.values.repeatDays.includes("tuesday")}
+                  onChange={() => handleCheckboxChange("tuesday")}
                   size="medium"
                 />
               }
@@ -270,8 +263,8 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                   name="wednesday"
                   disabled={!checked}
                   size="medium"
-                  checked={formik.values.wednesday}
-                  onChange={handleCheckboxChange}
+                  checked={formik.values.repeatDays.includes("wednesday")}
+                  onChange={() => handleCheckboxChange("wednesday")}
                 />
               }
               label="Every Wednesday"
@@ -282,8 +275,8 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                   name="thursday"
                   disabled={!checked}
                   size="medium"
-                  checked={formik.values.thursday}
-                  onChange={handleCheckboxChange}
+                  checked={formik.values.repeatDays.includes("thursday")}
+                  onChange={() => handleCheckboxChange("thursday")}
                 />
               }
               label="Every thursday"
@@ -294,8 +287,8 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                   name="friday"
                   disabled={!checked}
                   size="medium"
-                  checked={formik.values.friday}
-                  onChange={handleCheckboxChange}
+                  checked={formik.values.repeatDays.includes("friday")}
+                  onChange={() => handleCheckboxChange("friday")}
                 />
               }
               label="Every Friday"
@@ -306,8 +299,8 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                   name="saturday"
                   disabled={!checked}
                   size="medium"
-                  checked={formik.values.saturday}
-                  onChange={handleCheckboxChange}
+                  checked={formik.values.repeatDays.includes("saturday")}
+                  onChange={() => handleCheckboxChange("saturday")}
                 />
               }
               label="Every Saturday"
@@ -329,8 +322,8 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
               helperText={formik.touched.repeatEnd && formik.errors.repeatEnd}
             >
               <MenuItem value="2">2-times</MenuItem>
-              <MenuItem value="1">1-times</MenuItem>
-              <MenuItem value="0">0-times</MenuItem>
+              <MenuItem value="3">3-times</MenuItem>
+              <MenuItem value="4">4-times</MenuItem>
             </FormInput>
           </Grid>
           <Box display="flex" justifyContent="flex-end" gap={2}>
