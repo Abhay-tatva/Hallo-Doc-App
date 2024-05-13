@@ -18,6 +18,7 @@ const Agreement = () => {
   const navigate = useNavigate();
 
   const { confirmation_no } = useSelector((state) => state.root.commonReducer);
+
   const handleAgree = () => {
     dispatch(agreement(confirmation_no))
       .then((response) => {

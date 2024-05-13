@@ -133,16 +133,14 @@ const ViewUpload = () => {
     )
       .then((response) => {
         if (response.type === "singleDownload/fulfilled") {
-          const blob = new Blob([response.payload], {
-            type: "application/octet-stream",
-          });
+          const blob = new Blob([response.payload]);
 
           const downloadLink = document.createElement("a");
           document.body.appendChild(downloadLink);
           const url = URL.createObjectURL(blob);
 
           downloadLink.href = url;
-          downloadLink.download = `downloaded-image.jpg`;
+          downloadLink.download = `downloaded-image.png`;
 
           downloadLink.click();
 

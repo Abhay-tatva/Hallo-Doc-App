@@ -196,7 +196,6 @@ function App() {
                 <Route path={AppRoutes.SOMEONEELSE} element={<SomeOneElse />} />
               </Route>
             </Route>
-            <Route path={AppRoutes.AGREEMENT} element={<Agreement />} />
             <Route path={AppRoutes.PATIENTSITE} element={<PatientPage />} />
             <Route path={AppRoutes.SUBMITREQUEST} element={<SubmitRequest />} />
             <Route path={AppRoutes.PATIENTCREATE} element={<CreatePatient />} />
@@ -207,6 +206,7 @@ function App() {
             <Route path={AppRoutes.CONCIERGE} element={<ConciergePage />} />
             <Route path={AppRoutes.BUSINESS} element={<BusinessPage />} />
           </Route>
+          <Route path={AppRoutes.AGREEMENT} element={<Agreement />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

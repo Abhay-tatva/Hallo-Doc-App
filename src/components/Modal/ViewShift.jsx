@@ -43,6 +43,7 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
   const { myScheduleViewShiftData } = useSelector(
     (state) => state.root.myScheduleReducer,
   );
+  console.log("myschedule", myScheduleViewShiftData);
   const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const formik = useFormik({
@@ -224,17 +225,29 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
               <Button
                 name="Return"
                 variant="contained"
-                onClick={() =>
-                  dispatch(putReturnShift(viewShiftData.shift_id)).then(
-                    (response) => {
+                onClick={() => {
+                  if (accountType === "admin") {
+                    dispatch(putReturnShift(viewShiftData.shift_id)).then(
+                      (response) => {
+                        if (response.type === "putReturnShift/fulfilled") {
+                          toast.success("Status Update Successfully");
+                          handleClose();
+                          dispatch(getProviderShift({ region: "all" }));
+                        }
+                      },
+                    );
+                  } else {
+                    dispatch(
+                      putReturnShift(myScheduleViewShiftData.shift_id),
+                    ).then((response) => {
                       if (response.type === "putReturnShift/fulfilled") {
                         toast.success("Status Update Successfully");
                         handleClose();
-                        dispatch(getProviderShift({ region: "all" }));
+                        dispatch(getMySchedule());
                       }
-                    },
-                  )
-                }
+                    });
+                  }
+                }}
               />
               <Button
                 name={isDisabled ? "Edit" : "Save"}
