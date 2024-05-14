@@ -101,7 +101,7 @@ const ProviderCall = () => {
                 <Grid key={providerOnCall.user_id} item xs={12} md={4}>
                   <Box display="flex">
                     <img src={flower} alt="user" height={70} />
-                    {`${providerOnCall.provider_name} ${providerOnCall.type_of_user}`}
+                    {`${providerOnCall.provider_name} `}
                   </Box>
                 </Grid>
               ))}
@@ -117,7 +117,7 @@ const ProviderCall = () => {
                   <Grid key={providerOffDutie.user_id} item xs={12} md={4}>
                     <Box display="flex">
                       <img src={mountain} alt="user" height={70} />
-                      {`${providerOffDutie.provider_name} ${providerOffDutie.type_of_user}`}
+                      {`${providerOffDutie.provider_name} `}
                     </Box>
                   </Grid>
                 ))}
