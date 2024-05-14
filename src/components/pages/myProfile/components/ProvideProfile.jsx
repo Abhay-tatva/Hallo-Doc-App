@@ -16,7 +16,7 @@ import { useEffect } from "react";
 import {
   getProviderPhysician,
   putPhotoUpdate,
-  putProviderProfile,
+  putProviderInfo,
 } from "../../../../redux/provider/providerApi";
 import { toast } from "react-toastify";
 
@@ -205,7 +205,14 @@ const ProvideProfile = ({
                         "signature_photo",
                         provideProfile.values.signature,
                       );
-                      dispatch(putPhotoUpdate({ userId, formData }));
+                      dispatch(putPhotoUpdate({ userId, formData })).then(
+                        (response) => {
+                          if (response.type === "putPhotoUpdate/fulfilled") {
+                            toast("Signature  updated Successfully..");
+                            dispatch(getProviderPhysician(userId));
+                          }
+                        },
+                      );
                     }}
                   />
                 </Box>
@@ -298,12 +305,12 @@ const ProvideProfile = ({
                     type="submit"
                     onClick={() => {
                       dispatch(
-                        putProviderProfile({
+                        putProviderInfo({
                           user_id: userId.toString(),
                           data: provideProfile.values,
                         }),
                       ).then((response) => {
-                        if (response.type === "putProviderProfile/fulfilled") {
+                        if (response.type === "putProviderInfo/fulfilled") {
                           dispatch(getProviderPhysician(userId));
                         }
                       });

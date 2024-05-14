@@ -17,6 +17,7 @@ export const REGION_API =
 
 export const PHYSICIAN_API =
   "/admin/dashboard/requests/actions/transferrequestphysicians";
+export const CREATESHIFTPHYSICIAN = "/commonroute/physicians";
 
 export const TRANSFERMODEL_API =
   "/admin/dashboard/requests/:confirmation_no/actions/transferrequest";

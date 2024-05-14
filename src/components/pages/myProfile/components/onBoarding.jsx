@@ -18,6 +18,7 @@ import {
 } from "../../../../redux/provider/providerApi";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../constant/route";
+import { toast } from "react-toastify";
 
 const INITIAL_VALUES = {
   IndConAgg: null,
@@ -121,6 +122,18 @@ const OnBording = ({
         console.error("Error downloading image:", error);
       });
   };
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+
+    // Check if a file is selected before allowing the checkbox to be checked
+    if (checked && !formik.values[name]) {
+      toast("Please select a file to upload before checking the box.");
+      event.target.checked = false; // Uncheck the checkbox if no file is selected
+      return;
+    }
+
+    formik.setFieldValue(name, checked); // Update formik state only if checkbox is valid
+  };
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box
@@ -181,7 +194,7 @@ const OnBording = ({
                   <Checkbox
                     name="IndConAgg"
                     checked={formik.values.IndConAgg}
-                    onChange={formik.handleChange}
+                    onChange={handleCheckboxChange}
                   />
                 }
                 label="Independent Contractor Aggrement"
@@ -203,7 +216,7 @@ const OnBording = ({
                   <Checkbox
                     name="BacCheak"
                     checked={formik.values.BacCheak}
-                    onChange={formik.handleChange}
+                    onChange={handleCheckboxChange}
                   />
                 }
                 label="Background Check"
@@ -228,7 +241,7 @@ const OnBording = ({
                   <Checkbox
                     name="HIPAA"
                     checked={formik.values.HIPAA}
-                    onChange={formik.handleChange}
+                    onChange={handleCheckboxChange}
                   />
                 }
                 label="HIPAA Compliance"
@@ -250,7 +263,7 @@ const OnBording = ({
                   <Checkbox
                     name="nonDisAgg"
                     checked={formik.values.nonDisAgg}
-                    onChange={formik.handleChange}
+                    onChange={handleCheckboxChange}
                   />
                 }
                 label="Non-Disclosure Agreement"
@@ -272,7 +285,7 @@ const OnBording = ({
                   <Checkbox
                     name="licDoc"
                     checked={formik.values.licDoc}
-                    onChange={formik.handleChange}
+                    onChange={handleCheckboxChange}
                   />
                 }
                 label="Licence Document"
@@ -297,7 +310,7 @@ const OnBording = ({
                   <Checkbox
                     name="provider"
                     // checked={checked.provider}
-                    onChange={formik.handleChange}
+                    onChange={handleCheckboxChange}
                   />
                 }
                 label="provider Agreement"

@@ -107,9 +107,9 @@ export const putProviderInfo = createAsyncThunk(
         state: data?.state,
         zip: data?.zip,
         billing_mobile_no: data?.billNumber,
-        business_name: data?.business_name,
-        business_website: data?.business_website,
-        admin_notes: data?.admin_notes,
+        business_name: data?.businessName,
+        business_website: data?.businessWebsite,
+        admin_notes: data?.adminNotes,
       });
       return response?.data;
     } catch (error) {
@@ -225,6 +225,7 @@ export const getViewUpload = createAsyncThunk(
   "getViewUpload",
   async (params, { rejectWithValue }) => {
     const { userId, values } = params;
+    console.log(":paraamaemet", params);
     try {
       const response = await Axios.get(
         GETVIEWUPLOAD.replace(":user_id", userId),

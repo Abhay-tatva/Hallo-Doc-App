@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getPhysician,
   getRegions,
+  getShiftPhysician,
 } from "../regionPhysician/regionPhysicianApi";
 
 const regionPhysicianSlice = createSlice({
@@ -9,6 +10,7 @@ const regionPhysicianSlice = createSlice({
   initialState: {
     regions: [],
     physicians: [],
+    shiftPhysician: [],
   },
   extraReducers: (builder) => {
     builder.addCase(getRegions.fulfilled, (state, action) => {
@@ -19,6 +21,11 @@ const regionPhysicianSlice = createSlice({
     builder.addCase(getPhysician.fulfilled, (state, action) => {
       if (action.payload) {
         state.physicians = action.payload.data;
+      }
+    });
+    builder.addCase(getShiftPhysician.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.shiftPhysician = action.payload.data;
       }
     });
   },

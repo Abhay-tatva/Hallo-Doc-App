@@ -43,7 +43,6 @@ const ViewShift = ({ open, handleClose, handleOpen }) => {
   const { myScheduleViewShiftData } = useSelector(
     (state) => state.root.myScheduleReducer,
   );
-  console.log("myschedule", myScheduleViewShiftData);
   const { accountType } = useSelector((state) => state.root.loginReducer);
 
   const formik = useFormik({

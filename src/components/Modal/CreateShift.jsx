@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { FormInput } from "../TextField/FormInput";
 import { useDispatch, useSelector } from "react-redux";
-import { getPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
+import { getShiftPhysician } from "../../redux/regionPhysician/regionPhysicianApi";
 import { useFormik } from "formik";
 import { Button } from "../Button/ButtonInput";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
@@ -34,6 +34,9 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
   const [checked, setChecked] = useState(false);
   const { accountType } = useSelector((state) => state.root.loginReducer);
   const { regions } = useSelector((state) => state.root.regionPhysicianReducer);
+  const { shiftPhysician } = useSelector(
+    (state) => state.root.regionPhysicianReducer,
+  );
   const formik = useFormik({
     initialValues: {
       isAdmin: accountType === "admin",
@@ -90,9 +93,7 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
       handleClose();
     },
   });
-  const { physicians } = useSelector(
-    (state) => state.root.regionPhysicianReducer,
-  );
+
   const handleCheckboxChange = (name) => {
     const newRepeatDays = formik.values.repeatDays.includes(name)
       ? formik.values.repeatDays.filter((selectedName) => selectedName !== name)
@@ -127,7 +128,9 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                 <MenuItem
                   key={index}
                   value={region.region_name}
-                  onClick={() => dispatch(getPhysician(region.region_name))}
+                  onClick={() =>
+                    dispatch(getShiftPhysician(region.region_name))
+                  }
                 >
                   {region.region_name}
                 </MenuItem>
@@ -147,8 +150,8 @@ const CreateShift = ({ open, handleClose, handleOpen }) => {
                 formik.touched.physician && Boolean(formik.errors.physician)
               }
             >
-              {physicians &&
-                physicians.map((physician) => {
+              {shiftPhysician &&
+                shiftPhysician.map((physician) => {
                   return (
                     <MenuItem
                       key={physician.sr_no}
