@@ -32,6 +32,7 @@ export const getPhysician = createAsyncThunk(
 export const getShiftPhysician = createAsyncThunk(
   "getShiftPhysician",
   async (params, { rejectWithValue }) => {
+    console.log("object", params);
     try {
       const response = await Axios.get(
         `${CREATESHIFTPHYSICIAN}?region=${params}`,

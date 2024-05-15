@@ -24,5 +24,5 @@ export const CreateModalSchema = Yup.object({
       });
     }),
   // repeatDays: Yup.string().required("repeatDays  must be required"),
-  repeatEnd: Yup.string().required("repeatEnd  must be required"),
+  // repeatEnd: Yup.string().required("repeatEnd  must be required"),
 });
